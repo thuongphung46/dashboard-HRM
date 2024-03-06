@@ -1,14 +1,5 @@
-import {
-  BarChart,
-  Book,
-  Diamond,
-  ShoppingCart,
-  CalendarMonth,
-  MiscellaneousServices,
-  Public,
-  DarkMode,
-} from "@mui/icons-material";
-import { Badge, Typography } from "@mui/material";
+import { Diamond, DarkMode } from "@mui/icons-material";
+import { Typography } from "@mui/material";
 import React from "react";
 import {
   Menu,
@@ -69,28 +60,30 @@ const hexToRgba = (hex: string, alpha: number) => {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
 
-export const Playground: React.FC = () => {
-  const [collapsed, setCollapsed] = React.useState(false);
-  const [toggled, setToggled] = React.useState(false);
+interface SidebarProps {
+  collapsed?: boolean;
+  toggled?: boolean;
+  setToggled?: () => void;
+  onBackdropClick?: () => void;
+  onBreakPoint?: (broken: boolean) => void;
+  image?: string;
+  rtl?: boolean;
+  breakPoint?: "xs" | "sm" | "md" | "lg" | "xl";
+  backgroundColor?: string;
+  rootStyles?: React.CSSProperties;
+}
+
+export const Playground: React.FC<SidebarProps> = ({
+  collapsed,
+  toggled,
+  setToggled,
+}) => {
   const [broken, setBroken] = React.useState(false);
   const [rtl, setRtl] = React.useState(false);
   const [hasImage, setHasImage] = React.useState(false);
   const [theme, setTheme] = React.useState<Theme>("light");
 
-  // handle on RTL change event
-  const handleRTLChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRtl(e.target.checked);
-  };
-
-  // handle on theme change event
-  const handleThemeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTheme(e.target.checked ? "dark" : "light");
-  };
-
-  // handle on image change event
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setHasImage(e.target.checked);
-  };
+  // handle on RTL change even
 
   const menuItemStyles: MenuItemStyles = {
     root: {
@@ -143,7 +136,7 @@ export const Playground: React.FC = () => {
       <Sidebar
         collapsed={collapsed}
         toggled={toggled}
-        onBackdropClick={() => setToggled(false)}
+        onBackdropClick={setToggled}
         onBreakPoint={setBroken}
         image="https://user-images.githubusercontent.com/25878302/144499035-2911184c-76d3-4611-86e7-bc4e8ff84ff5.jpg"
         rtl={rtl}
@@ -174,31 +167,6 @@ export const Playground: React.FC = () => {
               </Typography>
             </div>
             <Menu menuItemStyles={menuItemStyles}>
-              <SubMenu
-                label="Charts"
-                icon={<BarChart />}
-                suffix={
-                  <Badge
-                    //   variant="danger"
-                    //    shape="circle"
-                    variant="dot"
-                  >
-                    6
-                  </Badge>
-                }
-              >
-                <MenuItem> Pie charts</MenuItem>
-                <MenuItem> Line charts</MenuItem>
-                <MenuItem> Bar charts</MenuItem>
-              </SubMenu>
-              <SubMenu label="Maps" icon={<Public />}>
-                <MenuItem> Google maps</MenuItem>
-                <MenuItem> Open street maps</MenuItem>
-              </SubMenu>
-              <SubMenu label="Theme" icon={<DarkMode />}>
-                <MenuItem onClick={() => setTheme("dark")}>Dark</MenuItem>
-                <MenuItem onClick={() => setTheme("light")}> Light</MenuItem>
-              </SubMenu>
               <SubMenu label="Components" icon={<Diamond />}>
                 <MenuItem> Grid</MenuItem>
                 <MenuItem> Layout</MenuItem>
@@ -210,11 +178,6 @@ export const Playground: React.FC = () => {
                     <MenuItem> Radio</MenuItem>
                   </SubMenu>
                 </SubMenu>
-              </SubMenu>
-              <SubMenu label="E-commerce" icon={<ShoppingCart />}>
-                <MenuItem> Product</MenuItem>
-                <MenuItem> Orders</MenuItem>
-                <MenuItem> Credit card</MenuItem>
               </SubMenu>
             </Menu>
 
@@ -235,16 +198,10 @@ export const Playground: React.FC = () => {
             </div>
 
             <Menu menuItemStyles={menuItemStyles}>
-              <MenuItem
-                icon={<CalendarMonth />}
-                suffix={<Badge variant="dot">New</Badge>}
-              >
-                Calendar
-              </MenuItem>
-              <MenuItem icon={<Book />}>Documentation</MenuItem>
-              <MenuItem disabled icon={<MiscellaneousServices />}>
-                Examples
-              </MenuItem>
+              <SubMenu label="Theme" icon={<DarkMode />}>
+                <MenuItem onClick={() => setTheme("dark")}>Dark</MenuItem>
+                <MenuItem onClick={() => setTheme("light")}> Light</MenuItem>
+              </SubMenu>
             </Menu>
           </div>
           <SidebarFooter collapsed={collapsed} />
