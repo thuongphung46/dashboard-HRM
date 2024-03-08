@@ -12,6 +12,7 @@ import {
 import { SidebarHeader } from "./sidebar_header";
 import { SidebarFooter } from "./sidebar_footer";
 import { themes } from "constants/themes/styles";
+import { Link } from "react-router-dom";
 
 // hex to rgba converter
 const hexToRgba = (hex: string, alpha: number) => {
@@ -45,11 +46,8 @@ export const Playground: React.FC<SidebarProps> = ({
   setTheme,
   theme,
 }) => {
-  // const [broken, setBroken] = React.useState(false);
   const [rtl, setRtl] = React.useState(false);
   const [hasImage, setHasImage] = React.useState(false);
-
-  // handle on RTL change even
 
   const menuItemStyles: MenuItemStyles = {
     root: {
@@ -134,7 +132,16 @@ export const Playground: React.FC<SidebarProps> = ({
             </div>
             <Menu menuItemStyles={menuItemStyles}>
               <SubMenu label="Components" icon={<Diamond />}>
-                <MenuItem> Grid</MenuItem>
+                <Link
+                  to={"/model"}
+                  style={{
+                    textDecoration: "none",
+                    color: "black",
+                  }}
+                >
+                  <MenuItem>Management Level Model</MenuItem>
+                </Link>
+
                 <MenuItem> Layout</MenuItem>
                 <SubMenu label="Forms">
                   <MenuItem> Input</MenuItem>
@@ -173,72 +180,6 @@ export const Playground: React.FC<SidebarProps> = ({
           <SidebarFooter collapsed={collapsed} />
         </div>
       </Sidebar>
-      {/* 
-      <main>
-        <div style={{ padding: "16px 24px", color: "#44596e" }}>
-          <div style={{ marginBottom: "16px" }}>
-            {broken && (
-              <button
-                className="sb-button"
-                onClick={() => setToggled(!toggled)}
-              >
-                Toggle
-              </button>
-            )}
-          </div>
-          <div style={{ marginBottom: "48px" }}>
-            <Typography variant="h4" fontWeight={600}>
-              React Pro Sidebar
-            </Typography>
-            <Typography variant="body2">
-              React Pro Sidebar provides a set of components for creating high
-              level and customizable side navigation
-            </Typography>
-          </div>
-
-          <div style={{ padding: "0 8px" }}>
-            <div style={{ marginBottom: 16 }}>
-              <Switch
-                id="collapse"
-                checked={collapsed}
-                onChange={() => setCollapsed(!collapsed)}
-                // label="Collapse"
-                title="Collapse"
-              />
-            </div>
-
-            <div style={{ marginBottom: 16 }}>
-              <Switch
-                id="rtl"
-                checked={rtl}
-                onChange={handleRTLChange}
-                // label="RTL"
-                title="RTL"
-              />
-            </div>
-
-            <div style={{ marginBottom: 16 }}>
-              <Switch
-                id="theme"
-                checked={theme === "dark"}
-                onChange={handleThemeChange}
-                // label="Dark theme"
-                title="Dark theme"
-              />
-            </div>
-
-            <div style={{ marginBottom: 16 }}>
-              <Switch
-                id="image"
-                checked={hasImage}
-                onChange={handleImageChange}
-                // label="Image"
-                title="Image"
-              />
-            </div>
-          </div>
-        </div>
-      </main> */}
     </div>
   );
 };
