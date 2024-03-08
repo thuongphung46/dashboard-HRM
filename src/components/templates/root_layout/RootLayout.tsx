@@ -63,7 +63,10 @@ const RootLayout = () => {
             toggled={toggled}
             broken={broken}
           />
-          <Box id={"main-view"} sx={{ height: "100%", overflow: "auto" }}>
+          <Box
+            id={"main-view"}
+            sx={{ height: "100%", overflow: "auto", padding: 1 }}
+          >
             <Outlet />
           </Box>
         </Box>
