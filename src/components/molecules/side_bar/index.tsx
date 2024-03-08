@@ -11,45 +11,7 @@ import {
 } from "react-pro-sidebar";
 import { SidebarHeader } from "./sidebar_header";
 import { SidebarFooter } from "./sidebar_footer";
-
-type Theme = "light" | "dark";
-
-const themes = {
-  light: {
-    sidebar: {
-      backgroundColor: "#ffffff",
-      color: "#607489",
-    },
-    menu: {
-      menuContent: "#fbfcfd",
-      icon: "#0098e5",
-      hover: {
-        backgroundColor: "#c5e4ff",
-        color: "#44596e",
-      },
-      disabled: {
-        color: "#9fb6cf",
-      },
-    },
-  },
-  dark: {
-    sidebar: {
-      backgroundColor: "#0b2948",
-      color: "#8ba1b7",
-    },
-    menu: {
-      menuContent: "#082440",
-      icon: "#59d0ff",
-      hover: {
-        backgroundColor: "#00458b",
-        color: "#b6c8d9",
-      },
-      disabled: {
-        color: "#3e5e7e",
-      },
-    },
-  },
-};
+import { themes } from "constants/themes/styles";
 
 // hex to rgba converter
 const hexToRgba = (hex: string, alpha: number) => {
@@ -71,17 +33,21 @@ interface SidebarProps {
   breakPoint?: "xs" | "sm" | "md" | "lg" | "xl";
   backgroundColor?: string;
   rootStyles?: React.CSSProperties;
+  theme: "light" | "dark";
+  setTheme: (theme: "light" | "dark") => void;
 }
 
 export const Playground: React.FC<SidebarProps> = ({
   collapsed,
   toggled,
   setToggled,
+  onBreakPoint,
+  setTheme,
+  theme,
 }) => {
-  const [broken, setBroken] = React.useState(false);
+  // const [broken, setBroken] = React.useState(false);
   const [rtl, setRtl] = React.useState(false);
   const [hasImage, setHasImage] = React.useState(false);
-  const [theme, setTheme] = React.useState<Theme>("light");
 
   // handle on RTL change even
 
@@ -137,7 +103,7 @@ export const Playground: React.FC<SidebarProps> = ({
         collapsed={collapsed}
         toggled={toggled}
         onBackdropClick={setToggled}
-        onBreakPoint={setBroken}
+        onBreakPoint={onBreakPoint}
         image="https://user-images.githubusercontent.com/25878302/144499035-2911184c-76d3-4611-86e7-bc4e8ff84ff5.jpg"
         rtl={rtl}
         breakPoint="md"
