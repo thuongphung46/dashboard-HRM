@@ -3,6 +3,7 @@ import createSagaMiddleware from "redux-saga";
 // import rootSaga from "./rootSaga";
 import logger from "redux-logger";
 import AuthReducer from "./slices/auth_slice";
+import { ControllBarReducer } from "./slices/controll_bar_slice";
 
 const sagaMiddleware = createSagaMiddleware({
   sagaMonitor: {},
@@ -11,6 +12,7 @@ const sagaMiddleware = createSagaMiddleware({
 export const store = configureStore({
   reducer: {
     Auth: AuthReducer,
+    ControllBar: ControllBarReducer,
   },
   middleware: (getDefaultMiddleware) => {
     const middlewares = getDefaultMiddleware().concat(sagaMiddleware);
