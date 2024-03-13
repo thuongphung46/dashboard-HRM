@@ -1,9 +1,9 @@
-import {GeneralTemplate} from  "components/templates/general"
+import {MultipleTablesPage} from  "components/templates/general"
 
 export const GeneralPage = () => {
     return (
-      <GeneralTemplate >
-      </GeneralTemplate>
+      <MultipleTablesPage >
+      </MultipleTablesPage>
     );
   };
   
