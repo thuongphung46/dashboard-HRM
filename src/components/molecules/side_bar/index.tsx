@@ -95,8 +95,7 @@ export const Playground: React.FC<SidebarProps> = ({
         display: "flex",
         height: "100%",
         direction: rtl ? "rtl" : "ltr",
-      }}
-    >
+      }}>
       <Sidebar
         collapsed={collapsed}
         toggled={toggled}
@@ -111,11 +110,9 @@ export const Playground: React.FC<SidebarProps> = ({
         )}
         rootStyles={{
           color: themes[theme].sidebar.color,
-        }}
-      >
+        }}>
         <div
-          style={{ display: "flex", flexDirection: "column", height: "100%" }}
-        >
+          style={{ display: "flex", flexDirection: "column", height: "100%" }}>
           <SidebarHeader
             rtl={rtl}
             style={{ marginBottom: "24px", marginTop: "16px" }}
@@ -125,8 +122,10 @@ export const Playground: React.FC<SidebarProps> = ({
               <Typography
                 variant="body2"
                 fontWeight={600}
-                style={{ opacity: collapsed ? 0 : 0.7, letterSpacing: "0.5px" }}
-              >
+                style={{
+                  opacity: collapsed ? 0 : 0.7,
+                  letterSpacing: "0.5px",
+                }}>
                 General
               </Typography>
             </div>
@@ -137,8 +136,7 @@ export const Playground: React.FC<SidebarProps> = ({
                   style={{
                     textDecoration: "none",
                     color: "black",
-                  }}
-                >
+                  }}>
                   <MenuItem>Management Level Model</MenuItem>
                 </Link>
                 <Link
@@ -146,9 +144,16 @@ export const Playground: React.FC<SidebarProps> = ({
                   style={{
                     textDecoration: "none",
                     color: "black",
-                  }}
-                >
+                  }}>
                   <MenuItem>general</MenuItem>
+                </Link>
+                <Link
+                  to={"/detail_employee"}
+                  style={{
+                    textDecoration: "none",
+                    color: "black",
+                  }}>
+                  <MenuItem>Employee Detail</MenuItem>
                 </Link>
 
                 <MenuItem> Layout</MenuItem>
@@ -168,13 +173,14 @@ export const Playground: React.FC<SidebarProps> = ({
                 padding: "0 24px",
                 marginBottom: "8px",
                 marginTop: "32px",
-              }}
-            >
+              }}>
               <Typography
                 variant="body2"
                 fontWeight={600}
-                style={{ opacity: collapsed ? 0 : 0.7, letterSpacing: "0.5px" }}
-              >
+                style={{
+                  opacity: collapsed ? 0 : 0.7,
+                  letterSpacing: "0.5px",
+                }}>
                 Extra
               </Typography>
             </div>
