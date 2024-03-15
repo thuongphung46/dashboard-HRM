@@ -2,9 +2,8 @@ import React, { FC, useState } from "react";
 import { GeneralPosition } from "components/molecules/general/position_columns";
 import { GeneralResion } from "components/molecules/general/resion_columns";
 import { GeneralRank } from "components/molecules/general/rank_columns";
-import TextField from '@mui/material/TextField';
-import InputLabel from '@mui/material/InputLabel'; // Import InputLabel
-import Input from '@mui/material/Input'; // Import Input
+import InputLabel from '@mui/material/InputLabel'; 
+import Input from '@mui/material/Input';
 
 interface Props{}
 
