@@ -141,6 +141,15 @@ export const Playground: React.FC<SidebarProps> = ({
                 >
                   <MenuItem>Management Level Model</MenuItem>
                 </Link>
+                <Link
+                  to={"/general"}
+                  style={{
+                    textDecoration: "none",
+                    color: "black",
+                  }}
+                >
+                  <MenuItem>general</MenuItem>
+                </Link>
 
                 <MenuItem> Layout</MenuItem>
                 <SubMenu label="Forms">
