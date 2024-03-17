@@ -131,32 +131,15 @@ export const Playground: React.FC<SidebarProps> = ({
             </div>
             <Menu menuItemStyles={menuItemStyles}>
               <SubMenu label="Components" icon={<Diamond />}>
-                <Link
-                  to={"/model"}
-                  style={{
-                    textDecoration: "none",
-                    color: "black",
-                  }}>
-                  <MenuItem>Management Level Model</MenuItem>
-                </Link>
-                <Link
-                  to={"/general"}
-                  style={{
-                    textDecoration: "none",
-                    color: "black",
-                  }}>
-                  <MenuItem>general</MenuItem>
-                </Link>
-                <Link
-                  to={"/detail_employee"}
-                  style={{
-                    textDecoration: "none",
-                    color: "black",
-                  }}>
-                  <MenuItem>Employee Detail</MenuItem>
-                </Link>
-
-                <MenuItem> Layout</MenuItem>
+                <MenuItem component={<Link to={"/model"}></Link>}>
+                  Management Level Model
+                </MenuItem>
+                <MenuItem component={<Link to={"/general"}></Link>}>
+                  general
+                </MenuItem>
+                <MenuItem component={<Link to={"/detail_employee"}></Link>}>
+                  Employee Detail
+                </MenuItem>
                 <SubMenu label="Forms">
                   <MenuItem> Input</MenuItem>
                   <MenuItem> Select</MenuItem>
