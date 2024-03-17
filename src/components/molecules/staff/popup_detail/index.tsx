@@ -6,17 +6,22 @@ import { InfoStaff } from "./info_staff";
 import { WorkingHistory } from "./working_history";
 import { Analytic } from "./analytic";
 
-interface Props {}
+interface Props {
+  staff: any;
+}
 
-export const PopupDetailStaff: FC<Props> = () => {
+export const PopupDetailStaff: FC<Props> = (props) => {
   const [value, setValue] = useState(0);
+  const staff = props.staff || {};
 
   const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
 
   return (
-    <div>
+    <div style={{
+      backgroundColor:"#fff"
+    }}>
       <h1>PopupDetailStaff</h1>
       <Tabs
         value={value}
