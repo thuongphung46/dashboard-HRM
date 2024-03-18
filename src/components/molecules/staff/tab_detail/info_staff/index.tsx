@@ -105,7 +105,8 @@ export const InfoStaff: React.FC = () => {
                         size="small"
                         id={field.id}
                         onChange={hanldeOnChangefield}
-                        value={formData[field.id] || ""}>
+                        value={formData[field.id] || ""}
+                      >
                         {field.options.map((option) => (
                           <MenuItem key={option} value={option}>
                             {option}
