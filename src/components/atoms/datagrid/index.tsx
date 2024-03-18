@@ -37,7 +37,7 @@ export const BaseGrid = forwardRef<any, BaseGridProps>(
         <button onClick={onDelete}>Delete</button>
         <button onClick={onAddRow}>Add Row</button>
 
-        <Box sx={{ height: 400, width: "100%" }}>
+        <Box sx={{ height: 500, width: "100%" }}>
           <DataGrid
             rows={rows}
             columns={columns}

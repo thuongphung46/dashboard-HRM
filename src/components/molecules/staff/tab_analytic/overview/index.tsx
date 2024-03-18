@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid/DataGrid/DataGrid";
 import { GridColDef } from "@mui/x-data-grid/models/colDef/gridColDef";
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 
 interface Props {}
 export const Overview: React.FC<Props> = () => {
@@ -14,7 +14,7 @@ export const Overview: React.FC<Props> = () => {
     { field: "resion", headerName: "Lý do giảm trừ", width: 150 },
   ];
 
-  const [dataSource, setDataSource] = useState([
+  const rows = [
     {
       id: "I",
       content: "Tổng số tiết thực hiện (A+B)",
@@ -40,13 +40,13 @@ export const Overview: React.FC<Props> = () => {
       num_lesion: "372",
       resion: "",
     },
-  ]);
+  ];
 
   return (
     <div>
       <Box sx={{ height: 400, width: "100%" }}>
         <DataGrid
-          rows={dataSource}
+          rows={rows}
           columns={columns}
           ref={gridRef}
           initialState={{

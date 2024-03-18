@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box/Box";
 import React, { useState } from "react";
-import { BaseGrid } from "components/molecules/base_grid";
 import { GridRowId } from "@mui/x-data-grid";
+import { BaseGrid } from "components/atoms/datagrid";
 
 interface Props{}
 export const WorkingHistory: React.FC = () => {
