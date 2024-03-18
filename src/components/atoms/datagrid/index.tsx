@@ -1,9 +1,15 @@
 import React, { FC, forwardRef } from "react";
 import Box from "@mui/material/Box";
-import { DataGrid, GridColDef, GridRowId } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridColDef,
+  GridRowId,
+  DataGridProps,
+} from "@mui/x-data-grid";
 import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 
-interface BaseGridProps {
+interface BaseGridProps extends DataGridProps {
   columns: GridColDef[];
   rows: any[];
   title: string;
@@ -25,6 +31,7 @@ export const BaseGrid = forwardRef<any, BaseGridProps>(
       onAddRow,
       onRowSelectionChange,
       selectedRows,
+      ...rest
     },
     ref
   ) => {
@@ -33,28 +40,27 @@ export const BaseGrid = forwardRef<any, BaseGridProps>(
         <Typography variant="h5" gutterBottom>
           {title}
         </Typography>
-        <button onClick={onSave}>Save</button>
-        <button onClick={onDelete}>Delete</button>
-        <button onClick={onAddRow}>Add Row</button>
+        <Button onClick={onSave}>Save</Button>
+        <Button onClick={onDelete}>Delete</Button>
+        <Button onClick={onAddRow}>Add Row</Button>
 
-        <Box sx={{ height: 400, width: "100%" }}>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            ref={ref}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 5,
-                },
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          ref={ref}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 5,
               },
-            }}
-            checkboxSelection
-            disableRowSelectionOnClick
-            onRowSelectionModelChange={onRowSelectionChange}
-            rowSelectionModel={selectedRows}
-          />
-        </Box>
+            },
+          }}
+          checkboxSelection
+          disableRowSelectionOnClick
+          onRowSelectionModelChange={onRowSelectionChange}
+          rowSelectionModel={selectedRows}
+          {...rest}
+        />
       </div>
     );
   }
