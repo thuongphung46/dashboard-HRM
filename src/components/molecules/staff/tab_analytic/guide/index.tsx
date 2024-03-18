@@ -1,10 +1,21 @@
 import { FC, useState } from "react";
 import { GridRowId } from "@mui/x-data-grid";
 import { BaseGrid } from "components/atoms/datagrid";
+import Box from "@mui/material/Box/Box";
 
 interface Props {}
 export const Guide: FC<Props> = () => {
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
+
+  const columns = [
+    { field: 'id', headerName: 'STT', width: 90 },
+    { field: 'student_name', headerName: 'Họ tên NCS', width: 150, editable: true },
+    { field: 'training', headerName: 'Khóa đào tạo', width: 150, editable: true },
+    { field: 'num_decision', headerName: 'Số QĐ Giao Luận án, Luận văn, Đồ án', width: 150, editable: true},
+    { field: 'num_instructors', headerName: 'Số người HD', width: 150, editable: true },
+    { field: 'main_instructors', headerName: 'HD chính', width: 150, editable: true },
+    { field: 'num_lesion', headerName: 'Số tiết quy đổi', width: 150, editable: true },
+  ];
 
   const [rows, setRows] = useState([
     {
@@ -68,58 +79,22 @@ export const Guide: FC<Props> = () => {
     setSelectedRows([]);
   };
 
-  const handleRowSelectionChange = (selection: GridRowId[]) => {
-    setSelectedRows(selection);
-  };
+  // const handleRowSelectionChange = (selection: GridRowId[]) => {
+  //   setSelectedRows(selection);
+  // };
 
   return (
-    <BaseGrid
-      columns={[
-        { field: "id", headerName: "STT", width: 90 },
-        {
-          field: "student_name",
-          headerName: "Tên NCS",
-          width: 150,
-          editable: true,
-        },
-        {
-          field: "training",
-          headerName: "Khóa đào tạo",
-          width: 150,
-          editable: true,
-        },
-        {
-          field: "num_decision",
-          headerName: "Số QĐ Giao Luận án, Luận văn, Đồ án",
-          width: 300,
-          editable: true,
-        },
-        {
-          field: "num_instructors",
-          headerName: "Số người HD",
-          width: 150,
-          editable: true,
-        },
-        {
-          field: "main_instructors",
-          headerName: "HD chính",
-          width: 150,
-          editable: true,
-        },
-        {
-          field: "num_lesion",
-          headerName: "Số tiết quy đổi",
-          width: 150,
-          editable: true,
-        },
-      ]}
-      rows={rows}
-      title="Example Grid"
-      onSave={handleSave}
-      onDelete={handleDelete}
-      onAddRow={handleAddRow}
-      onRowSelectionChange={handleRowSelectionChange}
-      selectedRows={selectedRows}
-    />
+    <Box>
+        <BaseGrid
+          columns={columns}
+          rows={rows}
+          title=""
+          onSave={handleSave}
+          onDelete={handleDelete}
+          onAddRow={handleAddRow}
+          onRowSelectionChange={setSelectedRows}
+          selectedRows={selectedRows}
+        />
+      </Box>
   );
 };
