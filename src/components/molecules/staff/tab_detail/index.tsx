@@ -1,16 +1,16 @@
 import React, { FC, useState, ChangeEvent } from "react";
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Box from "@mui/material/Box";
 import { InfoStaff } from "./info_staff";
 import { WorkingHistory } from "./working_history";
-import { Analytic } from "./analytic";
+import { Analytic } from "components/molecules/staff/tab_analytic";
 
 interface Props {
   staff: any;
 }
 
-export const PopupDetailStaff: FC<Props> = (props) => {
+export const TabDetailStaff: FC<Props> = (props) => {
   const [value, setValue] = useState(0);
   const staff = props.staff || {};
 
@@ -19,10 +19,11 @@ export const PopupDetailStaff: FC<Props> = (props) => {
   };
 
   return (
-    <div style={{
-      backgroundColor:"#fff"
-    }}>
-      <h1>PopupDetailStaff</h1>
+    <div
+      style={{
+        backgroundColor: "#fff",
+      }}
+    >
       <Tabs
         value={value}
         onChange={handleChange}
@@ -53,22 +54,17 @@ interface TabPanelProps {
 }
 
 function TabPanel(props: TabPanelProps) {
-  const { children, value, index,...other } = props;
+  const { children, value, index, ...other } = props;
 
   return (
     <div
       role="tabpanel"
-      hidden={value!== index}
+      hidden={value !== index}
       id={`tabpanel-${index}`}
       aria-labelledby={`tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }
-

@@ -1,11 +1,8 @@
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import ReusableField from "components/atoms/field";
 import { FC, useState, useCallback } from "react";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
 import { DataGridPro } from "@mui/x-data-grid-pro/DataGridPro";
 import { GridColDef } from "@mui/x-data-grid/models/colDef";
 import { GridRowsProp } from "@mui/x-data-grid/models/gridRows";
@@ -42,22 +39,24 @@ export const DetailDepartMent: FC<Props> = ({ dataDetail, listSubject }) => {
           Tên cấp quản lý: <span>{dataDetail.name}</span>
         </Typography>
 
-        <Grid container spacing={2}>
+        <Grid container>
           {fieldsData.map((item) => {
             return (
               <ReusableField
                 key={item.id}
                 field={item}
                 formData={formData}
-                hanldeOnChangefield={hanldeOnChangefield}></ReusableField>
+                hanldeOnChangefield={hanldeOnChangefield}
+              ></ReusableField>
             );
           })}
         </Grid>
-        <Grid container p={4}>
+        <Grid sx={{ marginTop: "20px" }} container>
           <DataGridPro
             sx={{
               height: `calc(100vh - 210px)`,
             }}
+            editMode="row"
             treeData
             rows={rows}
             columns={columns}
@@ -84,13 +83,13 @@ const rows: GridRowsProp = [
   {
     hierarchy: ["Bộ môn an toàn thông tin"],
     subject: "Head of Human Resources",
-    name: "Nguyễn Văn A",
+    name: "",
     id: 0,
   },
   {
     hierarchy: ["Bộ môn lịch sử đảng"],
     subject: "Head of Sales",
-    name: "Trần Văn B",
+    name: "",
     id: 1,
   },
   {
@@ -132,7 +131,7 @@ const rows: GridRowsProp = [
   {
     hierarchy: ["Bộ môn lập trình căn bản"],
     subject: "Head of Engineering",
-    name: "Vũ Ngọc G",
+    name: "",
     id: 8,
   },
   {

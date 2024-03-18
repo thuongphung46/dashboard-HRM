@@ -1,8 +1,8 @@
 import React, { ChangeEvent, useState } from "react";
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
-import { Overview } from "./overview"
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Box from "@mui/material/Box";
+import { Overview } from "./overview";
 import { Teaching } from "./teaching";
 import { Assess } from "./assess";
 import { Guide } from "./guide";
@@ -16,7 +16,7 @@ export const Analytic: React.FC = () => {
   const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
-  
+
   return (
     <div>
       <Tabs
@@ -57,22 +57,17 @@ interface TabPanelProps {
 }
 
 function TabPanel(props: TabPanelProps) {
-  const { children, value, index,...other } = props;
+  const { children, value, index, ...other } = props;
 
   return (
     <div
       role="tabpanel"
-      hidden={value!== index}
+      hidden={value !== index}
       id={`tabpanel-${index}`}
       aria-labelledby={`tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }
-
