@@ -1,8 +1,10 @@
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import { FC, useCallback } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
 import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
 
 interface Props {
   listData: any[];
@@ -10,8 +12,37 @@ interface Props {
 }
 
 export const ListDepartment: FC<Props> = ({ listData, handleClickItem }) => {
-  const handleAddDepartment = useCallback(() => {}, []);
+  const [open, setOpen] = useState<boolean>(false);
+  const handleAddDepartment = useCallback(() => {
+    setOpen(true);
+  }, []);
 
+  const handleClose = useCallback(() => {
+    setOpen(false);
+  }, []);
+  const renderPopup = useMemo(() => {
+    return (
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+          width: "100%",
+        }}
+      >
+        <div
+          style={{ height: "400px", width: "600px", backgroundColor: "#fff" }}
+        >
+          thêm ở đây
+        </div>
+      </Modal>
+    );
+  }, [handleClose, open]);
   return (
     <div
       style={{
@@ -40,6 +71,7 @@ export const ListDepartment: FC<Props> = ({ listData, handleClickItem }) => {
           );
         })}
       </List>
+      {renderPopup}
     </div>
   );
 };

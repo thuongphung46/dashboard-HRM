@@ -12,9 +12,9 @@ interface BaseGridProps extends DataGridProps {
   columns: GridColDef[];
   rows: any[];
   title: string;
-  onSave: () => void;
-  onDelete: () => void;
-  onAddRow: () => void;
+  onSave?: () => void;
+  onDelete?: () => void;
+  onAddRow?: () => void;
   onRowSelectionChange: (selection: any) => void;
   selectedRows: GridRowId[];
 }

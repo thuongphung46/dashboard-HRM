@@ -6,8 +6,8 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
-import Typography from "@mui/material/Typography";
-import { DataGrid, GridRowId, GridColDef } from "@mui/x-data-grid";
+import { GridRowId, GridColDef } from "@mui/x-data-grid";
+import { BaseGrid } from "components/atoms/datagrid";
 
 export const InfoStaff: React.FC = () => {
   const [isAddingRow, setIsAddingRow] = useState(false);
@@ -45,8 +45,8 @@ export const InfoStaff: React.FC = () => {
     { id: "ethnicity", label: "Dân tộc", type: "text" },
     { id: "religion", label: "Tôn giáo", type: "text" },
     { id: "education_level", label: "Trình độ văn hóa", type: "text" },
-    { id: "doan_tncs_hcm", label: "Kết nạp Đoàn TNCS HCM tại", type: "date" },
-    { id: "dang_csvn", label: "Kết nạp Đảng CSVN tại", type: "date" },
+    { id: "doan_tncs_hcm", label: "Kết nạp Đoàn TNCS HCM tại", type: "text" },
+    { id: "dang_csvn", label: "Kết nạp Đảng CSVN tại", type: "text"},
   ];
 
   const handleAddRow = () => {
@@ -89,7 +89,7 @@ export const InfoStaff: React.FC = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={2}>
+      <Grid container >
         <Grid container spacing={2}>
           {fieldsData.map((field) => (
             <Grid item xs={6} key={field.id}>
@@ -130,7 +130,8 @@ export const InfoStaff: React.FC = () => {
             </Grid>
           ))}
         </Grid>
-        <Grid container alignItems="center">
+
+        <Grid sx={{marginTop:"24px"}} container alignItems="center">
           <GridTrainingSummary
             dataSelectRow={selectedRows}
             dataSource={dataSource}
@@ -209,33 +210,27 @@ const GridTrainingSummary: FC<IGridTraining> = ({
 
   return (
     <>
-      <Typography variant="h5" gutterBottom>
-        TÓM TẮT QUÁ TRÌNH ĐÀO TẠO
-      </Typography>
-
-      <button onClick={handleSave}>Save</button>
-      <button onClick={handleDel}>Delete</button>
-      <button onClick={handleAddRow}>Add Row</button>
-
-      <Box sx={{ height: 400, width: "100%" }}>
-        <DataGrid
-          rows={dataSource}
-          columns={columns}
-          ref={gridRef}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 5,
-              },
-            },
-          }}
-          pageSizeOptions={[5]}
-          checkboxSelection
-          disableRowSelectionOnClick
-          onRowSelectionModelChange={handleRowSelect}
-          rowSelectionModel={dataSelectRow}
-        />
-      </Box>
+    
+      <BaseGrid 
+      onRowSelectionChange={handleRowSelect}
+      title="TÓM TẮT QUÁ TRÌNH ĐÀO TẠO"
+      columns={columns}
+      rows={dataSource}
+      ref={gridRef}
+      initialState={{
+        pagination: {
+          paginationModel: {
+            pageSize: 5,
+          },
+        },
+      }}
+      pageSizeOptions={[5]}
+      checkboxSelection
+      disableRowSelectionOnClick
+      // onRowSelectionModelChange={handleRowSelect}
+      // rowSelectionModel={dataSelectRow}
+      selectedRows={dataSelectRow}
+      ></BaseGrid>
     </>
   );
 };

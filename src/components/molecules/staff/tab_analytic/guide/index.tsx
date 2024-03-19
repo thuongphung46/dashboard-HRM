@@ -1,6 +1,7 @@
 import { FC, useState } from "react";
-import { GridRowId } from "@mui/x-data-grid";
+import { GridRenderCellParams, GridRowId } from "@mui/x-data-grid";
 import { BaseGrid } from "components/atoms/datagrid";
+import { Button, Checkbox } from "@mui/material";
 import Box from "@mui/material/Box/Box";
 
 interface Props {}
@@ -13,7 +14,14 @@ export const Guide: FC<Props> = () => {
     { field: 'training', headerName: 'Khóa đào tạo', width: 150, editable: true },
     { field: 'num_decision', headerName: 'Số QĐ Giao Luận án, Luận văn, Đồ án', width: 300, editable: true},
     { field: 'num_instructors', headerName: 'Số người HD', width: 150, editable: true, type:'number' },
-    { field: 'main_instructors', headerName: 'HD chính', width: 150, editable: true },
+    { field: 'main_instructors', headerName: 'HD chính', width: 150, 
+      // editable: true, 
+      // renderCell: (params: any) => <Checkbox checked={params.value} disabled />
+      renderCell: (params: GridRenderCellParams<any, Date>) => (
+          <Checkbox checked={false} />
+      ),
+    
+    },
     { field: 'num_lesion', headerName: 'Số tiết quy đổi', width: 150, editable: true, type:'number' },
   ];
 
