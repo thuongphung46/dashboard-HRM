@@ -1,9 +1,8 @@
-import React, { FC, useState } from "react";
+import React, { useState } from "react";
 import { GridRowId } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 import { BaseGrid } from "components/atoms/datagrid";
 
-interface Props {}
 
 export const Assess: React.FC = () => {
   const [selectedRows1, setSelectedRows1] = useState<GridRowId[]>([]);

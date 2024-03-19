@@ -17,26 +17,59 @@ export const ScientificResearch: FC<Props> = () => {
   // Các cột cho lưới dữ liệu 1
   const columns1 = [
     { field: 'id', headerName: 'STT', width: 90 },
-    { field: 'topic_name', headerName: 'Tên đề tài', width: 150, editable: true },
-    { field: 'position', headerName: 'Chủ trì/ Thư ký/ Thành viên', width: 200, editable: true },
-    { field: 'topic_level', headerName: 'Cấp đề tài', width: 150, editable: true },
-    { field: 'accept_date', headerName: 'Ngày nghiệm thu', width: 150, editable: true },
+    { field: 'topic_name', headerName: 'Tên đề tài', width: 300, editable: true,
+      renderCell: (params: any) => (
+        <div style={{ whiteSpace: "pre-wrap" }}>
+          {params.value}
+        </div>
+      ) 
+    },
+    { 
+      field: 'position', 
+      headerName: 'Chủ trì/ Thư ký/ Thành viên', 
+      width: 200, 
+      editable: true, 
+      type: 'singleSelect',
+      valueOptions: ['Chủ trì', 'Thư ký', 'Thành viên'],
+    },
+    { 
+      field: 'topic_level', 
+      headerName: 'Cấp đề tài', 
+      width: 150, 
+      editable: true,  
+      type: 'singleSelect',
+      valueOptions: ['Cơ sở (Học viện)', 'Ban', 'Nhà nước'],
+    },
+    { field: 'accept_date', headerName: 'Ngày nghiệm thu', width: 150, editable: true, type: 'date' },
     { field: 'result', headerName: 'Kết quả xếp loại', width: 150, editable: true },
-    { field: 'hours', headerName: 'Số giờ quy đổi', width: 150, editable: true },
+    { field: 'hours', headerName: 'Số giờ quy đổi', width: 150, editable: true, type:'number' },
   ];
   const rows1 = [
-    { id: 1, topic_name: '', position: '', topic_level: '', accept_date: '', result: '', hours: '' },
+    { id: 1, topic_name: 'Nghiên cứu, tích hợp trợ giảng ảo vào hệ thống đào tạo kết hợp của HVKTMM', position: '', topic_level: '', accept_date: '', result: '', hours: '' },
   ];
 
   // Các cột cho lưới dữ liệu 2
   const columns2 = [
     { field: 'id', headerName: 'STT', width: 90 },
-    { field: 'article_name', headerName: 'Tên bài báo', width: 150, editable: true },
+    { field: 'article_name', headerName: 'Tên bài báo', width: 150, editable: true, 
+      renderCell: (params: any) => (
+        <div style={{ whiteSpace: "pre-wrap" }}>
+          {params.value}
+        </div>
+      ) 
+    },
     { field: 'type_magazine ', headerName: 'Loại tạp chí/ hội nghị', width: 200, editable: true },
-    { field: 'num_magazine', headerName: 'Chỉ số tạp chí/ hội nghị', width: 150, editable: true },
-    { field: 'num_people', headerName: 'Số người', width: 150, editable: true },
-    { field: 'role', headerName: 'Tác giả chính/ thành viên', width: 150, editable: true },
-    { field: 'hours', headerName: 'Số giờ quy đổi', width: 150, editable: true },
+    { field: 'num_magazine', headerName: 'Chỉ số tạp chí/ hội nghị', width: 200, editable: true },
+    { field: 'num_people', headerName: 'Số người', width: 150, editable: true, type:'number' },
+    { 
+      field: 'role', 
+      headerName: 'Tác giả chính/ Thành viên', 
+      width: 200, 
+      editable: true,
+      type: 'singleSelect',
+      valueOptions: ['Tác giả chính', 'Thành viên'], 
+    },
+    { field: 'hours', headerName: 'Số giờ quy đổi', width: 150, editable: true, type:'number' },
   ];
   const rows2 = [
     { id: 1,article_name:'', type_magazine:'', num_magazine:'', num_people:'', role:'', hours:'',}
@@ -45,12 +78,25 @@ export const ScientificResearch: FC<Props> = () => {
   // Các cột cho lưới dữ liệu 3
   const columns3 = [
     { field: 'id', headerName: 'STT', width: 90 },
-    { field: 'certificate_name', headerName: 'Tên bằng sáng chế, giải thưởng', width: 300, editable: true },
+    { field: 'certificate_name', headerName: 'Tên bằng sáng chế, giải thưởng', width: 300, editable: true, 
+      renderCell: (params: any) => (
+        <div style={{ whiteSpace: "pre-wrap" }}>
+          {params.value}
+        </div>
+      ) 
+    },
     { field: 'num_validation', headerName: 'Số QĐ công nhận', width: 150, editable: true },
-    { field: 'date_validation', headerName: 'Ngày QĐ công nhận', width: 150, editable: true },
-    { field: 'num_people', headerName: 'Số người', width: 150, editable: true },
-    { field: 'role', headerName: 'Tác giả chính/ Thành viên', width: 200, editable: true },
-    { field: 'hours', headerName: 'Số giờ quy đổi', width: 150, editable: true },
+    { field: 'date_validation', headerName: 'Ngày QĐ công nhận', width: 150, editable: true, type:'date' },
+    { field: 'num_people', headerName: 'Số người', width: 150, editable: true, type:'number' },
+    { 
+      field: 'role', 
+      headerName: 'Tác giả chính/ Thành viên', 
+      width: 200, 
+      editable: true,
+      type: 'singleSelect',
+      valueOptions: ['Tác giả chính', 'Thành viên'], 
+    },
+    { field: 'hours', headerName: 'Số giờ quy đổi', width: 150, editable: true, type:'number' },
   ];
   const rows3 = [
     { id: 1, certificate_name: '', num_validation: '', date_validation: '', num_people: '', role: '', hours: '' },
@@ -59,12 +105,25 @@ export const ScientificResearch: FC<Props> = () => {
   // Các cột cho lưới dữ liệu 4
   const columns4 = [
     { field: 'id', headerName: 'STT', width: 90 },
-    { field: 'book_titles', headerName: 'Tên sách, giáo trình', width: 300, editable: true },
+    { field: 'book_titles', headerName: 'Tên sách, giáo trình', width: 300, editable: true,
+      renderCell: (params: any) => (
+        <div style={{ whiteSpace: "pre-wrap" }}>
+          {params.value}
+        </div>
+      ) 
+    },
     { field: 'public_num', headerName: 'Số xuất bản', width: 150, editable: true },
-    { field: 'page_num', headerName: 'Số trang', width: 150, editable: true },
-    { field: 'num_people', headerName: 'Số người', width: 150, editable: true },
-    { field: 'role', headerName: 'Tác giả chính/ Thành viên', width: 200, editable: true },
-    { field: 'hours', headerName: 'Số giờ quy đổi', width: 150, editable: true },
+    { field: 'page_num', headerName: 'Số trang', width: 150, editable: true, type:'number' },
+    { field: 'num_people', headerName: 'Số người', width: 150, editable: true, type:'number' },
+    { 
+      field: 'role', 
+      headerName: 'Tác giả chính/ Thành viên', 
+      width: 200, 
+      editable: true,
+      type: 'singleSelect',
+      valueOptions: ['Tác giả chính', 'Thành viên'], 
+    },
+    { field: 'hours', headerName: 'Số giờ quy đổi', width: 150, editable: true, type:'number' },
   ];
   const rows4= [
     { id: 1, book_titles: '', public_num: '', page_num: '', num_people: '', role: '', hours: '' },
@@ -73,43 +132,72 @@ export const ScientificResearch: FC<Props> = () => {
   // Các cột cho lưới dữ liệu 5
   const columns5 = [
     { field: 'id', headerName: 'STT', width: 90 },
-    { field: 'topic_name', headerName: 'Tên đề tài', width: 300, editable: true },
+    { field: 'topic_name', headerName: 'Tên đề tài', width: 300, editable: true, 
+      renderCell: (params: any) => (
+        <div style={{ whiteSpace: "pre-wrap" }}>
+          {params.value}
+        </div>
+      ) 
+    },
     { field: 'num_decision', headerName: 'Số QĐ giao nhiệm vụ', width: 150, editable: true },
-    { field: 'date_decition', headerName: 'Ngày ký QĐ giao nhiệm vụ', width: 150, editable: true },
-    { field: 'result1', headerName: 'Kết quả bảo vệ cấp Khoa', width: 150, editable: true },
-    { field: 'result2', headerName: 'Kết quả bảo vệ cấp Học viện', width: 200, editable: true },
-    { field: 'hours', headerName: 'Số giờ quy đổi', width: 150, editable: true },
+    { field: 'date_decition', headerName: 'Ngày ký QĐ giao nhiệm vụ', width: 150, editable: true, type:'date' },
+    { field: 'result', headerName: 'Kết quả bảo vệ cấp', width: 150, editable: true, 
+      type:'singleSelect', 
+      valueOptions: ['Khoa', 'Học viện'] 
+    },
+    { field: 'hours', headerName: 'Số giờ quy đổi', width: 150, editable: true, type:'number' },
   ];
   const rows5= [
-    { id: 1, topic_name: '', num_decision: '', date_decition: '', result1: '', result2: '', hours: '' },
+    { id: 1, topic_name: '', num_decision: '', date_decition: '', result: '', hours: '' },
   ];
 
   // Các cột cho lưới dữ liệu 6
   const columns6 = [
     { field: 'id', headerName: 'STT', width: 90 },
-    { field: 'training_name', headerName: 'Tên chương trình đào tạo', width: 300, editable: true },
-    { field: 'num_credits', headerName: 'Số tín chỉ', width: 150, editable: true },
-    { field: 'num_decision', headerName: 'Số QĐ giao nhiệm vụ, ngày ký QĐ', width: 150, editable: true },
-    { field: 'num_people', headerName: 'Số thành viên', width: 150, editable: true },
-    { field: 'construction', headerName: 'Hình thức xây dựng (mới/tu chỉnh)', width: 200, editable: true },
+    { field: 'training_name', headerName: 'Tên chương trình đào tạo', width: 300, editable: true, 
+      renderCell: (params: any) => (
+        <div style={{ whiteSpace: "pre-wrap" }}>
+          {params.value}
+        </div>
+      ) 
+    },
+    { field: 'num_credits', headerName: 'Số tín chỉ', width: 150, editable: true, type:'number' },
+    { field: 'num_decision', headerName: 'Số QĐ giao nhiệm vụ', width: 150, editable: true },
+    { field: 'date_decition', headerName: 'Ngày ký QĐ giao nhiệm vụ', width: 150, editable: true, type:'date' },
+    { field: 'num_people', headerName: 'Số thành viên', width: 150, editable: true, type:'number' },
+    { field: 'construction', headerName: 'Hình thức xây dựng', width: 200, editable: true, type:'singleSelect', valueOptions: ['Mới', 'Tu chỉnh'] },
     { field: 'hours', headerName: 'Số giờ quy đổi', width: 150, editable: true },
   ];
   const rows6= [
-    { id: 1, training_name: '', num_credits: '', num_decision: '', num_people: '', construction: '', hours: '' },
+    { id: 1, training_name: '', num_credits: '', num_decision: '',date_decition:'', num_people: '', construction: '', hours: '' },
   ];
 
   // Các cột cho lưới dữ liệu 7
   const columns7 = [
     { field: 'id', headerName: 'STT', width: 90 },
-    { field: 'topic_name', headerName: 'Tên giáo trình/ bài giảng', width: 300, editable: true },
-    { field: 'num_decision', headerName: 'Số QĐ giao nhiệm vụ, ngày ký', width: 150, editable: true },
-    { field: 'num_credits', headerName: 'Số tín chỉ', width: 150, editable: true },
-    { field: 'num_people', headerName: 'Số thành viên', width: 150, editable: true },
-    { field: 'role', headerName: 'Tác giả chính/ Thành viên', width: 200, editable: true },
+    { field: 'topic_name', headerName: 'Tên giáo trình/ bài giảng', width: 300, editable: true, 
+      renderCell: (params: any) => (
+        <div style={{ whiteSpace: "pre-wrap" }}>
+          {params.value}
+        </div>
+      ) 
+    },
+    { field: 'num_decision', headerName: 'Số QĐ giao nhiệm vụ', width: 150, editable: true },
+    { field: 'date_decition', headerName: 'Ngày ký QĐ giao nhiệm vụ', width: 150, editable: true, type:'date' },
+    { field: 'num_credits', headerName: 'Số tín chỉ', width: 150, editable: true, type:'number' },
+    { field: 'num_people', headerName: 'Số thành viên', width: 150, editable: true, type:'number' },
+    { 
+      field: 'role', 
+      headerName: 'Tác giả chính/ Thành viên', 
+      width: 200, 
+      editable: true,
+      type: 'singleSelect',
+      valueOptions: ['Tác giả chính', 'Thành viên'], 
+    },
     { field: 'hours', headerName: 'Số giờ quy đổi', width: 150, editable: true },
   ];
   const rows7= [
-    { id: 1, topic_name: '', num_decision: '', num_credits: '', num_people: '', role: '', hours: '' },
+    { id: 1, topic_name: '', num_decision: '', date_decition:'', num_credits: '', num_people: '', role: '', hours: '' },
   ];
 
   return (

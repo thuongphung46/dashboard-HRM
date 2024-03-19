@@ -1,5 +1,4 @@
-import React, { FC, forwardRef } from "react";
-import Box from "@mui/material/Box";
+import { forwardRef } from "react";
 import {
   DataGrid,
   GridColDef,
