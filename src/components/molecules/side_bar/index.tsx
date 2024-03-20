@@ -95,7 +95,8 @@ export const Playground: React.FC<SidebarProps> = ({
         display: "flex",
         height: "100%",
         direction: rtl ? "rtl" : "ltr",
-      }}>
+      }}
+    >
       <Sidebar
         collapsed={collapsed}
         toggled={toggled}
@@ -110,9 +111,11 @@ export const Playground: React.FC<SidebarProps> = ({
         )}
         rootStyles={{
           color: themes[theme].sidebar.color,
-        }}>
+        }}
+      >
         <div
-          style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+          style={{ display: "flex", flexDirection: "column", height: "100%" }}
+        >
           <SidebarHeader
             rtl={rtl}
             style={{ marginBottom: "24px", marginTop: "16px" }}
@@ -125,7 +128,8 @@ export const Playground: React.FC<SidebarProps> = ({
                 style={{
                   opacity: collapsed ? 0 : 0.7,
                   letterSpacing: "0.5px",
-                }}>
+                }}
+              >
                 General
               </Typography>
             </div>
@@ -140,14 +144,12 @@ export const Playground: React.FC<SidebarProps> = ({
                 <MenuItem component={<Link to={"/detail_employee"}></Link>}>
                   Employee Detail
                 </MenuItem>
-                <SubMenu label="Forms">
-                  <MenuItem> Input</MenuItem>
-                  <MenuItem> Select</MenuItem>
-                  <SubMenu label="More">
-                    <MenuItem> CheckBox</MenuItem>
-                    <MenuItem> Radio</MenuItem>
-                  </SubMenu>
-                </SubMenu>
+                <MenuItem component={<Link to={"/teaching_contract"}></Link>}>
+                  Teaching Contract
+                </MenuItem>
+                <MenuItem component={<Link to={"/import"}></Link>}>
+                  Import
+                </MenuItem>
               </SubMenu>
             </Menu>
 
@@ -156,14 +158,16 @@ export const Playground: React.FC<SidebarProps> = ({
                 padding: "0 24px",
                 marginBottom: "8px",
                 marginTop: "32px",
-              }}>
+              }}
+            >
               <Typography
                 variant="body2"
                 fontWeight={600}
                 style={{
                   opacity: collapsed ? 0 : 0.7,
                   letterSpacing: "0.5px",
-                }}>
+                }}
+              >
                 Extra
               </Typography>
             </div>

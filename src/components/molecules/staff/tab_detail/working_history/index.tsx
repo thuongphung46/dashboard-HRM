@@ -4,7 +4,7 @@ import { GridRowId } from "@mui/x-data-grid";
 import { BaseGrid } from "components/atoms/datagrid";
 
 interface Props {}
-export const WorkingHistory: React.FC = () => {
+export const WorkingHistory: React.FC<Props> = () => {
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
 
   const [rows, setRows] = useState([

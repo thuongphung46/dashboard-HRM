@@ -6,6 +6,8 @@ import { GeneralPage } from "components/pages/general";
 import { ManagementLevelModelPage } from "components/pages/management_level_model";
 import RootLayout from "components/templates/root_layout/RootLayout";
 import { DetailEmployeePage } from "components/pages/staff";
+import { ImportPage } from "components/pages/import";
+import { TeachingContractPage } from "components/pages/teaching_contract";
 
 enum FORM_STATE {
   EDIT = "edit",
@@ -52,6 +54,14 @@ const router = createBrowserRouter([
       {
         path: "/detail_employee",
         element: <DetailEmployeePage />,
+      },
+      {
+        path: "/teaching_contract",
+        element: <TeachingContractPage />,
+      },
+      {
+        path: "/import",
+        element: <ImportPage />,
       },
     ],
   },
