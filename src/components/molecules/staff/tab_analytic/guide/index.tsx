@@ -1,8 +1,18 @@
 import { FC, useState } from "react";
 import { GridRenderCellParams, GridRowId } from "@mui/x-data-grid";
 import { BaseGrid } from "components/atoms/datagrid";
-import { Button, Checkbox } from "@mui/material";
+import { Checkbox } from "@mui/material";
 import Box from "@mui/material/Box/Box";
+
+interface Row {
+  id: number;
+  student_name: string;
+  training: string;
+  num_decision: string;
+  num_instructors: string;
+  main_instructors: boolean;
+  num_lesion: string;
+}
 
 interface Props {}
 export const Guide: FC<Props> = () => {
@@ -14,25 +24,34 @@ export const Guide: FC<Props> = () => {
     { field: 'training', headerName: 'Khóa đào tạo', width: 150, editable: true },
     { field: 'num_decision', headerName: 'Số QĐ Giao Luận án, Luận văn, Đồ án', width: 300, editable: true},
     { field: 'num_instructors', headerName: 'Số người HD', width: 150, editable: true, type:'number' },
-    { field: 'main_instructors', headerName: 'HD chính', width: 150, 
-      // editable: true, 
-      // renderCell: (params: any) => <Checkbox checked={params.value} disabled />
-      renderCell: (params: GridRenderCellParams<any, Date>) => (
-          <Checkbox checked={false} />
+    { field: 'main_instructors', headerName: 'HD chính', width: 150, type: 'boolean',
+      renderCell: (params: GridRenderCellParams<any, boolean>) => (
+        <Checkbox
+          checked={params.value} // Use value from cell data for checked state
+          onChange={(event) => {
+            const checked = event.target.checked;
+            const updatedRows = rows.map(row => {
+              if (row.id === params.row.id) {
+                return { ...row, main_instructors: checked };
+              }
+              return row;
+            });
+            setRows(updatedRows);
+          }}
+        />
       ),
-    
     },
     { field: 'num_lesion', headerName: 'Số tiết quy đổi', width: 150, editable: true, type:'number' },
   ];
 
-  const [rows, setRows] = useState([
+  const [rows, setRows] = useState<Row[]>([
     {
       id: 1,
       student_name: "Vũ Trung Kiên",
       training: "CT4",
       num_decision: "1677 / QĐ-HVM",
       num_instructors: "2",
-      main_instructors: "",
+      main_instructors: false,
       num_lesion: "15",
     },
     {
@@ -41,7 +60,7 @@ export const Guide: FC<Props> = () => {
       training: "CT4",
       num_decision: "1677 / QĐ-HVM",
       num_instructors: "2",
-      main_instructors: "",
+      main_instructors: true,
       num_lesion: "15",
     },
     {
@@ -50,7 +69,7 @@ export const Guide: FC<Props> = () => {
       training: "CT4",
       num_decision: "1677 / QĐ-HVM",
       num_instructors: "2",
-      main_instructors: "",
+      main_instructors: true,
       num_lesion: "15",
     },
     {
@@ -59,7 +78,7 @@ export const Guide: FC<Props> = () => {
       training: "CT4",
       num_decision: "1677 / QĐ-HVM",
       num_instructors: "2",
-      main_instructors: "",
+      main_instructors: true,
       num_lesion: "15",
     },
   ]);
@@ -71,7 +90,7 @@ export const Guide: FC<Props> = () => {
       training: "",
       num_decision: "",
       num_instructors: "",
-      main_instructors: "",
+      main_instructors: false,
       num_lesion: "",
     };
     setRows([...rows, newRow]);
