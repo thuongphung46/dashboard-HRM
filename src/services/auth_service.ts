@@ -1,17 +1,30 @@
+import axios from "axios";
 import { Request } from "./request";
+import { clearToken } from "common/function";
 
-const Controller = "Auth";
-export const AuthService = {
-  Login: async (values: any) => {
-    return await Request(Controller).postAsync("Login", values);
+const controller = "Authentication";
+interface Auth {
+  UserName: string;
+  Password: string;
+}
+const AuthService = {
+  register: (username: string, email: string, password: string) => {
+    return axios.post("signup", {
+      username,
+      email,
+      password,
+    });
   },
-  Register: async (values: any) => {
-    return await Request(Controller).postAsync("Register", values);
+  LoginAdmin: async (param: Auth) => {
+    return await Request("Users").getAsync("loginAdmin", {
+      username: param.UserName,
+      password: param.Password,
+    });
   },
-  Logout: async (values: any) => {
-    return await Request(Controller).postAsync("Logout", values);
-  },
-  GetProfile: async (values: any) => {
-    return await Request(Controller).postAsync("GetProfile", values);
+
+  logout: () => {
+    localStorage.removeItem("user");
+    clearToken();
   },
 };
+export { AuthService };

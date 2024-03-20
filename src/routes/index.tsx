@@ -1,5 +1,4 @@
 import { createBrowserRouter } from "react-router-dom";
-// import RootLayout from "@component/templates/root_layout/RootLayout";
 import { ErrorPage } from "components/pages/error";
 import { HomePage } from "components/pages/home";
 import { GeneralPage } from "components/pages/general";
@@ -8,6 +7,7 @@ import RootLayout from "components/templates/root_layout/RootLayout";
 import { DetailEmployeePage } from "components/pages/staff";
 import { ImportPage } from "components/pages/import";
 import { TeachingContractPage } from "components/pages/teaching_contract";
+import { SignIn } from "components/pages/login";
 
 enum FORM_STATE {
   EDIT = "edit",
@@ -64,6 +64,11 @@ const router = createBrowserRouter([
         element: <ImportPage />,
       },
     ],
+  },
+  {
+    path: "/login",
+    errorElement: <ErrorPage />,
+    children: [{ path: "/login", element: <SignIn /> }],
   },
 ]);
 
