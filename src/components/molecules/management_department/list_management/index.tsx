@@ -4,7 +4,6 @@ import ListItemText from "@mui/material/ListItemText";
 import { FC, useCallback, useMemo, useState } from "react";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
 
 interface Props {
   listData: any[];
@@ -21,6 +20,11 @@ export const ListDepartment: FC<Props> = ({ listData, handleClickItem }) => {
     setOpen(false);
   }, []);
   const renderPopup = useMemo(() => {
+    const fieldData = [
+      { id: "code", label: "Mã cấp quản lý", type: "text" },
+      { id: "name", label: "Tên cấp quản lý", type: "text" },
+      { id: "parent", label: "Trực thuộc cấp", type: "text" },
+    ];
     return (
       <Modal
         open={open}
@@ -35,10 +39,17 @@ export const ListDepartment: FC<Props> = ({ listData, handleClickItem }) => {
           width: "100%",
         }}
       >
-        <div
-          style={{ height: "400px", width: "600px", backgroundColor: "#fff" }}
-        >
-          thêm ở đây
+        <div style={{ height: "400px", width: "600px", backgroundColor: "#fff", padding:"24px" }}>
+          <h4>Thêm cấp quản lý</h4>
+          <Button variant="outlined" onClick={handleClose}>
+            Lưu
+          </Button>
+          {fieldData.map((field) => (
+            <div key={field.id}>
+              <label htmlFor={field.id}>{field.label}</label>
+              <input type={field.type} id={field.id} />
+            </div>
+          ))}
         </div>
       </Modal>
     );

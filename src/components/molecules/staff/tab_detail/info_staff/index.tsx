@@ -149,25 +149,25 @@ export const InfoStaff: React.FC = () => {
 
 export default InfoStaff;
 
-interface IGridTraining {
-  handleDel: () => void;
-  handleAddRow: () => void;
-  handleSave: () => void;
-  handleRowSelect: (e: any) => void;
-  dataSelectRow: any;
-  dataSource: any;
-  gridRef: any;
-}
-const GridTrainingSummary: FC<IGridTraining> = ({
-  handleDel,
-  handleAddRow,
-  handleSave,
-  dataSource,
-  gridRef,
-  dataSelectRow,
-  handleRowSelect,
-}) => {
-  const columns: GridColDef[] = [
+  interface IGridTraining {
+    handleDel: () => void;
+    handleAddRow: () => void;
+    handleSave: () => void;
+    handleRowSelect: (e: any) => void;
+    dataSelectRow: any;
+    dataSource: any;
+    gridRef: any;
+  }
+  const GridTrainingSummary: FC<IGridTraining> = ({
+    handleDel,
+    handleAddRow,
+    handleSave,
+    dataSource,
+    gridRef,
+    dataSelectRow,
+    handleRowSelect,
+  }) => {
+  const columns1: GridColDef[] = [
     {
       field: "from_date",
       headerName: "Từ tháng năm",
@@ -207,14 +207,41 @@ const GridTrainingSummary: FC<IGridTraining> = ({
       editable: true,
     },
   ];
+  const columns2: GridColDef[] = [
+    {
+      field: "from_date",
+      headerName: "Từ tháng năm",
+      width: 150,
+      editable: true,
+      type: "date",
+    },
+    {
+      field: "to_date",
+      headerName: "Đến tháng năm",
+      width: 150,
+      editable: true,
+      type: "date",
+    },
+    {
+      field: "work_unit",
+      headerName: "Đơn vị công tác",
+      width: 400,
+      editable: true,
+    },
+    {
+      field: "position",
+      headerName: "Chức vụ",
+      width: 200,
+      editable: true,
+    },
+  ];
 
   return (
     <>
-    
       <BaseGrid 
       onRowSelectionChange={handleRowSelect}
       title="TÓM TẮT QUÁ TRÌNH ĐÀO TẠO"
-      columns={columns}
+      columns={columns1}
       rows={dataSource}
       ref={gridRef}
       initialState={{
@@ -229,6 +256,24 @@ const GridTrainingSummary: FC<IGridTraining> = ({
       disableRowSelectionOnClick
       // onRowSelectionModelChange={handleRowSelect}
       // rowSelectionModel={dataSelectRow}
+      selectedRows={dataSelectRow}
+      ></BaseGrid>
+      <BaseGrid 
+      onRowSelectionChange={handleRowSelect}
+      title="TÓM TẮT QUÁ TRÌNH CÔNG TÁC"
+      columns={columns2}
+      rows={dataSource}
+      ref={gridRef}
+      initialState={{
+        pagination: {
+          paginationModel: {
+            pageSize: 5,
+          },
+        },
+      }}
+      pageSizeOptions={[5]}
+      checkboxSelection
+      disableRowSelectionOnClick
       selectedRows={dataSelectRow}
       ></BaseGrid>
     </>
