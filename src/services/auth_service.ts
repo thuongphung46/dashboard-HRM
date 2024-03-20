@@ -2,7 +2,7 @@ import axios from "axios";
 import { Request } from "./request";
 import { clearToken } from "common/function";
 
-const controller = "Authentication";
+const controller = "auth";
 interface Auth {
   UserName: string;
   Password: string;
@@ -16,7 +16,7 @@ const AuthService = {
     });
   },
   LoginAdmin: async (param: Auth) => {
-    return await Request("Users").getAsync("loginAdmin", {
+    return await Request(controller).postAsync("login", {
       username: param.UserName,
       password: param.Password,
     });
