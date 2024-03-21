@@ -1,0 +1,17 @@
+name: tg-notify
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Update status
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        message: |  #https://help.github.com/en/actions/reference/contexts-and-expression-syntax-for-github-actions#github-context
+         #Cấp báo 🤡🤡🤡🤡💩💩👺👺:
+         #Push_Commit ⚒:
+          Bổn hạ "${{ github.actor }}" thuộc giáo phái FE vừa ${{ github.event_name }} commit ở nhánh ${{ github.ref_name }}  vào repo ${{ github.repository }}
+          Mời các tại hạ vào thẩm 😵‍💫🤐🥴🤧👹🥴🥴👽💀🤖☠️🖖🏿🖖🏿🖖🏿🖖🏿🖖🏿
+          [${{github.sha}}@${{ github.ref }}]
