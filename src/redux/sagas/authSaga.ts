@@ -10,21 +10,24 @@ import { toastMessage } from "components/molecules/toast_message";
 function* handleLogin(payload: LoginPayload) {
   try {
     const response: ApiRes = yield call(AuthService.LoginAdmin, payload);
-    if (response.status === "OK") {
-      if (response.data[0].iaAdmin) {
-        let token = response.data[0].id;
-        setToken(token);
-        yield put(
-          authActions.loginSuccess({
-            id: 1,
-            name: payload.UserName,
-          })
-        );
-        toastMessage(`Wellcome ${payload.UserName}`, "success");
-      } else {
-        yield put(authActions.loginFailed("You are not admin")); // Dispatch action
-        toastMessage("You are not admin", "error");
-      }
+    // if (response.status === "OK") {
+    if (response.access_token) {
+      // if (response.data[0].iaAdmin) {
+      // let token = response.data[0].id;
+      let token = response.access_token;
+
+      setToken(token);
+      yield put(
+        authActions.loginSuccess({
+          id: 1,
+          name: payload.UserName,
+        })
+      );
+      toastMessage(`Wellcome ${payload.UserName}`, "success");
+      // } else {
+      //   yield put(authActions.loginFailed("You are not admin")); // Dispatch action
+      //   toastMessage("You are not admin", "error");
+      // }
     } else {
       yield put(authActions.loginFailed(response.message)); // Dispatch action
       toastMessage(response.message, "error");

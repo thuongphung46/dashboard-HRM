@@ -1,6 +1,6 @@
 import { Diamond, DarkMode } from "@mui/icons-material";
 import { Typography } from "@mui/material";
-import React from "react";
+import React, { useCallback } from "react";
 import {
   Menu,
   MenuItem,
@@ -48,6 +48,11 @@ export const Playground: React.FC<SidebarProps> = ({
 }) => {
   const [rtl, setRtl] = React.useState(false);
   const [hasImage, setHasImage] = React.useState(false);
+
+  const handleLogout = useCallback(() => {
+    localStorage.removeItem("access_token");
+    window.location.href = "/login";
+  }, []);
 
   const menuItemStyles: MenuItemStyles = {
     root: {
@@ -177,6 +182,7 @@ export const Playground: React.FC<SidebarProps> = ({
                 <MenuItem onClick={() => setTheme("dark")}>Dark</MenuItem>
                 <MenuItem onClick={() => setTheme("light")}> Light</MenuItem>
               </SubMenu>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
           </div>
           <SidebarFooter collapsed={collapsed} />

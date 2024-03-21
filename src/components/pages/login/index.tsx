@@ -23,7 +23,8 @@ function Copyright(props: any) {
       variant="body2"
       color="text.secondary"
       align="center"
-      {...props}>
+      {...props}
+    >
       {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
         Your Website
@@ -71,7 +72,7 @@ export const SignIn = () => {
 
   useEffect(() => {
     if (isLoggedIn || isLoggedInEd) {
-      navigate("/listuser");
+      navigate("/model");
     }
   }, [isLoggedIn, isLoggedInEd, navigate]);
 
@@ -85,7 +86,8 @@ export const SignIn = () => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-          }}>
+          }}
+        >
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
@@ -96,7 +98,8 @@ export const SignIn = () => {
             component="form"
             onSubmit={handleSubmit}
             noValidate
-            sx={{ mt: 1 }}>
+            sx={{ mt: 1 }}
+          >
             <TextField
               margin="normal"
               required
@@ -130,7 +133,8 @@ export const SignIn = () => {
               onClick={handleLogin}
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}>
+              sx={{ mt: 3, mb: 2 }}
+            >
               Sign In
             </Button>
             <Grid container>
