@@ -7,8 +7,8 @@ jobs:
     - name: Update status
       uses: appleboy/telegram-action@master
       with:
-        to: ${{ secrets.TELEGRAM_TO }}
-        token: ${{ secrets.TELEGRAM_TOKEN }}
+        to: -4125841400
+        token: 6487239622:AAGbHXiBpRhEs_cSCfBDWdSB8ynzg69f5nU
         message: |  #https://help.github.com/en/actions/reference/contexts-and-expression-syntax-for-github-actions#github-context
          #Cấp báo 🤡🤡🤡🤡💩💩👺👺:
          #Push_Commit ⚒:
