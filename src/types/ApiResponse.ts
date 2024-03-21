@@ -21,4 +21,5 @@ export type ApiRes = {
   message?: string;
   msg_array: string;
   msg_code: number;
+  access_token: string;
 };
