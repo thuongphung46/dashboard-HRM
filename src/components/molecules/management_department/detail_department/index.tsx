@@ -7,6 +7,9 @@ import { DataGridPro } from "@mui/x-data-grid-pro/DataGridPro";
 import { GridColDef } from "@mui/x-data-grid/models/colDef";
 import { GridRowsProp } from "@mui/x-data-grid/models/gridRows";
 import { DataGridProProps } from "@mui/x-data-grid-pro/models/dataGridProProps";
+import { Link } from "react-router-dom";
+import { IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface Props {
   dataDetail: any;
@@ -30,8 +33,38 @@ export const DetailDepartMent: FC<Props> = ({ dataDetail, listSubject }) => {
     },
     [formData]
   );
-  const handleClickItem = useCallback((e: any) => {}, []);
 
+  const onButtonClick = useCallback((e: any, row: any) => {
+    // handle delete
+  }, []);
+
+  const columns: GridColDef[] = [
+    {
+      field: "name",
+      headerName: "Họ tên",
+      type: "string",
+      minWidth: 400,
+      renderCell: (params) => {
+        return (
+          <Link to={`/detail_employee/${params.id}`}>
+            <span>{params.value}</span>
+          </Link>
+        );
+      },
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 400,
+      renderCell: (params) => {
+        return (
+          <IconButton onClick={(e) => onButtonClick(e, params.row)}>
+            <DeleteIcon />
+          </IconButton>
+        );
+      },
+    },
+  ];
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container>
@@ -55,6 +88,7 @@ export const DetailDepartMent: FC<Props> = ({ dataDetail, listSubject }) => {
           <DataGridPro
             sx={{
               height: `calc(100vh - 210px)`,
+              width: "100%",
             }}
             editMode="row"
             treeData
@@ -70,15 +104,7 @@ export const DetailDepartMent: FC<Props> = ({ dataDetail, listSubject }) => {
 
 const getTreeDataPath: DataGridProProps["getTreeDataPath"] = (row) =>
   row.hierarchy;
-const columns: GridColDef[] = [
-  // { field: "subject", headerName: "Bộ Môn" },
-  {
-    field: "name",
-    headerName: "Họ tên",
-    type: "string",
-    minWidth: 400,
-  },
-];
+
 const rows: GridRowsProp = [
   {
     hierarchy: ["Bộ môn an toàn thông tin"],

@@ -1,17 +1,13 @@
 import Box from "@mui/material/Box/Box";
 import Typography from "@mui/material/Typography/Typography";
-import { FC, useMemo, useState } from "react";
+import { FC, useCallback } from "react";
 import { columns } from "./columns";
-import { TabDetailStaff } from "components/molecules/staff/tab_detail";
 import { DataGrid } from "@mui/x-data-grid/DataGrid";
-import Dialog from "@mui/material/Dialog";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
+import { useNavigate } from "react-router-dom";
 
 interface Props {}
 export const ListStaff: FC<Props> = () => {
-  const [isVisible, setIsVisible] = useState<boolean>(false);
-  const [selectedStaff, setSelectedStaff] = useState<any>({});
+  const navigate = useNavigate();
 
   const rows = [
     {
@@ -39,52 +35,14 @@ export const ListStaff: FC<Props> = () => {
       level_name: "Bộ môn C",
     },
   ];
-  const handleClose = () => {
-    setIsVisible(false);
-    setSelectedStaff({});
-  };
-  const RenderModal = useMemo(() => {
-    return (
-      <div>
-        <Dialog
-          fullScreen
-          open={isVisible}
-          onClose={() => {
-            setIsVisible(false);
-            setSelectedStaff({});
-          }}
-        >
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "flex-end",
-              padding: "12px",
-            }}
-          >
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-          </div>
 
-          <div
-            style={{
-              padding: "12px",
-              height: `calc(100vh - 50px)`,
-              overflow: "auto",
-            }}
-          >
-            <TabDetailStaff staff={selectedStaff} />
-          </div>
-        </Dialog>
-      </div>
-    );
-  }, [isVisible, selectedStaff]);
+  const handleCellClick = useCallback(
+    (e: any) => {
+      navigate(`/detail_employee/${e.id}`);
+    },
+    [navigate]
+  );
+
   return (
     <div>
       <Typography variant="h5" gutterBottom>
@@ -104,13 +62,9 @@ export const ListStaff: FC<Props> = () => {
           pageSizeOptions={[5]}
           checkboxSelection
           disableRowSelectionOnClick
-          onCellClick={(ele) => {
-            setIsVisible(true);
-            setSelectedStaff(ele?.row);
-          }}
+          onCellClick={handleCellClick}
         />
       </Box>
-      {RenderModal}
     </div>
   );
 };
