@@ -8,6 +8,7 @@ import { DetailEmployeePage } from "components/pages/staff";
 import { ImportPage } from "components/pages/import";
 import { TeachingContractPage } from "components/pages/teaching_contract";
 import { SignIn } from "components/pages/login";
+import { TabDetailStaff } from "components/molecules/staff/tab_detail";
 
 enum FORM_STATE {
   EDIT = "edit",
@@ -22,27 +23,7 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <HomePage />,
-        // children: [{ path: ":version", element: <UpgradeSystemPage /> }],
       },
-      // {
-      //   path: "upgrade/:version/jobs",
-      //   element: <JobRunningPage />,
-      //   children: [
-      //     {
-      //       path: ":database",
-      //       element: <TaskMonitorContainer />,
-      //     },
-      //   ],
-      // },
-      // {
-      //   path: "/versions",
-      //   element: <VersionManagement />,
-      //   children: [
-      //     { path: "/versions", element: <VersionList />, index: true },
-      // {
-      //   path: "/versions/addnew",
-      //   element: <VersionDetailPage form_state={FORM_STATE.ADD} />,
-      // },
       {
         path: "/model",
         element: <ManagementLevelModelPage form_state={FORM_STATE.EDIT} />,
@@ -55,6 +36,7 @@ const router = createBrowserRouter([
         path: "/detail_employee",
         element: <DetailEmployeePage />,
       },
+      { path: "/detail_employee/:id", element: <TabDetailStaff /> },
       {
         path: "/teaching_contract",
         element: <TeachingContractPage />,

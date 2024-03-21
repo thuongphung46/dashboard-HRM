@@ -1,18 +1,22 @@
-import React, { FC, useState, ChangeEvent } from "react";
+import React, { FC, useState, ChangeEvent, useEffect } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import { InfoStaff } from "./info_staff";
 import { WorkingHistory } from "./working_history";
 import { Analytic } from "components/molecules/staff/tab_analytic";
+import { useParams } from "react-router-dom";
 
-interface Props {
-  staff: any;
-}
+interface Props {}
 
-export const TabDetailStaff: FC<Props> = (props) => {
+export const TabDetailStaff: FC<Props> = () => {
+  const { id } = useParams();
   const [value, setValue] = useState(0);
-  const staff = props.staff || {};
+
+  useEffect(() => {
+    //call api get detail staff by id
+    console.log(id);
+  }, [id]);
 
   const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
