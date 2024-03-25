@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import { ForwardedRef, forwardRef, useCallback } from "react";
 import {
   DataGrid,
   GridColDef,
@@ -32,7 +32,7 @@ export const BaseGrid = forwardRef<any, BaseGridProps>(
       selectedRows,
       ...rest
     },
-    ref
+    ref: ForwardedRef<any>
   ) => {
     return (
       <div>

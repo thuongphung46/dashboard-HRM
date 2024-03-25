@@ -24,54 +24,72 @@ export const Assess: FC<Props> = () => {
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
 
   const [rows, setRows] = useState<Row[]>([
-    { 
-      id: 1, 
-      semester: 'Học kỳ I', 
-      training_sys: 'Đào tạo chuyên ngành Kỹ thuật mật mã', 
-      course_name: 'Học phần abc', 
-      role: 'Ra đề', 
-      mid_course: true, 
-      end_course: false ,
-      class_course:'L06',
-      num_people:'50',
-      num_topic:'50',
-      num_lesion:'3',
+    {
+      id: 1,
+      semester: "Học kỳ I",
+      training_sys: "Đào tạo chuyên ngành Kỹ thuật mật mã",
+      course_name: "Học phần abc",
+      role: "Ra đề",
+      mid_course: true,
+      end_course: false,
+      class_course: "L06",
+      num_people: "50",
+      num_topic: "50",
+      num_lesion: "3",
     },
   ]);
 
   const columns = [
-    { field: 'id', headerName: 'STT', width: 90 },
-    { field: 'semester', headerName: 'Học kỳ', width: 100, editable: true,
-      type: 'singleSelect',
-      valueOptions: ['Học kỳ I', 'Học kỳ II'],
+    { field: "id", headerName: "STT", width: 90 },
+    {
+      field: "semester",
+      headerName: "Học kỳ",
+      width: 100,
+      editable: true,
+      type: "singleSelect",
+      valueOptions: ["Học kỳ I", "Học kỳ II"],
     },
-    { field: 'training_sys',  headerName: 'Hệ đào tạo',  width: 200,  editable: true,
-      type: 'singleSelect',
-      valueOptions: ['Đào tạo chuyên ngành Kỹ thuật Mật Mã', 'Đào tạo hệ đóng phí'],
+    {
+      field: "training_sys",
+      headerName: "Hệ đào tạo",
+      width: 200,
+      editable: true,
+      type: "singleSelect",
+      valueOptions: [
+        "Đào tạo chuyên ngành Kỹ thuật Mật Mã",
+        "Đào tạo hệ đóng phí",
+      ],
       renderCell: (params: any) => (
-        <div style={{ whiteSpace: "pre-wrap" }}>
-          {params.value}
-        </div>
-      )
+        <div style={{ whiteSpace: "pre-wrap" }}>{params.value}</div>
+      ),
     },
-    { field: 'course_name',  headerName: 'Tên học phần',  width: 300,  editable: true,
+    {
+      field: "course_name",
+      headerName: "Tên học phần",
+      width: 300,
+      editable: true,
       renderCell: (params: any) => (
-        <div style={{ whiteSpace: "pre-wrap" }}>
-          {params.value}
-        </div>
-      )
+        <div style={{ whiteSpace: "pre-wrap" }}>{params.value}</div>
+      ),
     },
-    { field: 'role',   headerName: 'Ra đề/ Coi thi/ Chấm thi', width: 200, editable: true,
-      type: 'singleSelect',
-      valueOptions: ['Ra đề', 'Coi thi', 'Chấm thi'],
+    {
+      field: "role",
+      headerName: "Ra đề/ Coi thi/ Chấm thi",
+      width: 200,
+      editable: true,
+      type: "singleSelect",
+      valueOptions: ["Ra đề", "Coi thi", "Chấm thi"],
     },
-    { field: 'mid_course', headerName: 'Giữa học phần', width: 150,
+    {
+      field: "mid_course",
+      headerName: "Giữa học phần",
+      width: 150,
       renderCell: (params: GridRenderCellParams<any, boolean>) => (
         <Checkbox
           checked={params.value} // Use value from cell data for checked state
           onChange={(event) => {
             const checked = event.target.checked;
-            const updatedRows = rows.map(row => {
+            const updatedRows = rows.map((row) => {
               if (row.id === params.row.id) {
                 return { ...row, mid_course: checked };
               }
@@ -82,13 +100,16 @@ export const Assess: FC<Props> = () => {
         />
       ),
     },
-    { field: 'end_course', headerName: 'Kết thúc học phần', width: 150,
+    {
+      field: "end_course",
+      headerName: "Kết thúc học phần",
+      width: 150,
       renderCell: (params: GridRenderCellParams<any, boolean>) => (
         <Checkbox
           checked={params.value} // Use value from cell data for checked state
           onChange={(event) => {
             const checked = event.target.checked;
-            const updatedRows = rows.map(row => {
+            const updatedRows = rows.map((row) => {
               if (row.id === params.row.id) {
                 return { ...row, end_course: checked };
               }
@@ -99,25 +120,48 @@ export const Assess: FC<Props> = () => {
         />
       ),
     },
-    { field: 'class_course', headerName: 'Lớp học phần', width: 150, editable: true },
-    { field: 'num_people', headerName: 'Số sinh viên của lớp', width: 150, editable: true, type: 'number' },
-    { field: 'num_topic', headerName: 'Số đề', width: 150, editable: true, type: 'number' },
-    { field: 'num_lesion', headerName: 'Số tiết quy đổi', width: 150, editable: true, type: 'number' },
+    {
+      field: "class_course",
+      headerName: "Lớp học phần",
+      width: 150,
+      editable: true,
+    },
+    {
+      field: "num_people",
+      headerName: "Số sinh viên của lớp",
+      width: 150,
+      editable: true,
+      type: "number",
+    },
+    {
+      field: "num_topic",
+      headerName: "Số đề",
+      width: 150,
+      editable: true,
+      type: "number",
+    },
+    {
+      field: "num_lesion",
+      headerName: "Số tiết quy đổi",
+      width: 150,
+      editable: true,
+      type: "number",
+    },
   ];
 
   const handleAddRow = () => {
     const newRow = {
       id: rows.length + 1,
-      semester: '',
-      training_sys: '',
-      course_name: '',
-      role: '',
+      semester: "",
+      training_sys: "",
+      course_name: "",
+      role: "",
       mid_course: false,
       end_course: false,
-      class_course: '',
-      num_people: '',
-      num_topic: '',
-      num_lesion: '',
+      class_course: "",
+      num_people: "",
+      num_topic: "",
+      num_lesion: "",
     };
     setRows([...rows, newRow]);
   };
