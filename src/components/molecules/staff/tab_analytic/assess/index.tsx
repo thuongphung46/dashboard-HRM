@@ -1,8 +1,7 @@
 import { FC, useState } from "react";
 import { Box } from "@mui/material";
 import { BaseGrid } from "components/atoms/datagrid";
-import { GridRenderCellParams, GridRowId } from "@mui/x-data-grid";
-import { Checkbox } from "@mui/material";
+import { GridRowId } from "@mui/x-data-grid";
 
 interface Props {}
 
@@ -98,7 +97,7 @@ export const Assess: FC<Props> = () => {
     },
     { field: 'class_course', headerName: 'Lớp học phần', width: 150, editable: true },
     { field: 'num_people', headerName: 'Số sinh viên của lớp', width: 150, editable: true, type: 'number' },
-    { field: 'training_course', headerName: 'Khóa ĐT', width: 150, editable: true, type: 'number' },
+    { field: 'training_course', headerName: 'Khóa ĐT', width: 150, editable: true },
     { field: 'num_lesion', headerName: 'Số tiết quy đổi', width: 150, editable: true, type: 'number' },
   ];
 

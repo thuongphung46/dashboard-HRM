@@ -186,11 +186,7 @@ export const ScientificResearch: FC<Props> = () => {
     { field: 'date_decition', headerName: 'Ngày ký QĐ giao nhiệm vụ', width: 150, editable: true, type:'date' },
     { field: 'num_credits', headerName: 'Số tín chỉ', width: 150, editable: true, type:'number' },
     { field: 'num_people', headerName: 'Số thành viên', width: 150, editable: true, type:'number' },
-    { 
-      field: 'role', 
-      headerName: 'Tác giả chính/ Thành viên', 
-      width: 200, 
-      editable: true,
+    { field: 'role', headerName: 'Tác giả chính/ Thành viên', width: 200, editable: true,
       type: 'singleSelect',
       valueOptions: ['Tác giả chính', 'Thành viên'], 
     },

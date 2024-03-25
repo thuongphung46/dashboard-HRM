@@ -39,6 +39,19 @@ export const ListDepartment: FC<Props> = ({ listData, handleClickItem }) => {
       { id: "name", label: "Tên cấp quản lý", type: "text" },
       { id: "parent", label: "Trực thuộc cấp", type: "text" },
     ];
+
+    const handleSave = () => {
+      // Kiểm tra xem mã cấp quản lý đã được nhập hay chưa
+      const codeField = fieldData.find(field => field.id === 'code');
+      if (codeField && !formData[codeField.id]) {
+        alert('Vui lòng nhập Mã cấp quản lý');
+        return;
+      }
+  
+      // Tiếp tục xử lý lưu dữ liệu
+      handleAddModel();
+    };
+
     return (
       <Modal
         open={open}
@@ -64,7 +77,7 @@ export const ListDepartment: FC<Props> = ({ listData, handleClickItem }) => {
           }}
         >
           <h4>Thêm cấp quản lý</h4>
-          <Button variant="outlined" onClick={handleAddModel}>
+          <Button variant="outlined" onClick={handleSave}>
             Lưu
           </Button>
           {fieldData.map((field) => (
