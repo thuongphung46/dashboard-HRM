@@ -13,35 +13,63 @@ export const TeachingContractPage: React.FC = () => {
 
   // Các cột cho lưới dữ liệu 1
   const columns = [
-    { field: 'id', headerName: 'STT', width: 90 },
-    { field: 'semester', headerName: 'Học kỳ',  width: 100,  editable: true,
-      type: 'singleSelect',
-      valueOptions: ['Học kỳ I', 'Học kỳ II'],
+    { field: "id", headerName: "STT", width: 90 },
+    {
+      field: "semester",
+      headerName: "Học kỳ",
+      width: 100,
+      editable: true,
+      type: "singleSelect",
+      valueOptions: ["Học kỳ I", "Học kỳ II"],
     },
-    { field: 'year', headerName: 'Năm học', width: 150, editable: true },
-    { field: 'contract_name', headerName: 'Tên hợp đồng', width: 300, editable: true,
+    { field: "year", headerName: "Năm học", width: 150, editable: true },
+    {
+      field: "contract_name",
+      headerName: "Tên hợp đồng",
+      width: 300,
+      editable: true,
       renderCell: (params: any) => (
-        <div style={{ whiteSpace: "pre-wrap" }}>
-          {params.value}
-        </div>
-      )
+        <div style={{ whiteSpace: "pre-wrap" }}>{params.value}</div>
+      ),
     },
-    { field: 'from_date', headerName: 'Từ ngày', width: 150, editable: true, type: 'date' },
-    { field: 'to_date', headerName: 'Đến ngày', width: 150, editable: true, type: 'date' },
-    { field: 'status', headerName: 'Trạng thái hợp đồng', width: 200, editable: true,
-      type: 'singleSelect',
-      valueOptions: ['Chưa thực hiện', 'Đang thực hiện', 'Đã thực hiện', 'Đã thanh lý'],
+    {
+      field: "from_date",
+      headerName: "Từ ngày",
+      width: 150,
+      editable: true,
+      type: "date",
     },
-    { field: 'files', headerName: 'File hợp đồng', width: 150, editable: true }
+    {
+      field: "to_date",
+      headerName: "Đến ngày",
+      width: 150,
+      editable: true,
+      type: "date",
+    },
+    {
+      field: "status",
+      headerName: "Trạng thái hợp đồng",
+      width: 200,
+      editable: true,
+      type: "singleSelect",
+      valueOptions: [
+        "Chưa thực hiện",
+        "Đang thực hiện",
+        "Đã thực hiện",
+        "Đã thanh lý",
+      ],
+    },
+    { field: "files", headerName: "File hợp đồng", width: 150, editable: true },
   ];
   const rows = [
-    { id: 1, 
-      semester: 'Học kỳ I', 
-      year: '2023-2024', 
-      contract_name: 'Hợp đồng giao khoán chuyên môn', 
-      from_date: '',
-      to_date:'',
-      status:'',
+    {
+      id: 1,
+      semester: "Học kỳ I",
+      year: "2023-2024",
+      contract_name: "Hợp đồng giao khoán chuyên môn",
+      from_date: "",
+      to_date: "",
+      status: "",
     },
   ];
   const handleClose = () => {
@@ -95,19 +123,18 @@ export const TeachingContractPage: React.FC = () => {
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0];
     if (file) {
-        // Xử lý file ở đây, ví dụ: đọc nội dung file
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const content = e.target?.result as string;
-            console.log("File content:", content);
-        };
-        reader.readAsText(file);
+      // Xử lý file ở đây, ví dụ: đọc nội dung file
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const content = e.target?.result as string;
+        console.log("File content:", content);
+      };
+      reader.readAsText(file);
     }
   };
 
   return (
     <div>
-      
       <Box>
         <label>Thêm hợp đồng </label>
         <input
@@ -119,9 +146,9 @@ export const TeachingContractPage: React.FC = () => {
           columns={columns}
           rows={rows}
           title=""
-          onSave={() => { /* Logic lưu cho lưới dữ liệu 1 */ }}
-          onDelete={() => { /* Logic xóa cho lưới dữ liệu 1 */ }}
-          onAddRow={() => { /* Logic thêm dòng cho lưới dữ liệu 1 */ }}
+          onSave={() => {
+            /* Logic lưu cho lưới dữ liệu 1 */
+          }}
           onRowSelectionChange={setSelectedContract}
           selectedRows={selectedContract}
           onCellClick={(ele) => {

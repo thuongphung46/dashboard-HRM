@@ -19,18 +19,43 @@ export const Guide: FC<Props> = () => {
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
 
   const columns = [
-    { field: 'id', headerName: 'STT', width: 90 },
-    { field: 'student_name', headerName: 'Họ tên NCS', width: 300, editable: true },
-    { field: 'training', headerName: 'Khóa đào tạo', width: 150, editable: true },
-    { field: 'num_decision', headerName: 'Số QĐ Giao Luận án, Luận văn, Đồ án', width: 300, editable: true},
-    { field: 'num_instructors', headerName: 'Số người HD', width: 150, editable: true, type:'number' },
-    { field: 'main_instructors', headerName: 'HD chính', width: 150, type: 'boolean',
+    { field: "id", headerName: "STT", width: 90 },
+    {
+      field: "student_name",
+      headerName: "Họ tên NCS",
+      width: 300,
+      editable: true,
+    },
+    {
+      field: "training",
+      headerName: "Khóa đào tạo",
+      width: 150,
+      editable: true,
+    },
+    {
+      field: "num_decision",
+      headerName: "Số QĐ Giao Luận án, Luận văn, Đồ án",
+      width: 300,
+      editable: true,
+    },
+    {
+      field: "num_instructors",
+      headerName: "Số người HD",
+      width: 150,
+      editable: true,
+      type: "number",
+    },
+    {
+      field: "main_instructors",
+      headerName: "HD chính",
+      width: 150,
+      type: "boolean",
       renderCell: (params: GridRenderCellParams<any, boolean>) => (
         <Checkbox
           checked={params.value} // Use value from cell data for checked state
           onChange={(event) => {
             const checked = event.target.checked;
-            const updatedRows = rows.map(row => {
+            const updatedRows = rows.map((row) => {
               if (row.id === params.row.id) {
                 return { ...row, main_instructors: checked };
               }
@@ -41,7 +66,13 @@ export const Guide: FC<Props> = () => {
         />
       ),
     },
-    { field: 'num_lesion', headerName: 'Số tiết quy đổi', width: 150, editable: true, type:'number' },
+    {
+      field: "num_lesion",
+      headerName: "Số tiết quy đổi",
+      width: 150,
+      editable: true,
+      type: "number",
+    },
   ];
 
   const [rows, setRows] = useState<Row[]>([
@@ -112,16 +143,14 @@ export const Guide: FC<Props> = () => {
 
   return (
     <Box>
-        <BaseGrid
-          columns={columns}
-          rows={rows}
-          title=""
-          onSave={handleSave}
-          onDelete={handleDelete}
-          onAddRow={handleAddRow}
-          onRowSelectionChange={setSelectedRows}
-          selectedRows={selectedRows}
-        />
-      </Box>
+      <BaseGrid
+        columns={columns}
+        rows={rows}
+        title=""
+        onSave={handleSave}
+        onRowSelectionChange={setSelectedRows}
+        selectedRows={selectedRows}
+      />
+    </Box>
   );
 };

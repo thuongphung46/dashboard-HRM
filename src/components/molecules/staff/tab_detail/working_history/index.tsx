@@ -73,8 +73,6 @@ export const WorkingHistory: React.FC<Props> = () => {
           rows={rows}
           title=""
           onSave={handleSave}
-          onDelete={handleDelete}
-          onAddRow={handleAddRow}
           onRowSelectionChange={handleRowSelectionChange}
           selectedRows={selectedRows}
         />

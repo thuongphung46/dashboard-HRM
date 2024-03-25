@@ -209,8 +209,6 @@ export const Assess: FC<Props> = () => {
           rows={rows1}
           title="Đánh giá giữa học phần"
           onSave={handleSave}
-          onDelete={handleDelete}
-          onAddRow={handleAddRow}
           onRowSelectionChange={setSelectedRows1}
           selectedRows={selectedRows1}
         />
@@ -221,8 +219,6 @@ export const Assess: FC<Props> = () => {
           rows={rows2}
           title="Đánh giá hết học phần"
           onSave={() => {}}
-          onDelete={() => {}}
-          onAddRow={() => {}}
           onRowSelectionChange={setSelectedRows2}
           selectedRows={selectedRows2}
         />
