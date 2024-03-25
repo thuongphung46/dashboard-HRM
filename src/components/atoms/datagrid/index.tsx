@@ -16,10 +16,8 @@ import {
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
-import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
-import CancelIcon from "@mui/icons-material/Close";
 import React from "react";
 
 interface BaseGridProps extends DataGridProps {
@@ -62,28 +60,8 @@ export const BaseGrid = forwardRef<any, BaseGridProps>(
       }
     };
 
-    const handleEditClick = (id: GridRowId) => () => {
-      setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
-    };
-
-    const handleSaveClick = (id: GridRowId) => () => {
-      setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-    };
-
     const handleDeleteClick = (id: GridRowId) => () => {
       setDataSource(dataSource.filter((row) => row.id !== id));
-    };
-
-    const handleCancelClick = (id: GridRowId) => () => {
-      setRowModesModel({
-        ...rowModesModel,
-        [id]: { mode: GridRowModes.View, ignoreModifications: true },
-      });
-
-      const editedRow = dataSource.find((row) => row.id === id);
-      if (editedRow!.isNew) {
-        setDataSource(dataSource.filter((row) => row.id !== id));
-      }
     };
 
     const processRowUpdate = (newRow: GridRowModel) => {
@@ -107,36 +85,7 @@ export const BaseGrid = forwardRef<any, BaseGridProps>(
         width: 100,
         cellClassName: "actions",
         getActions: ({ id }) => {
-          const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
-
-          if (isInEditMode) {
-            return [
-              <GridActionsCellItem
-                icon={<SaveIcon />}
-                label="Save"
-                sx={{
-                  color: "primary.main",
-                }}
-                onClick={handleSaveClick(id)}
-              />,
-              <GridActionsCellItem
-                icon={<CancelIcon />}
-                label="Cancel"
-                className="textPrimary"
-                onClick={handleCancelClick(id)}
-                color="inherit"
-              />,
-            ];
-          }
-
           return [
-            <GridActionsCellItem
-              icon={<EditIcon />}
-              label="Edit"
-              className="textPrimary"
-              onClick={handleEditClick(id)}
-              color="inherit"
-            />,
             <GridActionsCellItem
               icon={<DeleteIcon />}
               label="Delete"
@@ -200,7 +149,7 @@ function EditToolbar(props: EditToolbarProps) {
     setDataSource((oldRows) => [...oldRows, { id, isNew: true }]);
     setRowModesModel((oldModel) => ({
       ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
+      [id]: { mode: GridRowModes.View, fieldToFocus: "name" },
     }));
   };
 
