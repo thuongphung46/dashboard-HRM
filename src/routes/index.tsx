@@ -9,6 +9,7 @@ import { ImportPage } from "components/pages/import";
 import { TeachingContractPage } from "components/pages/teaching_contract";
 import { SignIn } from "components/pages/login";
 import { TabDetailStaff } from "components/molecules/staff/tab_detail";
+import { StatisticPage } from "components/pages/statistic";
 
 enum FORM_STATE {
   EDIT = "edit",
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: "/import",
         element: <ImportPage />,
+      },
+      {
+        path: "/statistic",
+        element: <StatisticPage />,
       },
     ],
   },
