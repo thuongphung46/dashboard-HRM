@@ -155,6 +155,9 @@ export const Playground: React.FC<SidebarProps> = ({
                 <MenuItem component={<Link to={"/import"}></Link>}>
                   Import
                 </MenuItem>
+                <MenuItem component={<Link to={"/statistic"}></Link>}>
+                  Statistic
+                </MenuItem>
               </SubMenu>
             </Menu>
 
