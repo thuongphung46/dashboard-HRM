@@ -52,7 +52,7 @@ export const Guide: FC<Props> = () => {
       type: "boolean",
       renderCell: (params: GridRenderCellParams<any, boolean>) => (
         <Checkbox
-          checked={params.value} // Use value from cell data for checked state
+          checked={params.value}
           onChange={(event) => {
             const checked = event.target.checked;
             const updatedRows = rows.map((row) => {
@@ -114,32 +114,9 @@ export const Guide: FC<Props> = () => {
     },
   ]);
 
-  const handleAddRow = () => {
-    const newRow = {
-      id: rows.length + 1,
-      student_name: "",
-      training: "",
-      num_decision: "",
-      num_instructors: "",
-      main_instructors: false,
-      num_lesion: "",
-    };
-    setRows([...rows, newRow]);
-  };
-
   const handleSave = () => {
     // Handle save logic here
   };
-
-  const handleDelete = () => {
-    const updatedRows = rows.filter((row) => !selectedRows.includes(row.id));
-    setRows(updatedRows);
-    setSelectedRows([]);
-  };
-
-  // const handleRowSelectionChange = (selection: GridRowId[]) => {
-  //   setSelectedRows(selection);
-  // };
 
   return (
     <Box>

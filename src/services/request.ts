@@ -2,6 +2,7 @@ import axios, { HttpStatusCode } from "axios";
 import { GlobalData } from "constants/global_data";
 import { APP_CONFIG } from "constants/app_config";
 import { jwtToken } from "./jwt";
+import { getToken } from "common/function";
 
 export declare const PX_CONSTANTS: {
   AUTH: string;
@@ -126,7 +127,7 @@ interface RequestHandleParams {
 const requestHandle = async (data: RequestHandleParams) => {
   try {
     const { controller, action, params, method } = data;
-    const jwt = await jwtToken();
+    const jwt = await getToken();
     // const lang = await PxStorage.get(PX_CONSTANTS.LANGUAGE);
     const paramsUri = method === "get" ? params : {};
     const uri = composeUri(controller, action, paramsUri);
