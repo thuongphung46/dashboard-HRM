@@ -1,79 +1,65 @@
-import { FC, useState, useRef } from "react";
-import * as React from 'react';
+import { FC, useState } from "react";
 import Box from '@mui/material/Box';
-import { DataGrid, GridRowId } from "@mui/x-data-grid";
-import Typography from '@mui/material/Typography';
-import{columns} from "./columns"
+import { GridColDef, GridRowId } from "@mui/x-data-grid";
+import { BaseGrid } from "components/atoms/datagrid";
 
 interface Props{}
 export const GeneralPosition: FC<Props> = () => {
 
     const [isAddingRow, setIsAddingRow] = useState(false);
-    const gridRef = useRef<any>(null);
+    // const gridRef = useRef<any>(null);
     const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]); // State để lưu trữ các dòng được chọn
-  
-    const [dataSource, setDataSource] = useState([
+    const columns: GridColDef[] = [
+      { field: 'id', headerName: 'STT', width: 90 },
+      { field: 'position_id', headerName: 'Mã chức  vụ', width: 150, editable: isAddingRow },
+      { field: 'position_name', headerName: 'Tên chức vụ', width: 150, editable: true},
+    ];
+    const rows = [
       { id: 1, position_id: 'giamdoc', position_name: 'Giám đốc'},
       { id: 2, position_id: 'phogiamdoc', position_name: 'Phó giám đốc'},
       { id: 3, position_id: 'chunhiem', position_name: 'Chủ nhiệm'},
-    ]);
+    ];
+    const [dataSource, setDataSource] = useState<any[]>(rows);
+  
   
    
     const handleAddRow = () => {
-        setIsAddingRow(true);     
-
-        const newRow = {
-        id: dataSource.length + 1,
+      setIsAddingRow(true);
+    
+      const newRow = {
+        id: rows.length + 1,
         position_id: '',
         position_name: '',
       };
-      setDataSource([...dataSource, newRow]);
+   const index =  rows.findIndex((row) => row.position_id === newRow.position_id);
+    if (index !== -1) {
+      alert('Dữ liệu đã tồn tại');
+      return;
+    }
+    
+      // Update dataSource with the new row
+      setDataSource([...rows, newRow]);
     };
-  
-    const handleSave = () => {
-  
-    };
-  
-    const handleRowSelectionChange = (selection: GridRowId[]) => {
-      setSelectedRows(selection); // Cập nhật state khi có sự thay đổi trong việc chọn dòng
-    };
-  
-    const handleDelete = () => {
-      const updatedDataSource = dataSource.filter((row: any) => !selectedRows.includes(row.id));
-      setDataSource(updatedDataSource);
-      setSelectedRows([]); // Clear selected rows after delete
-    };
-  
+
+    const handleChange = (e: any) => {
+        console.log(e?.editRows);
+    }
   
     return (
       <div>
-        <Typography variant="h5" gutterBottom>
-          Chức vụ
-        </Typography>
-  
-        <button onClick={handleSave}>Save</button>
-        <button onClick={handleDelete}>Delete</button>
-        <button onClick={handleAddRow}>Add Row</button>
-  
-        <Box sx={{ height: 400, width: '100%' }}>
-          <DataGrid
+        <Box>
+          <BaseGrid
+            columns={columns}
             rows={dataSource}
-            columns={columns(isAddingRow)}
-            ref={gridRef}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 5,
-                },
-              },
-            }}
-            pageSizeOptions={[5]}
-            checkboxSelection
-            disableRowSelectionOnClick
-            onRowSelectionModelChange={handleRowSelectionChange}
-            rowSelectionModel={selectedRows}
+            title="Chức vụ"
+            
+            onSave={handleAddRow}
+            callBack={handleChange}
+            onRowSelectionChange={setSelectedRows}
+            selectedRows={selectedRows}
+
           />
-        </Box>
+      </Box>
       </div>
     );
   };

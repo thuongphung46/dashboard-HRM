@@ -27,6 +27,7 @@ interface BaseGridProps extends DataGridProps {
   onSave?: (data: any) => void;
   onRowSelectionChange: (selection: any) => void;
   selectedRows: GridRowId[];
+  callBack?: (data: any) => void;
 }
 
 export const BaseGrid = forwardRef<any, BaseGridProps>(
@@ -38,6 +39,7 @@ export const BaseGrid = forwardRef<any, BaseGridProps>(
       onRowSelectionChange,
       selectedRows,
       rows,
+      callBack,
       ...rest
     },
     ref: ForwardedRef<any>
@@ -55,6 +57,7 @@ export const BaseGrid = forwardRef<any, BaseGridProps>(
       params,
       event
     ) => {
+
       if (params.reason === GridRowEditStopReasons.rowFocusOut) {
         event.defaultMuiPrevented = true;
       }
@@ -103,6 +106,7 @@ export const BaseGrid = forwardRef<any, BaseGridProps>(
         </Typography>
         <DataGrid
           rows={dataSource}
+          onStateChange={callBack}
           columns={Custcolumns}
           ref={ref}
           initialState={{

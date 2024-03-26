@@ -46,7 +46,6 @@ export const Overview: React.FC<Props> = () => {
     <div>
       <Box sx={{ height: 400, width: "100%" }}>
         <DataGrid
-        
           rows={rows}
           columns={columns}
           ref={gridRef}
@@ -56,12 +55,9 @@ export const Overview: React.FC<Props> = () => {
                 pageSize: 5,
               },
             },
-
           }}
           pageSizeOptions={[5]}
         />
-        <div>tổng số tiết: </div>
-        <div>tổng số tiết: </div>
       </Box>
     </div>
   );
