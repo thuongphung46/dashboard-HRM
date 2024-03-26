@@ -35,7 +35,7 @@ export const TabDetailStaff: FC<Props> = () => {
         role="navigation"
       >
         <Tab label="Thông tin chung" />
-        <Tab label="Quá trình làm việc" />
+        <Tab label="Quá trình làm việc tại đơn vị" />
         <Tab label="Thống kê" />
       </Tabs>
       <TabPanel value={value} index={0}>
