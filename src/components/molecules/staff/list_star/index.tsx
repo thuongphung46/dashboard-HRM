@@ -1,40 +1,45 @@
-import Box from "@mui/material/Box/Box";
-import Typography from "@mui/material/Typography/Typography";
-import { FC, useCallback } from "react";
+import Box from "@mui/material/Box";
+import { BaseGrid } from "components/atoms/datagrid";
+import { FC, useCallback, useEffect, useState } from "react";
 import { columns } from "./columns";
-import { DataGrid } from "@mui/x-data-grid/DataGrid";
 import { useNavigate } from "react-router-dom";
+import { ListStaffService } from "services/staff";
 
 interface Props {}
+interface StaffData {
+  id: number;
+  staff_id: string;
+  staff_name: string;
+  position_name: string;
+  rank_name: string;
+  level_name: string;
+}
+
 export const ListStaff: FC<Props> = () => {
   const navigate = useNavigate();
+  const [staffList, setStaffList] = useState<StaffData[]>([]);
 
-  const rows = [
-    {
-      id: 1,
-      staff_id: "GV0001",
-      staff_name: "Nguyễn Văn A",
-      position_name: "Giảng viên",
-      rank_name: "Thượng úy",
-      level_name: "Bộ môn A",
-    },
-    {
-      id: 2,
-      staff_id: "GV0002",
-      staff_name: "Trần Văn B",
-      position_name: "Giảng viên",
-      rank_name: "",
-      level_name: "Bộ môn B",
-    },
-    {
-      id: 3,
-      staff_id: "GV0003",
-      staff_name: "Bùi Thị C",
-      position_name: "Giảng viên",
-      rank_name: "",
-      level_name: "Bộ môn C",
-    },
-  ];
+  useEffect(() => {
+    // Gọi API để lấy danh sách nhân viên khi trang được tải lần đầu
+    fetchStaffList();
+  }, []); // Tham số thứ hai là một mảng rỗng, chỉ gọi API khi trang được tải lần đầu
+
+  const fetchStaffList = async () => {
+    try {
+      const response = await ListStaffService.getListStaff({
+        query: "",
+        active: 1,
+        page: 0,
+        size: 1000,
+      });
+      if (response.msg_code ===   200) {
+setStaffList(response.content.data);
+      }
+    
+    } catch (error) {
+      console.error("Error fetching staff list:", error);
+    }
+  };
 
   const handleCellClick = useCallback(
     (e: any) => {
@@ -45,26 +50,20 @@ export const ListStaff: FC<Props> = () => {
 
   return (
     <div>
-      <Typography variant="h5" gutterBottom>
-        Danh sách nhân viên
-      </Typography>
-      <Box sx={{ height: 400, width: "100%" }}>
-        <DataGrid
-          rows={rows}
+      <Box>
+        <BaseGrid
           columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 5,
-              },
-            },
-          }}
-          pageSizeOptions={[5]}
+          rows={staffList}
+          title="Danh sách nhân viên"
           checkboxSelection
           disableRowSelectionOnClick
-          onCellClick={handleCellClick}
+          onCellClick={handleCellClick} 
+          onRowSelectionChange={function (selection: any): void {
+            throw new Error("Function not implemented.");
+          } } 
+          selectedRows={[]}
         />
-      </Box>
+    </Box>
     </div>
   );
 };
