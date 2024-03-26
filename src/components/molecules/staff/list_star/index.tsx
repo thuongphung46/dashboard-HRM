@@ -3,7 +3,10 @@ import { BaseGrid } from "components/atoms/datagrid";
 import { FC, useCallback, useEffect, useState } from "react";
 import { columns } from "./columns";
 import { useNavigate } from "react-router-dom";
-import { ListStaffService } from "services/staff";
+import {
+  GetListStaffParams,
+  useGetListStaff,
+} from "services/hooks/useGetListStaff";
 
 interface Props {}
 interface StaffData {
@@ -17,29 +20,13 @@ interface StaffData {
 
 export const ListStaff: FC<Props> = () => {
   const navigate = useNavigate();
-  const [staffList, setStaffList] = useState<StaffData[]>([]);
-
-  useEffect(() => {
-    // Gọi API để lấy danh sách nhân viên khi trang được tải lần đầu
-    fetchStaffList();
-  }, []); // Tham số thứ hai là một mảng rỗng, chỉ gọi API khi trang được tải lần đầu
-
-  const fetchStaffList = async () => {
-    try {
-      const response = await ListStaffService.getListStaff({
-        query: "",
-        active: 1,
-        page: 0,
-        size: 1000,
-      });
-      if (response.msg_code ===   200) {
-setStaffList(response.content.data);
-      }
-    
-    } catch (error) {
-      console.error("Error fetching staff list:", error);
-    }
-  };
+  const [params, setParams] = useState<GetListStaffParams>({
+    query: "",
+    active: 1,
+    page: 0,
+    size: 25,
+  });
+  const { data: staffList, loading } = useGetListStaff(params);
 
   const handleCellClick = useCallback(
     (e: any) => {
@@ -51,19 +38,23 @@ setStaffList(response.content.data);
   return (
     <div>
       <Box>
-        <BaseGrid
-          columns={columns}
-          rows={staffList}
-          title="Danh sách nhân viên"
-          checkboxSelection
-          disableRowSelectionOnClick
-          onCellClick={handleCellClick} 
-          onRowSelectionChange={function (selection: any): void {
-            throw new Error("Function not implemented.");
-          } } 
-          selectedRows={[]}
-        />
-    </Box>
+        {loading ? (
+          <div>Loading...</div>
+        ) : (
+          <BaseGrid
+            columns={columns}
+            rows={staffList}
+            title="Danh sách nhân viên"
+            checkboxSelection
+            disableRowSelectionOnClick
+            onCellClick={handleCellClick}
+            onRowSelectionChange={function (selection: any): void {
+              throw new Error("Function not implemented.");
+            }}
+            selectedRows={[]}
+          />
+        )}
+      </Box>
     </div>
   );
 };

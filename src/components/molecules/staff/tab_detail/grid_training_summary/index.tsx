@@ -1,6 +1,6 @@
 import { GridColDef } from "@mui/x-data-grid/models/colDef";
 import { BaseGrid } from "components/atoms/datagrid";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 
 interface IGridTraining {
   handleDel: () => void;
@@ -20,6 +20,18 @@ export const GridTrainingSummary: FC<IGridTraining> = ({
   dataSelectRow,
   handleRowSelect,
 }) => {
+  useEffect(() => {
+    dataSource?.forEach((ele: any) => {
+      if (ele.fromDate) {
+        const fromDate = new Date(ele.fromDate);
+        ele.fromDate = fromDate;
+      }
+      if (ele.toDate) {
+        const toDate = new Date(ele.toDate);
+        ele.toDate = toDate;
+      }
+    });
+  }, [dataSource]);
   const columns1: GridColDef[] = [
     {
       field: "from_date",
@@ -62,14 +74,14 @@ export const GridTrainingSummary: FC<IGridTraining> = ({
   ];
   const columns2: GridColDef[] = [
     {
-      field: "from_date",
+      field: "fromDate",
       headerName: "Từ tháng năm",
       width: 150,
       editable: true,
       type: "date",
     },
     {
-      field: "to_date",
+      field: "toDate",
       headerName: "Đến tháng năm",
       width: 150,
       editable: true,
@@ -82,13 +94,22 @@ export const GridTrainingSummary: FC<IGridTraining> = ({
       editable: true,
     },
     {
-      field: "position",
+      field: "jobTitle",
       headerName: "Chức vụ",
       width: 200,
       editable: true,
     },
   ];
-
+  function generateRandom() {
+    var length = 8,
+      charset =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+      retVal = "";
+    for (var i = 0, n = charset.length; i < length; ++i) {
+      retVal += charset.charAt(Math.floor(Math.random() * n));
+    }
+    return retVal;
+  }
   return (
     <>
       <BaseGrid
@@ -109,12 +130,14 @@ export const GridTrainingSummary: FC<IGridTraining> = ({
         disableRowSelectionOnClick
         // onRowSelectionModelChange={handleRowSelect}
         // rowSelectionModel={dataSelectRow}
+        getRowId={(row: any) => generateRandom()}
         selectedRows={dataSelectRow}
       ></BaseGrid>
       <BaseGrid
         onRowSelectionChange={handleRowSelect}
         title="TÓM TẮT QUÁ TRÌNH CÔNG TÁC"
         columns={columns2}
+        getRowId={(row: any) => generateRandom()}
         rows={dataSource}
         ref={gridRef}
         initialState={{
