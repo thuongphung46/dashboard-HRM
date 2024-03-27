@@ -25,7 +25,8 @@ export const ImportTemplate = () => {
   const handleImport = async () => {
     if (selectedFile && importOption) {
       if (importOption === "Import TKB") {
-        const result = await FileTkbService.upload(selectedFile);
+        const result = await FileTkbService.uploadFile(selectedFile);
+       
         if(result.msg_code === 200){
           toast.success("Import thành công");
       }else{

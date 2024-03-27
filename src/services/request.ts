@@ -71,7 +71,7 @@ const INVALID_TOKEN_MSG: IFetchDataAny = {
   },
 };
 
-const axiosInstance = axios.create({
+export const axiosInstance = axios.create({
   baseURL: baseUrl,
   timeout: GlobalData.REQUEST_TIMEOUT,
   headers: {
@@ -105,7 +105,7 @@ const composeUri = (controller: string, action: string, obj: any) => {
   }
 };
 
-const getResponseData = (response: AxiosResponse<any>) => {
+export const getResponseData = (response: AxiosResponse<any>) => {
   const data = response.data as IFetchDataAny;
   data.msg_info = {
     message: data.message,
