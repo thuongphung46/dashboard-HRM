@@ -6,17 +6,14 @@ import { InfoStaff } from "./info_staff";
 import { WorkingHistory } from "./working_history";
 import { Analytic } from "components/molecules/staff/tab_analytic";
 import { useParams } from "react-router-dom";
+import { useGetStaff } from "services/hooks/useGetListStaff";
 
 interface Props {}
 
 export const TabDetailStaff: FC<Props> = () => {
   const { id } = useParams();
   const [value, setValue] = useState(0);
-
-  useEffect(() => {
-    //call api get detail staff by id
-    console.log(id);
-  }, [id]);
+  const { data, loading } = useGetStaff(Number(id));
 
   const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
@@ -39,7 +36,7 @@ export const TabDetailStaff: FC<Props> = () => {
         <Tab label="Thống kê" />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <InfoStaff />
+        {loading ? <div>Loading...</div> : <InfoStaff data={data} />}
       </TabPanel>
       <TabPanel value={value} index={1}>
         <WorkingHistory />

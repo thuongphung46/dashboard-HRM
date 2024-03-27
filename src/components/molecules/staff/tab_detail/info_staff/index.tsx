@@ -9,36 +9,48 @@ import FormControl from "@mui/material/FormControl";
 import { GridRowId } from "@mui/x-data-grid";
 import { GridTrainingSummary } from "../grid_training_summary";
 
-export const InfoStaff: React.FC = () => {
+type Props = {
+  data: any;
+};
+
+export const InfoStaff = ({ data }: Props) => {
   const [isAddingRow, setIsAddingRow] = useState(false);
   const gridRef = useRef<any>(null);
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]); // State để lưu trữ các dòng được chọn
   const [formData, setFormData] = useState<any>({});
-  const [dataSource, setDataSource] = useState<any[]>([
-    {
-      id: "",
-      day: "",
-      school_name: "",
-      major: "",
-      forms_of_training: "",
-      certificates: "",
-    },
-  ]);
+  const [dataSource, setDataSource] = useState<any[]>(
+    data?.staffWorkingHistories
+  );
+
+  data.identityBirthPlace2 = data?.identityBirthPlace;
+  data?.staffAdmissions.forEach((item: any) => {
+    if (item.type === "doan_tncs_hcm") {
+      data.doan_tncs_hcm = item.date;
+    }
+    if (item.type === "dang_csvn") {
+      data.dang_csvn = item.date;
+    }
+  });
   const fieldsData = [
-    { id: "code", label: "Mã nhân viên", type: "text" },
-    { id: "name", label: "Họ và tên", type: "text" },
-    { id: "sex", label: "Giới tính", type: "select", options: ["Nam", "Nữ"] },
-    { id: "date", label: "Ngày sinh", type: "date" },
-    { id: "email", label: "Email", type: "text" },
-    { id: "phone", label: "Số điện thoại", type: "text" },
-    { id: "department", label: "Cấp quản lý", type: "text" },
-    { id: "position", label: "Chức vụ", type: "text" },
-    { id: "rank", label: "Hàm (Sĩ quan)", type: "text" },
-    { id: "place_of_birth", label: "Nơi sinh", type: "text" },
-    { id: "domicile", label: "Nguyên quán", type: "text" },
-    { id: "current_residence", label: "Chỗ ở hiện nay", type: "text" },
+    { id: "username", label: "Mã nhân viên", type: "text" },
+    { id: "fullName", label: "Họ và tên", type: "text" },
     {
-      id: "permanent_address",
+      id: "gender",
+      label: "Giới tính",
+      type: "select",
+      options: ["Nam", "Nữ"],
+    },
+    { id: "dateOfBirth", label: "Ngày sinh", type: "date" },
+    { id: "personalEmail", label: "Email", type: "text" },
+    { id: "phoneNumber", label: "Số điện thoại", type: "text" },
+    { id: "department", label: "Cấp quản lý", type: "text" },
+    { id: "jobTitle", label: "Chức vụ", type: "text" },
+    { id: "rankName", label: "Hàm (Sĩ quan)", type: "text" },
+    { id: "identityBirthPlace", label: "Nơi sinh", type: "text" },
+    { id: "identityBirthPlace2", label: "Nguyên quán", type: "text" },
+    { id: "currentPlace", label: "Chỗ ở hiện nay", type: "text" },
+    {
+      id: "identityPlace",
       label: "Nơi đăng ký hộ khẩu thường trú",
       type: "text",
     },
@@ -107,7 +119,7 @@ export const InfoStaff: React.FC = () => {
                         size="small"
                         id={field.id}
                         onChange={hanldeOnChangefield}
-                        value={formData[field.id] || ""}
+                        value={data[field.id] || ""}
                       >
                         {field.options.map((option) => (
                           <MenuItem key={option} value={option}>
@@ -123,7 +135,7 @@ export const InfoStaff: React.FC = () => {
                       id={field.id}
                       name={field.id}
                       type={field.type}
-                      value={formData[field.id] || ""}
+                      value={data[field.id] || ""}
                       onChange={hanldeOnChangefield}
                     />
                   )}

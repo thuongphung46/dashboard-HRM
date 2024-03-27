@@ -57,7 +57,6 @@ export const BaseGrid = forwardRef<any, BaseGridProps>(
       params,
       event
     ) => {
-
       if (params.reason === GridRowEditStopReasons.rowFocusOut) {
         event.defaultMuiPrevented = true;
       }
