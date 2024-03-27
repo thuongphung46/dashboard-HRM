@@ -39,7 +39,8 @@ export const TabDetailStaff: FC<Props> = () => {
         {loading ? <div>Loading...</div> : <InfoStaff data={data} />}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <WorkingHistory />
+      {loading ? <div>Loading...</div> : <WorkingHistory data={data} />}
+        {/* <WorkingHistory /> */}
       </TabPanel>
       <TabPanel value={value} index={2}>
         <Analytic />
