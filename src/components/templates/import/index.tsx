@@ -23,8 +23,10 @@ export const ImportTemplate = () => {
 
   const handleImport = () => {
     if (selectedFile && importOption) {
-      const result = FileTkbService.upload(selectedFile);
-      console.log(result);
+      if (importOption === "Import TKB") {
+        const result = FileTkbService.upload(selectedFile);
+        console.log(result);
+      }
     }
   };
 
@@ -41,7 +43,7 @@ export const ImportTemplate = () => {
             Chọn tùy chọn
           </MenuItem>
           <MenuItem value="Import TKB">Import TKB</MenuItem>
-          <MenuItem value="Import thống kê vượt giờ">Import thống kê vượt giờ</MenuItem>
+          <MenuItem value="Import thống kê vượt giờ">Import danh sách NCKH</MenuItem>
         </Select>
         <input
           accept=".xlsx"
