@@ -1,4 +1,4 @@
-import axios, { HttpStatusCode } from "axios";
+import axios, { AxiosResponse, HttpStatusCode } from "axios";
 import { GlobalData } from "constants/global_data";
 import { APP_CONFIG } from "constants/app_config";
 import { getToken } from "common/function";
@@ -46,6 +46,7 @@ export interface IFetchDataMessage {
   msg_detail?: string;
   message?: string;
 }
+
 const baseUrl = APP_CONFIG.API_URL;
 const INVALID_TOKEN = [401, 403, 404, 405, 406, 407, 203];
 const INVALID_API = [500];
@@ -71,9 +72,6 @@ const INVALID_TOKEN_MSG: IFetchDataAny = {
 };
 
 const axiosInstance = axios.create({
-  // baseURL: PxStorage.get(PX_CONSTANTS.API_URI)
-  //   ? PxStorage.get(PX_CONSTANTS.API_URI)
-  //   : baseUrl,
   baseURL: baseUrl,
   timeout: GlobalData.REQUEST_TIMEOUT,
   headers: {
@@ -107,8 +105,8 @@ const composeUri = (controller: string, action: string, obj: any) => {
   }
 };
 
-const getResponseData = (response: any) => {
-  const data = JSON.parse(response.data) as IFetchDataAny;
+const getResponseData = (response: AxiosResponse<any>) => {
+  const data = response.data as IFetchDataAny;
   data.msg_info = {
     message: data.message,
     msg_code: data.msg_code,
@@ -127,42 +125,59 @@ const requestHandle = async (data: RequestHandleParams) => {
   try {
     const { controller, action, params, method } = data;
     const jwt = await getToken();
-    // const lang = await PxStorage.get(PX_CONSTANTS.LANGUAGE);
     const paramsUri = method === "get" ? params : {};
     const uri = composeUri(controller, action, paramsUri);
     const requestMethod = axiosInstance[method];
+
     const headerConfig = {
       Authorization: `Bearer ${jwt}`,
       Language: "vi-VN",
+      "Content-Type": "multipart/form-data",
     };
-    return await (method === "get" || method === "delete"
-      ? requestMethod(uri, {
-          headers: headerConfig,
-        })
-      : requestMethod(uri, JSON.stringify(params), {
-          headers: headerConfig,
-        })
-    )
-      .then((response) => {
+
+    if (method === "post" || method === "patch") {
+      const formData = new FormData();
+      for (let key in params) {
+        formData.append(key, params[key]);
+      }
+      return await requestMethod(uri, formData, {
+        headers: headerConfig,
+      }).then((response: AxiosResponse<any>) => {
         if (response.status === HttpStatusCode.Ok) {
           return getResponseData(response);
         } else if (INVALID_TOKEN.includes(response.status)) {
-          // dispatch(PxAuthActions.authTokenExpire());
           return INVALID_TOKEN_MSG;
         } else if (INVALID_API.includes(response.status)) {
           return CANNOT_CONNECT_API;
         }
-      })
-      .catch((error) => {
+      }).catch((error: any) => {
         if (error.code === "ECONNABORTED" || error.code === "ERR_NETWORK") {
-          console.log(
-            "Không kết nối được tới hệ thống. Vui lòng kiểm tra kết nối mạng"
-          );
+          console.log("Không kết nối được tới hệ thống. Vui lòng kiểm tra kết nối mạng");
         } else if (error.response) {
           console.log(error.response);
         }
         return CANNOT_CONNECT_API;
       });
+    } else {
+      return await requestMethod(uri, {
+        headers: headerConfig,
+      }).then((response: AxiosResponse<any>) => {
+        if (response.status === HttpStatusCode.Ok) {
+          return getResponseData(response);
+        } else if (INVALID_TOKEN.includes(response.status)) {
+          return INVALID_TOKEN_MSG;
+        } else if (INVALID_API.includes(response.status)) {
+          return CANNOT_CONNECT_API;
+        }
+      }).catch((error: any) => {
+        if (error.code === "ECONNABORTED" || error.code === "ERR_NETWORK") {
+          console.log("Không kết nối được tới hệ thống. Vui lòng kiểm tra kết nối mạng");
+        } else if (error.response) {
+          console.log(error.response);
+        }
+        return CANNOT_CONNECT_API;
+      });
+    }
   } catch (error) {
     throw error;
   }

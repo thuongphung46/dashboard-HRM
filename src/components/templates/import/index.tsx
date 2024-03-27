@@ -1,5 +1,7 @@
 import { Button, Typography, Select, MenuItem, SelectChangeEvent } from "@mui/material";
 import { ChangeEvent, useRef, useState } from "react";
+import {FileTkbService } from "services/upload_service";
+
 
 export const ImportTemplate = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -21,12 +23,10 @@ export const ImportTemplate = () => {
 
   const handleImport = () => {
     if (selectedFile && importOption) {
-      // Gọi API tương ứng với tùy chọn được chọn
-      console.log(`Importing file '${selectedFile.name}' with option '${importOption}'`);
-      // Reset state sau khi import
-      setSelectedFile(null);
-      setFileSelected(false);
-      setImportOption("");
+      if (importOption === "Import TKB") {
+        const result = FileTkbService.upload(selectedFile);
+        console.log(result);
+      }
     }
   };
 
@@ -43,7 +43,7 @@ export const ImportTemplate = () => {
             Chọn tùy chọn
           </MenuItem>
           <MenuItem value="Import TKB">Import TKB</MenuItem>
-          <MenuItem value="Import thống kê vượt giờ">Import thống kê vượt giờ</MenuItem>
+          <MenuItem value="Import thống kê vượt giờ">Import danh sách NCKH</MenuItem>
         </Select>
         <input
           accept=".xlsx"
@@ -55,7 +55,7 @@ export const ImportTemplate = () => {
         />
         <label htmlFor="raised-button-file">
           <Button variant="contained" component="span">
-            Upload file
+            Choose file
           </Button>
         </label>
       </div>
