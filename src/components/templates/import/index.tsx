@@ -1,5 +1,6 @@
 import { Button, Typography, Select, MenuItem, SelectChangeEvent } from "@mui/material";
 import { ChangeEvent, useRef, useState } from "react";
+import { toast } from "react-toastify";
 import {FileTkbService } from "services/upload_service";
 
 
@@ -21,14 +22,17 @@ export const ImportTemplate = () => {
     setImportOption(event.target.value);
   };
 
-  const handleImport = () => {
+  const handleImport = async () => {
     if (selectedFile && importOption) {
       if (importOption === "Import TKB") {
-        const result = FileTkbService.upload(selectedFile);
-        console.log(result);
+        const result = await FileTkbService.upload(selectedFile);
+        if(result.msg_code === 200){
+          toast.success("Import thành công");
+      }else{
+        toast.error("Import thất bại");
       }
-    }
-  };
+      }
+  };}
 
   return (
     <div>
