@@ -127,7 +127,7 @@ export const TeachingContractPage: React.FC = () => {
       const reader = new FileReader();
       reader.onload = (e) => {
         const content = e.target?.result as string;
-        console.log("File content:", content);
+        setSelectedContract(content)
       };
       reader.readAsText(file);
     }

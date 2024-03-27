@@ -42,7 +42,6 @@ export const GeneralPosition: FC<Props> = () => {
     };
 
     const handleChange = (e: any) => {
-        console.log(e?.editRows);
     }
   
     return (

@@ -116,7 +116,6 @@ export const ManagementLevelModelTemplate = () => {
   }, []);
 
   const handleClickItem = useCallback((e: any) => {
-    console.log("item: ", e);
   }, []);
 
   return (
