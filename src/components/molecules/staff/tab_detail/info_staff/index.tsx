@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -74,9 +74,11 @@ export const InfoStaff: React.FC = () => {
     const updatedDataSource = dataSource.filter(
       (row: any) => !selectedRows.includes(row.id)
     );
+    console.log("Updated Data Source:", updatedDataSource); // Kiểm tra updatedDataSource xem có chứa dòng đã xóa không
     setDataSource(updatedDataSource);
     setSelectedRows([]); // Clear selected rows after delete
   };
+  
 
   const hanldeOnChangefield = useCallback(
     (e: any) => {
