@@ -39,11 +39,11 @@ export const TabDetailStaff: FC<Props> = () => {
         {loading ? <div>Loading...</div> : <InfoStaff data={data} />}
       </TabPanel>
       <TabPanel value={value} index={1}>
-      {loading ? <div>Loading...</div> : <WorkingHistory data={data} />}
+        {loading ? <div>Loading...</div> : <WorkingHistory data={data} />}
         {/* <WorkingHistory /> */}
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <Analytic />
+        <Analytic data={data} />
       </TabPanel>
     </div>
   );

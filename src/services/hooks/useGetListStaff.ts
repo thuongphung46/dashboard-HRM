@@ -35,7 +35,7 @@ export const useGetListStaff = (params: GetListStaffParams) => {
 };
 
 export const useGetStaff = (id: number) => {
-  const [data, setData] = useState<any>({});
+  const [data, setData] = useState<StaffDetail | any>({});
   const [loading, setLoading] = useState<boolean>(true);
 
   const fetchData = async () => {

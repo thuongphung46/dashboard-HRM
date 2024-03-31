@@ -1,8 +1,13 @@
-import { Button, Typography, Select, MenuItem, SelectChangeEvent } from "@mui/material";
+import {
+  Button,
+  Typography,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
+} from "@mui/material";
 import { ChangeEvent, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import {FileTkbService } from "services/upload_service";
-
+import { FileTkbService } from "services/upload_service";
 
 export const ImportTemplate = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -25,15 +30,20 @@ export const ImportTemplate = () => {
   const handleImport = async () => {
     if (selectedFile && importOption) {
       if (importOption === "Import TKB") {
-        const result = await FileTkbService.uploadFile(selectedFile);
-       
-        if(result.msg_code === 200){
+        const result = await FileTkbService.uploadFile(
+          selectedFile,
+          "Học kỳ I",
+          "2023-2024"
+        );
+
+        if (result.msg_code === 200) {
           toast.success("Import thành công");
-      }else{
-        toast.error("Import thất bại");
+        } else {
+          toast.error("Import thất bại");
+        }
       }
-      }
-  };}
+    }
+  };
 
   return (
     <div>
@@ -48,11 +58,14 @@ export const ImportTemplate = () => {
             Chọn tùy chọn
           </MenuItem>
           <MenuItem value="Import TKB">Import TKB</MenuItem>
-          <MenuItem value="Import thống kê vượt giờ">Import danh sách NCKH</MenuItem>
+          <MenuItem value="Import thống kê vượt giờ">
+            Import danh sách NCKH
+          </MenuItem>
         </Select>
+        <p>Nhớ thêm term và schoolYear</p>
         <input
           accept=".xlsx"
-          style={{ display: 'none' }}
+          style={{ display: "none" }}
           id="raised-button-file"
           type="file"
           ref={fileInput1}
@@ -69,8 +82,12 @@ export const ImportTemplate = () => {
           Selected file: {selectedFile.name}
         </Typography>
       )}
-      <div style={{ marginTop: '10px' }}>
-        <Button variant="contained" onClick={handleImport} disabled={!fileSelected || !importOption}>
+      <div style={{ marginTop: "10px" }}>
+        <Button
+          variant="contained"
+          onClick={handleImport}
+          disabled={!fileSelected || !importOption}
+        >
           Import
         </Button>
       </div>

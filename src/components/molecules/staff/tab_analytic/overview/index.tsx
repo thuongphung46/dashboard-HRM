@@ -1,46 +1,45 @@
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid/DataGrid/DataGrid";
 import { GridColDef } from "@mui/x-data-grid/models/colDef/gridColDef";
+import { latinToRoman } from "common/function";
+import { isNullOrEmpty } from "common/validation";
 import React, { useRef } from "react";
 
-interface Props {}
-export const Overview: React.FC<Props> = () => {
+interface Props {
+  data: StaffSummary[];
+}
+export const Overview: React.FC<Props> = ({ data }) => {
   const gridRef = useRef<any>(null);
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "STT", width: 90 },
-    { field: "content", headerName: "Nội dung công việc", width: 500 },
-    { field: "num_lesion", headerName: "Số tiết dạy", width: 150 },
-    { field: "resion", headerName: "Lý do giảm trừ", width: 150 },
+    { field: "schoolYear", headerName: "Năm học", width: 150 },
+    { field: "contentWork", headerName: "Nội dung công việc", width: 500 },
+    { field: "numberOfLesson", headerName: "Số tiết dạy", width: 150 },
+    { field: "reasonReduce", headerName: "Lý do giảm trừ", width: 500 },
   ];
 
-  const rows = [
-    {
-      id: "I",
-      content: "Tổng số tiết thực hiện (A+B)",
-      num_lesion: "588",
-      resion: "",
-    },
-    { id: "II", content: "Số tiêt phải giảng", num_lesion: "270", resion: "" },
-    {
-      id: "III",
-      content: "Số tiết chưa hoàn thành NCKH",
-      num_lesion: "0",
-      resion: "",
-    },
-    {
-      id: "IV",
-      content: "Số tiết được giảm trừ",
-      num_lesion: "54",
-      resion: "",
-    },
-    {
-      id: "V",
-      content: "Tổng số tiết vượt giờ đề nghị thanh toán (I - II - III + IV)",
-      num_lesion: "372",
-      resion: "",
-    },
-  ];
+  const temp: StaffSummary | any = isNullOrEmpty(data)
+    ? {
+        schoolYear: "",
+        contentWorks: [
+          {
+            contentWork: "",
+            numberOfLesson: "",
+          },
+        ],
+        reasonReduce: "",
+      }
+    : data[0];
+  const rows = temp.contentWorks.map((item: ContentWork, index: number) => {
+    return {
+      id: latinToRoman(index + 1),
+      schoolYear: temp.schoolYear,
+      contentWork: item.contentWork,
+      numberOfLesson: item.numberOfLesson,
+      reasonReduce: temp.reasonReduce,
+    };
+  });
 
   return (
     <div>

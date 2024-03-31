@@ -8,9 +8,11 @@ import { Assess } from "./assess";
 import { Guide } from "./guide";
 import { ScientificResearch } from "./scientific_research";
 
-interface Props {}
+interface Props {
+  data: StaffDetail;
+}
 
-export const Analytic: React.FC = () => {
+export const Analytic = ({ data }: Props) => {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
@@ -32,7 +34,7 @@ export const Analytic: React.FC = () => {
         <Tab label="NCKH" />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <Overview />
+        <Overview data={data.summary} />
       </TabPanel>
       <TabPanel value={value} index={1}>
         <Teaching />

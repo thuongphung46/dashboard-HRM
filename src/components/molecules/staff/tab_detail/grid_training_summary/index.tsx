@@ -29,6 +29,9 @@ export const GridTrainingSummary: FC<IGridTraining> = ({
       width: 150,
       editable: true,
       type: "date",
+      valueFormatter: (params) => {
+        return params.value ? new Date(params.value).toLocaleDateString() : "";
+      },
     },
     {
       field: "toDate",
@@ -36,9 +39,12 @@ export const GridTrainingSummary: FC<IGridTraining> = ({
       width: 150,
       editable: true,
       type: "date",
+      valueFormatter: (params) => {
+        return params.value ? new Date(params.value).toLocaleDateString() : "";
+      },
     },
     {
-      field: "school_name",
+      field: "schoolName",
       headerName: "Tên trường hoặc cơ sở đào tạo",
       width: 250,
       editable: true,
@@ -50,13 +56,13 @@ export const GridTrainingSummary: FC<IGridTraining> = ({
       editable: true,
     },
     {
-      field: "forms_of_training",
+      field: "formOfTraining",
       headerName: "Hình thức đào tạo",
       width: 200,
       editable: true,
     },
     {
-      field: "certificates",
+      field: "certificate",
       headerName: "Văn bằng chứng chỉ",
       width: 200,
       editable: true,

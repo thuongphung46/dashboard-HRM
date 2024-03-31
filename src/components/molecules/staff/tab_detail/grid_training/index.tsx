@@ -55,7 +55,7 @@ export const GridTraining: FC<IGridTraining> = ({
         params.value ? new Date(params.value).toLocaleDateString() : "",
     },
     {
-      field: "work_unit",
+      field: "workingPlace",
       headerName: "Đơn vị công tác",
       width: 400,
       editable: true,

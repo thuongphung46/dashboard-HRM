@@ -10,9 +10,10 @@ import { GridRowId } from "@mui/x-data-grid";
 import { GridTrainingSummary } from "../grid_training_summary";
 import { GridTraining } from "../grid_training";
 import { fieldsData } from "./fields";
+import { STAFF_ADMISSION } from "constants/global_data";
 
 type Props = {
-  data: any;
+  data: StaffDetail;
 };
 
 export const InfoStaff = ({ data }: Props) => {
@@ -20,11 +21,11 @@ export const InfoStaff = ({ data }: Props) => {
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]); // State để lưu trữ các dòng được chọn
   const [formData, setFormData] = useState<any>({});
   const [dataGridTrainingSummary, setDataGridTrainingSummary] = useState<any[]>(
-    data.staffWorkingHistoriesInAcademy
+    data.trainingSummary
   );
   const [dataStaffWorkingHistories, setDataStaffWorkingHistories] = useState<
     any[]
-  >(data.staffWorkingHistoriesInAcademy);
+  >(data.staffWorkingHistoriesOutAcademy);
 
   const handleSave = () => {};
 
@@ -40,6 +41,15 @@ export const InfoStaff = ({ data }: Props) => {
     },
     [formData]
   );
+
+  const dcsvn = data.staffAdmissions.find(
+    (ele) => ele.type === STAFF_ADMISSION.DANG_CSVN
+  );
+  const doan = data.staffAdmissions.find(
+    (ele) => ele.type === STAFF_ADMISSION.DOAN_VIEN
+  );
+  data.dang_csvn = dcsvn?.place || "";
+  data.doan_tncs_hcm = doan?.place || "";
 
   return (
     <Box sx={{ flexGrow: 1 }}>
