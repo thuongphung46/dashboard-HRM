@@ -20,11 +20,11 @@ export const InfoStaff = ({ data }: Props) => {
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]); // State để lưu trữ các dòng được chọn
   const [formData, setFormData] = useState<any>({});
   const [dataGridTrainingSummary, setDataGridTrainingSummary] = useState<any[]>(
-    data.staffWorkingHistories
+    data.staffWorkingHistoriesInAcademy
   );
   const [dataStaffWorkingHistories, setDataStaffWorkingHistories] = useState<
     any[]
-  >(data.staffWorkingHistories);
+  >(data.staffWorkingHistoriesInAcademy);
 
   const handleSave = () => {};
 

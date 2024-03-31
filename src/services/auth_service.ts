@@ -1,6 +1,8 @@
 import axios from "axios";
 import { Request } from "./request";
 import { clearToken } from "common/function";
+import { NetWork } from "./api";
+import { getRequestUrl } from "./api/utils";
 
 const controller = "auth";
 interface Auth {
@@ -16,10 +18,15 @@ const AuthService = {
     });
   },
   LoginAdmin: async (param: Auth) => {
-    return await Request(controller).postAsync("login", {
-      username: param.UserName,
-      password: param.Password,
-    });
+    return await NetWork.post(
+      getRequestUrl(controller, {
+        partial: "login",
+      }),
+      {
+        username: param.UserName,
+        password: param.Password,
+      }
+    );
   },
 
   logout: () => {
