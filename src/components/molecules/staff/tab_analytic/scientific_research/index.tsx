@@ -3,9 +3,11 @@ import { GridRowId } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 import { BaseGrid } from "components/atoms/datagrid";
 
-interface Props {}
+interface Props {
+  data: StaffDetail;
+}
 
-export const ScientificResearch: FC<Props> = () => {
+export const ScientificResearch: FC<Props> = ({ data }) => {
   const [selectedRows1, setSelectedRows1] = useState<GridRowId[]>([]);
   const [selectedRows2, setSelectedRows2] = useState<GridRowId[]>([]);
   const [selectedRows3, setSelectedRows3] = useState<GridRowId[]>([]);
@@ -14,11 +16,13 @@ export const ScientificResearch: FC<Props> = () => {
   const [selectedRows6, setSelectedRows6] = useState<GridRowId[]>([]);
   const [selectedRows7, setSelectedRows7] = useState<GridRowId[]>([]);
 
+  const detaiDuan = data.project;
+  const magazine = data.magazine;
   // Các cột cho lưới dữ liệu 1
   const columns1 = [
     { field: "id", headerName: "STT", width: 90 },
     {
-      field: "topic_name",
+      field: "projectName",
       headerName: "Tên đề tài",
       width: 300,
       editable: true,
@@ -27,7 +31,7 @@ export const ScientificResearch: FC<Props> = () => {
       ),
     },
     {
-      field: "position",
+      field: "role",
       headerName: "Chủ trì/ Thư ký/ Thành viên",
       width: 200,
       editable: true,
@@ -35,7 +39,7 @@ export const ScientificResearch: FC<Props> = () => {
       valueOptions: ["Chủ trì", "Thư ký", "Thành viên"],
     },
     {
-      field: "topic_level",
+      field: "projectLevel",
       headerName: "Cấp đề tài",
       width: 150,
       editable: true,
@@ -43,11 +47,11 @@ export const ScientificResearch: FC<Props> = () => {
       valueOptions: ["Cơ sở (Học viện)", "Ban", "Nhà nước"],
     },
     {
-      field: "accept_date",
+      field: "endDate",
       headerName: "Ngày nghiệm thu",
       width: 150,
       editable: true,
-      type: "date",
+      // type: "date",
     },
     {
       field: "result",
@@ -56,7 +60,7 @@ export const ScientificResearch: FC<Props> = () => {
       editable: true,
     },
     {
-      field: "hours",
+      field: "numberOfHours",
       headerName: "Số giờ quy đổi",
       width: 150,
       editable: true,
@@ -80,7 +84,7 @@ export const ScientificResearch: FC<Props> = () => {
   const columns2 = [
     { field: "id", headerName: "STT", width: 90 },
     {
-      field: "article_name",
+      field: "magazineName",
       headerName: "Tên bài báo",
       width: 150,
       editable: true,
@@ -89,26 +93,26 @@ export const ScientificResearch: FC<Props> = () => {
       ),
     },
     {
-      field: "type_magazine ",
+      field: "magazineType ",
       headerName: "Loại tạp chí/ hội nghị",
       width: 200,
       editable: true,
     },
     {
-      field: "num_magazine",
+      field: "magazineIndex",
       headerName: "Chỉ số tạp chí/ hội nghị",
       width: 200,
       editable: true,
     },
     {
-      field: "num_people",
+      field: "numberOfPeople",
       headerName: "Số người",
       width: 150,
       editable: true,
       type: "number",
     },
     {
-      field: "role",
+      field: "authorName",
       headerName: "Tác giả chính/ Thành viên",
       width: 200,
       editable: true,
@@ -116,7 +120,7 @@ export const ScientificResearch: FC<Props> = () => {
       valueOptions: ["Tác giả chính", "Thành viên"],
     },
     {
-      field: "hours",
+      field: "numberOfHour",
       headerName: "Số giờ quy đổi",
       width: 150,
       editable: true,
@@ -135,11 +139,12 @@ export const ScientificResearch: FC<Props> = () => {
     },
   ];
 
+  const invention = data.invention;
   // Các cột cho lưới dữ liệu 3
   const columns3 = [
     { field: "id", headerName: "STT", width: 90 },
     {
-      field: "certificate_name",
+      field: "inventionName",
       headerName: "Tên bằng sáng chế, giải thưởng",
       width: 300,
       editable: true,
@@ -148,27 +153,27 @@ export const ScientificResearch: FC<Props> = () => {
       ),
     },
     {
-      field: "num_validation",
+      field: "decisionNumber",
       headerName: "Số QĐ công nhận",
       width: 150,
       editable: true,
     },
     {
-      field: "date_validation",
+      field: "dateDecision",
       headerName: "Ngày QĐ công nhận",
       width: 150,
       editable: true,
-      type: "date",
+      // type: "date",
     },
     {
-      field: "num_people",
+      field: "numberOfPeople",
       headerName: "Số người",
       width: 150,
       editable: true,
       type: "number",
     },
     {
-      field: "role",
+      field: "authorName",
       headerName: "Tác giả chính/ Thành viên",
       width: 200,
       editable: true,
@@ -176,7 +181,7 @@ export const ScientificResearch: FC<Props> = () => {
       valueOptions: ["Tác giả chính", "Thành viên"],
     },
     {
-      field: "hours",
+      field: "numberOfHour",
       headerName: "Số giờ quy đổi",
       width: 150,
       editable: true,
@@ -196,10 +201,11 @@ export const ScientificResearch: FC<Props> = () => {
   ];
 
   // Các cột cho lưới dữ liệu 4
+  const book = data.book;
   const columns4 = [
     { field: "id", headerName: "STT", width: 90 },
     {
-      field: "book_titles",
+      field: "bookName",
       headerName: "Tên sách, giáo trình",
       width: 300,
       editable: true,
@@ -208,27 +214,27 @@ export const ScientificResearch: FC<Props> = () => {
       ),
     },
     {
-      field: "public_num",
+      field: "numberOfPublish",
       headerName: "Số xuất bản",
       width: 150,
       editable: true,
     },
     {
-      field: "page_num",
+      field: "numberOfPage",
       headerName: "Số trang",
       width: 150,
       editable: true,
       type: "number",
     },
     {
-      field: "num_people",
+      field: "numberOfPeople",
       headerName: "Số người",
       width: 150,
       editable: true,
       type: "number",
     },
     {
-      field: "role",
+      field: "authorName",
       headerName: "Tác giả chính/ Thành viên",
       width: 200,
       editable: true,
@@ -236,7 +242,7 @@ export const ScientificResearch: FC<Props> = () => {
       valueOptions: ["Tác giả chính", "Thành viên"],
     },
     {
-      field: "hours",
+      field: "numberOfHour",
       headerName: "Số giờ quy đổi",
       width: 150,
       editable: true,
@@ -256,10 +262,11 @@ export const ScientificResearch: FC<Props> = () => {
   ];
 
   // Các cột cho lưới dữ liệu 5
+  const training = data.training;
   const columns5 = [
     { field: "id", headerName: "STT", width: 90 },
     {
-      field: "topic_name",
+      field: "projectName",
       headerName: "Tên đề tài",
       width: 300,
       editable: true,
@@ -268,28 +275,36 @@ export const ScientificResearch: FC<Props> = () => {
       ),
     },
     {
-      field: "num_decision",
+      field: "decisionNumber",
       headerName: "Số QĐ giao nhiệm vụ",
       width: 150,
       editable: true,
     },
     {
-      field: "date_decition",
+      field: "dateDecision",
       headerName: "Ngày ký QĐ giao nhiệm vụ",
       width: 150,
       editable: true,
-      type: "date",
+      // type: "date",
     },
     {
-      field: "result",
-      headerName: "Kết quả bảo vệ cấp",
+      field: "resultFaculty",
+      headerName: "Kết quả bảo vệ cấp Khoa",
       width: 150,
       editable: true,
       type: "singleSelect",
       valueOptions: ["Khoa", "Học viện"],
     },
     {
-      field: "hours",
+      field: "resultAcademy",
+      headerName: "Kết quả bảo vệ cấp Học viện",
+      width: 150,
+      editable: true,
+      type: "singleSelect",
+      valueOptions: ["Khoa", "Học viện"],
+    },
+    {
+      field: "numberOfHour",
       headerName: "Số giờ quy đổi",
       width: 150,
       editable: true,
@@ -308,10 +323,11 @@ export const ScientificResearch: FC<Props> = () => {
   ];
 
   // Các cột cho lưới dữ liệu 6
+  const building = data.buildingProgram;
   const columns6 = [
     { field: "id", headerName: "STT", width: 90 },
     {
-      field: "training_name",
+      field: "buildingProgramName",
       headerName: "Tên chương trình đào tạo",
       width: 300,
       editable: true,
@@ -320,34 +336,27 @@ export const ScientificResearch: FC<Props> = () => {
       ),
     },
     {
-      field: "num_credits",
+      field: "numberOfCredits",
       headerName: "Số tín chỉ",
       width: 150,
       editable: true,
       type: "number",
     },
     {
-      field: "num_decision",
-      headerName: "Số QĐ giao nhiệm vụ",
+      field: "decisionNumber",
+      headerName: "Số QĐ giao nhiệm vụ, ngày ký QĐ giao nhiệm vụ",
       width: 150,
       editable: true,
     },
     {
-      field: "date_decition",
-      headerName: "Ngày ký QĐ giao nhiệm vụ",
-      width: 150,
-      editable: true,
-      type: "date",
-    },
-    {
-      field: "num_people",
+      field: "buildingType",
       headerName: "Số thành viên",
       width: 150,
       editable: true,
       type: "number",
     },
     {
-      field: "construction",
+      field: "buildingType",
       headerName: "Hình thức xây dựng",
       width: 200,
       editable: true,
@@ -355,7 +364,7 @@ export const ScientificResearch: FC<Props> = () => {
       valueOptions: ["Mới", "Tu chỉnh"],
     },
     {
-      field: "hours",
+      field: "numberOfHour",
       headerName: "Số giờ quy đổi",
       width: 150,
       editable: true,
@@ -446,7 +455,7 @@ export const ScientificResearch: FC<Props> = () => {
       <Box>
         <BaseGrid
           columns={columns1}
-          rows={rows1}
+          rows={detaiDuan}
           title="C.1 Đề tài, dự án (Phụ lục II.1 Quyết định số 1409/QĐ-HVM)"
           onSave={() => {
             /* Logic lưu cho lưới dữ liệu 1 */
@@ -458,7 +467,7 @@ export const ScientificResearch: FC<Props> = () => {
       <Box>
         <BaseGrid
           columns={columns2}
-          rows={rows2}
+          rows={magazine}
           title="C.2 Bài báo khoa học(Phụ lục II.3 Quyết định số 1409/QĐ-HVM)"
           onSave={() => {
             /* Logic lưu cho lưới dữ liệu 1 */
@@ -470,7 +479,7 @@ export const ScientificResearch: FC<Props> = () => {
       <Box>
         <BaseGrid
           columns={columns3}
-          rows={rows3}
+          rows={invention}
           title="C.3 Bằng sáng chế, giải thưởng khoa học trong năm (Phụ lục II.4 Quyết định số 1409/QĐ-HVM)"
           onSave={() => {
             /* Logic lưu cho lưới dữ liệu 3 */
@@ -482,7 +491,7 @@ export const ScientificResearch: FC<Props> = () => {
       <Box>
         <BaseGrid
           columns={columns4}
-          rows={rows4}
+          rows={book}
           title="C.4 Sách, giáo trình xuất bản trong nước được Hội đồng GSNN tính điểm (Phụ lục II.5 Quyết định số 1409/QĐ-HVM)"
           onSave={() => {
             /* Logic lưu cho lưới dữ liệu 4 */
@@ -494,7 +503,7 @@ export const ScientificResearch: FC<Props> = () => {
       <Box>
         <BaseGrid
           columns={columns5}
-          rows={rows5}
+          rows={training}
           title="C.5 Hướng dẫn sinh viên NCKH, huấn luyện đội tuyển (Phụ lục II.6 Quyết định số 1409/QĐ-HVM)"
           onSave={() => {
             /* Logic lưu cho lưới dữ liệu 5 */
@@ -506,7 +515,7 @@ export const ScientificResearch: FC<Props> = () => {
       <Box>
         <BaseGrid
           columns={columns6}
-          rows={rows6}
+          rows={building}
           title="C.6 Xây dựng chương trình đào tạo (Phụ lục II.8 Quyết định số 1409/QĐ-HVM)"
           onSave={() => {
             /* Logic lưu cho lưới dữ liệu 6 */

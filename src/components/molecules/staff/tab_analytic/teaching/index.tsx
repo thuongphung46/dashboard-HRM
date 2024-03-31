@@ -3,16 +3,18 @@ import { GridRowId } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 import { BaseGrid } from "components/atoms/datagrid";
 
-interface Props {}
+interface Props {
+  data: StaffTeaching[];
+}
 
-export const Teaching: React.FC = () => {
+export const Teaching: React.FC<Props> = ({ data }) => {
   const [selectedRows1, setSelectedRows1] = useState<GridRowId[]>([]);
 
   // Các cột cho lưới dữ liệu 1
   const columns1 = [
     { field: "id", headerName: "STT", width: 90 },
     {
-      field: "semester",
+      field: "term",
       headerName: "Học kỳ",
       width: 100,
       editable: true,
@@ -34,7 +36,7 @@ export const Teaching: React.FC = () => {
       ),
     },
     {
-      field: "course_name",
+      field: "courseName",
       headerName: "Tên học phần",
       width: 300,
       editable: true,
@@ -43,34 +45,34 @@ export const Teaching: React.FC = () => {
       ),
     },
     {
-      field: "num_credits",
+      field: "numberOfCredit",
       headerName: "Số tín chỉ",
       width: 100,
       editable: true,
       type: "number",
     },
     {
-      field: "class_course",
-      headerName: "Lớp học phần",
+      field: "startDate",
+      headerName: "Ngày bắt đầu",
       width: 150,
       editable: true,
     },
     {
-      field: "training_type",
-      headerName: "Loại hình đào tạo",
+      field: "endDate",
+      headerName: "Ngày kết thúc",
       width: 150,
       editable: true,
     },
     {
-      field: "num_schedule",
-      headerName: "Số tiết theo TKB",
+      field: "numberOfStudent",
+      headerName: "Số sinh viên",
       width: 120,
       editable: true,
       type: "number",
     },
     {
-      field: "num_standard",
-      headerName: "Số tiết QC",
+      field: "roundStandard",
+      headerName: "Quy chuẩn làm tròn",
       width: 100,
       editable: true,
       type: "number",
@@ -95,7 +97,7 @@ export const Teaching: React.FC = () => {
       <Box>
         <BaseGrid
           columns={columns1}
-          rows={rows1}
+          rows={data}
           title=""
           onSave={() => {
             /* Logic lưu cho lưới dữ liệu 1 */

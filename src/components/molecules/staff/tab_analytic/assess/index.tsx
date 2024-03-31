@@ -2,12 +2,18 @@ import { FC, useState } from "react";
 import { Box } from "@mui/material";
 import { BaseGrid } from "components/atoms/datagrid";
 import { GridRowId } from "@mui/x-data-grid";
+import { STAFF_EXAM } from "constants/global_data";
 
-interface Props {}
+interface Props {
+  data: StaffExamCourse[];
+}
 
-export const Assess: FC<Props> = () => {
+export const Assess: FC<Props> = ({ data }) => {
   const [selectedRows1, setSelectedRows1] = useState<GridRowId[]>([]);
   const [selectedRows2, setSelectedRows2] = useState<GridRowId[]>([]);
+
+  const middle = data.filter((item) => item.examName === STAFF_EXAM.MIDDLE);
+  const end = data.filter((item) => item.examName === STAFF_EXAM.END);
 
   const [rows1, setRows1] = useState<any>([
     {
@@ -26,7 +32,7 @@ export const Assess: FC<Props> = () => {
   const columns1 = [
     { field: "id", headerName: "STT", width: 90 },
     {
-      field: "semester",
+      field: "term",
       headerName: "Học kỳ",
       width: 100,
       editable: true,
@@ -34,7 +40,7 @@ export const Assess: FC<Props> = () => {
       valueOptions: ["Học kỳ I", "Học kỳ II"],
     },
     {
-      field: "training_sys",
+      field: "systemSchool",
       headerName: "Hệ đào tạo",
       width: 200,
       editable: true,
@@ -48,7 +54,7 @@ export const Assess: FC<Props> = () => {
       ),
     },
     {
-      field: "course_name",
+      field: "courseName",
       headerName: "Tên học phần",
       width: 300,
       editable: true,
@@ -57,7 +63,7 @@ export const Assess: FC<Props> = () => {
       ),
     },
     {
-      field: "role",
+      field: "action",
       headerName: "Ra đề/ Coi thi/ Chấm thi",
       width: 200,
       editable: true,
@@ -65,27 +71,27 @@ export const Assess: FC<Props> = () => {
       valueOptions: ["Ra đề", "Coi thi", "Chấm thi"],
     },
     {
-      field: "class_course",
+      field: "courseCode",
       headerName: "Lớp học phần",
       width: 150,
       editable: true,
     },
     {
-      field: "num_people",
+      field: "numberOfStudent",
       headerName: "Số sinh viên của lớp",
       width: 150,
       editable: true,
       type: "number",
     },
     {
-      field: "num_topic",
+      field: "numberOfExam",
       headerName: "Số đề",
       width: 150,
       editable: true,
       type: "number",
     },
     {
-      field: "num_lesion",
+      field: "estimatedLesson",
       headerName: "Số tiết quy đổi",
       width: 150,
       editable: true,
@@ -110,7 +116,7 @@ export const Assess: FC<Props> = () => {
   const columns2 = [
     { field: "id", headerName: "STT", width: 90 },
     {
-      field: "semester",
+      field: "term",
       headerName: "Học kỳ",
       width: 100,
       editable: true,
@@ -118,7 +124,7 @@ export const Assess: FC<Props> = () => {
       valueOptions: ["Học kỳ I", "Học kỳ II"],
     },
     {
-      field: "training_sys",
+      field: "systemSchool",
       headerName: "Hệ đào tạo",
       width: 200,
       editable: true,
@@ -132,7 +138,7 @@ export const Assess: FC<Props> = () => {
       ),
     },
     {
-      field: "course_name",
+      field: "courseName",
       headerName: "Tên học phần",
       width: 300,
       editable: true,
@@ -141,35 +147,35 @@ export const Assess: FC<Props> = () => {
       ),
     },
     {
-      field: "role",
+      field: "action",
       headerName: "Ra đề/ Coi thi/ Chấm thi",
       width: 200,
       editable: true,
       type: "singleSelect",
       valueOptions: ["Ra đề", "Coi thi", "Chấm thi"],
     },
+    // {
+    //   field: "courseName",
+    //   headerName: "Lớp học phần",
+    //   width: 150,
+    //   editable: true,
+    // },
     {
-      field: "class_course",
-      headerName: "Lớp học phần",
-      width: 150,
-      editable: true,
-    },
-    {
-      field: "num_people",
+      field: "numberOfStudent",
       headerName: "Số sinh viên của lớp",
       width: 150,
       editable: true,
       type: "number",
     },
     {
-      field: "training_course",
+      field: "trainingCourse",
       headerName: "Khóa ĐT",
       width: 150,
       editable: true,
       type: "number",
     },
     {
-      field: "num_lesion",
+      field: "estimatedLesson",
       headerName: "Số tiết quy đổi",
       width: 150,
       editable: true,
@@ -206,7 +212,7 @@ export const Assess: FC<Props> = () => {
       <Box>
         <BaseGrid
           columns={columns1}
-          rows={rows1}
+          rows={middle}
           title="Đánh giá giữa học phần"
           onSave={handleSave}
           onRowSelectionChange={setSelectedRows1}
@@ -216,7 +222,7 @@ export const Assess: FC<Props> = () => {
       <Box>
         <BaseGrid
           columns={columns2}
-          rows={rows2}
+          rows={end}
           title="Đánh giá hết học phần"
           onSave={() => {}}
           onRowSelectionChange={setSelectedRows2}

@@ -37,16 +37,16 @@ export const Analytic = ({ data }: Props) => {
         <Overview data={data.summary} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Teaching />
+        <Teaching data={data.teaching} />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <Assess />
+        <Assess data={data.examCourses} />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <Guide />
+        <Guide data={data.instructProject} />
       </TabPanel>
       <TabPanel value={value} index={4}>
-        <ScientificResearch />
+        <ScientificResearch data={data} />
       </TabPanel>
     </div>
   );
