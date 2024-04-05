@@ -9,4 +9,7 @@ export const API_URL = {
 
   // Staffs
   STAFFS: "/staffs",
+
+  // Department
+  DEPARTMENT: "/department",
 };
