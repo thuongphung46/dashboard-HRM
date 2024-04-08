@@ -23,3 +23,26 @@ export const useGetListDepartment = () => {
 
   return { data, loading };
 };
+
+export const useGetDepartment = (id: number) => {
+  const [data, setData] = useState<any>({});
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const fetchData = async () => {
+    setLoading(true);
+    const response = await NetWork.get(`${API_URL.DEPARTMENT}/${id}`);
+    if (response.status === RESPONSE_CODE.SUCCESS) {
+      setData(response?.data?.content);
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
+  return { data, loading };
+}
