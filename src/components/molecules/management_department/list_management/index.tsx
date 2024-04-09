@@ -1,19 +1,44 @@
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import { FC, useCallback, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import ReusableField from "components/atoms/field";
+import { useGetListDepartment, useCreateDepartment } from 'services/hooks/useGetListDepartment';
+import { toast } from "react-toastify";
 
 interface Props {
   listData: any[];
   handleClickItem: (item: any) => void;
 }
+interface DepartmentData {
+  id: number;
+  name: string;
+  parentDeptId: string;
+  createdDate: string;
+  modifiedDate: string;
+  createdBy: string;
+  modifiedBy: string;
+  groups: Group[];
+}
+interface Group {
+  id: number;
+  name: string;
+  parentDeptId: string;
+  createdDate: string;
+  modifiedDate: string;
+  createdBy: string;
+  modifiedBy: string;
+  groups: any[];
+}
 
 export const ListDepartment: FC<Props> = ({ listData, handleClickItem }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [formData, setFormData] = useState<any>({});
+  const {loading, data: departmentData } = useGetListDepartment();
+  const [departmentList, setDepartmentList] = useState<DepartmentData[]>([]);
+
   const hanldeOnChangefield = useCallback(
     (e: any) => {
       let value = e.target.value;
@@ -26,30 +51,51 @@ export const ListDepartment: FC<Props> = ({ listData, handleClickItem }) => {
   const handleShowPopupAdd = useCallback(() => {
     setOpen(true);
   }, []);
+
   const handleClose = useCallback(() => {
     setOpen(false);
   }, []);
+
+  const { createDepartment } = useCreateDepartment();
+
   const handleAddModel = useCallback(() => {
-    //call api here
+    //get list department
+
   }, []);
+
+  useEffect(() => {
+    if (!loading && departmentData) {
+      setDepartmentList(departmentData);
+    }
+  }, [loading, departmentData]);
 
   const renderPopup = useMemo(() => {
     const fieldData = [
-      { id: "code", label: "Mã cấp quản lý", type: "text" },
+      // { id: "code", label: "Mã cấp quản lý", type: "text" },
       { id: "name", label: "Tên cấp quản lý", type: "text" },
       { id: "parent", label: "Trực thuộc cấp", type: "text" },
     ];
 
-    const handleSave = () => {
-      // Kiểm tra xem mã cấp quản lý đã được nhập hay chưa
-      const codeField = fieldData.find(field => field.id === 'code');
-      if (codeField && !formData[codeField.id]) {
-        alert('Vui lòng nhập Mã cấp quản lý');
+    const handleSave = async () => {
+      // Kiểm tra xem tên cấp quản lý đã được nhập hay chưa
+      const nameField = fieldData.find(field => field.id === 'name');
+      if (nameField && !formData[nameField.id]) {
+        toast('Vui lòng nhập Tên cấp quản lý');
         return;
       }
-  
+      // Define body here
+      const body = {
+        name: formData['name'],
+        parentDeptId: formData['parent'],
+      }; 
       // Tiếp tục xử lý lưu dữ liệu
-      handleAddModel();
+      const response = await createDepartment(body);
+      if (response && response.message === 'success') {
+        toast('Thành công');
+        handleClose();
+      } else {
+        toast('Tạo phòng không thành công');
+      }
     };
 
     return (
@@ -91,7 +137,8 @@ export const ListDepartment: FC<Props> = ({ listData, handleClickItem }) => {
         </div>
       </Modal>
     );
-  }, [formData, handleAddModel, handleClose, hanldeOnChangefield, open]);
+  }, [formData, handleClose, hanldeOnChangefield, open, createDepartment]);
+
   return (
     <div
       style={{

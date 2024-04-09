@@ -46,3 +46,25 @@ export const useGetDepartment = (id: number) => {
 
   return { data, loading };
 }
+
+export type createDepartmentBody = {
+  name: string;
+  parentDeptId?: string;
+};
+
+export const useCreateDepartment = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const createDepartment = async (body: createDepartmentBody) => {
+    setLoading(true);
+    const response = await NetWork.post(`${API_URL.DEPARTMENT}`, body);
+    setLoading(false);
+    if (response.status === RESPONSE_CODE.SUCCESS) {
+      return response.data;
+    } else {
+      return null;
+    }
+  };
+
+  return { createDepartment, loading };
+};
