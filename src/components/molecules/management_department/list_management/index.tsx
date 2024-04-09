@@ -56,7 +56,6 @@ export const ListDepartment: FC<Props> = ({ listData, handleClickItem }) => {
     setOpen(false);
   }, []);
 
-  const { createDepartment } = useCreateDepartment();
 
   const handleAddModel = useCallback(() => {
     //get list department
@@ -69,11 +68,14 @@ export const ListDepartment: FC<Props> = ({ listData, handleClickItem }) => {
     }
   }, [loading, departmentData]);
 
+  const { createDepartment } = useCreateDepartment();
   const renderPopup = useMemo(() => {
     const fieldData = [
       // { id: "code", label: "Mã cấp quản lý", type: "text" },
       { id: "name", label: "Tên cấp quản lý", type: "text" },
-      { id: "parent", label: "Trực thuộc cấp", type: "text" },
+      { id: "parent", label: "Trực thuộc cấp", 
+        type: "select",
+        options: departmentList.map((department) => department.name) },
     ];
 
     const handleSave = async () => {
@@ -93,6 +95,7 @@ export const ListDepartment: FC<Props> = ({ listData, handleClickItem }) => {
       if (response && response.message === 'success') {
         toast('Thành công');
         handleClose();
+        setFormData({});
       } else {
         toast('Tạo phòng không thành công');
       }
