@@ -1,43 +1,21 @@
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import ReusableField from "components/atoms/field";
-import { useGetListDepartment, useCreateDepartment } from 'services/hooks/useGetListDepartment';
+import { useCreateDepartment } from 'services/hooks/useGetListDepartment';
 import { toast } from "react-toastify";
 
 interface Props {
-  listData: any[];
+  departmentList: any[];
   handleClickItem: (item: any) => void;
 }
-interface DepartmentData {
-  id: number;
-  name: string;
-  parentDeptId: string;
-  createdDate: string;
-  modifiedDate: string;
-  createdBy: string;
-  modifiedBy: string;
-  groups: Group[];
-}
-interface Group {
-  id: number;
-  name: string;
-  parentDeptId: string;
-  createdDate: string;
-  modifiedDate: string;
-  createdBy: string;
-  modifiedBy: string;
-  groups: any[];
-}
 
-export const ListDepartment: FC<Props> = ({ listData, handleClickItem }) => {
+export const ListDepartment: FC<Props> = ({ departmentList, handleClickItem }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [formData, setFormData] = useState<any>({});
-  const {loading, data: departmentData } = useGetListDepartment();
-  const [departmentList, setDepartmentList] = useState<DepartmentData[]>([]);
 
   const hanldeOnChangefield = useCallback(
     (e: any) => {
@@ -55,18 +33,6 @@ export const ListDepartment: FC<Props> = ({ listData, handleClickItem }) => {
   const handleClose = useCallback(() => {
     setOpen(false);
   }, []);
-
-
-  const handleAddModel = useCallback(() => {
-    //get list department
-
-  }, []);
-
-  useEffect(() => {
-    if (!loading && departmentData) {
-      setDepartmentList(departmentData);
-    }
-  }, [loading, departmentData]);
 
   const { createDepartment } = useCreateDepartment();
   const renderPopup = useMemo(() => {
@@ -140,7 +106,7 @@ export const ListDepartment: FC<Props> = ({ listData, handleClickItem }) => {
         </div>
       </Modal>
     );
-  }, [formData, handleClose, hanldeOnChangefield, open, createDepartment]);
+  }, [departmentList, open, handleClose, formData, createDepartment, hanldeOnChangefield]);
 
   return (
     <div
@@ -162,7 +128,7 @@ export const ListDepartment: FC<Props> = ({ listData, handleClickItem }) => {
         component="nav"
         aria-labelledby="nested-list-subheader"
       >
-        {listData.map((item) => {
+        {departmentList.map((item) => {
           return (
             <ListItemButton key={item.id} onClick={() => handleClickItem(item)}>
               <ListItemText primary={`${item.name}`} />
