@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FC } from 'react';
-import { BasicColor } from "components/molecules/statistic/chart";
+import ChartsOverview from "components/molecules/statistic/chart";
 import { GridStatistic } from "components/molecules/statistic/grid";
 import { useGetListDepartment } from 'services/hooks/useGetListDepartment';
 
@@ -99,7 +99,7 @@ export const StatisticTemplate:FC<Props> = () => {
         </select>
 
       </div>
-      <BasicColor />
+      <ChartsOverview />
       <GridStatistic />
     </div>
   );

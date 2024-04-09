@@ -10,7 +10,8 @@ export const GridStatistic = () => {
   ];
   const rows = [
     { id: 1, name: "Khoa CNTT", sum_teaching: 100, sum_guide: 50, sum_research: 20 },
-    { id: 2, name: "Khoa Toán", sum_teaching: 80, sum_guide: 40, sum_research: 10},
+    { id: 2, name: "Khoa ATTT", sum_teaching: 80, sum_guide: 40, sum_research: 10},
+    { id: 3, name: "Khoa Mật mã", sum_teaching: 60, sum_guide: 30, sum_research: 15}
   ];
 
   return (

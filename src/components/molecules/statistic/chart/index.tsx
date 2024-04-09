@@ -1,67 +1,23 @@
 import * as React from "react";
-import { LineChart } from "@mui/x-charts/LineChart";
-import Stack from "@mui/material/Stack";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import { BarChart } from '@mui/x-charts/BarChart';
 
-const Tableau3 = ["#4e79a7", "#f28e2c", "#e15759"];
-
-const chartsParams = {
-  margin: { bottom: 20, left: 25, right: 5 },
-  height: 300,
-};
-export const BasicColor = () => {
-  const [color, setColor] = React.useState("#4e79a7");
-
-  const handleChange = ({ event, nextColor }: any) => {
-    setColor(nextColor);
-  };
-
+const dataset = [
+  { name: 'teaching', Mật_mã: 35, CNTT: 44, ATTT: 24 },
+  { name: 'guide', Mật_mã: 51, CNTT: 6, ATTT: 49 },
+  { name: 'research', Mật_mã: 15, CNTT: 25, ATTT: 30 },
+];
+export default function ChartsOverview() {
   return (
-    <Stack
-      direction="column"
-      spacing={2}
-      alignItems="center"
-      sx={{ width: "100%" }}
-    >
-      <LineChart
-        sx={{
-          //This sx does nothing
-          "& .MuiXAxis-root line": {
-            stroke: "blue", // Change the color of the x-axis line
-          },
-          "& .MuiYAxis-root line": {
-            stroke: "blue", // Change the color of the y-axis line
-          },
-        }}
-        {...chartsParams}
-        series={[
-          {
-            data: [15, 23, 18, 19, 13],
-            label: "example",
-            color,
-          },
-        ]}
-      />
-      <ToggleButtonGroup
-        // orientation="vertical"
-        value={color}
-        exclusive
-        onChange={handleChange}
-      >
-        {Tableau3.map((value) => (
-          <ToggleButton key={value} value={value} sx={{ p: 1 }}>
-            <div
-              style={{
-                width: 15,
-                height: 15,
-                backgroundColor: value,
-                display: "inline-block",
-              }}
-            />
-          </ToggleButton>
-        ))}
-      </ToggleButtonGroup>
-    </Stack>
+    <BarChart
+      dataset={dataset}
+      series={[
+        {dataKey: 'Mật_mã', label: 'Mật mã'},
+        {dataKey: 'CNTT', label: 'CNTT'},
+        {dataKey: 'ATTT', label: 'ATTT'},
+      ]}
+      height={290}
+      xAxis={[{ data: ['Giảng dạy', 'HD luận văn', 'NCKH'], scaleType: 'band' }]}
+      margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
+    />
   );
-};
+}
