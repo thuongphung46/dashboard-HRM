@@ -1,15 +1,14 @@
 import Box from "@mui/material/Box/Box";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useRef, useState } from "react";
 import { GridColDef, GridRowId } from "@mui/x-data-grid";
 import { BaseGrid } from "components/atoms/datagrid";
 import { Grid } from "@mui/material";
+import { StaffDetail } from "types/ApplicationType";
 
 type Props = {
-  data: any;
+  data: StaffDetail;
 };
 interface IGridWorkingHistory {
-  handleDel: () => void;
-  handleAddRow: () => void;
   handleSave: () => void;
   handleRowSelect: (e: any) => void;
   dataSelectRow: any;
@@ -18,26 +17,12 @@ interface IGridWorkingHistory {
 }
 
 export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
-  handleDel,
-  handleAddRow,
   handleSave,
   dataSource,
   gridRef,
   dataSelectRow,
   handleRowSelect,
 }) => {
-  useEffect(() => {
-    dataSource?.forEach((ele: any) => {
-      if (ele.fromDate) {
-        const fromDate = new Date(ele.fromDate);
-        ele.fromDate = fromDate;
-      }
-      if (ele.toDate) {
-        const toDate = new Date(ele.toDate);
-        ele.toDate = toDate;
-      }
-    });
-  }, [dataSource]);
   const columns: GridColDef[] = [
     { field: "id", headerName: "STT", width: 150 },
     {
@@ -46,6 +31,12 @@ export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
       width: 150,
       editable: true,
       type: "date",
+      valueGetter: (params) => {
+        return params.value ? new Date(params.value) : null;
+      },
+      renderCell: (params) => {
+        return params.value ? new Date(params.value).toLocaleDateString() : "";
+      },
     },
     {
       field: "toDate",
@@ -53,6 +44,12 @@ export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
       width: 150,
       editable: true,
       type: "date",
+      valueGetter: (params) => {
+        return params.value ? new Date(params.value) : null;
+      },
+      renderCell: (params) => {
+        return params.value ? new Date(params.value).toLocaleDateString() : "";
+      },
     },
     {
       field: "jobTitle",
@@ -89,39 +86,18 @@ export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
 export const WorkingHistory = ({ data }: Props) => {
   const gridRef = useRef<any>(null);
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
-  const [dataSource, setDataSource] = useState<any[]>(
-    data?.staffWorkingHistories
-  );
 
-  data.staffWorkingHistories.forEach((item: any) => {
-    if (item.bonus !== null) {
-      item.content = item.bonus;
-    }
-    if (item.discipline !== null) {
-      item.content = item.discipline;
-    }
-  });
-
-  const handleAddRow = () => {
-    const newRow = {
-      id: dataSource.length + 1,
-      from_date: new Date(),
-      to_date: new Date(),
-      content: "",
-    };
-    setDataSource([...dataSource, newRow]);
-  };
+  // data?.staffWorkingHistories.forEach((item: any) => {
+  //   if (item.bonus !== null) {
+  //     item.content = item.bonus;
+  //   }
+  //   if (item.discipline !== null) {
+  //     item.content = item.discipline;
+  //   }
+  // });
 
   const handleSave = () => {
     // Handle save logic here
-  };
-
-  const handleDelete = () => {
-    const updatedDataSource = dataSource.filter(
-      (row: any) => !selectedRows.includes(row.id)
-    );
-    setDataSource(updatedDataSource);
-    setSelectedRows([]); // Xóa hàng đã chọn sau khi xóa
   };
 
   const handleRowSelectionChange = (selection: GridRowId[]) => {
@@ -133,10 +109,9 @@ export const WorkingHistory = ({ data }: Props) => {
       <Grid sx={{ marginTop: "24px" }} container alignItems="center">
         <GridWorkingHistory
           dataSelectRow={selectedRows}
-          dataSource={dataSource}
+          // dataSource={data.staffWorkingHistories}
+          dataSource={data.staffWorkingHistoriesInAcademy}
           gridRef={gridRef}
-          handleAddRow={handleAddRow}
-          handleDel={handleDelete}
           handleRowSelect={handleRowSelectionChange}
           handleSave={handleSave}
         />

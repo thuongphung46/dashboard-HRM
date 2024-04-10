@@ -13,7 +13,7 @@ interface Props {}
 export const TabDetailStaff: FC<Props> = () => {
   const { id } = useParams();
   const [value, setValue] = useState(0);
-  const { data, loading } = useGetStaff(Number(id));
+  const { data, loading } = useGetStaff(id);
 
   const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
