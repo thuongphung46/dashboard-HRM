@@ -74,6 +74,9 @@ export const GridTrainingSummary: FC<IGridTraining> = ({
       <BaseGrid
         onRowSelectionChange={handleRowSelect}
         title="TÓM TẮT QUÁ TRÌNH ĐÀO TẠO"
+        sx={{
+          minHeight: "300px",
+        }}
         columns={columns1}
         rows={dataSource}
         ref={gridRef}
