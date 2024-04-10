@@ -4,6 +4,7 @@ import {
   Select,
   MenuItem,
   SelectChangeEvent,
+  Input,
 } from "@mui/material";
 import { ChangeEvent, useRef, useState } from "react";
 import { toast } from "react-toastify";
@@ -12,8 +13,11 @@ import { FileTkbService } from "services/upload_service";
 export const ImportTemplate = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileSelected, setFileSelected] = useState(false);
-  const [importOption, setImportOption] = useState<string>(""); // Đặt kiểu cho importOption
+  const [importOptionTkb, setImportOptionTkb] = useState<string>("");
+  const [importOptionTerm, setImportOptionTerm] = useState<string>("");
   const fileInput1 = useRef<HTMLInputElement>(null);
+  const inputSchoolYear = useRef<HTMLInputElement>(null);
+  const [schoolYear,setSchoolYear] = useState<string>("");
 
   const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -23,17 +27,13 @@ export const ImportTemplate = () => {
     }
   };
 
-  const handleImportOptionChange = (event: SelectChangeEvent<string>) => {
-    setImportOption(event.target.value);
-  };
-
   const handleImport = async () => {
-    if (selectedFile && importOption) {
-      if (importOption === "Import TKB") {
+    if (selectedFile && importOptionTkb) {
+      if (importOptionTkb === "Import TKB") {
         const result = await FileTkbService.uploadFile(
           selectedFile,
-          "Học kỳ I",
-          "2023-2024"
+          importOptionTerm,
+          schoolYear
         );
 
         if (result.msg_code === 200) {
@@ -45,24 +45,49 @@ export const ImportTemplate = () => {
     }
   };
 
+  const onChangeOptinTerm = (event: SelectChangeEvent<string>) => {
+    setImportOptionTerm(event.target.value);
+  }
+
+  const onChangeOptinTkb = (event: SelectChangeEvent<string>) => {
+    setImportOptionTkb(event.target.value);
+  }
+  const onChangeSchoolYear = (event: ChangeEvent<HTMLInputElement>) => {
+    setSchoolYear(event.target.value);
+  }
+
   return (
     <div>
       <div>
         <Select
-          value={importOption}
-          onChange={handleImportOptionChange}
+        value={importOptionTerm}
+        onChange={onChangeOptinTerm}
+        displayEmpty
+        style={{ margin: "10px", width: "200px" }}
+        >
+          <MenuItem value="" disabled > Chọn học kỳ </MenuItem>
+          <MenuItem value="Học kỳ I">Học kỳ I</MenuItem>
+          <MenuItem value="Học kỳ II">Học kỳ II</MenuItem>
+        </Select>
+      </div>
+      <div style={{margin:"10px"}} >
+        <Input placeholder="School year" onChange={onChangeSchoolYear}/>
+      </div>
+      <div>
+        <Select
+          value={importOptionTkb}
+          onChange={onChangeOptinTkb}
           displayEmpty
-          style={{ marginRight: "10px" }}
+          style={{ margin: "10px", width: "200px"}}
         >
           <MenuItem value="" disabled>
             Chọn tùy chọn
           </MenuItem>
           <MenuItem value="Import TKB">Import TKB</MenuItem>
-          <MenuItem value="Import thống kê vượt giờ">
+          {/* <MenuItem value="Import thống kê vượt giờ">
             Import danh sách NCKH
-          </MenuItem>
+          </MenuItem> */}
         </Select>
-        <p>Nhớ thêm term và schoolYear</p>
         <input
           accept=".xlsx"
           style={{ display: "none" }}
@@ -86,7 +111,7 @@ export const ImportTemplate = () => {
         <Button
           variant="contained"
           onClick={handleImport}
-          disabled={!fileSelected || !importOption}
+          disabled={!fileSelected || !importOptionTkb || !importOptionTerm}
         >
           Import
         </Button>
