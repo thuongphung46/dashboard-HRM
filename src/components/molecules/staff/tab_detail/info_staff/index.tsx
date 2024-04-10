@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -21,15 +21,6 @@ export const InfoStaff = ({ data }: Props) => {
   const gridRef = useRef<any>(null);
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]); // State để lưu trữ các dòng được chọn
   const [formData, setFormData] = useState<any>({});
-  const [dataGridTrainingSummary, setDataGridTrainingSummary] =
-    useState<any[]>();
-  const [dataStaffWorkingHistories, setDataStaffWorkingHistories] =
-    useState<any[]>();
-
-  useEffect(() => {
-    setDataGridTrainingSummary(data.trainingSummary);
-    setDataStaffWorkingHistories(data.staffWorkingHistoriesOutAcademy);
-  }, [data.staffWorkingHistoriesOutAcademy, data.trainingSummary]);
 
   const handleSave = () => {};
 
@@ -101,7 +92,7 @@ export const InfoStaff = ({ data }: Props) => {
 
         <Grid sx={{ marginTop: "24px" }} width={"100%"} minWidth={500}>
           <GridTrainingSummary
-            dataSource={dataGridTrainingSummary}
+            dataSource={data.trainingSummary}
             dataSelectRow={selectedRows}
             gridRef={gridRef}
             handleSave={handleSave}
@@ -110,7 +101,7 @@ export const InfoStaff = ({ data }: Props) => {
         </Grid>
         <Grid sx={{ marginTop: "24px" }} width={"100%"}>
           <GridTraining
-            dataSource={dataStaffWorkingHistories}
+            dataSource={data.staffWorkingHistoriesOutAcademy}
             dataSelectRow={selectedRows}
             gridRef={gridRef}
             handleSave={handleSave}

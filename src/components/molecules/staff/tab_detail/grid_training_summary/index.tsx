@@ -87,8 +87,6 @@ export const GridTrainingSummary: FC<IGridTraining> = ({
         pageSizeOptions={[5]}
         checkboxSelection
         disableRowSelectionOnClick
-        // onRowSelectionModelChange={handleRowSelect}
-        // rowSelectionModel={dataSelectRow}
         selectedRows={dataSelectRow}
         onSave={handleSave}
       />
