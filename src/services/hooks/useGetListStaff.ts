@@ -54,3 +54,24 @@ export const useGetStaff = (id: number) => {
   }, [id]);
   return { data, loading };
 };
+
+export const useGetWorkingHistoryStaff = (id: number) => {
+  const [data, setData] = useState<StaffDetail | any>({});
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const fetchData = async () => {
+    setLoading(true);
+    const response = await NetWork.get(`${API_URL.STAFFS}/${id}/working-histories`);
+    if (response.status === RESPONSE_CODE.SUCCESS) {
+      setData(response?.data?.content);
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+  return { data, loading };
+};

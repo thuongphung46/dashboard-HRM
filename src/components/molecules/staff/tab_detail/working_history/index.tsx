@@ -16,6 +16,7 @@ interface IGridWorkingHistory {
   dataSource: any;
   gridRef: any;
 }
+
 export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
   handleDel,
   handleAddRow,
@@ -38,40 +39,13 @@ export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
     });
   }, [dataSource]);
   const columns: GridColDef[] = [
-    {
-      field: "id",
-      headerName: "STT",
-      width: 150,
-    },
-    {
-      field: "fromDate",
-      headerName: "Từ ngày",
-      width: 150,
-      editable: true,
-      type: "date",
-    },
-    {
-      field: "toDate",
-      headerName: "Đến ngày",
-      width: 150,
-      editable: true,
-      type: "date",
-    },
-    {
-      field: "jobTitle",
-      headerName: "Chức vụ",
-      width: 300,
-      editable: true,
-      type: "text",
-    },
-    {
-      field: "content",
-      headerName: "Nội dung",
-      width: 400,
-      editable: true,
-      type: "text",
-    },
+    { field: "id", headerName: "STT", width: 150,},
+    { field: "fromDate", headerName: "Từ ngày", width: 150, editable: true, type: "date",},
+    { field: "toDate", headerName: "Đến ngày", width: 150, editable: true, type: "date", },
+    { field: "jobTitle", headerName: "Chức vụ", width: 300, editable: true, type: "text",},
+    { field: "content", headerName: "Nội dung", width: 400, editable: true, type: "text", },
   ];
+
   function generateRandom() {
     var length = 8,
       charset =
@@ -82,9 +56,9 @@ export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
     }
     return retVal;
   }
+
   return (
     <div>
-      <>
         <BaseGrid
           onRowSelectionChange={handleRowSelect}
           title=""
@@ -96,7 +70,6 @@ export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
           getRowId={(row: any) => generateRandom()}
           selectedRows={dataSelectRow}
         ></BaseGrid>
-      </>
     </div>
   );
 };
