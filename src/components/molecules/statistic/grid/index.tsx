@@ -1,20 +1,24 @@
 import { BaseGrid } from "components/atoms/datagrid";
 
 export const GridStatistic = () => {
+  const columns = [
+    { field: "id", headerName: "STT", width: 90 },
+    { field: "name", headerName: "Khoa/Bộ môn", width: 150, editable: true },
+    { field: "sum_teaching", headerName: "Tổng giảng dạy", width: 150, editable: true, type: "number" },
+    { field: "sum_guide", headerName: "Tổng HD luận văn/ Đồ án", width: 200, editable: true, type: "number" },
+    { field: "sum_research", headerName: "Tổng NCKH", width: 150, editable: true, type: "number" },
+  ];
+  const rows = [
+    { id: 1, name: "Khoa CNTT", sum_teaching: 100, sum_guide: 50, sum_research: 20 },
+    { id: 2, name: "Khoa ATTT", sum_teaching: 80, sum_guide: 40, sum_research: 10},
+    { id: 3, name: "Khoa Mật mã", sum_teaching: 60, sum_guide: 30, sum_research: 15}
+  ];
+
   return (
     <div>
       <BaseGrid
-        columns={[
-          { field: "id", headerName: "STT", width: 90 },
-          { field: "name", headerName: "Name", width: 150, editable: true },
-          { field: "age", headerName: "Age", width: 150, editable: true },
-          { field: "job", headerName: "Job", width: 150, editable: true },
-        ]}
-        rows={[
-          { id: 1, name: "John", age: 35, job: "Engineer" },
-          { id: 2, name: "Jane", age: 24, job: "Doctor" },
-          { id: 3, name: "Doe", age: 45, job: "Teacher" },
-        ]}
+        columns={columns}
+        rows={rows}
         onRowSelectionChange={(selection) => console.log(selection)}
         selectedRows={[]}
         title="Statistic"
