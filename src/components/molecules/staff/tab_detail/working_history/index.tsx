@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box/Box";
-import { FC, useCallback, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { GridColDef, GridRowId } from "@mui/x-data-grid";
 import { BaseGrid } from "components/atoms/datagrid";
 import { Grid } from "@mui/material";
@@ -39,11 +39,35 @@ export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
     });
   }, [dataSource]);
   const columns: GridColDef[] = [
-    { field: "id", headerName: "STT", width: 150,},
-    { field: "fromDate", headerName: "Từ ngày", width: 150, editable: true, type: "date",},
-    { field: "toDate", headerName: "Đến ngày", width: 150, editable: true, type: "date", },
-    { field: "jobTitle", headerName: "Chức vụ", width: 300, editable: true, type: "text",},
-    { field: "content", headerName: "Nội dung", width: 400, editable: true, type: "text", },
+    { field: "id", headerName: "STT", width: 150 },
+    {
+      field: "fromDate",
+      headerName: "Từ ngày",
+      width: 150,
+      editable: true,
+      type: "date",
+    },
+    {
+      field: "toDate",
+      headerName: "Đến ngày",
+      width: 150,
+      editable: true,
+      type: "date",
+    },
+    {
+      field: "jobTitle",
+      headerName: "Chức vụ",
+      width: 300,
+      editable: true,
+      type: "text",
+    },
+    {
+      field: "content",
+      headerName: "Nội dung",
+      width: 400,
+      editable: true,
+      type: "text",
+    },
   ];
 
   function generateRandom() {
@@ -59,17 +83,17 @@ export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
 
   return (
     <div>
-        <BaseGrid
-          onRowSelectionChange={handleRowSelect}
-          title=""
-          columns={columns}
-          rows={dataSource}
-          ref={gridRef}
-          checkboxSelection
-          disableRowSelectionOnClick
-          getRowId={(row: any) => generateRandom()}
-          selectedRows={dataSelectRow}
-        ></BaseGrid>
+      <BaseGrid
+        onRowSelectionChange={handleRowSelect}
+        title=""
+        columns={columns}
+        rows={dataSource}
+        ref={gridRef}
+        checkboxSelection
+        disableRowSelectionOnClick
+        getRowId={(row: any) => generateRandom()}
+        selectedRows={dataSelectRow}
+      ></BaseGrid>
     </div>
   );
 };
@@ -82,10 +106,10 @@ export const WorkingHistory = ({ data }: Props) => {
   );
 
   data.staffWorkingHistories.forEach((item: any) => {
-    if(item.bonus !== null) {
+    if (item.bonus !== null) {
       item.content = item.bonus;
     }
-    if(item.discipline !== null) {
+    if (item.discipline !== null) {
       item.content = item.discipline;
     }
   });
@@ -118,17 +142,17 @@ export const WorkingHistory = ({ data }: Props) => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-        <Grid sx={{ marginTop: "24px" }} container alignItems="center">
-          <GridWorkingHistory
-            dataSelectRow={selectedRows}
-            dataSource={dataSource}
-            gridRef={gridRef}
-            handleAddRow={handleAddRow}
-            handleDel={handleDelete}
-            handleRowSelect={handleRowSelectionChange}
-            handleSave={handleSave}
-          />
-        </Grid>
+      <Grid sx={{ marginTop: "24px" }} container alignItems="center">
+        <GridWorkingHistory
+          dataSelectRow={selectedRows}
+          dataSource={dataSource}
+          gridRef={gridRef}
+          handleAddRow={handleAddRow}
+          handleDel={handleDelete}
+          handleRowSelect={handleRowSelectionChange}
+          handleSave={handleSave}
+        />
+      </Grid>
     </Box>
   );
 };

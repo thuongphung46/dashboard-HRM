@@ -3,6 +3,7 @@ import { Box } from "@mui/material";
 import { BaseGrid } from "components/atoms/datagrid";
 import { GridRowId } from "@mui/x-data-grid";
 import { STAFF_EXAM } from "constants/global_data";
+import { StaffExamCourse } from "types/ApplicationType";
 
 interface Props {
   data: StaffExamCourse[];
@@ -14,20 +15,6 @@ export const Assess: FC<Props> = ({ data }) => {
 
   const middle = data.filter((item) => item.examName === STAFF_EXAM.MIDDLE);
   const end = data.filter((item) => item.examName === STAFF_EXAM.END);
-
-  const [rows1, setRows1] = useState<any>([
-    {
-      id: 1,
-      semester: "Học kỳ I",
-      training_sys: "Đào tạo chuyên ngành Kỹ thuật mật mã",
-      course_name: "Học phần abc",
-      role: "Ra đề",
-      class_course: "L06",
-      num_people: "50",
-      num_topic: "50",
-      num_lesion: "3",
-    },
-  ]);
 
   const columns1 = [
     { field: "id", headerName: "STT", width: 90 },
@@ -99,20 +86,6 @@ export const Assess: FC<Props> = ({ data }) => {
     },
   ];
 
-  const [rows2, setRows2] = useState<any>([
-    {
-      id: 1,
-      semester: "Học kỳ I",
-      training_sys: "Đào tạo chuyên ngành Kỹ thuật mật mã",
-      course_name: "Học phần abc",
-      role: "Ra đề",
-      class_course: "L06",
-      num_people: "50",
-      training_course: "",
-      num_lesion: "3",
-    },
-  ]);
-
   const columns2 = [
     { field: "id", headerName: "STT", width: 90 },
     {
@@ -183,28 +156,8 @@ export const Assess: FC<Props> = ({ data }) => {
     },
   ];
 
-  const handleAddRow = () => {
-    const newRow = {
-      id: rows1.length + 1,
-      semester: "",
-      training_sys: "",
-      course_name: "",
-      role: "",
-      class_course: "",
-      num_people: "",
-      num_topic: "",
-      num_lesion: "",
-    };
-    setRows1([...rows1, newRow]);
-  };
   const handleSave = () => {
     // Handle save logic here
-  };
-
-  const handleDelete = () => {
-    // const updatedRows = rows1.filter((row) => !selectedRows1.includes(row.id));
-    // setRows1(updatedRows);
-    // setSelectedRows1([]);
   };
 
   return (

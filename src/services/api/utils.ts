@@ -1,4 +1,5 @@
 import { isArray, isNullOrEmpty } from "common/validation";
+import { GetRequestParams, ObjectType } from "types/ApplicationType";
 
 /**
  * convert object to query string

@@ -2,12 +2,13 @@ import React, { FC, useState } from "react";
 import { GridRowId } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 import { BaseGrid } from "components/atoms/datagrid";
+import { StaffTeaching } from "types/ApplicationType";
 
 interface Props {
   data: StaffTeaching[];
 }
 
-export const Teaching: React.FC<Props> = ({ data }) => {
+export const Teaching: FC<Props> = ({ data }) => {
   const [selectedRows1, setSelectedRows1] = useState<GridRowId[]>([]);
 
   // Các cột cho lưới dữ liệu 1
@@ -76,19 +77,6 @@ export const Teaching: React.FC<Props> = ({ data }) => {
       width: 100,
       editable: true,
       type: "number",
-    },
-  ];
-  const rows1 = [
-    {
-      id: 1,
-      semester: "Học kỳ I",
-      training_sys: "Đào tạo chuyên ngành Kỹ thuật mật mã",
-      course_name: "Tin học văn phòng-1-22",
-      num_credits: "3",
-      class_course: "TC25",
-      training_type: "",
-      num_schedule: "54",
-      num_standard: "60",
     },
   ];
 
