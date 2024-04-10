@@ -98,7 +98,7 @@ export interface StaffExamCourse {
   trainingCourse: string;
 }
 
-interface StaffInstructProject {
+export interface StaffInstructProject {
   id: number;
   staffId: number;
   schoolYear: string;

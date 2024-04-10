@@ -46,8 +46,8 @@ export const Playground: React.FC<SidebarProps> = ({
   setTheme,
   theme,
 }) => {
-  const [rtl, setRtl] = React.useState(false);
-  const [hasImage, setHasImage] = React.useState(false);
+  const rtl = false;
+  const hasImage = false;
 
   const handleLogout = useCallback(() => {
     localStorage.removeItem("access_token");

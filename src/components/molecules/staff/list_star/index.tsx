@@ -10,14 +10,6 @@ import {
 import { columns } from "./columns";
 
 interface Props {}
-interface StaffData {
-  id: number;
-  staff_id: string;
-  staff_name: string;
-  position_name: string;
-  rank_name: string;
-  level_name: string;
-}
 
 export const ListStaff: FC<Props> = () => {
   const navigate = useNavigate();

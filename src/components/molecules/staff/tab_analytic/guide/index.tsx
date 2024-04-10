@@ -3,6 +3,7 @@ import { GridRenderCellParams, GridRowId } from "@mui/x-data-grid";
 import { BaseGrid } from "components/atoms/datagrid";
 import { Checkbox } from "@mui/material";
 import Box from "@mui/material/Box/Box";
+import { StaffInstructProject } from "types/ApplicationType";
 
 interface Row {
   id: number;
