@@ -1,9 +1,10 @@
-import { getToken } from "common/function";
+import { storageAction } from "common/function";
 import { RESPONSE_CODE } from "./config";
+import { KeyValue } from "constants/GlobalConstant";
 
 export const AccessTokenInterceptor = {
   addAccessToken: (config: any) => {
-    const token = getToken();
+    const token = storageAction("get", KeyValue.TokenKey);
     if (token) {
       const headers = {
         ...config.headers,

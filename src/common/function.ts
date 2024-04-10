@@ -1,19 +1,28 @@
-import { TokenInfo } from "constants/GlobalConstant";
+import { KeyValue } from "constants/GlobalConstant";
 
 export const toString = (data: any) => {
   return `${data}`;
 };
 
-export const setToken = (token: any) => {
-  localStorage.setItem(TokenInfo.TokenKey, token);
-};
+export const storageAction = (
+  action: "get" | "set" | "clear",
+  key: string,
+  value?: any
+) => {
+  const storage = localStorage;
 
-export const getToken = () => {
-  return localStorage.getItem(TokenInfo.TokenKey);
-};
-
-export const clearToken = () => {
-  localStorage.removeItem(TokenInfo.TokenKey);
+  switch (action) {
+    case "get":
+      return storage.getItem(key);
+    case "set":
+      storage.setItem(key, value);
+      break;
+    case "clear":
+      storage.removeItem(key);
+      break;
+    default:
+      throw new Error("Invalid action provided");
+  }
 };
 
 export function latinToRoman(num: number) {

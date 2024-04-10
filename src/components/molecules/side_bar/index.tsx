@@ -1,6 +1,6 @@
 import { Diamond, DarkMode } from "@mui/icons-material";
 import { Typography } from "@mui/material";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Menu,
   MenuItem,
@@ -13,6 +13,8 @@ import { SidebarHeader } from "./sidebar_header";
 import { SidebarFooter } from "./sidebar_footer";
 import { themes } from "constants/themes/styles";
 import { Link } from "react-router-dom";
+import { KeyValue } from "constants/GlobalConstant";
+import { storageAction } from "common/function";
 
 // hex to rgba converter
 const hexToRgba = (hex: string, alpha: number) => {
@@ -46,8 +48,18 @@ export const Playground: React.FC<SidebarProps> = ({
   setTheme,
   theme,
 }) => {
+  const [dissable, setDissable] = useState(false);
   const rtl = false;
   const hasImage = false;
+  const level = storageAction("get", KeyValue.TokenKey);
+
+  useEffect(() => {
+    if (level !== "LEVEL_1") {
+      setDissable(true);
+    } else {
+      setDissable(false);
+    }
+  }, [level, dissable]);
 
   const handleLogout = useCallback(() => {
     localStorage.removeItem("access_token");
@@ -100,8 +112,7 @@ export const Playground: React.FC<SidebarProps> = ({
         display: "flex",
         height: "100%",
         direction: rtl ? "rtl" : "ltr",
-      }}
-    >
+      }}>
       <Sidebar
         collapsed={collapsed}
         toggled={toggled}
@@ -116,11 +127,9 @@ export const Playground: React.FC<SidebarProps> = ({
         )}
         rootStyles={{
           color: themes[theme].sidebar.color,
-        }}
-      >
+        }}>
         <div
-          style={{ display: "flex", flexDirection: "column", height: "100%" }}
-        >
+          style={{ display: "flex", flexDirection: "column", height: "100%" }}>
           <SidebarHeader
             rtl={rtl}
             style={{ marginBottom: "24px", marginTop: "16px" }}
@@ -133,8 +142,7 @@ export const Playground: React.FC<SidebarProps> = ({
                 style={{
                   opacity: collapsed ? 0 : 0.7,
                   letterSpacing: "0.5px",
-                }}
-              >
+                }}>
                 General
               </Typography>
             </div>
@@ -149,7 +157,9 @@ export const Playground: React.FC<SidebarProps> = ({
                 <MenuItem component={<Link to={"/detail_employee"}></Link>}>
                   Employee Detail
                 </MenuItem>
-                <MenuItem component={<Link to={"/teaching_contract"}></Link>}>
+                <MenuItem
+                  disabled={dissable}
+                  component={<Link to={"/teaching_contract"}></Link>}>
                   Teaching Contract
                 </MenuItem>
                 <MenuItem component={<Link to={"/import"}></Link>}>
@@ -166,16 +176,14 @@ export const Playground: React.FC<SidebarProps> = ({
                 padding: "0 24px",
                 marginBottom: "8px",
                 marginTop: "32px",
-              }}
-            >
+              }}>
               <Typography
                 variant="body2"
                 fontWeight={600}
                 style={{
                   opacity: collapsed ? 0 : 0.7,
                   letterSpacing: "0.5px",
-                }}
-              >
+                }}>
                 Extra
               </Typography>
             </div>

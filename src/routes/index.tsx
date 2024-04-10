@@ -10,11 +10,24 @@ import { TeachingContractPage } from "components/pages/teaching_contract";
 import { SignIn } from "components/pages/login";
 import { TabDetailStaff } from "components/molecules/staff/tab_detail";
 import { StatisticPage } from "components/pages/statistic";
+import { FC } from "react";
+import { Navigate } from "react-router-dom";
 
 enum FORM_STATE {
   EDIT = "edit",
   ADD = "add",
 }
+
+interface PropType {
+  component: React.FC;
+}
+
+const PrivateRoute: FC<PropType> = ({ component: Component }) => {
+  const level = localStorage.getItem("level");
+
+  if (level === "LEVEL_1") return <Component />;
+  return <Navigate to="/model" />;
+};
 const router = createBrowserRouter([
   {
     path: "/",
@@ -40,7 +53,7 @@ const router = createBrowserRouter([
       { path: "/detail_employee/:id", element: <TabDetailStaff /> },
       {
         path: "/teaching_contract",
-        element: <TeachingContractPage />,
+        element: <PrivateRoute component={TeachingContractPage} />,
       },
       {
         path: "/import",

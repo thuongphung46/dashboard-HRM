@@ -4,7 +4,8 @@ const GlobalConstant = {
 
 export default GlobalConstant;
 
-export const TokenInfo = {
+export const KeyValue = {
   TokenKey: "access_token",
   SessionKey: "SESSION",
+  Level: "level",
 };

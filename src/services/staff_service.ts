@@ -13,5 +13,8 @@ const StaffService = {
       `?query=${param.query}&active=${param.active}&page=${param.page}&size=${param.size}`
     );
   },
+  GetMyProfile: async () => {
+    return await Request(controller).getAsync("me");
+  },
 };
 export { StaffService };
