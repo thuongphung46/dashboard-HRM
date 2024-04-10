@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -11,6 +11,7 @@ import { GridTrainingSummary } from "../grid_training_summary";
 import { GridTraining } from "../grid_training";
 import { fieldsData } from "./fields";
 import { STAFF_ADMISSION } from "constants/global_data";
+import { StaffDetail } from "types/ApplicationType";
 
 type Props = {
   data: StaffDetail;
@@ -20,12 +21,15 @@ export const InfoStaff = ({ data }: Props) => {
   const gridRef = useRef<any>(null);
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]); // State để lưu trữ các dòng được chọn
   const [formData, setFormData] = useState<any>({});
-  const [dataGridTrainingSummary, setDataGridTrainingSummary] = useState<any[]>(
-    data.trainingSummary
-  );
-  const [dataStaffWorkingHistories, setDataStaffWorkingHistories] = useState<
-    any[]
-  >(data.staffWorkingHistoriesOutAcademy);
+  const [dataGridTrainingSummary, setDataGridTrainingSummary] =
+    useState<any[]>();
+  const [dataStaffWorkingHistories, setDataStaffWorkingHistories] =
+    useState<any[]>();
+
+  useEffect(() => {
+    setDataGridTrainingSummary(data.trainingSummary);
+    setDataStaffWorkingHistories(data.staffWorkingHistoriesOutAcademy);
+  }, [data.staffWorkingHistoriesOutAcademy, data.trainingSummary]);
 
   const handleSave = () => {};
 

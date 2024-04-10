@@ -1,12 +1,12 @@
-type ObjectType = { [key: string]: any | any[] };
-type GetRequestParams = {
+export type ObjectType = { [key: string]: any | any[] };
+export type GetRequestParams = {
   parentId?: string | number;
   partial?: string | number;
   subId?: string | number;
   action?: string | number;
 };
 
-interface StaffDetail {
+export interface StaffDetail {
   id: number;
   username: string;
   fullName: string;
@@ -82,7 +82,7 @@ interface StaffWorkingHistoryResponse {
   workingPlace: string;
 }
 
-interface StaffExamCourse {
+export interface StaffExamCourse {
   id: number;
   staffId: number;
   schoolYear: string;
@@ -192,14 +192,14 @@ interface StaffBuildingProgram {
   numberOfHour: number;
 }
 
-interface StaffSummary {
+export interface StaffSummary {
   id: number;
   staffId: number;
   schoolYear: string;
   reasonReduce: string;
   contentWorks: ContentWork[];
 }
-interface ContentWork {
+export interface ContentWork {
   contentWork: string;
   numberOfLesson: number;
 }
@@ -225,7 +225,7 @@ interface StaffResearch {
   numberOfResearchReserved?: number;
 }
 
-interface StaffTeaching {
+export interface StaffTeaching {
   id: number;
   staffId: number;
   schoolYear: string;

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { API_URL, NetWork } from "services/api";
 import { RESPONSE_CODE } from "services/api/config";
 import { deleteParamsNotUsing } from "services/api/utils";
+import { StaffDetail } from "types/ApplicationType";
 
 export type GetListStaffParams = {
   query?: string;
@@ -61,7 +62,9 @@ export const useGetWorkingHistoryStaff = (id: number) => {
 
   const fetchData = async () => {
     setLoading(true);
-    const response = await NetWork.get(`${API_URL.STAFFS}/${id}/working-histories`);
+    const response = await NetWork.get(
+      `${API_URL.STAFFS}/${id}/working-histories`
+    );
     if (response.status === RESPONSE_CODE.SUCCESS) {
       setData(response?.data?.content);
       setLoading(false);

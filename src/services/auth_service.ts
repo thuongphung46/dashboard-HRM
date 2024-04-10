@@ -1,5 +1,4 @@
 import axios from "axios";
-import { Request } from "./request";
 import { clearToken } from "common/function";
 import { NetWork } from "./api";
 import { getRequestUrl } from "./api/utils";

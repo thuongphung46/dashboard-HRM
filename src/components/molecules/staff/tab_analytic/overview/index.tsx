@@ -4,6 +4,7 @@ import { GridColDef } from "@mui/x-data-grid/models/colDef/gridColDef";
 import { latinToRoman } from "common/function";
 import { isNullOrEmpty } from "common/validation";
 import React, { useRef } from "react";
+import { ContentWork, StaffSummary } from "types/ApplicationType";
 
 interface Props {
   data: StaffSummary[];

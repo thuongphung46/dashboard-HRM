@@ -7,6 +7,7 @@ import { Teaching } from "./teaching";
 import { Assess } from "./assess";
 import { Guide } from "./guide";
 import { ScientificResearch } from "./scientific_research";
+import { StaffDetail } from "types/ApplicationType";
 
 interface Props {
   data: StaffDetail;

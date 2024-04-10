@@ -2,6 +2,7 @@ import React, { FC, useState } from "react";
 import { GridRowId } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 import { BaseGrid } from "components/atoms/datagrid";
+import { StaffDetail } from "types/ApplicationType";
 
 interface Props {
   data: StaffDetail;
@@ -67,19 +68,6 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
       type: "number",
     },
   ];
-  const rows1 = [
-    {
-      id: 1,
-      topic_name:
-        "Nghiên cứu, tích hợp trợ giảng ảo vào hệ thống đào tạo kết hợp của HVKTMM",
-      position: "",
-      topic_level: "",
-      accept_date: "",
-      result: "",
-      hours: "",
-    },
-  ];
-
   // Các cột cho lưới dữ liệu 2
   const columns2 = [
     { field: "id", headerName: "STT", width: 90 },
@@ -125,17 +113,6 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
       width: 150,
       editable: true,
       type: "number",
-    },
-  ];
-  const rows2 = [
-    {
-      id: 1,
-      article_name: "",
-      type_magazine: "",
-      num_magazine: "",
-      num_people: "",
-      role: "",
-      hours: "",
     },
   ];
 
@@ -188,17 +165,6 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
       type: "number",
     },
   ];
-  const rows3 = [
-    {
-      id: 1,
-      certificate_name: "",
-      num_validation: "",
-      date_validation: "",
-      num_people: "",
-      role: "",
-      hours: "",
-    },
-  ];
 
   // Các cột cho lưới dữ liệu 4
   const book = data.book;
@@ -247,17 +213,6 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
       width: 150,
       editable: true,
       type: "number",
-    },
-  ];
-  const rows4 = [
-    {
-      id: 1,
-      book_titles: "",
-      public_num: "",
-      page_num: "",
-      num_people: "",
-      role: "",
-      hours: "",
     },
   ];
 
@@ -311,17 +266,6 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
       type: "number",
     },
   ];
-  const rows5 = [
-    {
-      id: 1,
-      topic_name: "",
-      num_decision: "",
-      date_decition: "",
-      result: "",
-      hours: "",
-    },
-  ];
-
   // Các cột cho lưới dữ liệu 6
   const building = data.buildingProgram;
   const columns6 = [
@@ -368,18 +312,6 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
       headerName: "Số giờ quy đổi",
       width: 150,
       editable: true,
-    },
-  ];
-  const rows6 = [
-    {
-      id: 1,
-      training_name: "",
-      num_credits: "",
-      num_decision: "",
-      date_decition: "",
-      num_people: "",
-      construction: "",
-      hours: "",
     },
   ];
 

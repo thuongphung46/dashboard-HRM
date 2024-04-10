@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from "react";
-import { GridRowId } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 import { BaseGrid } from "components/atoms/datagrid";
 import { AddNewContract } from "./add_contract/indext";
@@ -127,7 +126,7 @@ export const TeachingContractPage: React.FC = () => {
       const reader = new FileReader();
       reader.onload = (e) => {
         const content = e.target?.result as string;
-        setSelectedContract(content)
+        setSelectedContract(content);
       };
       reader.readAsText(file);
     }

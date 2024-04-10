@@ -30,6 +30,7 @@ export const useGetDepartment = (id: number) => {
 
   const fetchData = async () => {
     setLoading(true);
+    if (!id) return;
     const response = await NetWork.get(`${API_URL.DEPARTMENT}/${id}`);
     if (response.status === RESPONSE_CODE.SUCCESS) {
       setData(response?.data?.content);
@@ -45,7 +46,7 @@ export const useGetDepartment = (id: number) => {
   }, [id]);
 
   return { data, loading };
-}
+};
 
 export type createDepartmentBody = {
   name: string;
