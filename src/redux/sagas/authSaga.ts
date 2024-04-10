@@ -3,7 +3,9 @@ import { PayloadAction } from "@reduxjs/toolkit";
 import { call, fork, take } from "redux-saga/effects";
 import { LoginPayload, authActions } from "../slices/authSlice";
 import { AuthService } from "services/auth_service";
-import { clearToken, setToken } from "common/function";
+import { StaffService } from "services/staff_service";
+import { storageAction } from "common/function";
+import { KeyValue } from "constants/GlobalConstant";
 import { ApiRes } from "types/ApiResponse";
 import { toastMessage } from "components/molecules/toast_message";
 
@@ -11,24 +13,22 @@ function* handleLogin(payload: LoginPayload) {
   try {
     const response: ApiRes = yield call(AuthService.LoginAdmin, payload);
     if (response.status === 200 && response.data.msg_code === 200) {
-      // if (response.access_token) {
-      // if (response.data[0].iaAdmin) {
-      // let token = response.data[0].id;
-
       let token = response.data.content.body.access_token;
-
-      setToken(token);
-      yield put(
-        authActions.loginSuccess({
-          id: 1,
-          name: payload.UserName,
-        })
-      );
-      toastMessage(`Wellcome ${payload.UserName}`, "success");
-      // } else {
-      //   yield put(authActions.loginFailed("You are not admin")); // Dispatch action
-      //   toastMessage("You are not admin", "error");
-      // }
+      storageAction("set", KeyValue.TokenKey, token);
+      const resProfile: ApiRes = yield call(StaffService.GetMyProfile);
+      if (resProfile.msg_code === 200) {
+        storageAction("set", KeyValue.Level, resProfile.content.level);
+        yield put(
+          authActions.loginSuccess({
+            id: 1,
+            name: payload.UserName,
+          })
+        );
+        toastMessage(`Wellcome ${payload.UserName}`, "success");
+      } else {
+        yield put(authActions.loginFailed(response.message)); // Dispatch action
+        toastMessage(response.message, "error");
+      }
     } else {
       yield put(authActions.loginFailed(response.message)); // Dispatch action
       toastMessage(response.message, "error");
@@ -41,7 +41,7 @@ function* handleLogin(payload: LoginPayload) {
 
 function* handleLogout() {
   yield put(authActions.logout());
-  yield clearToken();
+  yield storageAction("clear", KeyValue.TokenKey);
   // Redirect to Login page
 }
 
@@ -53,7 +53,7 @@ function* watchLoginFlow() {
       const action: PayloadAction<LoginPayload> = yield take(
         authActions.login.type
       );
-      yield fork(handleLogin, action.payload); // Non-blocking
+      yield fork(handleLogin, action.payload);
     } else {
       yield take(authActions.logout.type);
       yield call(handleLogout);

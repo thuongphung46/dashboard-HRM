@@ -1,5 +1,6 @@
 import axios from "axios";
-import { clearToken } from "common/function";
+import { storageAction } from "common/function";
+import { KeyValue } from "constants/GlobalConstant";
 import { NetWork } from "./api";
 import { getRequestUrl } from "./api/utils";
 
@@ -30,7 +31,8 @@ const AuthService = {
 
   logout: () => {
     localStorage.removeItem("user");
-    clearToken();
+    storageAction("clear", KeyValue.TokenKey);
+    storageAction("clear", KeyValue.Level);
   },
 };
 export { AuthService };
