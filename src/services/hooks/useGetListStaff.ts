@@ -78,3 +78,28 @@ export const useGetWorkingHistoryStaff = (id: number) => {
   }, [id]);
   return { data, loading };
 };
+
+//get list contract of staff
+export const useGetListContractStaff = (id: string|undefined|null) => {
+  const [data, setData] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const fetchData = async () => {
+    setLoading(true);
+    if(!id) return;
+    const response = await NetWork.get(
+      `${API_URL.STAFFS}/${id}/contracts`
+    );
+    if (response.status === RESPONSE_CODE.SUCCESS) {
+      setData(response?.data?.content);
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+  return { data, loading };
+};

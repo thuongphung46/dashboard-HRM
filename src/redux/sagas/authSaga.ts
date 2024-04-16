@@ -18,6 +18,7 @@ function* handleLogin(payload: LoginPayload) {
       const resProfile: ApiRes = yield call(StaffService.GetMyProfile);
       if (resProfile.msg_code === 200) {
         storageAction("set", KeyValue.Level, resProfile.content.level);
+        storageAction("set", KeyValue.id, resProfile.content.id);
         yield put(
           authActions.loginSuccess({
             id: 1,

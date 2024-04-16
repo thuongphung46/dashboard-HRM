@@ -1,29 +1,27 @@
 import React, { useMemo, useState } from "react";
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { BaseGrid } from "components/atoms/datagrid";
 import { AddNewContract } from "./add_contract/indext";
 import Dialog from "@mui/material/Dialog";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { useGetListContractStaff } from "services/hooks/useGetListStaff";
+import { useNavigate } from "react-router-dom";
+import { storageAction } from "common/function";
+import { KeyValue } from "constants/GlobalConstant";
+import { GridColDef } from "@mui/x-data-grid/models/colDef";
 
 export const TeachingContractPage: React.FC = () => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
-  const [selectedContract, setSelectedContract] = useState<any>([]);
+  const [selectedContract, setSelectedContract] = useState<any>({});
+  const idUser =  storageAction("get", KeyValue.id);
+  const { data: TeachingContractPageData, loading } = useGetListContractStaff(idUser); // Pass the required argument
+  const navigate = useNavigate();
 
-  // Các cột cho lưới dữ liệu 1
-  const columns = [
+  const columns: GridColDef[] = [
     { field: "id", headerName: "STT", width: 90 },
     {
-      field: "semester",
-      headerName: "Học kỳ",
-      width: 100,
-      editable: true,
-      type: "singleSelect",
-      valueOptions: ["Học kỳ I", "Học kỳ II"],
-    },
-    { field: "year", headerName: "Năm học", width: 150, editable: true },
-    {
-      field: "contract_name",
+      field: "contractName",
       headerName: "Tên hợp đồng",
       width: 300,
       editable: true,
@@ -32,30 +30,25 @@ export const TeachingContractPage: React.FC = () => {
       ),
     },
     {
-      field: "from_date",
+      field: "fromDate",
       headerName: "Từ ngày",
       width: 150,
       editable: true,
       type: "date",
+      valueFormatter: (params) => {
+        return params.value ? new Date(params.value).toLocaleDateString() : "";
+      },
     },
     {
-      field: "to_date",
+      field: "toDate",
       headerName: "Đến ngày",
       width: 150,
       editable: true,
       type: "date",
+      valueFormatter: (params) => {
+        return params.value ? new Date(params.value).toLocaleDateString() : "";
+      },
     },
-    {
-      field: "presenter",
-      headerName: "Người đại diện bên A",
-      width: 200,
-      editable: true,
-      type: "singleSelect",
-      valueOptions: [
-        "ds nhan vien cap 4",
-      ],
-    },
-    { field: "files", headerName: "File hợp đồng", width: 150, editable: true },
     {
       field: "status",
       headerName: "Trạng thái hợp đồng",
@@ -69,23 +62,13 @@ export const TeachingContractPage: React.FC = () => {
         "Đã thanh lý",
       ],
     },
-    { field: "files", headerName: "File hợp đồng", width: 150, editable: true },
   ];
-  const rows = [
-    {
-      id: 1,
-      semester: "Học kỳ I",
-      year: "2023-2024",
-      contract_name: "Hợp đồng giao khoán chuyên môn",
-      from_date: "",
-      to_date: "",
-      status: "",
-    },
-  ];
+
   const handleClose = () => {
     setIsVisible(false);
     setSelectedContract({});
   };
+
   const RenderModal = useMemo(() => {
     return (
       <div>
@@ -129,32 +112,17 @@ export const TeachingContractPage: React.FC = () => {
     );
   }, [isVisible, selectedContract]);
 
-  // Xử lý khi tải file
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files && event.target.files[0];
-    if (file) {
-      // Xử lý file ở đây, ví dụ: đọc nội dung file
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const content = e.target?.result as string;
-        setSelectedContract(content);
-      };
-      reader.readAsText(file);
-    }
-  };
+  // Show loading spinner while fetching data
+  if (loading) {
+    return <CircularProgress />;
+  }
 
   return (
     <div>
       <Box>
-        <label>Thêm hợp đồng </label>
-        <input
-          type="file"
-          accept=".csv,.xlsx,.xls,.docx"
-          onChange={handleFileUpload}
-        />
         <BaseGrid
           columns={columns}
-          rows={rows}
+          rows={TeachingContractPageData} // Update rows with API data
           title=""
           onSave={() => {
             /* Logic lưu cho lưới dữ liệu 1 */
