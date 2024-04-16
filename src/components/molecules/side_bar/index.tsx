@@ -165,7 +165,7 @@ export const Playground: React.FC<SidebarProps> = ({
                   active={location.pathname.includes("/general")}
                   component={<Link to={"/general"}></Link>}
                 >
-                  Tổng quan
+                  Thông tin chung
                 </MenuItem>
                 <MenuItem
                   active={location.pathname.startsWith("/detail_employee")}

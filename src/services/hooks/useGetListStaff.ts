@@ -106,14 +106,17 @@ export const useGetDetailContractStaff = (id: number) => {
   return { data, loading };
 };
 
-export const useGetListContractStaff = (id: string | undefined | null) => {
-  const [data, setData] = useState<any[]>([]);
+//get detail contract 
+export const useGetDetailContract = (id: string|undefined|null) => {
+  const [data, setData] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(true);
 
   const fetchData = async () => {
     setLoading(true);
-    if (!id) return;
-    const response = await NetWork.get(`${API_URL.STAFFS}/${id}/contracts`);
+    if(!id) return;
+    const response = await NetWork.get(
+      `${API_URL.STAFFS}/${id}/contracts/${id}`
+    );
     if (response.status === RESPONSE_CODE.SUCCESS) {
       setData(response?.data?.content);
       setLoading(false);

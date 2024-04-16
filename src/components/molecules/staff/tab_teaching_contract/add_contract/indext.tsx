@@ -3,17 +3,21 @@ import { Button } from "@mui/material";
 import ReusableField from "components/atoms/field";
 import { type } from "os";
 import { FC, useState } from "react";
+import { useGetDetailContract } from "services/hooks/useGetListStaff";
 
 interface Props {
     contract: any;
   }
 export const AddNewContract: FC<Props> = (props) => {
     const [formData, setFormData] = useState<any>({});
+    const { data: contractDetail, loading:detailLoading } = useGetDetailContract(props.contract.id);
+    console.log(contractDetail);
+    // console.log(props.contract.id);
     const fieldsData = [
         { id: "semeter", label: "Học kỳ:", type: "select", Options: ["Học kỳ I", "Học kỳ II"] },
         { id: "year", label: "Năm học:", type: "text" },
         { id: "per_a", label: "Bên A:", type: "text" },
-        { id: "represent", label: "Đại diện:", type: "text" },
+        { id: "staff.fullName", label: "Đại diện:", type: "text" },
         { id: "position_a", label: "Chức vụ:", type: "text" },
         { id: "address", label: "Địa chỉ:", type: "text" },
         { id: "phone_a", label: "Điện thoại:", type: "text" },
@@ -34,7 +38,7 @@ export const AddNewContract: FC<Props> = (props) => {
         { id: "location", label: "Địa điểm giảng dạy:", type: "text" },
         { id: "quantity", label: "Số tiết dạy:", type: "text" },
         { id: "contract_value", label: "Giá trị hợp đồng:", type: "text" },
-        { id: "text", label: "Bằng chữ", type: "text" },
+        { id: "byWord", label: "Bằng chữ", type: "text" },
         { id: "vat_tncn", label: "Trừ thuế TNCN (nếu có):", type: "text" },
         { field: "file1", label: "File hợp đồng", width: 150, type: "file"},
         { field: "file2", label: "File phụ lục", width: 150, type: "file"},
@@ -56,7 +60,7 @@ export const AddNewContract: FC<Props> = (props) => {
                     key={index}
                     field={field}
                     hanldeOnChangefield={handleFieldChange}
-                    formData={formData}
+                    formData={contractDetail}
                 />
             ))}
         </div>
