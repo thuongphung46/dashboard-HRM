@@ -8,6 +8,7 @@ import { StaffService } from "services/staff_service";
 
 type Props = {
   data: StaffDetail;
+  id: any;
 };
 interface IGridWorkingHistory {
   handleSave: () => void;
@@ -84,10 +85,10 @@ export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
   );
 };
 
-export const WorkingHistory = ({ data }: Props) => {
+export const WorkingHistory = ({ data,id }: Props) => {
   const gridRef = useRef<any>(null);
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
-
+  
   // data?.staffWorkingHistories.forEach((item: any) => {
   //   if (item.bonus !== null) {
   //     item.content = item.bonus;
@@ -98,10 +99,8 @@ export const WorkingHistory = ({ data }: Props) => {
   // });
 
   const handleSave = async () => {
-    // Handle save logic here
-    // Lưu vào sẽ kiểu này
     const isSuccess = await StaffService.updateStaffWorkingHistory(
-      "id nhan vien",
+      id,
       data
     );
     if (isSuccess) {
@@ -118,14 +117,13 @@ export const WorkingHistory = ({ data }: Props) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid sx={{ marginTop: "24px" }} container alignItems="center">
-        <GridWorkingHistory
-          dataSelectRow={selectedRows}
-          // dataSource={data.staffWorkingHistories}
-          dataSource={data.staffWorkingHistoriesInAcademy}
-          gridRef={gridRef}
-          handleRowSelect={handleRowSelectionChange}
-          handleSave={handleSave}
-        />
+      <GridWorkingHistory
+        dataSelectRow={selectedRows}
+        dataSource={data.staffWorkingHistoriesInAcademy}
+        gridRef={gridRef}
+        handleRowSelect={handleRowSelectionChange}
+        handleSave={handleSave} // Make sure handleSave is correctly passed
+      />
       </Grid>
     </Box>
   );
