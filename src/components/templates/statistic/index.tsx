@@ -1,5 +1,7 @@
 import { useState, useEffect, FC } from "react";
 import ChartsOverview from "components/molecules/statistic/chart";
+import React, { useState, useEffect, FC } from "react";
+import { ChartsOverview } from "components/molecules/statistic/chart";
 import { GridStatistic } from "components/molecules/statistic/grid";
 import { useGetListDepartment } from "services/hooks/useGetListDepartment";
 import { FormControl, Input, InputLabel, MenuItem, NativeSelect, Select, SelectChangeEvent } from "@mui/material";
@@ -25,6 +27,30 @@ interface Group {
   modifiedBy: string;
   groups: any[];
 }
+
+const rows = [
+  {
+    id: 1,
+    name: "Khoa CNTT",
+    sum_teaching: 100,
+    sum_guide: 50,
+    sum_research: 20,
+  },
+  {
+    id: 2,
+    name: "Khoa ATTT",
+    sum_teaching: 80,
+    sum_guide: 40,
+    sum_research: 10,
+  },
+  {
+    id: 3,
+    name: "Khoa Mật mã",
+    sum_teaching: 60,
+    sum_guide: 30,
+    sum_research: 15,
+  },
+];
 
 export const StatisticTemplate: FC<Props> = () => {
   const [departmentList, setDepartmentList] = useState<DepartmentData[]>([]);
@@ -111,8 +137,8 @@ export const StatisticTemplate: FC<Props> = () => {
           </Select>
         </FormControl>
       </div>
-      <ChartsOverview />
-      <GridStatistic />
+      <ChartsOverview data={rows} />
+      <GridStatistic data={rows} />
     </div>
   );
 };
