@@ -55,7 +55,6 @@ export const TeachingContractPage: React.FC = () => {
         "ds nhan vien cap 4",
       ],
     },
-    { field: "files", headerName: "File hợp đồng", width: 150, editable: true },
     {
       field: "status",
       headerName: "Trạng thái hợp đồng",
@@ -69,7 +68,8 @@ export const TeachingContractPage: React.FC = () => {
         "Đã thanh lý",
       ],
     },
-    { field: "files", headerName: "File hợp đồng", width: 150, editable: true },
+    { field: "file1", headerName: "File hợp đồng", width: 150, editable: true , type: "file"},
+    { field: "file2", headerName: "File phụ lục", width: 150, editable: true , type: "file"},
   ];
   const rows = [
     {
@@ -130,28 +130,30 @@ export const TeachingContractPage: React.FC = () => {
   }, [isVisible, selectedContract]);
 
   // Xử lý khi tải file
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files && event.target.files[0];
-    if (file) {
-      // Xử lý file ở đây, ví dụ: đọc nội dung file
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const content = e.target?.result as string;
-        setSelectedContract(content);
-      };
-      reader.readAsText(file);
-    }
-  };
+  // const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files && event.target.files[0];
+  //   if (file) {
+  //     // Xử lý file ở đây, ví dụ: đọc nội dung file
+  //     const reader = new FileReader();
+  //     reader.onload = (e) => {
+  //       const content = e.target?.result as string;
+  //       setSelectedContract(content);
+  //     };
+  //     reader.readAsText(file);
+  //   }
+  // };
+
+  //Xử lý
 
   return (
     <div>
       <Box>
-        <label>Thêm hợp đồng </label>
+        {/* <label>Thêm hợp đồng </label>
         <input
           type="file"
           accept=".csv,.xlsx,.xls,.docx"
           onChange={handleFileUpload}
-        />
+        /> */}
         <BaseGrid
           columns={columns}
           rows={rows}
