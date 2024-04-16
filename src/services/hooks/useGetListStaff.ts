@@ -11,6 +11,7 @@ export type GetListStaffParams = {
   size?: number;
 };
 
+//get danh sách nhân viên
 export const useGetListStaff = (params: GetListStaffParams) => {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -35,6 +36,7 @@ export const useGetListStaff = (params: GetListStaffParams) => {
   return { data, loading };
 };
 
+//get detail nhân viên
 export const useGetStaff = (id: string | undefined) => {
   const [data, setData] = useState<StaffDetail | any>({});
   const [loading, setLoading] = useState<boolean>(true);
@@ -56,6 +58,7 @@ export const useGetStaff = (id: string | undefined) => {
   return { data, loading };
 };
 
+//get lịch sử làm việc của nhân viên
 export const useGetWorkingHistoryStaff = (id: number) => {
   const [data, setData] = useState<StaffDetail | any>({});
   const [loading, setLoading] = useState<boolean>(true);
@@ -78,3 +81,22 @@ export const useGetWorkingHistoryStaff = (id: number) => {
   }, [id]);
   return { data, loading };
 };
+
+//sửa lịch sử làm việc
+export const useUpdateWorkingHistoryStaff = (id: number, data: any) => {
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const fetchData = async () => {
+    setLoading(true);
+    const response = await NetWork.patch(
+      `${API_URL.STAFFS}/${id}/working-histories`,
+      data
+    );
+    if (response.data.msg_code === RESPONSE_CODE.SUCCESS) {
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  };
+  return { fetchData, loading };
+}
