@@ -11,7 +11,7 @@ type Props = {
   id: any;
 };
 interface IGridWorkingHistory {
-  handleSave: () => void;
+  handleSave: (data: any) => void;
   handleRowSelect: (e: any) => void;
   dataSelectRow: any;
   dataSource: any;
@@ -73,36 +73,26 @@ export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
     <div>
       <BaseGrid
         onRowSelectionChange={handleRowSelect}
-        title=""
+        title="working history"
         columns={columns}
         rows={dataSource}
         ref={gridRef}
         checkboxSelection
         disableRowSelectionOnClick
         selectedRows={dataSelectRow}
+        onSave={handleSave}
       ></BaseGrid>
     </div>
   );
 };
 
-export const WorkingHistory = ({ data,id }: Props) => {
+export const WorkingHistory = ({ data, id }: Props) => {
   const gridRef = useRef<any>(null);
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
-  
-  // data?.staffWorkingHistories.forEach((item: any) => {
-  //   if (item.bonus !== null) {
-  //     item.content = item.bonus;
-  //   }
-  //   if (item.discipline !== null) {
-  //     item.content = item.discipline;
-  //   }
-  // });
 
-  const handleSave = async () => {
-    const isSuccess = await StaffService.updateStaffWorkingHistory(
-      id,
-      data
-    );
+  const handleSave = async (e: any) => {
+    console.log(e);
+    const isSuccess = await StaffService.updateStaffWorkingHistory(id, e.data);
     if (isSuccess) {
       alert("Lưu thành công");
     } else {
@@ -117,13 +107,13 @@ export const WorkingHistory = ({ data,id }: Props) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid sx={{ marginTop: "24px" }} container alignItems="center">
-      <GridWorkingHistory
-        dataSelectRow={selectedRows}
-        dataSource={data.staffWorkingHistoriesInAcademy}
-        gridRef={gridRef}
-        handleRowSelect={handleRowSelectionChange}
-        handleSave={handleSave} // Make sure handleSave is correctly passed
-      />
+        <GridWorkingHistory
+          dataSelectRow={selectedRows}
+          dataSource={data.staffWorkingHistoriesInAcademy}
+          gridRef={gridRef}
+          handleRowSelect={handleRowSelectionChange}
+          handleSave={handleSave}
+        />
       </Grid>
     </Box>
   );
