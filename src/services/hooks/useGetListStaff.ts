@@ -103,3 +103,28 @@ export const useGetListContractStaff = (id: string|undefined|null) => {
   }, [id]);
   return { data, loading };
 };
+
+//get detail contract 
+export const useGetDetailContract = (id: string|undefined|null) => {
+  const [data, setData] = useState<any>({});
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const fetchData = async () => {
+    setLoading(true);
+    if(!id) return;
+    const response = await NetWork.get(
+      `${API_URL.STAFFS}/${id}/contracts/${id}`
+    );
+    if (response.status === RESPONSE_CODE.SUCCESS) {
+      setData(response?.data?.content);
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+  return { data, loading };
+};
