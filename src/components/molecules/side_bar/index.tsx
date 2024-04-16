@@ -9,10 +9,11 @@ import {
   SubMenu,
   menuClasses,
 } from "react-pro-sidebar";
+
 import { SidebarHeader } from "./sidebar_header";
 import { SidebarFooter } from "./sidebar_footer";
 import { themes } from "constants/themes/styles";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { KeyValue } from "constants/GlobalConstant";
 import { storageAction } from "common/function";
 
@@ -48,6 +49,7 @@ export const Playground: React.FC<SidebarProps> = ({
   setTheme,
   theme,
 }) => {
+  const location = useLocation();
   const [dissable, setDissable] = useState(false);
   const rtl = false;
   const hasImage = false;
@@ -89,21 +91,24 @@ export const Playground: React.FC<SidebarProps> = ({
             )
           : "transparent",
     }),
-    button: {
-      [`&.${menuClasses.disabled}`]: {
-        color: themes[theme].menu.disabled.color,
-      },
-      "&:hover": {
-        backgroundColor: hexToRgba(
-          themes[theme].menu.hover.backgroundColor,
-          hasImage ? 0.8 : 1
-        ),
-        color: themes[theme].menu.hover.color,
-      },
-    },
+
     label: ({ open }: any) => ({
       fontWeight: open ? 600 : undefined,
     }),
+    button: ({ active }) => {
+      return {
+        backgroundColor: active
+          ? themes[theme].menu.hover.backgroundColor
+          : "transparent",
+        color: active
+          ? themes[theme].menu.hover.color
+          : themes[theme].menu.hover.color,
+        "&:hover": {
+          backgroundColor: themes[theme].menu.hover.backgroundColor,
+          color: themes[theme].menu.hover.color,
+        },
+      };
+    },
   };
 
   return (
@@ -112,7 +117,8 @@ export const Playground: React.FC<SidebarProps> = ({
         display: "flex",
         height: "100%",
         direction: rtl ? "rtl" : "ltr",
-      }}>
+      }}
+    >
       <Sidebar
         collapsed={collapsed}
         toggled={toggled}
@@ -127,9 +133,11 @@ export const Playground: React.FC<SidebarProps> = ({
         )}
         rootStyles={{
           color: themes[theme].sidebar.color,
-        }}>
+        }}
+      >
         <div
-          style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+          style={{ display: "flex", flexDirection: "column", height: "100%" }}
+        >
           <SidebarHeader
             rtl={rtl}
             style={{ marginBottom: "24px", marginTop: "16px" }}
@@ -142,31 +150,46 @@ export const Playground: React.FC<SidebarProps> = ({
                 style={{
                   opacity: collapsed ? 0 : 0.7,
                   letterSpacing: "0.5px",
-                }}>
-                General
-              </Typography>
+                }}
+              ></Typography>
             </div>
             <Menu menuItemStyles={menuItemStyles}>
-              <SubMenu label="Components" icon={<Diamond />}>
-                <MenuItem component={<Link to={"/model"}></Link>}>
-                  Management Level Model
+              <SubMenu label="Mô-đun" icon={<Diamond />}>
+                <MenuItem
+                  active={location.pathname.toString() === "/model"}
+                  component={<Link to={"/model"}></Link>}
+                >
+                  Mô hình cấp quản lý
                 </MenuItem>
-                <MenuItem component={<Link to={"/general"}></Link>}>
-                  general
+                <MenuItem
+                  active={location.pathname.includes("/general")}
+                  component={<Link to={"/general"}></Link>}
+                >
+                  Tổng quan
                 </MenuItem>
-                <MenuItem component={<Link to={"/detail_employee"}></Link>}>
-                  Employee Detail
+                <MenuItem
+                  active={location.pathname === "/detail_employee"}
+                  component={<Link to={"/detail_employee"}></Link>}
+                >
+                  Danh sách nhân viên
                 </MenuItem>
                 <MenuItem
                   disabled={dissable}
-                  component={<Link to={"/teaching_contract"}></Link>}>
-                  Teaching Contract
+                  component={<Link to={"/teaching_contract"}></Link>}
+                >
+                  Hợp đồng giảng dạy
                 </MenuItem>
-                <MenuItem component={<Link to={"/import"}></Link>}>
-                  Import
+                <MenuItem
+                  active={location.pathname === "/import"}
+                  component={<Link to={"/import"}></Link>}
+                >
+                  Nhập dữ liệu
                 </MenuItem>
-                <MenuItem component={<Link to={"/statistic"}></Link>}>
-                  Statistic
+                <MenuItem
+                  active={location.pathname === "/statistic"}
+                  component={<Link to={"/statistic"}></Link>}
+                >
+                  Thống kê
                 </MenuItem>
               </SubMenu>
             </Menu>
@@ -176,14 +199,16 @@ export const Playground: React.FC<SidebarProps> = ({
                 padding: "0 24px",
                 marginBottom: "8px",
                 marginTop: "32px",
-              }}>
+              }}
+            >
               <Typography
                 variant="body2"
                 fontWeight={600}
                 style={{
                   opacity: collapsed ? 0 : 0.7,
                   letterSpacing: "0.5px",
-                }}>
+                }}
+              >
                 Extra
               </Typography>
             </div>
