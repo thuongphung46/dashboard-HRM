@@ -8,4 +8,5 @@ export const KeyValue = {
   TokenKey: "access_token",
   SessionKey: "SESSION",
   Level: "level",
+  id:"idUser",
 };

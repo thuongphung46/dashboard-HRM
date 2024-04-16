@@ -1,5 +1,7 @@
+import { Label } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import ReusableField from "components/atoms/field";
+import { type } from "os";
 import { FC, useState } from "react";
 
 interface Props {
@@ -8,11 +10,11 @@ interface Props {
 export const AddNewContract: FC<Props> = (props) => {
     const [formData, setFormData] = useState<any>({});
     const fieldsData = [
-        { id: "semeter", label: "Học kỳ:", type: "text" },
+        { id: "semeter", label: "Học kỳ:", type: "select", Options: ["Học kỳ I", "Học kỳ II"] },
         { id: "year", label: "Năm học:", type: "text" },
         { id: "per_a", label: "Bên A:", type: "text" },
         { id: "represent", label: "Đại diện:", type: "text" },
-        { id: "position_a", label: "chức vụ:", type: "text" },
+        { id: "position_a", label: "Chức vụ:", type: "text" },
         { id: "address", label: "Địa chỉ:", type: "text" },
         { id: "phone_a", label: "Điện thoại:", type: "text" },
         { id: "bank_a_num", label: "Tài khoản:", type: "text" },
@@ -34,6 +36,8 @@ export const AddNewContract: FC<Props> = (props) => {
         { id: "contract_value", label: "Giá trị hợp đồng:", type: "text" },
         { id: "text", label: "Bằng chữ", type: "text" },
         { id: "vat_tncn", label: "Trừ thuế TNCN (nếu có):", type: "text" },
+        { field: "file1", label: "File hợp đồng", width: 150, type: "file"},
+        { field: "file2", label: "File phụ lục", width: 150, type: "file"},
     ];
 
     const handleFieldChange = (event: React.ChangeEvent<HTMLInputElement | { name?: string | undefined; value: unknown; }>) => {
@@ -46,7 +50,7 @@ export const AddNewContract: FC<Props> = (props) => {
 
     return (
         <div>
-            <Button>Cập nhật</Button>
+            <Button>Lưu</Button>
             {fieldsData.map((field, index) => (
                 <ReusableField
                     key={index}
