@@ -53,7 +53,7 @@ export const Playground: React.FC<SidebarProps> = ({
   const [dissable, setDissable] = useState(false);
   const rtl = false;
   const hasImage = false;
-  const level = storageAction("get", KeyValue.TokenKey);
+  const level = storageAction("get", KeyValue.Level);
 
   useEffect(() => {
     if (level !== "LEVEL_1") {
@@ -168,13 +168,14 @@ export const Playground: React.FC<SidebarProps> = ({
                   Tổng quan
                 </MenuItem>
                 <MenuItem
-                  active={location.pathname === "/detail_employee"}
+                  active={location.pathname.startsWith("/detail_employee")}
                   component={<Link to={"/detail_employee"}></Link>}
                 >
                   Danh sách nhân viên
                 </MenuItem>
                 <MenuItem
                   disabled={dissable}
+                  active={location.pathname === "/teaching_contract"}
                   component={<Link to={"/teaching_contract"}></Link>}
                 >
                   Hợp đồng giảng dạy
