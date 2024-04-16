@@ -97,7 +97,7 @@ export const WorkingHistory = ({ data }: Props) => {
   //   }
   // });
 
-  const handleSave = () => {
+  const handleSave = async () => {
     // Handle save logic here
     // Lưu vào sẽ kiểu này
     const isSuccess = await StaffService.updateStaffWorkingHistory(
