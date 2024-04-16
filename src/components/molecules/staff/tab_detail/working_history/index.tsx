@@ -4,6 +4,7 @@ import { GridColDef, GridRowId } from "@mui/x-data-grid";
 import { BaseGrid } from "components/atoms/datagrid";
 import { Grid } from "@mui/material";
 import { StaffDetail } from "types/ApplicationType";
+import { StaffService } from "services/staff_service";
 
 type Props = {
   data: StaffDetail;
@@ -98,6 +99,16 @@ export const WorkingHistory = ({ data }: Props) => {
 
   const handleSave = () => {
     // Handle save logic here
+    // Lưu vào sẽ kiểu này
+    const isSuccess = await StaffService.updateStaffWorkingHistory(
+      "id nhan vien",
+      data
+    );
+    if (isSuccess) {
+      alert("Lưu thành công");
+    } else {
+      alert("Lưu không thành công");
+    }
   };
 
   const handleRowSelectionChange = (selection: GridRowId[]) => {

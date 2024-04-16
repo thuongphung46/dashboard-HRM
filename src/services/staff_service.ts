@@ -19,29 +19,28 @@ const StaffService = {
   GetMyProfile: async () => {
     return await Request(controller).getAsync("me");
   },
-};
-
-const updateStaffWorkingHistory = async (id: number, data: any) => {
-  try {
-    const response = await NetWork.patch(
-      getRequestUrl(API_URL.STAFFS, {
-        parentId: id,
-        partial: API_URL.WORKING_HISTORIES,
-      }),
-      {
-        data,
+  updateStaffWorkingHistory: async (id: number, data: any) => {
+    try {
+      const response = await NetWork.patch(
+        getRequestUrl(API_URL.STAFFS, {
+          parentId: id,
+          partial: API_URL.WORKING_HISTORIES,
+        }),
+        {
+          data,
+        }
+      );
+      if (response.status === RESPONSE_CODE.SUCCESS) {
+        return true;
+      } else {
+        return false;
       }
-    );
-    if (response.status === RESPONSE_CODE.SUCCESS) {
-      return true;
-    } else {
+    } catch (error) {
+      console.log(error);
+
       return false;
     }
-  } catch (error) {
-    console.log(error);
-
-    return false;
-  }
+  },
 };
 
-export { StaffService, updateStaffWorkingHistory };
+export { StaffService };
