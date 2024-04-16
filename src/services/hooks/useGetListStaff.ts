@@ -82,21 +82,48 @@ export const useGetWorkingHistoryStaff = (id: number) => {
   return { data, loading };
 };
 
-//sửa lịch sử làm việc
-export const useUpdateWorkingHistoryStaff = (id: number, data: any) => {
-  const [loading, setLoading] = useState<boolean>(false);
+//get danh sách hợp đồng của nhân viên
+export const useGetContractStaff = (id: number) => {
+  const [data, setData] = useState<StaffDetail | any>({});
+  const [loading, setLoading] = useState<boolean>(true);
 
   const fetchData = async () => {
     setLoading(true);
-    const response = await NetWork.patch(
-      `${API_URL.STAFFS}/${id}/working-histories`,
-      data
-    );
-    if (response.data.msg_code === RESPONSE_CODE.SUCCESS) {
+    const response = await NetWork.get(`${API_URL.STAFFS}/${id}/contracts`);
+    if (response.status === RESPONSE_CODE.SUCCESS) {
+      setData(response?.data?.content);
       setLoading(false);
     } else {
       setLoading(false);
     }
   };
-  return { fetchData, loading };
-}
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+  return { data, loading };
+};
+
+//get chi tiết hợp đồng của nhân viên
+export const useGetDetailContractStaff = (id: number) => {
+  const [data, setData] = useState<StaffDetail | any>({});
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const fetchData = async () => {
+    setLoading(true);
+    const response = await NetWork.get(
+      `${API_URL.STAFFS}/${id}/contracts/${id}`
+    );
+    if (response.status === RESPONSE_CODE.SUCCESS) {
+      setData(response?.data?.content);
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+  return { data, loading };
+};
