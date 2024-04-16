@@ -1,10 +1,16 @@
 import { useState, useEffect, FC } from "react";
-import ChartsOverview from "components/molecules/statistic/chart";
-import React, { useState, useEffect, FC } from "react";
 import { ChartsOverview } from "components/molecules/statistic/chart";
 import { GridStatistic } from "components/molecules/statistic/grid";
 import { useGetListDepartment } from "services/hooks/useGetListDepartment";
-import { FormControl, Input, InputLabel, MenuItem, NativeSelect, Select, SelectChangeEvent } from "@mui/material";
+import {
+  FormControl,
+  Input,
+  InputLabel,
+  MenuItem,
+  NativeSelect,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
 
 interface Props {}
 interface DepartmentData {
@@ -71,7 +77,8 @@ export const StatisticTemplate: FC<Props> = () => {
     setSelectedGroups([]);
   };
 
-  const handleGroupChange = (event: SelectChangeEvent<number[]>) => { // Adjusted parameter type
+  const handleGroupChange = (event: SelectChangeEvent<number[]>) => {
+    // Adjusted parameter type
     const selectedValues = event.target.value as number[];
     setSelectedGroups(selectedValues);
   };
@@ -81,13 +88,13 @@ export const StatisticTemplate: FC<Props> = () => {
       <div>
         <FormControl sx={{ m: 1, minWidth: 120 }}>
           <InputLabel variant="standard" htmlFor="semester">
-            Học kỳ: 
+            Học kỳ:
           </InputLabel>
           <NativeSelect
             defaultValue={10}
             inputProps={{
-              name: 'semester',
-              id: 'semester',
+              name: "semester",
+              id: "semester",
             }}
           >
             <option value={10}>Học kỳ I</option>
@@ -97,7 +104,7 @@ export const StatisticTemplate: FC<Props> = () => {
 
         <FormControl sx={{ m: 1, minWidth: 120 }} variant="standard">
           <InputLabel htmlFor="year">Year: </InputLabel>
-          <Input id="year"/>
+          <Input id="year" />
         </FormControl>
 
         <FormControl sx={{ m: 1, minWidth: 120 }}>
@@ -108,7 +115,11 @@ export const StatisticTemplate: FC<Props> = () => {
             multiple
             value={selectedDepartments}
             onChange={handleDepartmentChange}
-            renderValue={(selected) => (selected as number[]).map((id) => departmentList.find(dep => dep.id === id)?.name).join(', ')}
+            renderValue={(selected) =>
+              (selected as number[])
+                .map((id) => departmentList.find((dep) => dep.id === id)?.name)
+                .join(", ")
+            }
           >
             {departmentList.map((department) => (
               <MenuItem key={department.id} value={department.id}>
@@ -127,12 +138,14 @@ export const StatisticTemplate: FC<Props> = () => {
             value={selectedGroups} // Use selectedGroups state
             onChange={handleGroupChange}
           >
-            {selectedDepartments.flatMap(depId =>
-              departmentList.find(dep => dep.id === depId)?.groups.map((group) => (
-                <MenuItem key={group.id} value={group.id}>
-                  {group.name}
-                </MenuItem>
-              ))
+            {selectedDepartments.flatMap((depId) =>
+              departmentList
+                .find((dep) => dep.id === depId)
+                ?.groups.map((group) => (
+                  <MenuItem key={group.id} value={group.id}>
+                    {group.name}
+                  </MenuItem>
+                ))
             )}
           </Select>
         </FormControl>
