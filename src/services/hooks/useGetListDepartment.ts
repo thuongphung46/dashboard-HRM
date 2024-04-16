@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { API_URL, NetWork } from "services/api";
 import { RESPONSE_CODE } from "services/api/config";
 
+//get dánh sách phòng ban
 export const useGetListDepartment = () => {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -24,6 +25,7 @@ export const useGetListDepartment = () => {
   return { data, loading };
 };
 
+//get chi tiết phòng ban
 export const useGetDepartment = (id: number) => {
   const [data, setData] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(true);
@@ -53,6 +55,7 @@ export type createDepartmentBody = {
   parentDeptId?: string;
 };
 
+//create phòng ban
 export const useCreateDepartment = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
