@@ -1,7 +1,16 @@
-import React, { useState, useEffect, FC } from "react";
+import { useState, useEffect, FC } from "react";
 import { ChartsOverview } from "components/molecules/statistic/chart";
 import { GridStatistic } from "components/molecules/statistic/grid";
 import { useGetListDepartment } from "services/hooks/useGetListDepartment";
+import {
+  FormControl,
+  Input,
+  InputLabel,
+  MenuItem,
+  NativeSelect,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
 
 interface Props {}
 interface DepartmentData {
@@ -51,25 +60,8 @@ const rows = [
 
 export const StatisticTemplate: FC<Props> = () => {
   const [departmentList, setDepartmentList] = useState<DepartmentData[]>([]);
-  const [selectedDepartment, setSelectedDepartment] = useState<number | null>(
-    null
-  );
-  const [selectedGroup, setSelectedGroup] = useState<number | null>(null);
-
-  const handleDepartmentChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const departmentId = parseInt(event.target.value);
-    setSelectedDepartment(departmentId);
-    // Reset selected group when department changes
-    setSelectedGroup(null);
-  };
-
-  const handleGroupChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const groupId = parseInt(event.target.value);
-    setSelectedGroup(groupId);
-  };
-
+  const [selectedDepartments, setSelectedDepartments] = useState<number[]>([]);
+  const [selectedGroups, setSelectedGroups] = useState<number[]>([]); // Adjusted state for selected groups
   const { loading, data: departmentData } = useGetListDepartment();
 
   useEffect(() => {
@@ -78,66 +70,85 @@ export const StatisticTemplate: FC<Props> = () => {
     }
   }, [loading, departmentData]);
 
-  // Retrieve selected department object
-  const selectedDepartmentObject =
-    selectedDepartment !== null
-      ? departmentList.find(
-          (department) => department.id === selectedDepartment
-        )
-      : null;
+  const handleDepartmentChange = (event: SelectChangeEvent<number[]>) => {
+    const selectedValues = event.target.value as number[];
+    setSelectedDepartments(selectedValues);
+    // Reset selected groups when department changes
+    setSelectedGroups([]);
+  };
+
+  const handleGroupChange = (event: SelectChangeEvent<number[]>) => {
+    // Adjusted parameter type
+    const selectedValues = event.target.value as number[];
+    setSelectedGroups(selectedValues);
+  };
 
   return (
     <div>
       <div>
-        <label style={{ margin: "5px" }} htmlFor="semester">
-          Học kỳ:{" "}
-        </label>
-        <select style={{ margin: "5px" }}>
-          <option value="1">Học kỳ I</option>
-          <option value="2">Học kỳ II</option>
-        </select>
+        <FormControl sx={{ m: 1, minWidth: 120 }}>
+          <InputLabel variant="standard" htmlFor="semester">
+            Học kỳ:
+          </InputLabel>
+          <NativeSelect
+            defaultValue={10}
+            inputProps={{
+              name: "semester",
+              id: "semester",
+            }}
+          >
+            <option value={10}>Học kỳ I</option>
+            <option value={20}>Học kỳ II</option>
+          </NativeSelect>
+        </FormControl>
 
-        <label style={{ margin: "5px" }} htmlFor="year">
-          Năm học:{" "}
-        </label>
-        <input style={{ margin: "5px" }} type="text" id="year" name="year" />
+        <FormControl sx={{ m: 1, minWidth: 120 }} variant="standard">
+          <InputLabel htmlFor="year">Year: </InputLabel>
+          <Input id="year" />
+        </FormControl>
 
-        <label style={{ margin: "5px" }} htmlFor="department">
-          Khoa:{" "}
-        </label>
-        <select
-          style={{ margin: "5px" }}
-          id="department"
-          name="department"
-          value={selectedDepartment || ""}
-          onChange={handleDepartmentChange}
-        >
-          <option value="">Chọn khoa</option>
-          {departmentList.map((department) => (
-            <option key={department.id} value={department.id}>
-              {department.name}
-            </option>
-          ))}
-        </select>
-
-        <label style={{ margin: "5px" }} htmlFor="group">
-          Bộ môn:{" "}
-        </label>
-        <select
-          style={{ margin: "5px" }}
-          id="group"
-          name="group"
-          value={selectedGroup || ""}
-          onChange={handleGroupChange}
-        >
-          <option value="">Chọn bộ môn</option>
-          {selectedDepartmentObject &&
-            selectedDepartmentObject.groups.map((group) => (
-              <option key={group.id} value={group.id}>
-                {group.name}
-              </option>
+        <FormControl sx={{ m: 1, minWidth: 120 }}>
+          <InputLabel id="select-department-label">Chọn khoa</InputLabel>
+          <Select
+            labelId="select-department-label"
+            id="select-department"
+            multiple
+            value={selectedDepartments}
+            onChange={handleDepartmentChange}
+            renderValue={(selected) =>
+              (selected as number[])
+                .map((id) => departmentList.find((dep) => dep.id === id)?.name)
+                .join(", ")
+            }
+          >
+            {departmentList.map((department) => (
+              <MenuItem key={department.id} value={department.id}>
+                {department.name}
+              </MenuItem>
             ))}
-        </select>
+          </Select>
+        </FormControl>
+
+        <FormControl sx={{ m: 1, minWidth: 120 }}>
+          <InputLabel id="select-group-label">Bộ môn</InputLabel>
+          <Select
+            labelId="select-group-label"
+            id="select-group"
+            multiple
+            value={selectedGroups} // Use selectedGroups state
+            onChange={handleGroupChange}
+          >
+            {selectedDepartments.flatMap((depId) =>
+              departmentList
+                .find((dep) => dep.id === depId)
+                ?.groups.map((group) => (
+                  <MenuItem key={group.id} value={group.id}>
+                    {group.name}
+                  </MenuItem>
+                ))
+            )}
+          </Select>
+        </FormControl>
       </div>
       <ChartsOverview data={rows} />
       <GridStatistic data={rows} />

@@ -46,6 +46,17 @@ export const TeachingContractPage: React.FC = () => {
       type: "date",
     },
     {
+      field: "presenter",
+      headerName: "Người đại diện bên A",
+      width: 200,
+      editable: true,
+      type: "singleSelect",
+      valueOptions: [
+        "ds nhan vien cap 4",
+      ],
+    },
+    { field: "files", headerName: "File hợp đồng", width: 150, editable: true },
+    {
       field: "status",
       headerName: "Trạng thái hợp đồng",
       width: 200,
