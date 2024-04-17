@@ -35,7 +35,7 @@ const ReusableField: FC<Props> = ({ field, hanldeOnChangefield, formData }) => {
                   size="small"
                   id={field.id}
                   onChange={hanldeOnChangefield}
-                  value={formData ? formData[field.id] || "" : ""}
+                  defaultValue={field.defaultValue || ""}
                 >
                   {field.options.map((option: any) => (
                     <MenuItem key={option} value={option}>
@@ -51,7 +51,7 @@ const ReusableField: FC<Props> = ({ field, hanldeOnChangefield, formData }) => {
                 id={field.id}
                 name={field.id}
                 type={field.type}
-                value={formData ? formData[field.id] || "" : ""}
+                defaultValue={field.defaultValue || ""}
                 onChange={hanldeOnChangefield}
               />
             )}
