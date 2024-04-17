@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Box, Button, CircularProgress } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { BaseGrid } from "components/atoms/datagrid";
 import { AddNewContract } from "./add_contract/indext";
 import Dialog from "@mui/material/Dialog";

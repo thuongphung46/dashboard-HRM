@@ -251,24 +251,6 @@ export const AddNewContract: FC<Props> = (props) => {
                   formData={formDataA}
                 />
               ))}
-            {/* {renterData &&
-              formDataB.map((field, index) => (
-                <ReusableField
-                  key={index}
-                  field={field}
-                  hanldeOnChangefield={handleFieldChange}
-                  formData={formDataB}
-                />
-              ))}
-            {formData &&
-              formDataC.map((field, index) => (
-                <ReusableField
-                  key={index}
-                  field={field}
-                  hanldeOnChangefield={handleFieldChange}
-                  formData={formDataC}
-                />
-              ))} */}
           </div>
         </>
     </>

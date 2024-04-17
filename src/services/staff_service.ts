@@ -1,3 +1,4 @@
+import { Update } from "@mui/icons-material";
 import { API_URL, NetWork } from "./api";
 import { RESPONSE_CODE } from "./api/config";
 import { getRequestUrl } from "./api/utils";
@@ -41,6 +42,30 @@ const StaffService = {
       return false;
     }
   },
+  
+  addContract: async (id: number, data: any) => {
+    try {
+      const response = await NetWork.post(
+        getRequestUrl(API_URL.STAFFS, {
+          parentId: id,
+          partial: API_URL.CONTRACTS,
+        }),
+        {
+          data,
+        }
+      );
+      if (response.status === RESPONSE_CODE.SUCCESS) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.log(error);
+
+      return false;
+    }
+  },
+
 };
 
 export { StaffService };
