@@ -6,10 +6,17 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 
+export interface IFormData {
+  id: string;
+  label: string;
+  type: "select" | "text" | "file";
+  options?: string[];
+  defaultValue?: any;
+}
 interface Props {
   field: any;
   hanldeOnChangefield?: (event: any) => void;
-  formData?: any;
+  formData?: IFormData[];
 }
 
 const ReusableField: FC<Props> = ({ field, hanldeOnChangefield, formData }) => {
@@ -28,7 +35,8 @@ const ReusableField: FC<Props> = ({ field, hanldeOnChangefield, formData }) => {
                   size="small"
                   id={field.id}
                   onChange={hanldeOnChangefield}
-                  value={formData ? formData[field.id] || "" : ""}>
+                  value={formData ? formData[field.id] || "" : ""}
+                >
                   {field.options.map((option: any) => (
                     <MenuItem key={option} value={option}>
                       {option}

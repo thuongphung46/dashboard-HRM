@@ -5,7 +5,10 @@ import { AddNewContract } from "./add_contract/indext";
 import Dialog from "@mui/material/Dialog";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { useGetListContractStaff, useGetDetailContract } from "services/hooks/useGetListStaff";
+import {
+  useGetListContractStaff,
+  useGetDetailContract,
+} from "services/hooks/useGetListStaff";
 import { useNavigate } from "react-router-dom";
 import { storageAction } from "common/function";
 import { KeyValue } from "constants/GlobalConstant";
@@ -14,11 +17,10 @@ import { GridColDef } from "@mui/x-data-grid/models/colDef";
 export const TeachingContractPage: React.FC = () => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [selectedContract, setSelectedContract] = useState<any>({});
-  const idUser =  storageAction("get", KeyValue.id);
-  const { data: TeachingContractPageData, loading } = useGetListContractStaff(idUser); // Pass the required argument
+  const idUser = storageAction("get", KeyValue.id);
+  const { data: TeachingContractPageData, loading } =
+    useGetListContractStaff(idUser); // Pass the required argument
   const navigate = useNavigate();
-
-  
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "STT", width: 90 },
