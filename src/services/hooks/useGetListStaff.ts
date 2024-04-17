@@ -82,14 +82,16 @@ export const useGetWorkingHistoryStaff = (id: number) => {
   return { data, loading };
 };
 
-//get danh sách hợp đồng của nhân viên
-export const useGetContractStaff = (id: number) => {
+//get chi tiết hợp đồng của nhân viên
+export const useGetDetailContractStaff = (id: number) => {
   const [data, setData] = useState<StaffDetail | any>({});
   const [loading, setLoading] = useState<boolean>(true);
 
   const fetchData = async () => {
     setLoading(true);
-    const response = await NetWork.get(`${API_URL.STAFFS}/${id}/contracts`);
+    const response = await NetWork.get(
+      `${API_URL.STAFFS}/${id}/contracts/${id}`
+    );
     if (response.status === RESPONSE_CODE.SUCCESS) {
       setData(response?.data?.content);
       setLoading(false);
@@ -104,16 +106,14 @@ export const useGetContractStaff = (id: number) => {
   return { data, loading };
 };
 
-//get chi tiết hợp đồng của nhân viên
-export const useGetDetailContractStaff = (id: number) => {
-  const [data, setData] = useState<StaffDetail | any>({});
+export const useGetListContractStaff = (id: string | undefined | null) => {
+  const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const fetchData = async () => {
     setLoading(true);
-    const response = await NetWork.get(
-      `${API_URL.STAFFS}/${id}/contracts/${id}`
-    );
+    if (!id) return;
+    const response = await NetWork.get(`${API_URL.STAFFS}/${id}/contracts`);
     if (response.status === RESPONSE_CODE.SUCCESS) {
       setData(response?.data?.content);
       setLoading(false);
