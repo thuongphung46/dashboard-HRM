@@ -3,6 +3,7 @@ import { API_URL, NetWork } from "services/api";
 import { RESPONSE_CODE } from "services/api/config";
 import { deleteParamsNotUsing } from "services/api/utils";
 import { StaffDetail } from "types/ApplicationType";
+import { IContent } from "types/teaching_contact";
 
 export type GetListStaffParams = {
   query?: string;
@@ -82,16 +83,15 @@ export const useGetWorkingHistoryStaff = (id: number) => {
   return { data, loading };
 };
 
-//get chi tiết hợp đồng của nhân viên
-export const useGetDetailContractStaff = (id: number) => {
-  const [data, setData] = useState<StaffDetail | any>({});
+//get list contract of staff
+export const useGetListContractStaff = (id: string | undefined | null) => {
+  const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const fetchData = async () => {
     setLoading(true);
-    const response = await NetWork.get(
-      `${API_URL.STAFFS}/${id}/contracts/${id}`
-    );
+    if (!id) return;
+    const response = await NetWork.get(`${API_URL.STAFFS}/${id}/contracts`);
     if (response.status === RESPONSE_CODE.SUCCESS) {
       setData(response?.data?.content);
       setLoading(false);
@@ -106,14 +106,17 @@ export const useGetDetailContractStaff = (id: number) => {
   return { data, loading };
 };
 
-export const useGetListContractStaff = (id: string | undefined | null) => {
-  const [data, setData] = useState<any[]>([]);
+//get detail contract
+export const useGetDetailContract = (id: string | undefined | null) => {
+  const [data, setData] = useState<IContent>();
   const [loading, setLoading] = useState<boolean>(true);
 
   const fetchData = async () => {
     setLoading(true);
     if (!id) return;
-    const response = await NetWork.get(`${API_URL.STAFFS}/${id}/contracts`);
+    const response = await NetWork.get(
+      `${API_URL.STAFFS}/${id}/contracts/${id}`
+    );
     if (response.status === RESPONSE_CODE.SUCCESS) {
       setData(response?.data?.content);
       setLoading(false);
