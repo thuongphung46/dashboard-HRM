@@ -50,6 +50,16 @@ export const TeachingContractPage: React.FC = () => {
       },
     },
     {
+      field: "presenter",
+      headerName: "Người đại diện bên A",
+      width: 200,
+      editable: true,
+      type: "singleSelect",
+      valueOptions: [
+        "ds nhan vien cap 4",
+      ],
+    },
+    {
       field: "status",
       headerName: "Trạng thái hợp đồng",
       width: 200,
@@ -61,6 +71,19 @@ export const TeachingContractPage: React.FC = () => {
         "Đã thực hiện",
         "Đã thanh lý",
       ],
+    },
+    { field: "file1", headerName: "File hợp đồng", width: 150, editable: true , type: "file"},
+    { field: "file2", headerName: "File phụ lục", width: 150, editable: true , type: "file"},
+  ];
+  const rows = [
+    {
+      id: 1,
+      semester: "Học kỳ I",
+      year: "2023-2024",
+      contract_name: "Hợp đồng giao khoán chuyên môn",
+      from_date: "",
+      to_date: "",
+      status: "",
     },
   ];
 
@@ -112,14 +135,31 @@ export const TeachingContractPage: React.FC = () => {
     );
   }, [isVisible, selectedContract]);
 
-  // Show loading spinner while fetching data
-  if (loading) {
-    return <CircularProgress />;
-  }
+  // Xử lý khi tải file
+  // const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files && event.target.files[0];
+  //   if (file) {
+  //     // Xử lý file ở đây, ví dụ: đọc nội dung file
+  //     const reader = new FileReader();
+  //     reader.onload = (e) => {
+  //       const content = e.target?.result as string;
+  //       setSelectedContract(content);
+  //     };
+  //     reader.readAsText(file);
+  //   }
+  // };
+
+  //Xử lý
 
   return (
     <div>
       <Box>
+        {/* <label>Thêm hợp đồng </label>
+        <input
+          type="file"
+          accept=".csv,.xlsx,.xls,.docx"
+          onChange={handleFileUpload}
+        /> */}
         <BaseGrid
           columns={columns}
           rows={TeachingContractPageData} // Update rows with API data

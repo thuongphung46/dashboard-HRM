@@ -2,11 +2,9 @@ import { Box } from "@mui/material";
 import { PrimarySearchAppBar } from "components/molecules/navbar";
 import { Playground } from "components/molecules/side_bar";
 import React, { useCallback, useEffect } from "react";
-// import { SideMenu } from "../../pages/menu/SideMenu";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 type Theme = "light" | "dark";
 const RootLayout = () => {
-  // const auth = true;
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = React.useState(false);
   const [toggled, setToggled] = React.useState(false);
@@ -60,8 +58,8 @@ const RootLayout = () => {
           sx={{
             display: "flex",
             flexDirection: "column",
-            width: "100%",
-            flex: 1,
+            width: `calc(100% - ${collapsed ? 80 : 250}px)`,
+            height: "100%",
           }}
         >
           <PrimarySearchAppBar
@@ -73,7 +71,11 @@ const RootLayout = () => {
           />
           <Box
             id={"main-view"}
-            sx={{ height: "100%", overflow: "auto", padding: 1 }}
+            sx={{
+              height: "100%",
+              overflow: "auto",
+              padding: 1,
+            }}
           >
             <Outlet />
           </Box>
