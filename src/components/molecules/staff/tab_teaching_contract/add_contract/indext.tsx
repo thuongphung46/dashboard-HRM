@@ -219,6 +219,13 @@ export const AddNewContract: FC<Props> = (props) => {
       defaultValue: "",
     },
   ];
+
+  const allFormData: any = [
+    ...formDataA,
+    ...formDataB,
+    ...formDataC,
+  ];
+
   const handleFieldChange = (
     event: React.ChangeEvent<
       HTMLInputElement | { name?: string | undefined; value: unknown }
@@ -233,14 +240,10 @@ export const AddNewContract: FC<Props> = (props) => {
 
   return (
     <>
-      {detailLoading ? (
-        <>loading</>
-      ) : (
         <>
           <div>
             <Button>Lưu</Button>
-            {formData &&
-              formDataA.map((field, index) => (
+            { allFormData.map((field: any, index: number) => (
                 <ReusableField
                   key={index}
                   field={field}
@@ -248,27 +251,8 @@ export const AddNewContract: FC<Props> = (props) => {
                   formData={formDataA}
                 />
               ))}
-            {renterData &&
-              formDataB.map((field, index) => (
-                <ReusableField
-                  key={index}
-                  field={field}
-                  hanldeOnChangefield={handleFieldChange}
-                  formData={formDataB}
-                />
-              ))}
-            {formData &&
-              formDataC.map((field, index) => (
-                <ReusableField
-                  key={index}
-                  field={field}
-                  hanldeOnChangefield={handleFieldChange}
-                  formData={formDataC}
-                />
-              ))}
           </div>
         </>
-      )}
     </>
   );
 };

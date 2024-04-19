@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Box, CircularProgress } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { BaseGrid } from "components/atoms/datagrid";
 import { AddNewContract } from "./add_contract/indext";
 import Dialog from "@mui/material/Dialog";
@@ -14,9 +14,9 @@ export const TeachingContractPage: React.FC = () => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [selectedContract, setSelectedContract] = useState<any>({});
   const idUser = storageAction("get", KeyValue.id);
-  const { data: TeachingContractPageData, loading } =
+  const { data: TeachingContractPageData } =
     useGetListContractStaff(idUser);
-
+  
   const columns: GridColDef[] = [
     { field: "id", headerName: "STT", width: 90 },
     {
@@ -74,17 +74,6 @@ export const TeachingContractPage: React.FC = () => {
     { field: "file1", headerName: "File hợp đồng", width: 150, editable: true , type: "file"},
     { field: "file2", headerName: "File phụ lục", width: 150, editable: true , type: "file"},
   ];
-  const rows = [
-    {
-      id: 1,
-      semester: "Học kỳ I",
-      year: "2023-2024",
-      contract_name: "Hợp đồng giao khoán chuyên môn",
-      from_date: "",
-      to_date: "",
-      status: "",
-    },
-  ];
 
   const handleClose = () => {
     setIsVisible(false);
@@ -134,31 +123,11 @@ export const TeachingContractPage: React.FC = () => {
     );
   }, [isVisible, selectedContract]);
 
-  // Xử lý khi tải file
-  // const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = event.target.files && event.target.files[0];
-  //   if (file) {
-  //     // Xử lý file ở đây, ví dụ: đọc nội dung file
-  //     const reader = new FileReader();
-  //     reader.onload = (e) => {
-  //       const content = e.target?.result as string;
-  //       setSelectedContract(content);
-  //     };
-  //     reader.readAsText(file);
-  //   }
-  // };
-
-  //Xử lý
-
   return (
     <div>
       <Box>
-        {/* <label>Thêm hợp đồng </label>
-        <input
-          type="file"
-          accept=".csv,.xlsx,.xls,.docx"
-          onChange={handleFileUpload}
-        /> */}
+        <h2>Danh sách hợp đồng giảng dạy</h2>
+        <Button onClick={() => setIsVisible(true)}>Thêm</Button>
         <BaseGrid
           columns={columns}
           rows={TeachingContractPageData} // Update rows with API data
