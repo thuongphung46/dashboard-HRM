@@ -7,6 +7,7 @@ import RootLayout from "components/templates/root_layout/RootLayout";
 import { DetailEmployeePage } from "components/pages/staff";
 import { ImportPage } from "components/pages/import";
 import { TeachingContractPage } from "components/pages/teaching_contract";
+import { AddNewContract } from "components/molecules/staff/tab_teaching_contract/deatail_contract";
 import { SignIn } from "components/pages/login";
 import { TabDetailStaff } from "components/molecules/staff/tab_detail";
 import { StatisticPage } from "components/pages/statistic";
@@ -19,13 +20,14 @@ enum FORM_STATE {
 }
 
 interface PropType {
-  component: React.FC;
+  component: any;
+  action?: FORM_STATE;
 }
 
-const PrivateRoute: FC<PropType> = ({ component: Component }) => {
+const PrivateRoute: FC<PropType> = ({ component: Component, action }) => {
   const level = localStorage.getItem("level");
 
-  if (level === "LEVEL_1") return <Component />;
+  if (level === "LEVEL_1") return <Component action={action} />;
   return <Navigate to="/model" />;
 };
 const router = createBrowserRouter([
@@ -54,6 +56,12 @@ const router = createBrowserRouter([
       {
         path: "/teaching_contract",
         element: <PrivateRoute component={TeachingContractPage} />,
+      },
+      {
+        path: "/teaching_contract/add",
+        element: (
+          <PrivateRoute action={FORM_STATE.ADD} component={AddNewContract} />
+        ),
       },
       {
         path: "/import",

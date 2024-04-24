@@ -1,20 +1,22 @@
-import { Button } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import ReusableField, { IFormData } from "components/atoms/field";
 import { FC, useEffect, useState } from "react";
 import { useGetDetailContract } from "services/hooks/useGetListStaff";
 import { IContent, IStaff, IRenter } from "types/teaching_contact";
 
 interface Props {
-  contract: any;
+  contract?: any;
+  action: "add" | "edit";
 }
 
-export const AddNewContract: FC<Props> = (props) => {
+export const AddNewContract = (props: Props) => {
   const [formData, setFormData] = useState<IContent>();
-  const { data: contractDetail, loading: detailLoading } = useGetDetailContract(
-    props.contract.id
-  );
   const [staffData, setStaffData] = useState<IStaff>();
   const [renterData, setRenterData] = useState<IRenter>();
+
+  const { data: contractDetail, loading: detailLoading } = useGetDetailContract(
+    props.action === "edit" ? props.contract.id : ""
+  );
   useEffect(() => {
     if (contractDetail && contractDetail.staff && contractDetail.renter) {
       setStaffData(contractDetail.staff);
@@ -233,14 +235,14 @@ export const AddNewContract: FC<Props> = (props) => {
 
   return (
     <>
-      {detailLoading ? (
+      {props.action === "edit" && detailLoading ? (
         <>loading</>
       ) : (
         <>
-          <div>
+          <Grid container>
             <Button>Lưu</Button>
-            {formData &&
-              formDataA.map((field, index) => (
+            <Grid container spacing={2}>
+              {formDataA.map((field, index) => (
                 <ReusableField
                   key={index}
                   field={field}
@@ -248,8 +250,7 @@ export const AddNewContract: FC<Props> = (props) => {
                   formData={formDataA}
                 />
               ))}
-            {renterData &&
-              formDataB.map((field, index) => (
+              {formDataB.map((field, index) => (
                 <ReusableField
                   key={index}
                   field={field}
@@ -257,8 +258,7 @@ export const AddNewContract: FC<Props> = (props) => {
                   formData={formDataB}
                 />
               ))}
-            {formData &&
-              formDataC.map((field, index) => (
+              {formDataC.map((field, index) => (
                 <ReusableField
                   key={index}
                   field={field}
@@ -266,7 +266,8 @@ export const AddNewContract: FC<Props> = (props) => {
                   formData={formDataC}
                 />
               ))}
-          </div>
+            </Grid>
+          </Grid>
         </>
       )}
     </>

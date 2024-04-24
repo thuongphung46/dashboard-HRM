@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
-import { Box, CircularProgress } from "@mui/material";
+import { Box } from "@mui/material";
 import { BaseGrid } from "components/atoms/datagrid";
-import { AddNewContract } from "./add_contract/indext";
+import { AddNewContract } from "./deatail_contract";
 import Dialog from "@mui/material/Dialog";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
@@ -54,9 +54,7 @@ export const TeachingContractPage: React.FC = () => {
       width: 200,
       editable: true,
       type: "singleSelect",
-      valueOptions: [
-        "ds nhan vien cap 4",
-      ],
+      valueOptions: ["ds nhan vien cap 4"],
     },
     {
       field: "status",
@@ -71,8 +69,20 @@ export const TeachingContractPage: React.FC = () => {
         "Đã thanh lý",
       ],
     },
-    { field: "file1", headerName: "File hợp đồng", width: 150, editable: true , type: "file"},
-    { field: "file2", headerName: "File phụ lục", width: 150, editable: true , type: "file"},
+    {
+      field: "file1",
+      headerName: "File hợp đồng",
+      width: 150,
+      editable: true,
+      type: "file",
+    },
+    {
+      field: "file2",
+      headerName: "File phụ lục",
+      width: 150,
+      editable: true,
+      type: "file",
+    },
   ];
   const rows = [
     {
@@ -127,38 +137,16 @@ export const TeachingContractPage: React.FC = () => {
               overflow: "auto",
             }}
           >
-            <AddNewContract contract={selectedContract} />
+            <AddNewContract action="edit" contract={selectedContract} />
           </div>
         </Dialog>
       </div>
     );
   }, [isVisible, selectedContract]);
 
-  // Xử lý khi tải file
-  // const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = event.target.files && event.target.files[0];
-  //   if (file) {
-  //     // Xử lý file ở đây, ví dụ: đọc nội dung file
-  //     const reader = new FileReader();
-  //     reader.onload = (e) => {
-  //       const content = e.target?.result as string;
-  //       setSelectedContract(content);
-  //     };
-  //     reader.readAsText(file);
-  //   }
-  // };
-
-  //Xử lý
-
   return (
     <div>
       <Box>
-        {/* <label>Thêm hợp đồng </label>
-        <input
-          type="file"
-          accept=".csv,.xlsx,.xls,.docx"
-          onChange={handleFileUpload}
-        /> */}
         <BaseGrid
           columns={columns}
           rows={TeachingContractPageData} // Update rows with API data
