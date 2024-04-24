@@ -84,17 +84,6 @@ export const TeachingContractPage: React.FC = () => {
       type: "file",
     },
   ];
-  const rows = [
-    {
-      id: 1,
-      semester: "Học kỳ I",
-      year: "2023-2024",
-      contract_name: "Hợp đồng giao khoán chuyên môn",
-      from_date: "",
-      to_date: "",
-      status: "",
-    },
-  ];
 
   const handleClose = () => {
     setIsVisible(false);

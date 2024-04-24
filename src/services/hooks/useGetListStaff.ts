@@ -7,7 +7,7 @@ import { IContent } from "types/teaching_contact";
 
 export type GetListStaffParams = {
   query?: string;
-  active?: 0 | 1;
+  active?: 0 | 1 | undefined;
   page?: number;
   size?: number;
 };

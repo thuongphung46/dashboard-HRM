@@ -1,4 +1,4 @@
-import { Input, MenuItem, Select } from "@mui/material";
+import { Button, Input, MenuItem, Select } from "@mui/material";
 import Box from "@mui/material/Box";
 import { BaseGrid } from "components/atoms/datagrid";
 import { FC, useCallback, useState } from "react";
@@ -27,10 +27,17 @@ export const ListStaff: FC<Props> = () => {
     },
     [navigate]
   );
+  const handleAddNew = useCallback(
+    (e: any) => {
+      navigate(`/detail_employee`);
+    },
+    [navigate]
+  );
 
   return (
     <div>
       <Box>
+        
         <Input
           value={params.query}
           onChange={(e) => setParams({ ...params, query: e.target.value })}
@@ -49,6 +56,7 @@ export const ListStaff: FC<Props> = () => {
           <MenuItem value={1}>Đang làm việc</MenuItem>
           <MenuItem value={0}>Đã nghỉ việc</MenuItem>
         </Select>
+        <Button onClick={handleAddNew} >Thêm</Button>
         {loading ? (
           <div>Loading...</div>
         ) : (
