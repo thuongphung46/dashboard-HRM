@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Box, CircularProgress } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { BaseGrid } from "components/atoms/datagrid";
 import { AddNewContract } from "./add_contract/indext";
 import Dialog from "@mui/material/Dialog";
@@ -73,17 +73,6 @@ export const TeachingContractPage: React.FC = () => {
     },
     { field: "file1", headerName: "File hợp đồng", width: 150, editable: true , type: "file"},
     { field: "file2", headerName: "File phụ lục", width: 150, editable: true , type: "file"},
-  ];
-  const rows = [
-    {
-      id: 1,
-      semester: "Học kỳ I",
-      year: "2023-2024",
-      contract_name: "Hợp đồng giao khoán chuyên môn",
-      from_date: "",
-      to_date: "",
-      status: "",
-    },
   ];
 
   const handleClose = () => {
@@ -159,6 +148,8 @@ export const TeachingContractPage: React.FC = () => {
           accept=".csv,.xlsx,.xls,.docx"
           onChange={handleFileUpload}
         /> */}
+        <h2>Danh sách hợp đồng giảng dạy</h2>
+        <Button onClick={() => setIsVisible(true)}>Thêm</Button>
         <BaseGrid
           columns={columns}
           rows={TeachingContractPageData} // Update rows with API data
