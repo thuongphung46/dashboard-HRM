@@ -4,7 +4,7 @@ import { HomePage } from "components/pages/home";
 import { GeneralPage } from "components/pages/general";
 import { ManagementLevelModelPage } from "components/pages/management_level_model";
 import RootLayout from "components/templates/root_layout/RootLayout";
-import { DetailEmployeePage } from "components/pages/staff";
+import { ListEmployeePage } from "components/pages/staff";
 import { ImportPage } from "components/pages/import";
 import { TeachingContractPage } from "components/pages/teaching_contract";
 import { SignIn } from "components/pages/login";
@@ -48,9 +48,16 @@ const router = createBrowserRouter([
       },
       {
         path: "/detail_employee",
-        element: <DetailEmployeePage />,
+        element: <ListEmployeePage />,
       },
-      { path: "/detail_employee/:id", element: <TabDetailStaff /> },
+      {
+        path: "/detail_employee/:id",
+        element: <TabDetailStaff action={FORM_STATE.EDIT} />,
+      },
+      {
+        path: "/detail_employee/add",
+        element: <TabDetailStaff action={FORM_STATE.ADD} />,
+      },
       {
         path: "/teaching_contract",
         element: <PrivateRoute component={TeachingContractPage} />,

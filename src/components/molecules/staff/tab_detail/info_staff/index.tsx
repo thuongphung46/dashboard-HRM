@@ -12,15 +12,17 @@ import { GridTraining } from "../grid_training";
 import { fieldsData } from "./fields";
 import { STAFF_ADMISSION } from "constants/global_data";
 import { StaffDetail } from "types/ApplicationType";
+import { Action } from "types/action";
 
-type Props = {
+interface Props extends Action {
   data: StaffDetail;
-};
+  formData: any;
+  setFormData: (value: React.SetStateAction<StaffDetail>) => void;
+}
 
-export const InfoStaff = ({ data }: Props) => {
+export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
   const gridRef = useRef<any>(null);
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]); // State để lưu trữ các dòng được chọn
-  const [formData, setFormData] = useState<any>({});
 
   const handleSave = () => {};
 
@@ -37,14 +39,14 @@ export const InfoStaff = ({ data }: Props) => {
     [formData]
   );
 
-  const dcsvn = data.staffAdmissions.find(
-    (ele) => ele.type === STAFF_ADMISSION.DANG_CSVN
-  );
-  const doan = data.staffAdmissions.find(
-    (ele) => ele.type === STAFF_ADMISSION.DOAN_VIEN
-  );
-  data.dang_csvn = dcsvn?.place || "";
-  data.doan_tncs_hcm = doan?.place || "";
+  // const dcsvn = data.staffAdmissions.find(
+  //   (ele) => ele.type === STAFF_ADMISSION.DANG_CSVN
+  // );
+  // const doan = data.staffAdmissions.find(
+  //   (ele) => ele.type === STAFF_ADMISSION.DOAN_VIEN
+  // );
+  // data.dang_csvn = dcsvn?.place || "";
+  // data.doan_tncs_hcm = doan?.place || "";
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -64,8 +66,7 @@ export const InfoStaff = ({ data }: Props) => {
                         size="small"
                         id={field.id}
                         onChange={hanldeOnChangefield}
-                        value={data[field.id] || ""}
-                      >
+                        defaultValue={formData[field.id] || ""}>
                         {field.options.map((option) => (
                           <MenuItem key={option} value={option}>
                             {option}
@@ -80,7 +81,11 @@ export const InfoStaff = ({ data }: Props) => {
                       id={field.id}
                       name={field.id}
                       type={field.type}
-                      value={data[field.id] || ""}
+                      defaultValue={
+                        formData[field.id] !== undefined
+                          ? formData[field.id]
+                          : ""
+                      }
                       onChange={hanldeOnChangefield}
                     />
                   )}
@@ -92,7 +97,7 @@ export const InfoStaff = ({ data }: Props) => {
 
         <Grid sx={{ marginTop: "24px" }} width={"100%"} minWidth={500}>
           <GridTrainingSummary
-            dataSource={data.trainingSummary}
+            dataSource={action === "edit" ? data.trainingSummary : []}
             dataSelectRow={selectedRows}
             gridRef={gridRef}
             handleSave={handleSave}
@@ -101,7 +106,9 @@ export const InfoStaff = ({ data }: Props) => {
         </Grid>
         <Grid sx={{ marginTop: "24px" }} width={"100%"}>
           <GridTraining
-            dataSource={data.staffWorkingHistoriesOutAcademy}
+            dataSource={
+              action === "edit" ? data.staffWorkingHistoriesOutAcademy : []
+            }
             dataSelectRow={selectedRows}
             gridRef={gridRef}
             handleSave={handleSave}

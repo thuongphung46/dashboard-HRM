@@ -29,7 +29,7 @@ export const ListStaff: FC<Props> = () => {
   );
   const handleAddNew = useCallback(
     (e: any) => {
-      navigate(`/detail_employee`);
+      navigate(`/detail_employee/add`);
     },
     [navigate]
   );
@@ -37,7 +37,6 @@ export const ListStaff: FC<Props> = () => {
   return (
     <div>
       <Box>
-        
         <Input
           value={params.query}
           onChange={(e) => setParams({ ...params, query: e.target.value })}
@@ -50,13 +49,12 @@ export const ListStaff: FC<Props> = () => {
           label="Age"
           onChange={(e) => {
             setParams({ ...params, active: e.target.value as 0 | 1 });
-          }}
-        >
+          }}>
           <MenuItem value={undefined}>Tất cả</MenuItem>
           <MenuItem value={1}>Đang làm việc</MenuItem>
           <MenuItem value={0}>Đã nghỉ việc</MenuItem>
         </Select>
-        <Button onClick={handleAddNew} >Thêm</Button>
+        <Button onClick={handleAddNew}>Thêm</Button>
         {loading ? (
           <div>Loading...</div>
         ) : (

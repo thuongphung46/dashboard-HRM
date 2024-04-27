@@ -5,11 +5,12 @@ import { BaseGrid } from "components/atoms/datagrid";
 import { Grid } from "@mui/material";
 import { StaffDetail } from "types/ApplicationType";
 import { StaffService } from "services/staff_service";
+import { Action } from "types/action";
 
-type Props = {
+interface Props extends Action {
   data: StaffDetail;
   id: any;
-};
+}
 interface IGridWorkingHistory {
   handleSave: (data: any) => void;
   handleRowSelect: (e: any) => void;
@@ -80,18 +81,16 @@ export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
         checkboxSelection
         disableRowSelectionOnClick
         selectedRows={dataSelectRow}
-        onSave={handleSave}
-      ></BaseGrid>
+        onSave={handleSave}></BaseGrid>
     </div>
   );
 };
 
-export const WorkingHistory = ({ data, id }: Props) => {
+export const WorkingHistory = ({ data, id, action }: Props) => {
   const gridRef = useRef<any>(null);
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
 
   const handleSave = async (e: any) => {
-    console.log(e);
     const isSuccess = await StaffService.updateStaffWorkingHistory(id, e.data);
     if (isSuccess) {
       alert("Lưu thành công");
@@ -109,7 +108,9 @@ export const WorkingHistory = ({ data, id }: Props) => {
       <Grid sx={{ marginTop: "24px" }} container alignItems="center">
         <GridWorkingHistory
           dataSelectRow={selectedRows}
-          dataSource={data.staffWorkingHistoriesInAcademy}
+          dataSource={
+            action === "edit" ? data.staffWorkingHistoriesInAcademy : []
+          }
           gridRef={gridRef}
           handleRowSelect={handleRowSelectionChange}
           handleSave={handleSave}
