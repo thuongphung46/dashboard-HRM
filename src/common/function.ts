@@ -1,5 +1,3 @@
-import { KeyValue } from "constants/GlobalConstant";
-
 export const toString = (data: any) => {
   return `${data}`;
 };
