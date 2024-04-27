@@ -8,12 +8,12 @@ import { Assess } from "./assess";
 import { Guide } from "./guide";
 import { ScientificResearch } from "./scientific_research";
 import { StaffDetail } from "types/ApplicationType";
-
-interface Props {
+import { Action } from "types/action";
+interface Props extends Action {
   data: StaffDetail;
 }
 
-export const Analytic = ({ data }: Props) => {
+export const Analytic = ({ data, action }: Props) => {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
@@ -26,8 +26,7 @@ export const Analytic = ({ data }: Props) => {
         value={value}
         onChange={handleChange}
         aria-label="nav tabs example"
-        role="navigation"
-      >
+        role="navigation">
         <Tab label="Tổng quan" />
         <Tab label="Giảng dạy" />
         <Tab label="Đánh giá học phần" />
@@ -68,8 +67,7 @@ function TabPanel(props: TabPanelProps) {
       hidden={value !== index}
       id={`tabpanel-${index}`}
       aria-labelledby={`tab-${index}`}
-      {...other}
-    >
+      {...other}>
       {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
