@@ -2,13 +2,13 @@ import React, { FC, useState, ChangeEvent, useCallback } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import { InfoStaff } from "./info_staff";
 import { WorkingHistory } from "./working_history";
 import { Analytic } from "components/molecules/staff/tab_analytic";
 import { useParams } from "react-router-dom";
 import { useGetStaff } from "services/hooks/useGetListStaff";
 import { Action } from "types/action";
-import { Button } from "@mui/material";
 import { StaffService } from "services/staff_service";
 import { MessageCode } from "types/enum/message_code";
 import { toastMessage } from "components/molecules/toast_message";
@@ -40,10 +40,8 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
   }, [formData]);
 
   return (
-    <div
-      style={{
-        backgroundColor: "#fff",
-      }}>
+    <div>
+      <Button onClick={handleOnClickSave}>Lưu</Button>
       <Tabs
         value={value}
         onChange={handleChange}
@@ -52,7 +50,6 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
         <Tab label="Thông tin chung" />
         {action === "edit" && <Tab label="Quá trình làm việc tại đơn vị" />}
         {action === "edit" && <Tab label="Thống kê" />}
-        <Button onClick={handleOnClickSave}>Lưu</Button>
       </Tabs>
       <TabPanel value={value} index={0}>
         {loading ? (
@@ -73,7 +70,6 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
           <WorkingHistory action={action} data={data} id={id} />
         )}
       </TabPanel>
-
       <TabPanel value={value} index={2}>
         <Analytic action={action} data={data} />
       </TabPanel>
@@ -98,7 +94,7 @@ function TabPanel(props: TabPanelProps) {
       aria-labelledby={`tab-${index}`}
       {...other}>
       {value === index && (
-        <Box sx={{ p: 3, height: "calc(100vh - 130px)", overflow: "auto" }}>
+        <Box sx={{ p: 3, height: "calc(100vh - 150px)", overflow: "auto" }}>
           {children}
         </Box>
       )}

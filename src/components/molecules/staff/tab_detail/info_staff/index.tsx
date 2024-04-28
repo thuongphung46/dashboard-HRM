@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -13,6 +13,7 @@ import { fieldsData } from "./fields";
 import { STAFF_ADMISSION } from "constants/global_data";
 import { StaffDetail } from "types/ApplicationType";
 import { Action } from "types/action";
+import { useDebouncedCallback } from "use-debounce";
 
 interface Props extends Action {
   data: StaffDetail;
@@ -30,14 +31,11 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
     setSelectedRows(selection); // Cập nhật state khi có sự thay đổi trong việc chọn dòng
   };
 
-  const hanldeOnChangefield = useCallback(
-    (e: any) => {
-      let value = e.target.value;
-      let field = e.target.name;
-      setFormData({ ...formData, [field]: value });
-    },
-    [formData]
-  );
+  const hanldeOnChangefield = useDebouncedCallback((e: any) => {
+    let value = e.target.value;
+    let field = e.target.name;
+    setFormData({ ...formData, [field]: value });
+  }, 500);
 
   // const dcsvn = data.staffAdmissions.find(
   //   (ele) => ele.type === STAFF_ADMISSION.DANG_CSVN
@@ -67,11 +65,12 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
                         id={field.id}
                         onChange={hanldeOnChangefield}
                         defaultValue={data ? data[field.id] : ""}>
-                        {field.options.map((option) => (
-                          <MenuItem key={option} value={option}>
-                            {option}
-                          </MenuItem>
-                        ))}
+                        {field.options &&
+                          field.options.map((option, index) => (
+                            <MenuItem key={index} value={option.value}>
+                              {option.label}
+                            </MenuItem>
+                          ))}
                       </Select>
                     </FormControl>
                   ) : (
@@ -81,7 +80,7 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
                       id={field.id}
                       name={field.id}
                       type={field.type}
-                      defaultValue={data ? data[field.id] : ""}
+                      value={data ? data[field.id] : ""}
                       onChange={hanldeOnChangefield}
                     />
                   )}
