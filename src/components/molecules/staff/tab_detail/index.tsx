@@ -25,6 +25,7 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
     setValue(newValue);
   };
   const handleOnClickSave = useCallback(() => {
+    //xử lý thêm nhân viên
     StaffService.createStaff(formData)
       .then((res) => {
         if (res.msg_code === MessageCode.Success) {
@@ -49,12 +50,8 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
         aria-label="nav tabs example"
         role="navigation">
         <Tab label="Thông tin chung" />
-        {action === "edit" ? (
-          <>
-            <Tab label="Quá trình làm việc tại đơn vị" />{" "}
-            <Tab label="Thống kê" />
-          </>
-        ) : null}
+        {action === "edit" && <Tab label="Quá trình làm việc tại đơn vị" />}
+        {action === "edit" && <Tab label="Thống kê" />}
         <Button onClick={handleOnClickSave}>Lưu</Button>
       </Tabs>
       <TabPanel value={value} index={0}>
@@ -76,15 +73,10 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
           <WorkingHistory action={action} data={data} id={id} />
         )}
       </TabPanel>
-      {action === "edit" ? (
-        <>
-          <TabPanel value={value} index={2}>
-            <Analytic action={action} data={data} />
-          </TabPanel>
-        </>
-      ) : (
-        <></>
-      )}
+
+      <TabPanel value={value} index={2}>
+        <Analytic action={action} data={data} />
+      </TabPanel>
     </div>
   );
 };
@@ -105,7 +97,11 @@ function TabPanel(props: TabPanelProps) {
       id={`tabpanel-${index}`}
       aria-labelledby={`tab-${index}`}
       {...other}>
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      {value === index && (
+        <Box sx={{ p: 3, height: "calc(100vh - 130px)", overflow: "auto" }}>
+          {children}
+        </Box>
+      )}
     </div>
   );
 }

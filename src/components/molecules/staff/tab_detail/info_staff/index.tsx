@@ -66,7 +66,7 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
                         size="small"
                         id={field.id}
                         onChange={hanldeOnChangefield}
-                        defaultValue={formData[field.id] || ""}>
+                        defaultValue={data ? data[field.id] : ""}>
                         {field.options.map((option) => (
                           <MenuItem key={option} value={option}>
                             {option}
@@ -81,11 +81,7 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
                       id={field.id}
                       name={field.id}
                       type={field.type}
-                      defaultValue={
-                        formData[field.id] !== undefined
-                          ? formData[field.id]
-                          : ""
-                      }
+                      defaultValue={data ? data[field.id] : ""}
                       onChange={hanldeOnChangefield}
                     />
                   )}

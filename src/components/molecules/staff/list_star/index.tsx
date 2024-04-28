@@ -1,4 +1,11 @@
-import { Button, Input, MenuItem, Select } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  Input,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import Box from "@mui/material/Box";
 import { BaseGrid } from "components/atoms/datagrid";
 import { FC, useCallback, useState } from "react";
@@ -37,24 +44,37 @@ export const ListStaff: FC<Props> = () => {
   return (
     <div>
       <Box>
-        <Input
-          value={params.query}
-          onChange={(e) => setParams({ ...params, query: e.target.value })}
-          placeholder="Tìm kiếm nhân viên"
-        />
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={params.active}
-          label="Age"
-          onChange={(e) => {
-            setParams({ ...params, active: e.target.value as 0 | 1 });
+        <Box
+          sx={{
+            maxWidth: "450px",
+            display: "flex",
+            justifyContent: "space-between",
           }}>
-          <MenuItem value={undefined}>Tất cả</MenuItem>
-          <MenuItem value={1}>Đang làm việc</MenuItem>
-          <MenuItem value={0}>Đã nghỉ việc</MenuItem>
-        </Select>
-        <Button onClick={handleAddNew}>Thêm</Button>
+          <Input
+            value={params.query}
+            onChange={(e) => setParams({ ...params, query: e.target.value })}
+            placeholder="Tìm kiếm nhân viên"
+          />
+          <FormControl sx={{ m: "0px 4px", minWidth: 200 }}>
+            <InputLabel>Trạng thái</InputLabel>
+            <Select
+              value={params.active}
+              sx={{
+                minWidth: "120px",
+                width: "200px",
+              }}
+              label={"Trạng thái"}
+              defaultValue={undefined}
+              onChange={(e) => {
+                setParams({ ...params, active: e.target.value as 0 | 1 });
+              }}>
+              <MenuItem value={undefined}>Tất cả</MenuItem>
+              <MenuItem value={1}>Đang làm việc</MenuItem>
+              <MenuItem value={0}>Đã nghỉ việc</MenuItem>
+            </Select>
+          </FormControl>
+          <Button onClick={handleAddNew}>Thêm</Button>
+        </Box>
         {loading ? (
           <div>Loading...</div>
         ) : (
@@ -65,9 +85,7 @@ export const ListStaff: FC<Props> = () => {
             checkboxSelection
             disableRowSelectionOnClick
             onCellClick={handleCellClick}
-            onRowSelectionChange={function (selection: any): void {
-              throw new Error("Function not implemented.");
-            }}
+            onRowSelectionChange={(selection: any) => {}}
             selectedRows={[]}
           />
         )}
