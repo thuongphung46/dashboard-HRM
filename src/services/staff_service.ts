@@ -12,9 +12,7 @@ interface IParam {
 const controller = "staffs";
 const StaffService = {
   createStaff: async (params: any) => {
-    return await Request(controller).postAsync("", {
-      params,
-    });
+    return await Request(controller).postAsync("", params);
   },
   getListStaff: async (param: IParam) => {
     return await Request(controller).getAsync(
