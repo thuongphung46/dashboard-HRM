@@ -5,15 +5,20 @@ import { FC, useCallback, useMemo, useState } from "react";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import ReusableField from "components/atoms/field";
-import { useCreateDepartment } from 'services/hooks/useGetListDepartment';
+import { useCreateDepartment } from "services/hooks/useGetListDepartment";
 import { toast } from "react-toastify";
 
 interface Props {
   departmentList: any[];
   handleClickItem: (item: any) => void;
+  active: any;
 }
 
-export const ListDepartment: FC<Props> = ({ departmentList, handleClickItem }) => {
+export const ListDepartment: FC<Props> = ({
+  departmentList,
+  handleClickItem,
+  active,
+}) => {
   const [open, setOpen] = useState<boolean>(false);
   const [formData, setFormData] = useState<any>({});
 
@@ -37,33 +42,35 @@ export const ListDepartment: FC<Props> = ({ departmentList, handleClickItem }) =
   const { createDepartment } = useCreateDepartment();
   const renderPopup = useMemo(() => {
     const fieldData = [
-      // { id: "code", label: "Mã cấp quản lý", type: "text" },
       { id: "name", label: "Tên cấp quản lý", type: "text" },
-      { id: "parent", label: "Trực thuộc cấp", 
+      {
+        id: "parent",
+        label: "Trực thuộc cấp",
         type: "select",
-        options: departmentList.map((department) => department.name) },
+        options: departmentList.map((department) => department.name),
+      },
     ];
 
     const handleSave = async () => {
       // Kiểm tra xem tên cấp quản lý đã được nhập hay chưa
-      const nameField = fieldData.find(field => field.id === 'name');
+      const nameField = fieldData.find((field) => field.id === "name");
       if (nameField && !formData[nameField.id]) {
-        toast('Vui lòng nhập Tên cấp quản lý');
+        toast("Vui lòng nhập Tên cấp quản lý");
         return;
       }
       // Define body here
       const body = {
-        name: formData['name'],
-        parentDeptId: formData['parent'],
-      }; 
+        name: formData["name"],
+        parentDeptId: formData["parent"],
+      };
       // Tiếp tục xử lý lưu dữ liệu
       const response = await createDepartment(body);
-      if (response && response.message === 'success') {
-        toast('Thành công');
+      if (response && response.message === "success") {
+        toast("Thành công");
         handleClose();
         setFormData({});
       } else {
-        toast('Tạo phòng không thành công');
+        toast("Tạo phòng không thành công");
       }
     };
 
@@ -106,7 +113,14 @@ export const ListDepartment: FC<Props> = ({ departmentList, handleClickItem }) =
         </div>
       </Modal>
     );
-  }, [departmentList, open, handleClose, formData, createDepartment, hanldeOnChangefield]);
+  }, [
+    departmentList,
+    open,
+    handleClose,
+    formData,
+    createDepartment,
+    hanldeOnChangefield,
+  ]);
 
   return (
     <div
@@ -130,7 +144,14 @@ export const ListDepartment: FC<Props> = ({ departmentList, handleClickItem }) =
       >
         {departmentList.map((item) => {
           return (
-            <ListItemButton key={item.id} onClick={() => handleClickItem(item)}>
+            <ListItemButton
+              style={{
+                backgroundColor:
+                  active === item.id ? "rgba(0,0,0,0.1)" : "transparent",
+              }}
+              key={item.id}
+              onClick={() => handleClickItem(item)}
+            >
               <ListItemText primary={`${item.name}`} />
             </ListItemButton>
           );
