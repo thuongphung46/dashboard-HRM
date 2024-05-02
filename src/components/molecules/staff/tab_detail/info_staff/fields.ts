@@ -27,11 +27,11 @@ export const fieldsData: FieldsData[] = [
       },
       {
         value: "LEVEL_3",
-        label: "level 3",
+        label: "level3",
       },
       {
         value: "LEVEL_4",
-        label: "level 4 ",
+        label: "level4 ",
       },
     ],
   },
@@ -53,8 +53,20 @@ export const fieldsData: FieldsData[] = [
   { id: "dateOfBirth", label: "Ngày sinh", type: "date" },
   { id: "personalEmail", label: "Email", type: "text" },
   { id: "phoneNumber", label: "Số điện thoại", type: "text" },
-  { id: "departmentId", label: "Cấp quản lý", type: "number" },
+  { id: "departmentId", label: "Cấp quản lý", type: "select", options: [],},
   { id: "jobTitle", label: "Chức vụ", type: "text" },
+  { id: "rankId", label: "rankId", type: "select",
+    options: [
+      {
+        value: 1,
+        label: "1",
+      },
+      {
+        value: 2,
+        label: "2",
+      },
+    ],
+   },
   { id: "rankName", label: "Hàm (Sĩ quan)", type: "text" },
   { id: "identityBirthPlace", label: "Nơi sinh", type: "text" },
   { id: "identityBirthPlace2", label: "Nguyên quán", type: "text" },
@@ -65,11 +77,22 @@ export const fieldsData: FieldsData[] = [
     label: "Nơi đăng ký hộ khẩu thường trú",
     type: "text",
   },
-  { id: "identityCode", label: "Căn cước", type: "text" },
+  { id: "identityCode", label: "CMND/CCCD", type: "text" },
   { id: "identityDate", label: "Ngày cấp", type: "date" },
   { id: "placeOfIssue", label: "Nơi cấp", type: "text" },
   { id: "favorite", label: "Sở thích", type: "text" },
-  { id: "groupId", label: "groupId", type: "number" },
+  { id: "groupId", label: "groupId", type: "select",
+    options: [
+      {
+        value: '1',
+        label: "Đây là bộ môn (phòng ban cấp 2)",
+      },
+      // {
+      //   value: 5,
+      //   label: "5",
+      // },
+    ],
+   },
   {
     id: "active",
     label: "Trạng thái",

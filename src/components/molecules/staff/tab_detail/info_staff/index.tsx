@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -14,21 +14,45 @@ import { fieldsData } from "./fields";
 import { StaffDetail } from "types/ApplicationType";
 import { Action } from "types/action";
 import { useDebouncedCallback } from "use-debounce";
+import { useGetListDepartment } from "services/hooks/useGetListDepartment";
 
 interface Props extends Action {
   data: StaffDetail;
   formData: any;
   setFormData: (value: React.SetStateAction<StaffDetail>) => void;
 }
+interface DepartmentData {
+  id: number;
+  name: string;
+  parentDeptId: string;
+  createdDate: string;
+  modifiedDate: string;
+  createdBy: string;
+  modifiedBy: string;
+  groups: Group[];
+}
+interface Group {
+  id: number;
+  name: string;
+  parentDeptId: string;
+  createdDate: string;
+  modifiedDate: string;
+  createdBy: string;
+  modifiedBy: string;
+  groups: any[];
+}
 
 export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
   const gridRef = useRef<any>(null);
-  const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]); // State để lưu trữ các dòng được chọn
+  const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
+  const [departmentList, setDepartmentList] = useState<DepartmentData[]>([]);
+  // const [selectedGroups, setSelectedGroups] = useState<number[]>([]);
+  const { loading, data: departmentData } = useGetListDepartment();
 
   const handleSave = () => {};
 
   const handleRowSelectionChange = (selection: GridRowId[]) => {
-    setSelectedRows(selection); // Cập nhật state khi có sự thay đổi trong việc chọn dòng
+    setSelectedRows(selection);
   };
 
   const hanldeOnChangefield = useDebouncedCallback((e: any) => {
@@ -45,6 +69,12 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
   // );
   // data.dang_csvn = dcsvn?.place || "";
   // data.doan_tncs_hcm = doan?.place || "";
+
+  useEffect(() => {
+    if (!loading && departmentData) {
+      setDepartmentList(departmentData);
+    }
+  }, [loading, departmentData]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -66,12 +96,18 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
                         onChange={hanldeOnChangefield}
                         defaultValue={data ? data[field.id] : ""}
                       >
-                        {field.options &&
-                          field.options.map((option, index) => (
-                            <MenuItem key={index} value={option.value}>
-                              {option.label}
-                            </MenuItem>
-                          ))}
+                        {field.id === 'departmentId'
+                          ? departmentList.map((department) => (
+                              <MenuItem key={department.id} value={department.id}>
+                                {department.name}
+                              </MenuItem>
+                            ))
+                          : field.options &&
+                            field.options.map((option, index) => (
+                              <MenuItem key={index} value={option.value}>
+                                {option.label}
+                              </MenuItem>
+                            ))}
                       </Select>
                     </FormControl>
                   ) : (

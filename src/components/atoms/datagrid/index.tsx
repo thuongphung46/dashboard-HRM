@@ -111,7 +111,7 @@ export const BaseGrid = forwardRef<any, BaseGridProps>(
           initialState={{
             pagination: {
               paginationModel: {
-                pageSize: 5,
+                pageSize: 20,
               },
             },
           }}
