@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { Box } from "@mui/material";
 import { BaseGrid } from "components/atoms/datagrid";
-import { AddNewContract } from "./add_contract/indext";
+import { AddNewContract } from "./deatail_contract";
 import Dialog from "@mui/material/Dialog";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
@@ -119,8 +119,9 @@ export const TeachingContractPage: React.FC = () => {
               padding: "12px",
               height: `calc(100vh - 50px)`,
               overflow: "auto",
-            }}>
-            <AddNewContract contract={selectedContract} />
+            }}
+          >
+            <AddNewContract action="edit" contract={selectedContract} />
           </div>
         </Dialog>
       </div>
@@ -129,6 +130,7 @@ export const TeachingContractPage: React.FC = () => {
 
   return (
     <div>
+      <Button>Add contact</Button>
       <Box>
         <BaseGrid
           columns={columns}
