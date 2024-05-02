@@ -7,17 +7,20 @@ interface Props{}
 export const GeneralPosition: FC<Props> = () => {
 
     const [isAddingRow, setIsAddingRow] = useState(false);
-    // const gridRef = useRef<any>(null);
-    const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]); // State để lưu trữ các dòng được chọn
+    const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
     const columns: GridColDef[] = [
       { field: 'id', headerName: 'STT', width: 90 },
       { field: 'position_id', headerName: 'Mã chức  vụ', width: 150, editable: isAddingRow },
       { field: 'position_name', headerName: 'Tên chức vụ', width: 150, editable: true},
+      { field: 'level', headerName: 'Level', width: 150, editable: false}
     ];
     const rows = [
-      { id: 1, position_id: 'giamdoc', position_name: 'Giám đốc'},
-      { id: 2, position_id: 'phogiamdoc', position_name: 'Phó giám đốc'},
-      { id: 3, position_id: 'chunhiem', position_name: 'Chủ nhiệm'},
+      { id: 1, position_id: 'giamdoc', position_name: 'Giám đốc', level: 'LEVEL_1'},
+      { id: 2, position_id: 'phogiamdoc', position_name: 'Phó giám đốc', level: 'LEVEL_1'},
+      { id: 3, position_id: 'chunhiem', position_name: 'Chủ nhiệm', level: 'LEVEL_2'},
+      { id: 4, position_id: 'phochunhiem', position_name: 'Phó chủ nhiệm', level: 'LEVEL_2'},
+      { id: 5, position_id: 'giangvien', position_name: 'Giảng viên', level: 'LEVEL_3'},
+      { id: 6, position_id: 'trogiang', position_name: 'Trợ giảng', level: 'LEVEL_4'},
     ];
     const [dataSource, setDataSource] = useState<any[]>(rows);
   
