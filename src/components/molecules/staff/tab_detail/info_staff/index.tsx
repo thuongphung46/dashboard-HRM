@@ -10,7 +10,7 @@ import { GridRowId } from "@mui/x-data-grid";
 import { GridTrainingSummary } from "../grid_training_summary";
 import { GridTraining } from "../grid_training";
 import { fieldsData } from "./fields";
-import { STAFF_ADMISSION } from "constants/global_data";
+// import { STAFF_ADMISSION } from "constants/global_data";
 import { StaffDetail } from "types/ApplicationType";
 import { Action } from "types/action";
 import { useDebouncedCallback } from "use-debounce";
@@ -64,7 +64,8 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
                         size="small"
                         id={field.id}
                         onChange={hanldeOnChangefield}
-                        defaultValue={data ? data[field.id] : ""}>
+                        defaultValue={data ? data[field.id] : ""}
+                      >
                         {field.options &&
                           field.options.map((option, index) => (
                             <MenuItem key={index} value={option.value}>
