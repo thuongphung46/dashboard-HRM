@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { BaseGrid } from "components/atoms/datagrid";
 import { AddNewContract } from "./deatail_contract";
 import Dialog from "@mui/material/Dialog";
@@ -135,6 +135,7 @@ export const TeachingContractPage: React.FC = () => {
 
   return (
     <div>
+      <Button>Add contact</Button>
       <Box>
         <BaseGrid
           columns={columns}
