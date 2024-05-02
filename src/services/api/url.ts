@@ -13,4 +13,10 @@ export const API_URL = {
 
   // Department
   DEPARTMENT: "/department",
+
+  //GENERAL
+  GENERAL: "/general",
+  JOB_TITLE: "/job-title",
+  REASON_REDUCE: "/reason-reduce",
+  RANK_CONFIG: "/rank-config",
 };
