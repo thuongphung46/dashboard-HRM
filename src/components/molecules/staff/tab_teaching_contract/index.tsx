@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import { BaseGrid } from "components/atoms/datagrid";
 import { AddNewContract } from "./deatail_contract";
 import Dialog from "@mui/material/Dialog";
@@ -14,8 +14,7 @@ export const TeachingContractPage: React.FC = () => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [selectedContract, setSelectedContract] = useState<any>({});
   const idUser = storageAction("get", KeyValue.id);
-  const { data: TeachingContractPageData, loading } =
-    useGetListContractStaff(idUser);
+  const { data: TeachingContractPageData } = useGetListContractStaff(idUser);
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "STT", width: 90 },
@@ -84,7 +83,6 @@ export const TeachingContractPage: React.FC = () => {
       type: "file",
     },
   ];
-
   const handleClose = () => {
     setIsVisible(false);
     setSelectedContract({});
@@ -99,22 +97,19 @@ export const TeachingContractPage: React.FC = () => {
           onClose={() => {
             setIsVisible(false);
             setSelectedContract({});
-          }}
-        >
+          }}>
           <div
             style={{
               width: "100%",
               display: "flex",
               justifyContent: "flex-end",
               padding: "12px",
-            }}
-          >
+            }}>
             <IconButton
               edge="start"
               color="inherit"
               onClick={handleClose}
-              aria-label="close"
-            >
+              aria-label="close">
               <CloseIcon />
             </IconButton>
           </div>

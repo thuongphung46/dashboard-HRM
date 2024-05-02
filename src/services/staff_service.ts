@@ -11,6 +11,9 @@ interface IParam {
 }
 const controller = "staffs";
 const StaffService = {
+  createStaff: async (params: any) => {
+    return await Request(controller).postAsync("", params);
+  },
   getListStaff: async (param: IParam) => {
     return await Request(controller).getAsync(
       `?query=${param.query}&active=${param.active}&page=${param.page}&size=${param.size}`

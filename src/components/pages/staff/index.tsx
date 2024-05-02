@@ -1,5 +1,5 @@
 import { StaffTemplate } from "components/templates/staff";
 
-export const DetailEmployeePage = () => {
+export const ListEmployeePage = () => {
   return <StaffTemplate></StaffTemplate>;
 };

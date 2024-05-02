@@ -44,13 +44,13 @@ export const useGetStaff = (id: string | undefined) => {
 
   const fetchData = async () => {
     setLoading(true);
-    const response = await NetWork.get(`${API_URL.STAFFS}/${id}`);
-    if (response.status === RESPONSE_CODE.SUCCESS) {
-      setData(response?.data?.content);
-      setLoading(false);
-    } else {
-      setLoading(false);
+    if (id) {
+      const response = await NetWork.get(`${API_URL.STAFFS}/${id}`);
+      if (response.status === RESPONSE_CODE.SUCCESS) {
+        setData(response?.data?.content);
+      }
     }
+    setLoading(false);
   };
   useEffect(() => {
     fetchData();

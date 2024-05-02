@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -12,15 +12,18 @@ import { GridTraining } from "../grid_training";
 import { fieldsData } from "./fields";
 import { STAFF_ADMISSION } from "constants/global_data";
 import { StaffDetail } from "types/ApplicationType";
+import { Action } from "types/action";
+import { useDebouncedCallback } from "use-debounce";
 
-type Props = {
+interface Props extends Action {
   data: StaffDetail;
-};
+  formData: any;
+  setFormData: (value: React.SetStateAction<StaffDetail>) => void;
+}
 
-export const InfoStaff = ({ data }: Props) => {
+export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
   const gridRef = useRef<any>(null);
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]); // State để lưu trữ các dòng được chọn
-  const [formData, setFormData] = useState<any>({});
 
   const handleSave = () => {};
 
@@ -28,23 +31,20 @@ export const InfoStaff = ({ data }: Props) => {
     setSelectedRows(selection); // Cập nhật state khi có sự thay đổi trong việc chọn dòng
   };
 
-  const hanldeOnChangefield = useCallback(
-    (e: any) => {
-      let value = e.target.value;
-      let field = e.target.name;
-      setFormData({ ...formData, [field]: value });
-    },
-    [formData]
-  );
+  const hanldeOnChangefield = useDebouncedCallback((e: any) => {
+    let value = e.target.value;
+    let field = e.target.name;
+    setFormData({ ...formData, [field]: value });
+  }, 500);
 
-  const dcsvn = data.staffAdmissions.find(
-    (ele) => ele.type === STAFF_ADMISSION.DANG_CSVN
-  );
-  const doan = data.staffAdmissions.find(
-    (ele) => ele.type === STAFF_ADMISSION.DOAN_VIEN
-  );
-  data.dang_csvn = dcsvn?.place || "";
-  data.doan_tncs_hcm = doan?.place || "";
+  // const dcsvn = data.staffAdmissions.find(
+  //   (ele) => ele.type === STAFF_ADMISSION.DANG_CSVN
+  // );
+  // const doan = data.staffAdmissions.find(
+  //   (ele) => ele.type === STAFF_ADMISSION.DOAN_VIEN
+  // );
+  // data.dang_csvn = dcsvn?.place || "";
+  // data.doan_tncs_hcm = doan?.place || "";
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -64,13 +64,13 @@ export const InfoStaff = ({ data }: Props) => {
                         size="small"
                         id={field.id}
                         onChange={hanldeOnChangefield}
-                        value={data[field.id] || ""}
-                      >
-                        {field.options.map((option) => (
-                          <MenuItem key={option} value={option}>
-                            {option}
-                          </MenuItem>
-                        ))}
+                        defaultValue={data ? data[field.id] : ""}>
+                        {field.options &&
+                          field.options.map((option, index) => (
+                            <MenuItem key={index} value={option.value}>
+                              {option.label}
+                            </MenuItem>
+                          ))}
                       </Select>
                     </FormControl>
                   ) : (
@@ -80,7 +80,7 @@ export const InfoStaff = ({ data }: Props) => {
                       id={field.id}
                       name={field.id}
                       type={field.type}
-                      value={data[field.id] || ""}
+                      value={data ? data[field.id] : ""}
                       onChange={hanldeOnChangefield}
                     />
                   )}
@@ -92,7 +92,7 @@ export const InfoStaff = ({ data }: Props) => {
 
         <Grid sx={{ marginTop: "24px" }} width={"100%"} minWidth={500}>
           <GridTrainingSummary
-            dataSource={data.trainingSummary}
+            dataSource={action === "edit" ? data.trainingSummary : []}
             dataSelectRow={selectedRows}
             gridRef={gridRef}
             handleSave={handleSave}
@@ -101,7 +101,9 @@ export const InfoStaff = ({ data }: Props) => {
         </Grid>
         <Grid sx={{ marginTop: "24px" }} width={"100%"}>
           <GridTraining
-            dataSource={data.staffWorkingHistoriesOutAcademy}
+            dataSource={
+              action === "edit" ? data.staffWorkingHistoriesOutAcademy : []
+            }
             dataSelectRow={selectedRows}
             gridRef={gridRef}
             handleSave={handleSave}
