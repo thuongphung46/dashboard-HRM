@@ -39,43 +39,55 @@ export const useGetListJobTitle = () => {
   return { data, loading };
 };
 
-export type createCreateJobTitleBody = {
+export type CreateJobTitleBody = {
   code: string;
   jobTitle: string;
 };
 
-const useCreateJobTitle = () => {
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const createJobTitle = async (body: createCreateJobTitleBody) => {
-    setLoading(true);
-    const response = await NetWork.post(`${API_URL.JOB_TITLE}`, body);
-    setLoading(false);
-    if (response.status === RESPONSE_CODE.SUCCESS) {
-      return response.data;
-    } else {
-      return null;
-    }
-  };
-
-  return { createJobTitle, loading };
+export type UpdateJobTitleBody = {
+  jobTitle: string;
 };
 
-export type updateJobTitleBody = {};
-
-const useUpdateJobTitle = (id: string | undefined) => {
+export const useJobTitle = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
-  const updateJobTitle = async (id: string, body: updateJobTitleBody) => {
+  const updateJobTitle = async (id: string, body: UpdateJobTitleBody) => {
     setLoading(true);
-    const response = await NetWork.patch(`${API_URL.JOB_TITLE}/${id}`, body);
+    const response = await NetWork.patch(
+      getRequestUrl(API_URL.GENERAL, {
+        partial: API_URL.JOB_TITLE,
+        parentId: id,
+      }),
+      body
+    );
     setLoading(false);
-    if (response.status === RESPONSE_CODE.SUCCESS) {
-      return response.data;
+    if (
+      response.status === RESPONSE_CODE.SUCCESS &&
+      response.data.msg_code === RESPONSE_CODE.SUCCESS
+    ) {
+      return response.data?.content;
+    } else {
+      return null;
+    }
+  };
+  const createJobTitle = async (body: CreateJobTitleBody) => {
+    setLoading(true);
+    const response = await NetWork.post(
+      getRequestUrl(API_URL.GENERAL, {
+        partial: API_URL.JOB_TITLE,
+      }),
+      body
+    );
+    setLoading(false);
+    if (
+      response.status === RESPONSE_CODE.SUCCESS &&
+      response.data.msg_code === RESPONSE_CODE.SUCCESS
+    ) {
+      return response.data?.content;
     } else {
       return null;
     }
   };
 
-  return { updateJobTitle, loading };
+  return { createJobTitle, updateJobTitle, loading };
 };

@@ -28,6 +28,8 @@ interface BaseGridProps extends DataGridProps {
   onRowSelectionChange: (selection: any) => void;
   selectedRows: GridRowId[];
   callBack?: (data: any) => void;
+  onPressAdd?: () => void;
+  onPressDelete?: () => void;
 }
 
 export const BaseGrid = forwardRef<any, BaseGridProps>(
@@ -40,6 +42,8 @@ export const BaseGrid = forwardRef<any, BaseGridProps>(
       selectedRows,
       rows,
       callBack,
+      onPressAdd,
+      onPressDelete,
       ...rest
     },
     ref: ForwardedRef<any>
@@ -127,7 +131,14 @@ export const BaseGrid = forwardRef<any, BaseGridProps>(
             toolbar: EditToolbar,
           }}
           slotProps={{
-            toolbar: { setDataSource, setRowModesModel, dataSource, onSave },
+            toolbar: {
+              setDataSource,
+              setRowModesModel,
+              dataSource,
+              onSave,
+              onPressAdd,
+              onPressDelete,
+            },
           }}
           {...rest}
         />
@@ -143,12 +154,20 @@ interface EditToolbarProps {
   setRowModesModel: (
     newModel: (oldModel: GridRowModesModel) => GridRowModesModel
   ) => void;
+  onPressAdd?: () => void;
 }
 function EditToolbar(props: EditToolbarProps) {
-  const { setDataSource, setRowModesModel, dataSource, onSave } = props;
+  const { setDataSource, setRowModesModel, dataSource, onSave, onPressAdd } =
+    props;
 
   const handleClick = () => {
-    const id = dataSource.length + 1;
+    // get the next id
+    const maxId = dataSource.reduce(
+      (max, row) => (row.id > max ? row.id : max),
+      0
+    );
+    const id = maxId + 1;
+    onPressAdd?.();
     setDataSource((oldRows) => [...oldRows, { id, isNew: true }]);
     setRowModesModel((oldModel) => ({
       ...oldModel,

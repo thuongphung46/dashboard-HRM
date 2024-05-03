@@ -2,7 +2,12 @@ import { FC, useState } from "react";
 import Box from "@mui/material/Box";
 import { GridColDef, GridRowId } from "@mui/x-data-grid";
 import { BaseGrid } from "components/atoms/datagrid";
-import { useGetListJobTitle } from "services/hooks/useGetListJobTitle";
+import {
+  JobTitleType,
+  useGetListJobTitle,
+  useJobTitle,
+} from "services/hooks/useGetListJobTitle";
+import { isNullOrEmpty } from "common/validation";
 
 interface Props {}
 export const GeneralPosition: FC<Props> = () => {
@@ -23,32 +28,26 @@ export const GeneralPosition: FC<Props> = () => {
       editable: true,
     },
   ];
-  const rows = [
-    { id: 1, code: "giamdoc", jobTitle: "Giám đốc" },
-    { id: 2, code: "phogiamdoc", jobTitle: "Phó giám đốc" },
-    { id: 3, code: "chunhiem", jobTitle: "Chủ nhiệm" },
-  ];
+  const { createJobTitle, updateJobTitle } = useJobTitle();
+
   const { data } = useGetListJobTitle();
 
-  const handleAddRow = () => {
-    setIsAddingRow(true);
-
-    const newRow = {
-      id: rows.length + 1,
-      code: "",
-      jobTitle: "",
-    };
-    const index = rows.findIndex((row) => row.code === newRow.code);
-    if (index !== -1) {
-      alert("Dữ liệu đã tồn tại");
-      return;
+  const handleSave = async (dataAdd: JobTitleType[]) => {
+    // getList id của các dòng mới thêm vào
+    const maxId = Math.max(...data.map((item) => item.id));
+    const newJobTitles = dataAdd.filter((item) => item.id > maxId);
+    if (!isNullOrEmpty(newJobTitles)) {
+      for (let i = 0; i < newJobTitles.length; i++) {
+        await createJobTitle(newJobTitles[i]);
+      }
     }
-
-    // Update dataSource with the new row
-    // setDataSource([...jobTitles, newRow]);
+    setSelectedRows([]);
+    setIsAddingRow(false);
   };
 
-  const handleChange = (e: any) => {};
+  const handleChange = (e: any) => {
+    // console.log("e", e);
+  };
 
   return (
     <div>
@@ -57,10 +56,11 @@ export const GeneralPosition: FC<Props> = () => {
           columns={columns}
           rows={data}
           title="Chức vụ"
-          onSave={handleAddRow}
+          onSave={handleSave}
           callBack={handleChange}
           onRowSelectionChange={setSelectedRows}
           selectedRows={selectedRows}
+          onPressAdd={() => setIsAddingRow(true)}
         />
       </Box>
     </div>
