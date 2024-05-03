@@ -7,7 +7,6 @@ import { useGetListJobTitle } from "services/hooks/useGetListJobTitle";
 interface Props {}
 export const GeneralPosition: FC<Props> = () => {
   const [isAddingRow, setIsAddingRow] = useState(false);
-  // const gridRef = useRef<any>(null);
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]); // State để lưu trữ các dòng được chọn
   const columns: GridColDef[] = [
     { field: "id", headerName: "STT", width: 90 },
