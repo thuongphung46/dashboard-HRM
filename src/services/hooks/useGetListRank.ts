@@ -10,7 +10,7 @@ export type RankType = {
 };
 
 export const useGetListRank = () => {
-  const [rank, setRank] = useState<RankType[]>([]);
+  const [data, setData] = useState<RankType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const fetchRank = async () => {
@@ -25,7 +25,7 @@ export const useGetListRank = () => {
       response.status === RESPONSE_CODE.SUCCESS &&
       response?.data.msg_code === RESPONSE_CODE.SUCCESS
     ) {
-      setRank(response.data?.content);
+      setData(response.data?.content);
       setLoading(false);
     } else {
       setLoading(false);
@@ -36,5 +36,6 @@ export const useGetListRank = () => {
     fetchRank();
   }, []);
 
-  return { rank, loading };
+  return { data, loading };
+
 };

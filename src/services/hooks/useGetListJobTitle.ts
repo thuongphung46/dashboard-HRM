@@ -10,7 +10,7 @@ export type JobTitleType = {
 };
 
 export const useGetListJobTitle = () => {
-  const [jobTitles, setJobTitles] = useState<JobTitleType[]>([]);
+  const [data, setData] = useState<JobTitleType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const fetchJobTitles = async () => {
@@ -25,7 +25,7 @@ export const useGetListJobTitle = () => {
       response.status === RESPONSE_CODE.SUCCESS &&
       response?.data.msg_code === RESPONSE_CODE.SUCCESS
     ) {
-      setJobTitles(response.data?.content);
+      setData(response.data?.content);
       setLoading(false);
     } else {
       setLoading(false);
@@ -36,5 +36,5 @@ export const useGetListJobTitle = () => {
     fetchJobTitles();
   }, []);
 
-  return { jobTitles, loading };
+  return { data, loading };
 };

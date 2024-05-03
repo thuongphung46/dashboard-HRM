@@ -28,7 +28,7 @@ export const GeneralPosition: FC<Props> = () => {
     { id: 2, code: "phogiamdoc", jobTitle: "Phó giám đốc" },
     { id: 3, code: "chunhiem", jobTitle: "Chủ nhiệm" },
   ];
-  const { jobTitles, loading } = useGetListJobTitle();
+  const { data } = useGetListJobTitle();
 
   const handleAddRow = () => {
     setIsAddingRow(true);
@@ -55,7 +55,7 @@ export const GeneralPosition: FC<Props> = () => {
       <Box>
         <BaseGrid
           columns={columns}
-          rows={jobTitles}
+          rows={data}
           title="Chức vụ"
           onSave={handleAddRow}
           callBack={handleChange}

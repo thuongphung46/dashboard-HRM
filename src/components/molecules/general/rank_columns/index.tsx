@@ -31,7 +31,7 @@ export const GeneralRank: FC<Props> = () => {
       },
     ];
 
-    const { rank, loading } = useGetListRank();
+    const { data } = useGetListRank();
   
     return (
       <div>
@@ -40,7 +40,7 @@ export const GeneralRank: FC<Props> = () => {
         </Typography>
         <Box sx={{ height: 400, width: '100%' }}>
           <DataGrid
-            rows={rank}
+            rows={data}
             columns={columns}
             initialState={{
               pagination: {

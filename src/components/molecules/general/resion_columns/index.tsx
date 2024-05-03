@@ -31,7 +31,7 @@ export const GeneralResion: FC<Props> = () => {
     }
   ];
 
-  const { reasonReduce, loading } = useGetListReasonReduce();
+  const { reasonReduce } = useGetListReasonReduce();
   return (
     <div>
       <Box>
