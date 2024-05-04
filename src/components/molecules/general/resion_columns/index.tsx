@@ -9,10 +9,13 @@ import {
 } from "services/hooks/useGetListReasonReduce";
 import { isNullOrEmpty } from "common/validation";
 
-interface Props{}
+interface Props {}
 export const GeneralResion: FC<Props> = () => {
   const [isAddingRow, setIsAddingRow] = useState(false);
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]); 
+  const { createReasonReduce, updateReasonReduce } = useReasonReduce();
+  const { data, setData } = useGetListReasonReduce();
+  const [originalData, setOriginalData] = useState<ReasonReduceType[]>([]);
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'STT', width: 90 },
     {
@@ -34,24 +37,35 @@ export const GeneralResion: FC<Props> = () => {
       editable: true,
     }
   ];
-  const { createReasonReduce, updateReasonReduce } = useReasonReduce();
-  const { data } = useGetListReasonReduce();
 
   const handleSave = async (dataAdd: ReasonReduceType[]) => {
-    // getList id của các dòng mới thêm vào
+    // Check for new rows
     const maxId = Math.max(...data.map((item) => item.id));
-    const newResionReduce = dataAdd.filter((item) => item.id > maxId);
-    if (!isNullOrEmpty(newResionReduce)) {
-      for (let i = 0; i < newResionReduce.length; i++) {
-        await createReasonReduce(newResionReduce[i]);
+    const newReasons = dataAdd.filter((item) => item.id > maxId);
+    
+    // Create new rows
+    if (!isNullOrEmpty(newReasons)) {
+      for (let i = 0; i < newReasons.length; i++) {
+        await createReasonReduce(newReasons[i]);
       }
     }
+  
+    // Update existing rows
+    const updatedReasons = dataAdd.filter((item, index) => {
+      // Only update if the row has changed
+      return item.id <= maxId && JSON.stringify(item) !== JSON.stringify(originalData[index]);
+    });
+  
+    if (!isNullOrEmpty(updatedReasons)) {
+      await Promise.all(updatedReasons.map(item => updateReasonReduce(String(item.id), item)));
+    }
+  
+    // Clear selection and editing state
     setSelectedRows([]);
     setIsAddingRow(false);
-  };
-
-  const handleChange = (e: any) => {
-    // console.log("e", e);
+  
+    // Update the original data
+    setOriginalData(dataAdd);
   };
 
   return (
@@ -62,7 +76,6 @@ export const GeneralResion: FC<Props> = () => {
           rows={data}
           title="Lí do giảm trừ"
           onSave={handleSave}
-          callBack={handleChange}
           onRowSelectionChange={setSelectedRows}
           selectedRows={selectedRows}
           onPressAdd={() => setIsAddingRow(true)}

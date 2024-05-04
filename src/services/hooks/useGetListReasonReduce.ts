@@ -37,7 +37,7 @@ export const useGetListReasonReduce = () => {
     fetchReasonReduce();
   }, []);
 
-  return { data, loading };
+  return { data, setData, loading};
 };
 
 export type CreateReasonReduceBody = {
@@ -59,7 +59,7 @@ export const useReasonReduce = () => {
     const response = await NetWork.patch(
       getRequestUrl(API_URL.GENERAL, {
         partial: API_URL.REASON_REDUCE,
-        parentId: id,
+        subId: id,
       }),
       body
     );
