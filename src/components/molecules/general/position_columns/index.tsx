@@ -12,7 +12,10 @@ import { isNullOrEmpty } from "common/validation";
 interface Props {}
 export const GeneralPosition: FC<Props> = () => {
   const [isAddingRow, setIsAddingRow] = useState(false);
-  const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]); // State để lưu trữ các dòng được chọn
+  const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]); 
+  const { createJobTitle, updateJobTitle, deleteJobTitle } = useJobTitle();
+  const { data } = useGetListJobTitle();
+  const [originalData, setOriginalData] = useState<JobTitleType[]>([]);
   const columns: GridColDef[] = [
     { field: "id", headerName: "STT", width: 90 },
     {
@@ -28,25 +31,48 @@ export const GeneralPosition: FC<Props> = () => {
       editable: true,
     },
   ];
-  const { createJobTitle, updateJobTitle } = useJobTitle();
-
-  const { data } = useGetListJobTitle();
 
   const handleSave = async (dataAdd: JobTitleType[]) => {
-    // getList id của các dòng mới thêm vào
+    // Check for new rows
     const maxId = Math.max(...data.map((item) => item.id));
     const newJobTitles = dataAdd.filter((item) => item.id > maxId);
+    
+    // Create new rows
     if (!isNullOrEmpty(newJobTitles)) {
       for (let i = 0; i < newJobTitles.length; i++) {
         await createJobTitle(newJobTitles[i]);
       }
     }
+  
+    // Update existing rows
+    const updatedJobTitles = dataAdd.filter((item, index) => {
+      // Only update if the row has changed
+      return item.id <= maxId && JSON.stringify(item) !== JSON.stringify(originalData[index]);
+    });
+
+    if (!isNullOrEmpty(updatedJobTitles)) {
+      for (let i = 0; i < updatedJobTitles.length; i++) {
+        await updateJobTitle(updatedJobTitles[i].id.toString(), updatedJobTitles[i]);
+      }
+    }
+    
+    // Delete rows
+    const deletedJobTitles = originalData.filter((item) => {
+      return !dataAdd.some((row) => row.id === item.id);
+    });
+    
+    if (!isNullOrEmpty(deletedJobTitles)) {
+      for (let i = 0; i < deletedJobTitles.length; i++) {
+        await deleteJobTitle(deletedJobTitles[i].id.toString());
+      }
+    }
+
+    // Clear selection and editing state
     setSelectedRows([]);
     setIsAddingRow(false);
-  };
-
-  const handleChange = (e: any) => {
-    // console.log("e", e);
+  
+    // Update the original data
+    setOriginalData(dataAdd);
   };
 
   return (
@@ -57,7 +83,6 @@ export const GeneralPosition: FC<Props> = () => {
           rows={data}
           title="Chức vụ"
           onSave={handleSave}
-          callBack={handleChange}
           onRowSelectionChange={setSelectedRows}
           selectedRows={selectedRows}
           onPressAdd={() => setIsAddingRow(true)}

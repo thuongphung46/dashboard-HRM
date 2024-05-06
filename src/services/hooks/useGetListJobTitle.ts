@@ -56,7 +56,7 @@ export const useJobTitle = () => {
     const response = await NetWork.patch(
       getRequestUrl(API_URL.GENERAL, {
         partial: API_URL.JOB_TITLE,
-        parentId: id,
+        subId: id,
       }),
       body
     );
@@ -88,6 +88,24 @@ export const useJobTitle = () => {
       return null;
     }
   };
+  const deleteJobTitle = async (id: string) => {
+    setLoading(true);
+    const response = await NetWork.deleteMethod(
+      getRequestUrl(API_URL.GENERAL, {
+        partial: API_URL.JOB_TITLE,
+        subId: id,
+      })
+    );
+    setLoading(false);
+    if (
+      response.status === RESPONSE_CODE.SUCCESS &&
+      response.data.msg_code === RESPONSE_CODE.SUCCESS
+    ) {
+      return response.data?.content;
+    } else {
+      return null;
+    }
+  };
 
-  return { createJobTitle, updateJobTitle, loading };
+  return { createJobTitle, updateJobTitle, deleteJobTitle, loading };
 };

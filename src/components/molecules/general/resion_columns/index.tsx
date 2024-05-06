@@ -13,8 +13,8 @@ interface Props {}
 export const GeneralResion: FC<Props> = () => {
   const [isAddingRow, setIsAddingRow] = useState(false);
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]); 
-  const { createReasonReduce, updateReasonReduce } = useReasonReduce();
-  const { data, setData } = useGetListReasonReduce();
+  const { createReasonReduce, updateReasonReduce, deleteReasonReduce } = useReasonReduce();
+  const { data } = useGetListReasonReduce();
   const [originalData, setOriginalData] = useState<ReasonReduceType[]>([]);
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'STT', width: 90 },
@@ -55,9 +55,20 @@ export const GeneralResion: FC<Props> = () => {
       // Only update if the row has changed
       return item.id <= maxId && JSON.stringify(item) !== JSON.stringify(originalData[index]);
     });
-  
+
     if (!isNullOrEmpty(updatedReasons)) {
       await Promise.all(updatedReasons.map(item => updateReasonReduce(String(item.id), item)));
+    }
+
+    // Delete rows
+    const deletedReasons = data.filter(itemData => {
+      return !originalData.some(originalData => originalData.id === itemData.id);
+    }).map(item => item.id);
+
+    if (!isNullOrEmpty(deletedReasons)) {
+      for (let i = 0; i < deletedReasons.length; i++) {
+        await deleteReasonReduce(String(deletedReasons[i]));
+      }
     }
   
     // Clear selection and editing state

@@ -91,6 +91,24 @@ export const useReasonReduce = () => {
       return null;
     }
   };
+  const deleteReasonReduce = async (id: string) => {
+    setLoading(true);
+    const response = await NetWork.deleteMethod(
+      getRequestUrl(API_URL.GENERAL, {
+        partial: API_URL.REASON_REDUCE,
+        subId: id,
+      })
+    );
+    setLoading(false);
+    if (
+      response.status === RESPONSE_CODE.SUCCESS &&
+      response.data.msg_code === RESPONSE_CODE.SUCCESS
+    ) {
+      return response.data?.content;
+    } else {
+      return null;
+    }
+  };
 
-  return { createReasonReduce, updateReasonReduce, loading };
+  return { createReasonReduce, updateReasonReduce, deleteReasonReduce, loading };
 };
