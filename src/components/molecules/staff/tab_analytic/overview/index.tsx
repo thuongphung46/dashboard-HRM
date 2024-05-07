@@ -15,33 +15,25 @@ export const Overview: React.FC<Props> = ({ data }) => {
   const columns: GridColDef[] = [
     { field: "id", headerName: "STT", width: 90 },
     { field: "schoolYear", headerName: "Năm học", width: 150 },
-    { field: "contentWork", headerName: "Nội dung công việc", width: 500 },
+    { field: "contentWork", headerName: "Nội dung công việc", width: 400 },
     { field: "numberOfLesson", headerName: "Số tiết dạy", width: 150 },
     { field: "reasonReduce", headerName: "Lý do giảm trừ", width: 500 },
   ];
 
-  const temp: StaffSummary | any = isNullOrEmpty(data)
-    ? {
-        schoolYear: "",
-        contentWorks: [
-          {
-            contentWork: "",
-            numberOfLesson: "",
-          },
-        ],
-        reasonReduce: "",
-      }
-    : data[0];
-  const rows = temp.contentWorks.map((item: ContentWork, index: number) => {
-    return {
-      id: latinToRoman(index + 1),
-      schoolYear: temp.schoolYear,
-      contentWork: item.contentWork,
-      numberOfLesson: item.numberOfLesson,
-      reasonReduce: temp.reasonReduce,
-    };
-  });
-
+  const contentStt = ["I", "II", "III", "IV", "V"];
+  const contentWorkValues = ["Tổng số tiết thực hiện (A+B)", "Số tiết phải giảng", "Số tiết chưa hoàn thành NCKH", "Số tiết được giảm trừ", "Tổng số tiết vượt giờ đề nghị thanh toán (I - II - III + IV)"];
+  
+  const rows = [];
+  for (let i = 0; i < 5; i++) {
+    rows.push({
+      id: contentStt[i % contentStt.length],
+      schoolYear: "",
+      contentWork: contentWorkValues[i % contentWorkValues.length],
+      numberOfLesson: "",
+      reasonReduce: "",
+    });
+  }
+  
   return (
     <div>
       <Box sx={{ height: 400, width: "100%" }}>
