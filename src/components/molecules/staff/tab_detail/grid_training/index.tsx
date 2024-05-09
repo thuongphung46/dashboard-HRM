@@ -74,7 +74,6 @@ export const GridTraining: FC<IGridTraining> = ({
         title="TÓM TẮT QUÁ TRÌNH CÔNG TÁC"
         columns={columns2}
         rows={dataSource}
-        ref={gridRef}
         initialState={{
           pagination: {
             paginationModel: {

@@ -1,4 +1,4 @@
-import { ForwardedRef, forwardRef, useCallback } from "react";
+import { FC, useCallback } from "react";
 import {
   DataGrid,
   GridColDef,
@@ -32,120 +32,114 @@ interface BaseGridProps extends DataGridProps {
   onPressDelete?: () => void;
 }
 
-export const BaseGrid = forwardRef<any, BaseGridProps>(
-  (
-    {
-      columns,
-      title,
-      onSave,
-      onRowSelectionChange,
-      selectedRows,
-      rows,
-      callBack,
-      onPressAdd,
-      onPressDelete,
-      ...rest
-    },
-    ref: ForwardedRef<any>
+export const BaseGrid: FC<BaseGridProps> = ({
+  columns,
+  title,
+  onSave,
+  onRowSelectionChange,
+  selectedRows,
+  rows,
+  callBack,
+  onPressAdd,
+  onPressDelete,
+  ...rest
+}) => {
+  const [dataSource, setDataSource] = React.useState<any[]>([]);
+  const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
+    {}
+  );
+
+  React.useEffect(() => {
+    setDataSource(rows);
+  }, [rows]);
+
+  const handleRowEditStop: GridEventListener<"rowEditStop"> = (
+    params,
+    event
   ) => {
-    const [dataSource, setDataSource] = React.useState<any[]>([]);
-    const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
-      {}
+    if (params.reason === GridRowEditStopReasons.rowFocusOut) {
+      event.defaultMuiPrevented = true;
+    }
+  };
+
+  const handleDeleteClick = (id: GridRowId) => () => {
+    setDataSource(dataSource.filter((row) => row.id !== id));
+  };
+
+  const processRowUpdate = (newRow: GridRowModel) => {
+    const updatedRow = { ...newRow, isNew: false };
+    setDataSource(
+      dataSource.map((row) => (row.id === newRow.id ? updatedRow : row))
     );
+    return updatedRow;
+  };
 
-    React.useEffect(() => {
-      setDataSource(rows);
-    }, [rows]);
+  const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
+    setRowModesModel(newRowModesModel);
+  };
 
-    const handleRowEditStop: GridEventListener<"rowEditStop"> = (
-      params,
-      event
-    ) => {
-      if (params.reason === GridRowEditStopReasons.rowFocusOut) {
-        event.defaultMuiPrevented = true;
-      }
-    };
-
-    const handleDeleteClick = (id: GridRowId) => () => {
-      setDataSource(dataSource.filter((row) => row.id !== id));
-    };
-
-    const processRowUpdate = (newRow: GridRowModel) => {
-      const updatedRow = { ...newRow, isNew: false };
-      setDataSource(
-        dataSource.map((row) => (row.id === newRow.id ? updatedRow : row))
-      );
-      return updatedRow;
-    };
-
-    const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
-      setRowModesModel(newRowModesModel);
-    };
-
-    const Custcolumns: GridColDef[] = [
-      ...columns,
-      {
-        field: "actions",
-        type: "actions",
-        headerName: "",
-        width: 100,
-        cellClassName: "actions",
-        getActions: ({ id }) => {
-          return [
-            <GridActionsCellItem
-              icon={<DeleteIcon />}
-              label="Delete"
-              onClick={handleDeleteClick(id)}
-              color="inherit"
-            />,
-          ];
-        },
+  const Custcolumns: GridColDef[] = [
+    ...columns,
+    {
+      field: "actions",
+      type: "actions",
+      headerName: "",
+      width: 100,
+      cellClassName: "actions",
+      getActions: ({ id }) => {
+        return [
+          <GridActionsCellItem
+            icon={<DeleteIcon />}
+            label="Delete"
+            onClick={handleDeleteClick(id)}
+            color="inherit"
+          />,
+        ];
       },
-    ];
-    return (
-      <div>
-        <Typography variant="h5" gutterBottom>
-          {title}
-        </Typography>
-        <DataGrid
-          rows={dataSource}
-          onStateChange={callBack}
-          columns={Custcolumns}
-          ref={ref}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 20,
-              },
+    },
+  ];
+  return (
+    <div>
+      <Typography variant="h5" gutterBottom>
+        {title}
+      </Typography>
+      <DataGrid
+        rows={dataSource}
+        onStateChange={callBack}
+        columns={Custcolumns}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 20,
             },
-          }}
-          checkboxSelection
-          disableRowSelectionOnClick
-          rowModesModel={rowModesModel}
-          onRowModesModelChange={handleRowModesModelChange}
-          onRowEditStop={handleRowEditStop}
-          processRowUpdate={processRowUpdate}
-          onRowSelectionModelChange={onRowSelectionChange}
-          rowSelectionModel={selectedRows}
-          slots={{
-            toolbar: EditToolbar,
-          }}
-          slotProps={{
-            toolbar: {
-              setDataSource,
-              setRowModesModel,
-              dataSource,
-              onSave,
-              onPressAdd,
-              onPressDelete,
-            },
-          }}
-          {...rest}
-        />
-      </div>
-    );
-  }
-);
+          },
+        }}
+        checkboxSelection
+        disableRowSelectionOnClick
+        rowModesModel={rowModesModel}
+        onRowModesModelChange={handleRowModesModelChange}
+        onRowEditStop={handleRowEditStop}
+        processRowUpdate={processRowUpdate}
+        onRowSelectionModelChange={onRowSelectionChange}
+        rowSelectionModel={selectedRows}
+        slots={{
+          toolbar: EditToolbar,
+        }}
+        slotProps={{
+          toolbar: {
+            setDataSource,
+            setRowModesModel,
+            dataSource,
+            onSave,
+            onPressAdd,
+            onPressDelete,
+          },
+        }}
+        {...rest}
+      />
+    </div>
+  );
+};
 
 interface EditToolbarProps {
   dataSource: any[];

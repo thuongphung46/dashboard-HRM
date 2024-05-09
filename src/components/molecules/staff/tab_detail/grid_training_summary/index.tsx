@@ -79,7 +79,6 @@ export const GridTrainingSummary: FC<IGridTraining> = ({
         }}
         columns={columns1}
         rows={dataSource}
-        ref={gridRef}
         initialState={{
           pagination: {
             paginationModel: {

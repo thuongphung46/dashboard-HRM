@@ -77,11 +77,11 @@ export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
         title="working history"
         columns={columns}
         rows={dataSource}
-        ref={gridRef}
         checkboxSelection
         disableRowSelectionOnClick
         selectedRows={dataSelectRow}
-        onSave={handleSave}></BaseGrid>
+        onSave={handleSave}
+      ></BaseGrid>
     </div>
   );
 };

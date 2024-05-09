@@ -4,7 +4,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { FC, useCallback, useMemo, useState } from "react";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import ReusableField from "components/atoms/field";
+import ReusableField, { IFormData } from "components/atoms/field";
 import { useCreateDepartment } from "services/hooks/useGetListDepartment";
 import { toast } from "react-toastify";
 
@@ -41,7 +41,7 @@ export const ListDepartment: FC<Props> = ({
 
   const { createDepartment } = useCreateDepartment();
   const renderPopup = useMemo(() => {
-    const fieldData = [
+    const fieldData: IFormData[] = [
       { id: "name", label: "Tên cấp quản lý", type: "text" },
       {
         id: "parent",

@@ -47,13 +47,14 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
   const gridRef = useRef<any>(null);
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
   const [departmentList, setDepartmentList] = useState<DepartmentData[]>([]);
-  const { loading: loadingDepartment, data: departmentData } = useGetListDepartment();
+  const { loading: loadingDepartment, data: departmentData } =
+    useGetListDepartment();
   // const [selectedGroups, setSelectedGroups] = useState<number[]>([]);
 
   const [rankList, setRankList] = useState<any[]>([]);
-  const {loading: loadingRank, data: rankData} = useGetListRank();
+  const { loading: loadingRank, data: rankData } = useGetListRank();
   const [jobTitleList, setJobTitleList] = useState<any[]>([]);
-  const {loading: loadingJobTitle, data: jobTitleData} = useGetListJobTitle();
+  const { loading: loadingJobTitle, data: jobTitleData } = useGetListJobTitle();
 
   const handleSave = () => {};
 
@@ -81,7 +82,7 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
       setDepartmentList(departmentData);
     }
   }, [loadingDepartment, departmentData]);
-  
+
   useEffect(() => {
     if (!loadingRank && rankData) {
       setRankList(rankData);
@@ -114,38 +115,36 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
                         onChange={hanldeOnChangefield}
                         defaultValue={data ? data[field.id] : ""}
                       >
-                        {
-                          (() => {
-                            if (field.id === 'departmentId') {
-                              return departmentList.map((department) => (
-                                <MenuItem key={department.id} value={department.id}>
-                                  {department.name}
-                                </MenuItem>
-                              ));
-                            }
-                            else if (field.id === 'rankId') {
-                              return rankList.map((rank) => (
-                                <MenuItem key={rank.id} value={rank.code}>
-                                  {rank.rankName}
-                                </MenuItem>
-                              ));
-                            }
-                            else if (field.id === 'jobTitle') {
-                              return jobTitleList.map((jobTitle) => (
-                                <MenuItem key={jobTitle.id} value={jobTitle.code}>
-                                  {jobTitle.jobTitle}
-                                </MenuItem>
-                              ));
-                            }
-                            else if (field.options) {
-                              return field.options.map((option, index) => (
-                                <MenuItem key={index} value={option.value}>
-                                  {option.label}
-                                </MenuItem>
-                              ));
-                            }
-                          })()
-                        }
+                        {(() => {
+                          if (field.id === "departmentId") {
+                            return departmentList.map((department) => (
+                              <MenuItem
+                                key={department.id}
+                                value={department.id}
+                              >
+                                {department.name}
+                              </MenuItem>
+                            ));
+                          } else if (field.id === "rankId") {
+                            return rankList.map((rank) => (
+                              <MenuItem key={rank.id} value={rank.code}>
+                                {rank.rankName}
+                              </MenuItem>
+                            ));
+                          } else if (field.id === "jobTitle") {
+                            return jobTitleList.map((jobTitle) => (
+                              <MenuItem key={jobTitle.id} value={jobTitle.code}>
+                                {jobTitle.jobTitle}
+                              </MenuItem>
+                            ));
+                          } else if (field.options) {
+                            return field.options.map((option, index) => (
+                              <MenuItem key={index} value={option.value}>
+                                {option.label}
+                              </MenuItem>
+                            ));
+                          }
+                        })()}
                       </Select>
                     </FormControl>
                   ) : (
@@ -155,7 +154,7 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
                       id={field.id}
                       name={field.id}
                       type={field.type}
-                      value={data ? data[field.id] : ""}
+                      defaultValue={data ? data[field.id] : ""}
                       onChange={hanldeOnChangefield}
                     />
                   )}
