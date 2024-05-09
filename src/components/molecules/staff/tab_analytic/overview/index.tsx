@@ -9,7 +9,6 @@ interface Props {
   all_data: StaffDetail;
 }
 export const Overview: React.FC<Props> = ({ data, all_data }) => {
-  const gridRef = useRef<any>(null);
   const [sum, setSum] = useState({
     Teaching: 0,
     Research: 0,
@@ -38,7 +37,9 @@ export const Overview: React.FC<Props> = ({ data, all_data }) => {
     "Số tiết được giảm trừ",
     "Tổng số tiết vượt giờ đề nghị thanh toán (I - II - III + IV)",
   ];
-  const numberOfLesson = [sum.Teaching, 0, 0, 0, 0];
+
+  //thay các giá trị tương tự vô mảng
+  const numberOfLesson = [sum.Teaching + 0, 0, 0, 0, 0];
 
   const rows = [];
   for (let i = 0; i < 5; i++) {
@@ -57,7 +58,6 @@ export const Overview: React.FC<Props> = ({ data, all_data }) => {
         <DataGrid
           rows={rows}
           columns={columns}
-          ref={gridRef}
           initialState={{
             pagination: {
               paginationModel: {
