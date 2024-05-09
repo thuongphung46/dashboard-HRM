@@ -11,6 +11,11 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
+import {
+  StatisticParams,
+  useGetStatistic,
+} from "services/hooks/useGetStatistic";
+import { onChange } from "react-toastify/dist/core/store";
 
 interface Props {}
 interface DepartmentData {
@@ -59,10 +64,19 @@ const rows = [
 ];
 
 export const StatisticTemplate: FC<Props> = () => {
+  const [statisticParams, setStatisticParams] = useState<StatisticParams>({
+    departmentIds: [],
+    groupIds: [],
+    schoolYear: "",
+  });
+  console.log("statisticParams", statisticParams);
+
   const [departmentList, setDepartmentList] = useState<DepartmentData[]>([]);
   const [selectedDepartments, setSelectedDepartments] = useState<number[]>([]);
   const [selectedGroups, setSelectedGroups] = useState<number[]>([]); // Adjusted state for selected groups
   const { loading, data: departmentData } = useGetListDepartment();
+  const { loading: loadingStatistic, data: statisticData } =
+    useGetStatistic(statisticParams);
 
   useEffect(() => {
     if (!loading && departmentData) {
@@ -73,13 +87,28 @@ export const StatisticTemplate: FC<Props> = () => {
   const handleDepartmentChange = (event: SelectChangeEvent<number[]>) => {
     const selectedValues = event.target.value as number[];
     setSelectedDepartments(selectedValues);
+    setStatisticParams({
+      ...statisticParams,
+      departmentIds: selectedValues,
+    });
     // Reset selected groups when department changes
     setSelectedGroups([]);
+  };
+
+  const onChangeSchoolYear = (event: any) => {
+    setStatisticParams({
+      ...statisticParams,
+      schoolYear: event.target.value,
+    });
   };
 
   const handleGroupChange = (event: SelectChangeEvent<number[]>) => {
     // Adjusted parameter type
     const selectedValues = event.target.value as number[];
+    setStatisticParams({
+      ...statisticParams,
+      groupIds: selectedValues,
+    });
     setSelectedGroups(selectedValues);
   };
 
@@ -104,7 +133,7 @@ export const StatisticTemplate: FC<Props> = () => {
 
         <FormControl sx={{ m: 1, minWidth: 120 }} variant="standard">
           <InputLabel htmlFor="year">Year: </InputLabel>
-          <Input id="year" />
+          <Input id="year" onChange={onChangeSchoolYear} />
         </FormControl>
 
         <FormControl sx={{ m: 1, minWidth: 120 }}>
@@ -150,8 +179,8 @@ export const StatisticTemplate: FC<Props> = () => {
           </Select>
         </FormControl>
       </div>
-      <ChartsOverview data={rows} />
-      <GridStatistic data={rows} />
+      <ChartsOverview data={statisticData} />
+      <GridStatistic data={statisticData} />
     </div>
   );
 };

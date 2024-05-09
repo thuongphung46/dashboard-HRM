@@ -19,4 +19,7 @@ export const API_URL = {
   JOB_TITLE: "/job-title",
   REASON_REDUCE: "/reason-reduce",
   RANK_CONFIG: "/rank-config",
+
+  //STATISTIC
+  STATISTIC: "/statistic",
 };
