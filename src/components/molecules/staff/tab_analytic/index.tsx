@@ -34,7 +34,7 @@ export const Analytic = ({ data, action }: Props) => {
         <Tab label="NCKH" />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <Overview data={data.summary} />
+        <Overview data={data.summary} all_data={data} />
       </TabPanel>
       <TabPanel value={value} index={1}>
         <Teaching data={data.teaching} />

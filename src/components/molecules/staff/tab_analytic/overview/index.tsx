@@ -1,14 +1,19 @@
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid/DataGrid/DataGrid";
 import { GridColDef } from "@mui/x-data-grid/models/colDef/gridColDef";
-import React, { useRef } from "react";
-import { StaffSummary } from "types/ApplicationType";
+import React, { useEffect, useRef, useState } from "react";
+import { StaffDetail, StaffSummary } from "types/ApplicationType";
 
 interface Props {
   data: StaffSummary[];
+  all_data: StaffDetail;
 }
-export const Overview: React.FC<Props> = ({ data }) => {
+export const Overview: React.FC<Props> = ({ data, all_data }) => {
   const gridRef = useRef<any>(null);
+  const [sum, setSum] = useState({
+    Teaching: 0,
+    Research: 0,
+  });
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "STT", width: 90 },
@@ -18,6 +23,13 @@ export const Overview: React.FC<Props> = ({ data }) => {
     { field: "reasonReduce", headerName: "Lý do giảm trừ", width: 500 },
   ];
 
+  useEffect(() => {
+    //tính sum teaching
+    let teachCount = 0;
+    all_data.teaching.forEach((item) => (teachCount += item.roundStandard));
+    setSum({ ...sum, Teaching: teachCount });
+  }, []);
+
   const contentStt = ["I", "II", "III", "IV", "V"];
   const contentWorkValues = [
     "Tổng số tiết thực hiện (A+B)",
@@ -26,14 +38,15 @@ export const Overview: React.FC<Props> = ({ data }) => {
     "Số tiết được giảm trừ",
     "Tổng số tiết vượt giờ đề nghị thanh toán (I - II - III + IV)",
   ];
+  const numberOfLesson = [sum.Teaching, 0, 0, 0, 0];
 
   const rows = [];
   for (let i = 0; i < 5; i++) {
     rows.push({
-      id: contentStt[i % contentStt.length],
+      id: contentStt[i],
       schoolYear: "",
-      contentWork: contentWorkValues[i % contentWorkValues.length],
-      numberOfLesson: "",
+      contentWork: contentWorkValues[i],
+      numberOfLesson: numberOfLesson[i],
       reasonReduce: "",
     });
   }
