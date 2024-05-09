@@ -10,13 +10,15 @@ export interface IFormData {
   id: string;
   label: string;
   type: "select" | "text" | "file";
-  options?: string[];
-  defaultValue?: any;
+  options?: {
+    value: string | number | undefined;
+    label: string;
+  }[];
 }
 interface Props {
-  field: any;
+  field: IFormData;
   hanldeOnChangefield?: (event: any) => void;
-  formData?: IFormData[];
+  formData?: any;
 }
 
 const ReusableField: FC<Props> = ({ field, hanldeOnChangefield, formData }) => {
@@ -35,11 +37,11 @@ const ReusableField: FC<Props> = ({ field, hanldeOnChangefield, formData }) => {
                   size="small"
                   id={field.id}
                   onChange={hanldeOnChangefield}
-                  defaultValue={field.defaultValue || ""}
+                  defaultValue={formData ? formData[field.id] : ""}
                 >
-                  {field.options.map((option: any) => (
-                    <MenuItem key={option} value={option}>
-                      {option}
+                  {field.options.map((option, index) => (
+                    <MenuItem key={index} value={option.value}>
+                      {option.label}
                     </MenuItem>
                   ))}
                 </Select>
@@ -51,7 +53,7 @@ const ReusableField: FC<Props> = ({ field, hanldeOnChangefield, formData }) => {
                 id={field.id}
                 name={field.id}
                 type={field.type}
-                defaultValue={field.defaultValue || ""}
+                defaultValue={formData ? formData[field.id] : ""}
                 onChange={hanldeOnChangefield}
               />
             )}

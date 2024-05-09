@@ -2,12 +2,20 @@ import { FC, useState } from "react";
 import Box from "@mui/material/Box";
 import { GridColDef, GridRowId } from "@mui/x-data-grid";
 import { BaseGrid } from "components/atoms/datagrid";
-import { useGetListJobTitle } from "services/hooks/useGetListJobTitle";
+import {
+  JobTitleType,
+  useGetListJobTitle,
+  useJobTitle,
+} from "services/hooks/useGetListJobTitle";
+import { isNullOrEmpty } from "common/validation";
 
 interface Props {}
 export const GeneralPosition: FC<Props> = () => {
   const [isAddingRow, setIsAddingRow] = useState(false);
-  const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]); // State để lưu trữ các dòng được chọn
+  const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]); 
+  const { createJobTitle, updateJobTitle, deleteJobTitle } = useJobTitle();
+  const { data } = useGetListJobTitle();
+  const [originalData, setOriginalData] = useState<JobTitleType[]>([]);
   const columns: GridColDef[] = [
     { field: "id", headerName: "STT", width: 90 },
     {
@@ -23,44 +31,61 @@ export const GeneralPosition: FC<Props> = () => {
       editable: true,
     },
   ];
-  const rows = [
-    { id: 1, code: "giamdoc", jobTitle: "Giám đốc" },
-    { id: 2, code: "phogiamdoc", jobTitle: "Phó giám đốc" },
-    { id: 3, code: "chunhiem", jobTitle: "Chủ nhiệm" },
-  ];
-  const { jobTitles, loading } = useGetListJobTitle();
 
-  const handleAddRow = () => {
-    setIsAddingRow(true);
+  const handleSave = async (dataAdd: JobTitleType[]) => {
+    // Check for new rows
+    const maxId = Math.max(...data.map((item) => item.id));
+    const newJobTitles = dataAdd.filter((item) => item.id > maxId);
+    
+    // Create new rows
+    if (!isNullOrEmpty(newJobTitles)) {
+      for (let i = 0; i < newJobTitles.length; i++) {
+        await createJobTitle(newJobTitles[i]);
+      }
+    }
+  
+    // Update existing rows
+    const updatedJobTitles = dataAdd.filter((item, index) => {
+      // Only update if the row has changed
+      return item.id <= maxId && JSON.stringify(item) !== JSON.stringify(originalData[index]);
+    });
 
-    const newRow = {
-      id: rows.length + 1,
-      code: "",
-      jobTitle: "",
-    };
-    const index = rows.findIndex((row) => row.code === newRow.code);
-    if (index !== -1) {
-      alert("Dữ liệu đã tồn tại");
-      return;
+    if (!isNullOrEmpty(updatedJobTitles)) {
+      for (let i = 0; i < updatedJobTitles.length; i++) {
+        await updateJobTitle(updatedJobTitles[i].id.toString(), updatedJobTitles[i]);
+      }
+    }
+    
+    // Delete rows
+    const deletedJobTitles = originalData.filter((item) => {
+      return !dataAdd.some((row) => row.id === item.id);
+    });
+    
+    if (!isNullOrEmpty(deletedJobTitles)) {
+      for (let i = 0; i < deletedJobTitles.length; i++) {
+        await deleteJobTitle(deletedJobTitles[i].id.toString());
+      }
     }
 
-    // Update dataSource with the new row
-    // setDataSource([...jobTitles, newRow]);
+    // Clear selection and editing state
+    setSelectedRows([]);
+    setIsAddingRow(false);
+  
+    // Update the original data
+    setOriginalData(dataAdd);
   };
-
-  const handleChange = (e: any) => {};
 
   return (
     <div>
       <Box>
         <BaseGrid
           columns={columns}
-          rows={jobTitles}
+          rows={data}
           title="Chức vụ"
-          onSave={handleAddRow}
-          callBack={handleChange}
+          onSave={handleSave}
           onRowSelectionChange={setSelectedRows}
           selectedRows={selectedRows}
+          onPressAdd={() => setIsAddingRow(true)}
         />
       </Box>
     </div>

@@ -10,7 +10,7 @@ export type JobTitleType = {
 };
 
 export const useGetListJobTitle = () => {
-  const [jobTitles, setJobTitles] = useState<JobTitleType[]>([]);
+  const [data, setData] = useState<JobTitleType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const fetchJobTitles = async () => {
@@ -25,7 +25,7 @@ export const useGetListJobTitle = () => {
       response.status === RESPONSE_CODE.SUCCESS &&
       response?.data.msg_code === RESPONSE_CODE.SUCCESS
     ) {
-      setJobTitles(response.data?.content);
+      setData(response.data?.content);
       setLoading(false);
     } else {
       setLoading(false);
@@ -36,5 +36,76 @@ export const useGetListJobTitle = () => {
     fetchJobTitles();
   }, []);
 
-  return { jobTitles, loading };
+  return { data, loading };
+};
+
+export type CreateJobTitleBody = {
+  code: string;
+  jobTitle: string;
+};
+
+export type UpdateJobTitleBody = {
+  jobTitle: string;
+};
+
+export const useJobTitle = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const updateJobTitle = async (id: string, body: UpdateJobTitleBody) => {
+    setLoading(true);
+    const response = await NetWork.patch(
+      getRequestUrl(API_URL.GENERAL, {
+        partial: API_URL.JOB_TITLE,
+        subId: id,
+      }),
+      body
+    );
+    setLoading(false);
+    if (
+      response.status === RESPONSE_CODE.SUCCESS &&
+      response.data.msg_code === RESPONSE_CODE.SUCCESS
+    ) {
+      return response.data?.content;
+    } else {
+      return null;
+    }
+  };
+  const createJobTitle = async (body: CreateJobTitleBody) => {
+    setLoading(true);
+    const response = await NetWork.post(
+      getRequestUrl(API_URL.GENERAL, {
+        partial: API_URL.JOB_TITLE,
+      }),
+      body
+    );
+    setLoading(false);
+    if (
+      response.status === RESPONSE_CODE.SUCCESS &&
+      response.data.msg_code === RESPONSE_CODE.SUCCESS
+    ) {
+      return response.data?.content;
+    } else {
+      return null;
+    }
+  };
+  const deleteJobTitle = async (id: string) => {
+    setLoading(true);
+    const response = await NetWork.deleteMethod(
+      getRequestUrl(API_URL.GENERAL, {
+        partial: API_URL.JOB_TITLE,
+        subId: id,
+      })
+    );
+    setLoading(false);
+    if (
+      response.status === RESPONSE_CODE.SUCCESS &&
+      response.data.msg_code === RESPONSE_CODE.SUCCESS
+    ) {
+      return response.data?.content;
+    } else {
+      return null;
+    }
+  };
+
+  return { createJobTitle, updateJobTitle, deleteJobTitle, loading };
 };

@@ -1,25 +1,26 @@
 export interface IContent {
-  id: number;
-  staffId: number;
-  renterId: number;
-  staff: any;
-  renter: any;
+  id?: number;
+  staffId?: number;
+  renterId?: number;
+  staff?: IStaff;
+  renter?: IRenter;
   contractName: string;
   fromDate: string;
   toDate: string;
-  status: number;
-  teachingAddress: string;
-  numberOfLesson: number;
-  lessonPrice: number;
-  taxPercent: number;
-  contractValue: number;
-  actualValue: number;
+  status?: number;
+  teachingAddress?: string;
+  numberOfLesson?: number;
+  lessonPrice?: number;
+  taxPercent?: number;
+  contractValue?: number;
+  actualValue?: number;
   taxValue: number;
   byWord: string;
   createdDate: string;
   modifiedDate: string;
-  createdBy: any;
-  modifiedBy: any;
+  createdBy: string;
+  modifiedBy: string;
+  [key: string]: any;
 }
 
 export interface IStaff {

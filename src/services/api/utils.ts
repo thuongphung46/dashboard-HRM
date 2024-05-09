@@ -46,16 +46,24 @@ export function getRequestUrl(
 ): string {
   if (typeof params === "object" && params) {
     if (params?.parentId) {
-      requestUrl += "/" + params.parentId;
+      requestUrl += params?.parentId.toString().includes("/")
+        ? params.parentId
+        : "/" + params.parentId;
     }
     if (params?.partial) {
-      requestUrl += "/" + params.partial;
+      requestUrl += params?.partial.toString().includes("/")
+        ? params.partial
+        : "/" + params.partial;
     }
     if (params?.subId) {
-      requestUrl += "/" + params.subId;
+      requestUrl += params?.subId.toString().includes("/")
+        ? params.subId
+        : "/" + params.subId;
     }
     if (params?.action) {
-      requestUrl += "/" + params.action;
+      requestUrl += params?.action.toString().includes("/")
+        ? params.action
+        : "/" + params.action;
     }
   }
   if (queryString && !isNullOrEmpty(queryString)) {
