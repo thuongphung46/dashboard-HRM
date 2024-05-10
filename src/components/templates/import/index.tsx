@@ -51,7 +51,7 @@ export const ImportTemplate = () => {
   const onChangeOptinTkb = (event: SelectChangeEvent<string>) => {
     setImportOptionTkb(event.target.value);
   };
-  const onChangeSchoolYear = (event: ChangeEvent<HTMLInputElement>) => {
+  const onChangeSchoolYear = (event: SelectChangeEvent<string>) => {
     setSchoolYear(event.target.value);
   };
 
@@ -72,8 +72,20 @@ export const ImportTemplate = () => {
           <MenuItem value="Học kỳ II">Học kỳ II</MenuItem>
         </Select>
       </div>
-      <div style={{ margin: "10px" }}>
-        <Input placeholder="School year" onChange={onChangeSchoolYear} />
+      <div>
+        <Select
+          value={schoolYear}
+          onChange={onChangeSchoolYear}
+          displayEmpty
+          style={{ margin: "10px", width: "200px" }}
+        >
+          <MenuItem value="" disabled>
+            Chọn năm học
+          </MenuItem>
+          <MenuItem value="2022-2023">2022-2023</MenuItem>
+          <MenuItem value="2023-2024">2023-2024</MenuItem>
+          {/* Thêm các năm học khác nếu cần */}
+        </Select>
       </div>
       <div>
         <Select
@@ -83,12 +95,10 @@ export const ImportTemplate = () => {
           style={{ margin: "10px", width: "200px" }}
         >
           <MenuItem value="" disabled>
-            Chọn tùy chọn
+            Chọn loại file
           </MenuItem>
           <MenuItem value="Import TKB">Import TKB</MenuItem>
-          {/* <MenuItem value="Import thống kê vượt giờ">
-            Import danh sách NCKH
-          </MenuItem> */}
+          <MenuItem value="Import Kê khai">Import Kê khai</MenuItem>
         </Select>
         <input
           accept=".xlsx"
