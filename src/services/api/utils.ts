@@ -1,5 +1,6 @@
 import { isArray, isNullOrEmpty } from "common/validation";
 import { GetRequestParams, ObjectType } from "types/ApplicationType";
+import { RESPONSE_CODE } from "./config";
 
 /**
  * convert object to query string
@@ -84,3 +85,10 @@ export function deleteParamsNotUsing(params: any) {
   }
   return params;
 }
+
+export const isSuccessfulResponse = (response: any) => {
+  return (
+    response?.status === RESPONSE_CODE.SUCCESS &&
+    response?.data?.msg_code === RESPONSE_CODE.SUCCESS
+  );
+};
