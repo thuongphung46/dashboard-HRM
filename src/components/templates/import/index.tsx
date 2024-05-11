@@ -4,16 +4,15 @@ import {
   Select,
   MenuItem,
   SelectChangeEvent,
-  Input,
 } from "@mui/material";
 import { ChangeEvent, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { FileTkbService } from "services/upload_service";
+import { FileTkbService, FileKeKhaiService } from "services/upload_service";
 
 export const ImportTemplate = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileSelected, setFileSelected] = useState(false);
-  const [importOptionTkb, setImportOptionTkb] = useState<string>("");
+  const [importOptionFile, setImportOptionFile] = useState<string>("");
   const [importOptionTerm, setImportOptionTerm] = useState<string>("");
   const fileInput1 = useRef<HTMLInputElement>(null);
   const [schoolYear, setSchoolYear] = useState<string>("");
@@ -27,12 +26,24 @@ export const ImportTemplate = () => {
   };
 
   const handleImport = async () => {
-    if (selectedFile && importOptionTkb) {
-      if (importOptionTkb === "Import TKB") {
+    if (selectedFile && importOptionFile) {
+      if (importOptionFile === "Import TKB") {
         const result = await FileTkbService.uploadFile(
           selectedFile,
           importOptionTerm,
           schoolYear
+        );
+
+        if (result.msg_code === 200) {
+          toast.success("Import thành công");
+        } else {
+          toast.error("Import thất bại");
+        }
+      }
+
+      else if (importOptionFile === "Import Kê khai") {
+        const result = await FileKeKhaiService.uploadFile(
+          selectedFile
         );
 
         if (result.msg_code === 200) {
@@ -48,15 +59,53 @@ export const ImportTemplate = () => {
     setImportOptionTerm(event.target.value);
   };
 
-  const onChangeOptinTkb = (event: SelectChangeEvent<string>) => {
-    setImportOptionTkb(event.target.value);
+  const onChangeOptionFile = (event: SelectChangeEvent<string>) => {
+    setImportOptionFile(event.target.value);
   };
   const onChangeSchoolYear = (event: SelectChangeEvent<string>) => {
     setSchoolYear(event.target.value);
   };
 
+  const isDisable = () =>{
+    if (importOptionFile ==="Import TKB") {
+      return !fileSelected || !importOptionFile || !importOptionTerm
+    }
+    else if (importOptionFile ==="Import Kê khai") {
+      return !fileSelected || !importOptionFile
+    }
+    return true
+  }
+
   return (
     <div>
+      
+      <div>
+        <Select
+          value={importOptionFile}
+          onChange={onChangeOptionFile}
+          displayEmpty
+          style={{ margin: "10px", width: "200px" }}
+        >
+          <MenuItem value="" disabled>
+            Chọn loại file
+          </MenuItem>
+          <MenuItem value="Import TKB">Import TKB</MenuItem>
+          <MenuItem value="Import Kê khai">Import Kê khai</MenuItem>
+        </Select>
+        <input
+          accept=".xlsx"
+          style={{ display: "none" }}
+          id="raised-button-file"
+          type="file"
+          ref={fileInput1}
+          onChange={handleFileSelect}
+        />
+        <label htmlFor="raised-button-file">
+          <Button variant="contained" component="span">
+            Choose file
+          </Button>
+        </label>
+      </div>
       <div>
         <Select
           value={importOptionTerm}
@@ -87,33 +136,6 @@ export const ImportTemplate = () => {
           {/* Thêm các năm học khác nếu cần */}
         </Select>
       </div>
-      <div>
-        <Select
-          value={importOptionTkb}
-          onChange={onChangeOptinTkb}
-          displayEmpty
-          style={{ margin: "10px", width: "200px" }}
-        >
-          <MenuItem value="" disabled>
-            Chọn loại file
-          </MenuItem>
-          <MenuItem value="Import TKB">Import TKB</MenuItem>
-          <MenuItem value="Import Kê khai">Import Kê khai</MenuItem>
-        </Select>
-        <input
-          accept=".xlsx"
-          style={{ display: "none" }}
-          id="raised-button-file"
-          type="file"
-          ref={fileInput1}
-          onChange={handleFileSelect}
-        />
-        <label htmlFor="raised-button-file">
-          <Button variant="contained" component="span">
-            Choose file
-          </Button>
-        </label>
-      </div>
       {fileSelected && selectedFile && (
         <Typography variant="body1">
           Selected file: {selectedFile.name}
@@ -123,11 +145,13 @@ export const ImportTemplate = () => {
         <Button
           variant="contained"
           onClick={handleImport}
-          disabled={!fileSelected || !importOptionTkb || !importOptionTerm}
+          
+          disabled={isDisable()}
         >
           Import
         </Button>
       </div>
+      
     </div>
   );
 };
