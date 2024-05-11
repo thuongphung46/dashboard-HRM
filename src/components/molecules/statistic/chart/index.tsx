@@ -1,37 +1,37 @@
 import * as React from "react";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { StatisticData } from "services/hooks/useGetStatistic";
+import { useGetListDepartment } from "services/hooks/useGetListDepartment";
 
 interface Props {
   data: StatisticData;
 }
-export const ChartsOverview: React.FC<Props> = ({ data }) => {
-  // const dataset = data.map((item: any) => {
-  //   return {
-  //     id: item.id,
-  //     name: item.name,
-  //     cryptography: item.sum_teaching,
-  //     cntt: item.sum_guide,
-  //     attt: item.sum_research,
-  //   };
-  // });
 
-  const keys = Object.keys(data.cryptography);
-  const dataset = keys.map((key, index) => ({
-    id: index + 1,
-    cryptography: data.cryptography[key],
-    cntt: data.cntt[key],
-    attt: data.attt[key],
-  }));
+const KEYS = ["teaching", "instructProject", "research"];
+export const ChartsOverview: React.FC<Props> = ({ data }) => {
+  const { data: departmentData } = useGetListDepartment();
+  const listCode = Object.keys(data);
+  const series = listCode.map((code) => {
+    const obj: any = {};
+    obj.dataKey = code;
+    obj.label = departmentData.find((item: any) => item.code === code)?.name;
+    return obj;
+  });
+
+  const datasetShow = KEYS.map((key, index) => {
+    const obj: any = {};
+    listCode.forEach((code) => {
+      obj[code] = data[code][key];
+    });
+    return obj;
+  });
+
+  // const dataKey;
 
   return (
     <BarChart
-      dataset={dataset}
-      series={[
-        { dataKey: "cryptography", label: "Mật mã" },
-        { dataKey: "cntt", label: "CNTT" },
-        { dataKey: "attt", label: "ATTT" },
-      ]}
+      dataset={datasetShow}
+      series={series}
       height={290}
       xAxis={[
         { data: ["Giảng dạy", "HD luận văn", "NCKH"], scaleType: "band" },

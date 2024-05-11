@@ -1,4 +1,4 @@
-import { useState, useEffect, FC } from "react";
+import { useState, useEffect, FC, MouseEventHandler } from "react";
 import { ChartsOverview } from "components/molecules/statistic/chart";
 import { GridStatistic } from "components/molecules/statistic/grid";
 import { useGetListDepartment } from "services/hooks/useGetListDepartment";
@@ -13,9 +13,10 @@ import {
 } from "@mui/material";
 import {
   StatisticParams,
+  useGetSchoolYear,
   useGetStatistic,
 } from "services/hooks/useGetStatistic";
-import { onChange } from "react-toastify/dist/core/store";
+import { DEPARTMENT_TYPE } from "constants/department";
 
 interface Props {}
 interface DepartmentData {
@@ -27,6 +28,8 @@ interface DepartmentData {
   createdBy: string;
   modifiedBy: string;
   groups: Group[];
+  code?: string;
+  type: string;
 }
 interface Group {
   id: number;
@@ -65,18 +68,22 @@ const rows = [
 
 export const StatisticTemplate: FC<Props> = () => {
   const [statisticParams, setStatisticParams] = useState<StatisticParams>({
-    departmentIds: [],
-    groupIds: [],
+    departmentIds: "",
+    groupIds: "",
     schoolYear: "",
   });
-  console.log("statisticParams", statisticParams);
 
   const [departmentList, setDepartmentList] = useState<DepartmentData[]>([]);
   const [selectedDepartments, setSelectedDepartments] = useState<number[]>([]);
   const [selectedGroups, setSelectedGroups] = useState<number[]>([]); // Adjusted state for selected groups
-  const { loading, data: departmentData } = useGetListDepartment();
+  const { loading, data: departmentData } = useGetListDepartment(
+    DEPARTMENT_TYPE.EDUCATION
+  );
   const { loading: loadingStatistic, data: statisticData } =
     useGetStatistic(statisticParams);
+
+  const { data: listSchoolYear, loading: loadingSchoolYear } =
+    useGetSchoolYear();
 
   useEffect(() => {
     if (!loading && departmentData) {
@@ -84,22 +91,26 @@ export const StatisticTemplate: FC<Props> = () => {
     }
   }, [loading, departmentData]);
 
+  useEffect(() => {
+    if (selectedDepartments.length > 1 && selectedGroups.length > 0) {
+      setStatisticParams({
+        ...statisticParams,
+        groupIds: "",
+      });
+      setSelectedGroups([]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedDepartments, selectedGroups]);
+
   const handleDepartmentChange = (event: SelectChangeEvent<number[]>) => {
     const selectedValues = event.target.value as number[];
     setSelectedDepartments(selectedValues);
     setStatisticParams({
       ...statisticParams,
-      departmentIds: selectedValues,
+      departmentIds: selectedValues.toString(),
     });
     // Reset selected groups when department changes
     setSelectedGroups([]);
-  };
-
-  const onChangeSchoolYear = (event: any) => {
-    setStatisticParams({
-      ...statisticParams,
-      schoolYear: event.target.value,
-    });
   };
 
   const handleGroupChange = (event: SelectChangeEvent<number[]>) => {
@@ -107,9 +118,24 @@ export const StatisticTemplate: FC<Props> = () => {
     const selectedValues = event.target.value as number[];
     setStatisticParams({
       ...statisticParams,
-      groupIds: selectedValues,
+      groupIds: selectedValues.toString(),
     });
     setSelectedGroups(selectedValues);
+  };
+
+  const onClickAgain = (event: any) => {
+    console.log("click again", event?.target?.outerText);
+    const schoolYear =
+      statisticParams?.schoolYear === event?.target?.outerText
+        ? undefined
+        : event?.target?.outerText;
+    console.log("School year", schoolYear);
+    setStatisticParams((prev) => {
+      return {
+        ...prev,
+        schoolYear,
+      };
+    });
   };
 
   return (
@@ -132,8 +158,21 @@ export const StatisticTemplate: FC<Props> = () => {
         </FormControl>
 
         <FormControl sx={{ m: 1, minWidth: 120 }} variant="standard">
-          <InputLabel htmlFor="year">Year: </InputLabel>
-          <Input id="year" onChange={onChangeSchoolYear} />
+          <InputLabel htmlFor="year">Năm học: </InputLabel>
+          <Select
+            labelId="select-department-label"
+            id="year"
+            value={statisticParams.schoolYear}
+            onClick={onClickAgain}
+            displayEmpty={false}
+            renderValue={(selected) => selected}
+          >
+            {listSchoolYear.map((schoolYear) => (
+              <MenuItem key={schoolYear} value={schoolYear}>
+                {schoolYear}
+              </MenuItem>
+            ))}
+          </Select>
         </FormControl>
 
         <FormControl sx={{ m: 1, minWidth: 120 }}>
@@ -149,6 +188,7 @@ export const StatisticTemplate: FC<Props> = () => {
                 .map((id) => departmentList.find((dep) => dep.id === id)?.name)
                 .join(", ")
             }
+            disabled={selectedGroups.length > 0}
           >
             {departmentList.map((department) => (
               <MenuItem key={department.id} value={department.id}>
@@ -166,6 +206,7 @@ export const StatisticTemplate: FC<Props> = () => {
             multiple
             value={selectedGroups} // Use selectedGroups state
             onChange={handleGroupChange}
+            disabled={selectedDepartments.length > 1}
           >
             {selectedDepartments.flatMap((depId) =>
               departmentList

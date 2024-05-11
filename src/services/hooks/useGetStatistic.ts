@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
 import { API_URL, NetWork } from "services/api";
-import { deleteParamsNotUsing, isSuccessfulResponse } from "services/api/utils";
+import {
+  deleteParamsNotUsing,
+  getRequestUrl,
+  isSuccessfulResponse,
+} from "services/api/utils";
 import queryString from "query-string";
 
 export type StatisticParams = {
-  departmentIds?: number[];
-  groupIds?: number[];
+  departmentIds?: string;
+  groupIds?: string;
   schoolYear?: string;
 };
 
 export type StatisticData = {
-  attt: StatisticDetail;
-  cntt: StatisticDetail;
-  cryptography: StatisticDetail;
+  [key: string]: StatisticDetail;
 };
 
 type StatisticDetail = {
@@ -30,14 +32,10 @@ export const useGetStatistic = (params: StatisticParams) => {
   const fetchData = async () => {
     setLoading(true);
     // Call API here
-    const serializedParams = queryString.stringify({
-      ...params,
-      departmentIds: JSON.stringify(params?.departmentIds),
-      groupIds: JSON.stringify(params?.groupIds),
-    });
-    const response = await NetWork.get(API_URL.STATISTIC, {
-      params: deleteParamsNotUsing(serializedParams),
-    });
+    const response = await NetWork.get(
+      API_URL.STATISTIC,
+      deleteParamsNotUsing(params)
+    );
     if (isSuccessfulResponse(response)) {
       setData(response?.data?.content);
     }
@@ -47,6 +45,30 @@ export const useGetStatistic = (params: StatisticParams) => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);
+
+  return { data, loading };
+};
+
+export const useGetSchoolYear = () => {
+  const [data, setData] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const fetchData = async () => {
+    setLoading(true);
+    const response = await NetWork.get(
+      getRequestUrl(API_URL.STATISTIC, {
+        partial: "school-year",
+      })
+    );
+    if (isSuccessfulResponse(response)) {
+      setData(response?.data?.content);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return { data, loading };
 };

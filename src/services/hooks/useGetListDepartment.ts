@@ -3,13 +3,15 @@ import { API_URL, NetWork } from "services/api";
 import { RESPONSE_CODE } from "services/api/config";
 
 //get dánh sách phòng ban
-export const useGetListDepartment = () => {
+export const useGetListDepartment = (departmentType?: string) => {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const fetchData = async () => {
     setLoading(true);
-    const response = await NetWork.get(`${API_URL.DEPARTMENT}`);
+    const response = await NetWork.get(`${API_URL.DEPARTMENT}`, {
+      type: departmentType,
+    });
     if (response.status === RESPONSE_CODE.SUCCESS) {
       setData(response?.data?.content);
       setLoading(false);
