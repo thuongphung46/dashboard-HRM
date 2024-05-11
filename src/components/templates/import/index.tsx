@@ -66,12 +66,22 @@ export const ImportTemplate = () => {
     setSchoolYear(event.target.value);
   };
 
-  const isDisable = () =>{
+  const isDisableBtn = () =>{
     if (importOptionFile ==="Import TKB") {
       return !fileSelected || !importOptionFile || !importOptionTerm
     }
     else if (importOptionFile ==="Import Kê khai") {
       return !fileSelected || !importOptionFile
+    }
+    return true
+  }
+
+  const isDisableField = () =>{
+    if (importOptionFile ==="Import TKB") {
+      return false
+    }
+    else if (importOptionFile ==="Import Kê khai") {
+      return true
     }
     return true
   }
@@ -111,6 +121,7 @@ export const ImportTemplate = () => {
           value={importOptionTerm}
           onChange={onChangeOptinTerm}
           displayEmpty
+          disabled = {isDisableField()}
           style={{ margin: "10px", width: "200px" }}
         >
           <MenuItem value="" disabled>
@@ -126,6 +137,7 @@ export const ImportTemplate = () => {
           value={schoolYear}
           onChange={onChangeSchoolYear}
           displayEmpty
+          disabled = {isDisableField()}
           style={{ margin: "10px", width: "200px" }}
         >
           <MenuItem value="" disabled>
@@ -146,7 +158,7 @@ export const ImportTemplate = () => {
           variant="contained"
           onClick={handleImport}
           
-          disabled={isDisable()}
+          disabled={isDisableBtn()}
         >
           Import
         </Button>
