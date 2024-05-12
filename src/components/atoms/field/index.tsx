@@ -9,11 +9,12 @@ import TextField from "@mui/material/TextField";
 export interface IFormData {
   id: string;
   label: string;
-  type: "select" | "text" | "file";
+  type: string;
   options?: {
     value: string | number | undefined;
     label: string;
   }[];
+  defaultValue?: string | number;
 }
 interface Props {
   field: IFormData;
@@ -37,8 +38,7 @@ const ReusableField: FC<Props> = ({ field, hanldeOnChangefield, formData }) => {
                   size="small"
                   id={field.id}
                   onChange={hanldeOnChangefield}
-                  defaultValue={formData ? formData[field.id] : ""}
-                >
+                  defaultValue={formData ? formData[field.id] : ""}>
                   {field.options.map((option, index) => (
                     <MenuItem key={index} value={option.value}>
                       {option.label}

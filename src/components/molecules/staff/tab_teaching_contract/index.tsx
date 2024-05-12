@@ -1,18 +1,14 @@
-import React, { useMemo, useState } from "react";
+import React from "react";
 import { Box, Button } from "@mui/material";
-import { BaseGrid } from "components/atoms/datagrid";
-import { AddNewContract } from "./deatail_contract";
-import Dialog from "@mui/material/Dialog";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 import { useGetListContractStaff } from "services/hooks/useGetListStaff";
 import { storageAction } from "common/function";
 import { KeyValue } from "constants/GlobalConstant";
 import { GridColDef } from "@mui/x-data-grid/models/colDef";
+import { useNavigate } from "react-router-dom";
+import { DataGrid } from "@mui/x-data-grid";
 
 export const TeachingContractPage: React.FC = () => {
-  const [isVisible, setIsVisible] = useState<boolean>(false);
-  const [selectedContract, setSelectedContract] = useState<any>({});
+  const navigate = useNavigate();
   const idUser = storageAction("get", KeyValue.id);
   const { data: TeachingContractPageData } = useGetListContractStaff(idUser);
 
@@ -83,74 +79,19 @@ export const TeachingContractPage: React.FC = () => {
       type: "file",
     },
   ];
-  const handleClose = () => {
-    setIsVisible(false);
-    setSelectedContract({});
-  };
-
-  const RenderModal = useMemo(() => {
-    return (
-      <div>
-        <Dialog
-          fullScreen
-          open={isVisible}
-          onClose={() => {
-            setIsVisible(false);
-            setSelectedContract({});
-          }}
-        >
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "flex-end",
-              padding: "12px",
-            }}
-          >
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-          </div>
-
-          <div
-            style={{
-              padding: "12px",
-              height: `calc(100vh - 50px)`,
-              overflow: "auto",
-            }}
-          >
-            <AddNewContract action="edit" contract={selectedContract} />
-          </div>
-        </Dialog>
-      </div>
-    );
-  }, [isVisible, selectedContract]);
 
   return (
     <div>
-      <Button>Add contact</Button>
+      <Button onClick={() => navigate("add")}>Add contact</Button>
       <Box>
-        <BaseGrid
+        <DataGrid
           columns={columns}
-          rows={TeachingContractPageData} // Update rows with API data
-          title=""
-          onSave={() => {
-            /* Logic lưu cho lưới dữ liệu 1 */
-          }}
-          onRowSelectionChange={setSelectedContract}
-          selectedRows={selectedContract}
-          onCellClick={(ele) => {
-            setIsVisible(true);
-            setSelectedContract(ele?.row);
+          rows={TeachingContractPageData}
+          onCellClick={(e) => {
+            navigate(`edit/${e.row.id}`);
           }}
         />
       </Box>
-      {RenderModal}
     </div>
   );
 };

@@ -43,8 +43,7 @@ const RootLayout = () => {
           flex: 1,
           height: "100vh",
           width: "100%",
-        }}
-      >
+        }}>
         <Playground
           collapsed={collapsed}
           setToggled={handleToggled}
@@ -60,8 +59,7 @@ const RootLayout = () => {
             flexDirection: "column",
             width: `calc(100% - ${collapsed ? 80 : 250}px)`,
             height: "100%",
-          }}
-        >
+          }}>
           <PrimarySearchAppBar
             setCollapsed={handleCollapsed}
             collapsed={collapsed}
@@ -74,9 +72,7 @@ const RootLayout = () => {
             sx={{
               height: "100%",
               overflow: "auto",
-              padding: 1,
-            }}
-          >
+            }}>
             <Outlet />
           </Box>
         </Box>
