@@ -4,9 +4,9 @@ export interface IContent {
   renterId?: number;
   staff?: IStaff;
   renter?: IRenter;
-  contractName: string;
-  fromDate: string;
-  toDate: string;
+  contractName?: string;
+  fromDate?: string;
+  toDate?: string;
   status?: number;
   teachingAddress?: string;
   numberOfLesson?: number;
@@ -14,12 +14,12 @@ export interface IContent {
   taxPercent?: number;
   contractValue?: number;
   actualValue?: number;
-  taxValue: number;
-  byWord: string;
-  createdDate: string;
-  modifiedDate: string;
-  createdBy: string;
-  modifiedBy: string;
+  taxValue?: number;
+  byWord?: string;
+  createdDate?: string;
+  modifiedDate?: string;
+  createdBy?: string;
+  modifiedBy?: string;
   [key: string]: any;
 }
 
@@ -44,6 +44,7 @@ export interface IStaff {
   placeOfIssue: string;
   favorite: string;
   createdDate: string;
+  [key: string]: any;
 }
 
 export interface IRenter {
@@ -67,4 +68,5 @@ export interface IRenter {
   placeOfIssue: string;
   favorite: string;
   createdDate: string;
+  [key: string]: any;
 }

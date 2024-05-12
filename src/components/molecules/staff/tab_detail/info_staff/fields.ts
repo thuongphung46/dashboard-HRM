@@ -1,18 +1,13 @@
-interface FieldsData {
-  id: string;
-  label: string;
-  type: string;
-  options?: {
-    value: string | number | undefined;
-    label: string;
-  }[];
-}
+import { IFormData } from "components/atoms/field";
 
-export const fieldsData: FieldsData[] = [
+export const fieldsData: IFormData[] = [
   { id: "username", label: "Mã nhân viên", type: "text" },
   { id: "fullName", label: "Họ và tên", type: "text" },
   { id: "password", label: "Mật khẩu", type: "password" },
-  { id: "level", label: "Level", type: "select",
+  {
+    id: "level",
+    label: "Level",
+    type: "select",
     options: [
       {
         value: "LEVEL_1",
@@ -32,7 +27,10 @@ export const fieldsData: FieldsData[] = [
       },
     ],
   },
-  { id: "gender", label: "Giới tính", type: "select",
+  {
+    id: "gender",
+    label: "Giới tính",
+    type: "select",
     options: [
       {
         value: 1,
@@ -47,9 +45,9 @@ export const fieldsData: FieldsData[] = [
   { id: "dateOfBirth", label: "Ngày sinh", type: "date" },
   { id: "personalEmail", label: "Email", type: "text" },
   { id: "phoneNumber", label: "Số điện thoại", type: "text" },
-  { id: "departmentId", label: "Cấp quản lý", type: "select", options: [],},
-  { id: "jobTitle", label: "Chức vụ", type: "select", options: [],},
-  { id: "rankId", label: "Hàm (Sĩ quan)", type: "select", options: [],},
+  { id: "departmentId", label: "Cấp quản lý", type: "select", options: [] },
+  { id: "jobTitle", label: "Chức vụ", type: "select", options: [] },
+  { id: "rankId", label: "Hàm (Sĩ quan)", type: "select", options: [] },
   { id: "identityBirthPlace", label: "Nơi sinh", type: "text" },
   { id: "identityBirthPlace2", label: "Nguyên quán", type: "text" },
   { id: "currentPlace", label: "Chỗ ở hiện nay", type: "text" },
@@ -63,14 +61,17 @@ export const fieldsData: FieldsData[] = [
   { id: "identityDate", label: "Ngày cấp", type: "date" },
   { id: "placeOfIssue", label: "Nơi cấp", type: "text" },
   { id: "favorite", label: "Sở thích", type: "text" },
-  { id: "groupId", label: "Bộ môn (nếu có)", type: "select",
+  {
+    id: "groupId",
+    label: "Bộ môn (nếu có)",
+    type: "select",
     options: [
       {
-        value: '1',
+        value: "1",
         label: "Đây là bộ môn (phòng ban cấp 2)",
       },
     ],
-   },
+  },
   {
     id: "active",
     label: "Trạng thái",

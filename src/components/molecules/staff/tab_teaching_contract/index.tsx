@@ -1,11 +1,11 @@
 import React from "react";
 import { Box, Button } from "@mui/material";
-import { BaseGrid } from "components/atoms/datagrid";
 import { useGetListContractStaff } from "services/hooks/useGetListStaff";
 import { storageAction } from "common/function";
 import { KeyValue } from "constants/GlobalConstant";
 import { GridColDef } from "@mui/x-data-grid/models/colDef";
 import { useNavigate } from "react-router-dom";
+import { DataGrid } from "@mui/x-data-grid";
 
 export const TeachingContractPage: React.FC = () => {
   const navigate = useNavigate();
@@ -82,17 +82,11 @@ export const TeachingContractPage: React.FC = () => {
 
   return (
     <div>
-      <Button>Add contact</Button>
+      <Button onClick={() => navigate("add")}>Add contact</Button>
       <Box>
-        <BaseGrid
+        <DataGrid
           columns={columns}
-          rows={TeachingContractPageData} // Update rows with API data
-          title=""
-          onSave={() => {
-            /* Logic lưu cho lưới dữ liệu 1 */
-          }}
-          onRowSelectionChange={(e) => {}}
-          selectedRows={[]}
+          rows={TeachingContractPageData}
           onCellClick={(e) => {
             navigate(`edit/${e.row.id}`);
           }}
