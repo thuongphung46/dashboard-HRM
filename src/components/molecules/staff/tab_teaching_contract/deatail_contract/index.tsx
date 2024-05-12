@@ -7,25 +7,26 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import ReusableField, { IFormData } from "components/atoms/field";
+import { IFormData } from "components/atoms/field";
 import { FC, useCallback, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { useGetDetailContract } from "services/hooks/useGetListStaff";
 import { IContent, IStaff, IRenter } from "types/teaching_contact";
 import { useDebouncedCallback } from "use-debounce";
 
 interface Props {
-  contract?: any;
   action: "add" | "edit";
 }
 
 export const AddNewContract: FC<Props> = (props) => {
+  const { id } = useParams();
   const [formData, setFormData] = useState<IContent>();
   const [staffData, setStaffData] = useState<IStaff>();
   const [renterData, setRenterData] = useState<IRenter>();
   const [editData, setEditData] = useState<any>();
 
   const { data: contractDetail, loading: detailLoading } = useGetDetailContract(
-    props.action === "edit" ? props.contract.id : ""
+    props.action === "edit" ? id : ""
   );
   useEffect(() => {
     if (contractDetail && contractDetail.staff && contractDetail.renter) {
@@ -249,8 +250,19 @@ export const AddNewContract: FC<Props> = (props) => {
         <>loading</>
       ) : (
         <>
-          <Grid container>
-            <Button onClick={handleSave}>Lưu</Button>
+          <Button
+            sx={{ margin: "4px" }}
+            variant="outlined"
+            onClick={handleSave}>
+            Lưu
+          </Button>
+          <Grid
+            sx={{
+              padding: "8px",
+              height: "calc(100% - 60px)",
+              overflow: "auto",
+            }}
+            container>
             <Grid container spacing={2}>
               {formDataA.map((field, index) => (
                 <Grid item xs={6} key={field.id}>
@@ -272,8 +284,7 @@ export const AddNewContract: FC<Props> = (props) => {
                                   ? contractDetail[field.id]
                                   : ""
                                 : ""
-                            }
-                          >
+                            }>
                             {field.options.map((option, index) => (
                               <MenuItem key={index} value={option.value}>
                                 {option.label}

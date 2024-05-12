@@ -71,6 +71,12 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "/teaching_contract/edit/:id",
+        element: (
+          <PrivateRoute action={FORM_STATE.EDIT} component={AddNewContract} />
+        ),
+      },
+      {
         path: "/import",
         element: <ImportPage />,
       },
