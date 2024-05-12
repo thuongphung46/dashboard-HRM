@@ -62,8 +62,9 @@ export const BaseGrid: FC<BaseGridProps> = ({
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
   };
 
-  const handleSaveClick = (id: GridRowId) => () => {
+  const handleSaveClick = (id: GridRowId, row: any) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+    onSave && onSave(row);
   };
 
   const handleDeleteClick = (id: GridRowId) => () => {
@@ -102,7 +103,7 @@ export const BaseGrid: FC<BaseGridProps> = ({
       headerName: "",
       width: 100,
       cellClassName: "actions",
-      getActions: ({ id }) => {
+      getActions: ({ id, row }) => {
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
 
         if (isInEditMode) {
@@ -113,7 +114,7 @@ export const BaseGrid: FC<BaseGridProps> = ({
               sx={{
                 color: "primary.main",
               }}
-              onClick={handleSaveClick(id)}
+              onClick={handleSaveClick(id, row)}
             />,
             <GridActionsCellItem
               icon={<CancelIcon />}
@@ -170,7 +171,7 @@ export const BaseGrid: FC<BaseGridProps> = ({
           toolbar: EditToolbar,
         }}
         slotProps={{
-          toolbar: { setDataSource, setRowModesModel, dataSource, onSave },
+          toolbar: { setDataSource, setRowModesModel, dataSource },
         }}
         {...rest}
       />
@@ -180,14 +181,13 @@ export const BaseGrid: FC<BaseGridProps> = ({
 
 interface EditToolbarProps {
   dataSource: any[];
-  onSave: (data: any) => void;
   setDataSource: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
   setRowModesModel: (
     newModel: (oldModel: GridRowModesModel) => GridRowModesModel
   ) => void;
 }
 function EditToolbar(props: EditToolbarProps) {
-  const { setDataSource, setRowModesModel, dataSource, onSave } = props;
+  const { setDataSource, setRowModesModel, dataSource } = props;
 
   const handleClick = () => {
     const id = dataSource.length + 1;
@@ -197,10 +197,6 @@ function EditToolbar(props: EditToolbarProps) {
       [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
     }));
   };
-
-  // const handleClickSave = useCallback(() => {
-  //   onSave(dataSource);
-  // }, [dataSource, onSave]);
 
   return (
     <GridToolbarContainer>
