@@ -1,4 +1,4 @@
-import { FC, useCallback } from "react";
+import { FC } from "react";
 import {
   DataGrid,
   GridColDef,
@@ -198,21 +198,21 @@ function EditToolbar(props: EditToolbarProps) {
     }));
   };
 
-  const handleClickSave = useCallback(() => {
-    onSave(dataSource);
-  }, [dataSource, onSave]);
+  // const handleClickSave = useCallback(() => {
+  //   onSave(dataSource);
+  // }, [dataSource, onSave]);
 
   return (
     <GridToolbarContainer>
       <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
         Add row
       </Button>
-      <Button
+      {/* <Button
         color="primary"
         startIcon={<SaveIcon />}
         onClick={handleClickSave}>
         Save
-      </Button>
+      </Button> */}
     </GridToolbarContainer>
   );
 }
