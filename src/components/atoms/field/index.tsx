@@ -10,6 +10,7 @@ export interface IFormData {
   id: string;
   label: string;
   type: string;
+  ref?:any;
   options?: {
     value: string | number | undefined;
     label: string;
