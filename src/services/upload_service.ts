@@ -21,4 +21,21 @@ const FileTkbService = {
   },
 };
 
-export { FileTkbService };
+const FileKeKhaiService = {
+  uploadFile: async (file: File) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const response = await NetWork.postFormData(
+        "file/declaration",
+        formData
+      );
+      console.log("Response: ", response.data);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+};
+
+export { FileTkbService, FileKeKhaiService };

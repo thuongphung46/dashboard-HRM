@@ -27,7 +27,7 @@ export const GeneralPosition: FC<Props> = () => {
     {
       field: "jobTitle",
       headerName: "Tên chức vụ",
-      width: 150,
+      width: 300,
       editable: true,
     },
   ];

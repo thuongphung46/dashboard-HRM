@@ -47,8 +47,14 @@ export const ListDepartment: FC<Props> = ({
         id: "parent",
         label: "Trực thuộc cấp",
         type: "select",
-        options: departmentList.map((department) => department.name),
+        options: departmentList.map((department) => ({ label: department.name, value: department.id })),
       },
+      { id: "type", label: "Loại", type: "select", 
+        options: [
+          {value: "education", label: "Giảng dạy"}, 
+          {value: "back_office", label: "Quản trị"}
+        ]
+      }
     ];
 
     const handleSave = async () => {
@@ -62,15 +68,16 @@ export const ListDepartment: FC<Props> = ({
       const body = {
         name: formData["name"],
         parentDeptId: formData["parent"],
+        type: formData["type"],
       };
       // Tiếp tục xử lý lưu dữ liệu
       const response = await createDepartment(body);
-      if (response && response.message === "success") {
+      if (response && response?.message === "success") {
         toast("Thành công");
         handleClose();
         setFormData({});
       } else {
-        toast("Tạo phòng không thành công");
+        toast(response?.message || "Tạo mới phòng ban không thành công");
       }
     };
 
