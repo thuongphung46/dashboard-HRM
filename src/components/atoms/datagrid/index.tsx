@@ -155,7 +155,7 @@ export const BaseGrid: FC<BaseGridProps> = ({
         initialState={{
           pagination: {
             paginationModel: {
-              pageSize: 5,
+              pageSize: 10,
             },
           },
         }}

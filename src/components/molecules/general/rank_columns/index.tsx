@@ -49,7 +49,7 @@ export const GeneralRank: FC<Props> = () => {
                 },
               },
             }}
-            pageSizeOptions={[5]}
+            // pageSizeOptions={[10]}
             checkboxSelection
             disableRowSelectionOnClick
           />
