@@ -23,12 +23,14 @@ interface Props {
 
 export const AddNewContract: FC<Props> = ({ data, action }) => {
   const { id } = useParams();
-  const refJobTitle = useRef<any>(null);
+  const refJobTitleA = useRef<any>(null);
+  const refJobTitleB = useRef<any>(null);
   const [formData, setFormData] = useState<IContent>();
   const [staffData, setStaffData] = useState<IStaff>();
   const [renterData, setRenterData] = useState<IRenter>();
   const [editData, setEditData] = useState({
     jobTitleRenter: '',
+    jobTitle: '',
   });
 
   const { data: contractDetail, loading: detailLoading } = useGetDetailContract(
@@ -49,7 +51,6 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
       setStaffData(contractDetail.staff);
       setRenterData(contractDetail.renter);
       setFormData(contractDetail);
-      // setContractData(contractDetail.contract);
     }
   }, [contractDetail]);
 
@@ -74,7 +75,6 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
           label: "Học kỳ II",
         },
       ],
-
     },
     {
       id: "year",
@@ -91,7 +91,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
     },
     {
       id: "jobTitle",
-      ref: refJobTitle,
+      ref: refJobTitleA,
       label: "Chức vụ:",
       type: "text",
       defaultValue: renterData?.jobTitle || "",
@@ -149,6 +149,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
     },
     {
       id: "jobTitleRenter",
+      ref: refJobTitleB,
       label: "Chức vụ:",
       type: "text",
       defaultValue: staffData?.jobTitle || "",
@@ -263,22 +264,25 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
     let value = e.target.value;
     let field = e.target.name;
 
-    if (field === "per_b" || field === "fullName") {
+    if (field === "per_b") {
       // Tìm staff tương ứng với per_b được chọn
       const selectedStaff = listStaff.find(staff => staff.username === value);
-      console.log("selectedStaff: ", selectedStaff);
       // Lấy giá trị jobTitle của staff đó và cập nhật vào state của jobTitleRenter
       setEditData({
         ...editData,
         [field]: value,
         jobTitleRenter: selectedStaff ? selectedStaff.jobTitle : "",
       });
-      
-      // setRenterData({
-      //   ...renterData,
-      //  jobTitle : selectedStaff.jobTitle,
-      // })
-      refJobTitle.current.value = selectedStaff.jobTitle;
+      refJobTitleB.current.value = selectedStaff.jobTitle;
+
+    } else if (field === "fullName") {
+      const selectedStaff = listStaff.find(staff => staff.username === value);
+      setEditData({
+        ...editData,
+        [field]: value,
+        jobTitle: selectedStaff ? selectedStaff.jobTitle : "",
+      });
+      refJobTitleA.current.value = selectedStaff.jobTitle;
     } else {
       setEditData({
         ...editData,
@@ -337,7 +341,13 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                                   {staff.fullName}
                                 </MenuItem>
                               ));
-                            } 
+                            } else {
+                              return field.options.map((option, index) => (
+                                <MenuItem key={index} value={option.value}>
+                                  {option.label}
+                                </MenuItem>
+                              ));
+                            }
                           })()}
                         </Select>
                       </FormControl>
@@ -400,6 +410,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                         <TextField
                           size="small"
                           fullWidth
+                          inputRef={field?.ref}
                           id={field.id}
                           name={field.id}
                           type={field.type}
