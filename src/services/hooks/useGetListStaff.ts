@@ -56,7 +56,43 @@ export const useGetStaff = (id: string | undefined) => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+
   return { data, loading };
+};
+
+export const useGetStaffSelected = () => {
+  // const [data, setData] = useState<StaffDetail | any>({});
+  // const [loading, setLoading] = useState<boolean>(true);
+
+  // const fetchData = async () => {
+  //   setLoading(true);
+  //   if (id) {
+  //     const response = await NetWork.get(`${API_URL.STAFFS}/${id}`);
+  //     if (response.status === RESPONSE_CODE.SUCCESS) {
+  //       setData(response?.data?.content);
+  //     }
+  //   }
+  //   setLoading(false);
+  // };
+  // useEffect(() => {
+  //   fetchData();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [id]);
+
+  const getStaff = async (id?:string | number) => {
+    if (id) {
+      const response = await NetWork.get(`${API_URL.STAFFS}/${id}`);
+      if (response.status === RESPONSE_CODE.SUCCESS) {
+        return response?.data?.content;
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+}
+
+  return { getStaff };
 };
 
 //get lịch sử làm việc của nhân viên

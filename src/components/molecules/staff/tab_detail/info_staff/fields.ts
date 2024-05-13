@@ -46,8 +46,20 @@ export const fieldsData: IFormData[] = [
   { id: "personalEmail", label: "Email", type: "text" },
   { id: "phoneNumber", label: "Số điện thoại", type: "text" },
   { id: "departmentId", label: "Cấp quản lý", type: "select", options: [] },
+  {
+    id: "groupId",
+    label: "Bộ môn (nếu có)",
+    type: "select",
+    options: [
+      {
+        value: "1",
+        label: "Đây là bộ môn (phòng ban cấp 2)",
+      },
+    ],
+  },
   { id: "jobTitle", label: "Chức vụ", type: "select", options: [] },
   { id: "rankId", label: "Hàm (Sĩ quan)", type: "select", options: [] },
+  { id: "ratio", label: "Hệ số lương", type: "number" },
   { id: "identityBirthPlace", label: "Nơi sinh", type: "text" },
   { id: "identityBirthPlace2", label: "Nguyên quán", type: "text" },
   { id: "currentPlace", label: "Chỗ ở hiện nay", type: "text" },
@@ -60,18 +72,9 @@ export const fieldsData: IFormData[] = [
   { id: "identityCode", label: "CMND/CCCD", type: "text" },
   { id: "identityDate", label: "Ngày cấp", type: "date" },
   { id: "placeOfIssue", label: "Nơi cấp", type: "text" },
+  { id: "bankNum", label: "Số tài khoản", type: "text" },
+  { id: "bankName", label: "Ngân hàng", type: "text" },
   { id: "favorite", label: "Sở thích", type: "text" },
-  {
-    id: "groupId",
-    label: "Bộ môn (nếu có)",
-    type: "select",
-    options: [
-      {
-        value: "1",
-        label: "Đây là bộ môn (phòng ban cấp 2)",
-      },
-    ],
-  },
   {
     id: "active",
     label: "Trạng thái",
