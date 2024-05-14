@@ -1,11 +1,11 @@
 import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { GetListStaffParams, useGetDetailContract, useGetListStaff, useGetStaff, useGetStaffSelected } from "services/hooks/useGetListStaff";
+import { GetListStaffParams, useGetDetailContract, useGetListStaff, useGetStaffSelected } from "services/hooks/useGetListStaff";
 import { IContent, IStaff, IRenter } from "types/teaching_contact";
 import { useDebouncedCallback } from "use-debounce";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import InputLabel, {InputLabelProps}from "@mui/material/InputLabel";
+import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -26,7 +26,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
 
   const refJobTitleA = useRef<any>(null);
   const refphoneNumberA = useRef<any>(null);
-  const refBankNumA = useRef<any>(null);
+  const refBankAccountA = useRef<any>(null);
   const refBankNameA = useRef<any>(null);
 
   const refJobTitleB = useRef<any>(null);
@@ -35,13 +35,11 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
   const refplaceOfIssueB = useRef<any>(null);
   const refphoneNumberB = useRef<any>(null);
   const refRatioB = useRef<any>(null);
-  const refBankNumB = useRef<any>(null);
+  const refBankAccountB = useRef<any>(null);
   const refBankNameB = useRef<any>(null);
 
   const [formData, setFormData] = useState<IContent>();
   const [staffData, setStaffData] = useState<IStaff>();
-  const [staffDetailDataA, setStaffDetailDataA] = useState<any>({});
-  const [staffDetailDataB, setStaffDetailDataB] = useState<any>({});
   const [renterData, setRenterData] = useState<IRenter>();
   const [editData, setEditData] = useState({
     jobTitleRenter: '',
@@ -127,7 +125,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
     },
     {
       id: "bank_a_account",
-      ref: refBankNumA,
+      ref: refBankAccountA,
       label: "Tài khoản:",
       type: "text",
       defaultValue: "",
@@ -204,7 +202,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
     },
     {
       id: "bank_b_account",
-      ref: refBankNumB,
+      ref: refBankAccountB,
       label: "Số tài khoản:",
       type: "text",
       defaultValue: "",
@@ -234,7 +232,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
       id: "teachingAddress",
       label: "Địa điểm giảng dạy:",
       type: "text",
-      defaultValue: formData?.teachingAddress || "",
+      defaultValue: formData?.teachingAddress || "Học viện Kỹ thuật Mật mã",
     },
     {
       id: "numberOfLesson",
@@ -245,7 +243,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
     {
       id: "lessonPrice",
       label: "Giá một tiết dạy:",
-      type: "text",
+      type: "number",
       defaultValue: formData?.lessonPrice || "",
     },
     {
@@ -256,7 +254,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
     },
     {
       id: "byWord",
-      label: "Bằng chữ",
+      label: "Giá trị hợp đồng (bằng chữ):",
       type: "text",
       defaultValue: formData?.byWord || "",
     },
@@ -293,7 +291,6 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
     if (field === "fullName") {
       const selectedStaff = listStaff.find(staff => staff.username === value);
       const dataDetail = await getStaff(selectedStaff.id);
-
       setEditData({
         ...editData,
         [field]: value,
@@ -305,8 +302,8 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
       });
       refJobTitleA.current.value = selectedStaff.jobTitle;
       refphoneNumberA.current.value = dataDetail.phoneNumber;
-      refBankNameA.current.value = dataDetail.bankAccount;
-      refBankNumA.current.value = dataDetail.bankNum;
+      refBankAccountA.current.value = dataDetail.bankAccount;
+      refBankNameA.current.value = dataDetail.bankName;
 
     } else if (field === "per_b") {
       const selectedStaff = listStaff.find(staff => staff.username === value);
@@ -330,8 +327,8 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
       refIdentityDateB.current.value = dataDetail.identityDate;
       refplaceOfIssueB.current.value = dataDetail.identityPlace;
       refphoneNumberB.current.value = dataDetail.phoneNumber;
-      refBankNameB.current.value = dataDetail.bankAccount;
-      refBankNumB.current.value = dataDetail.bankNum;
+      refBankAccountB.current.value = dataDetail.bankAccount;
+      refBankNameB.current.value = dataDetail.bankName;
       refRatioB.current.value = dataDetail.ratio;
 
     } 
@@ -344,8 +341,11 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
   }, 500);
 
   const handleSave = useCallback(() => {
-    console.log("data: ", formData);
-  }, [formData]);
+    console.log("staffData: ", staffData);
+    console.log("renterData: ", renterData);
+    console.log("formData: ", formData);
+    console.log("editData: ", editData);
+  }, [staffData, renterData, formData, editData]);
   return (
     <>
       <Button sx={{ margin: "4px" }} variant="outlined" onClick={handleSave}>
@@ -366,7 +366,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                 width: "100%",
               }}
               item>
-              <Typography variant="h5">Bên A: HỌC VIÊN KỸ THUẬT MẬT MÃ</Typography>
+              <Typography variant="h5" marginBottom={2}>Bên A: HỌC VIÊN KỸ THUẬT MẬT MÃ</Typography>
             </Grid>
             <Grid container spacing={2}>
               {formDataA.map((field, index) => (
@@ -427,7 +427,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                 width: "100%",
               }}
               item>
-              <Typography variant="h5">Bên B</Typography>
+              <Typography variant="h5" marginBottom={2}>Bên B</Typography>
             </Grid>
             <Grid container spacing={2}>
               {formDataB.map((field, index) => (
@@ -481,7 +481,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                 width: "100%",
               }}
               item>
-              <Typography variant="h5">Thông tin hợp đồng</Typography>
+              <Typography variant="h5" marginBottom={2}>Thông tin hợp đồng</Typography>
             </Grid>
             <Grid container spacing={2}>
               {formDataC.map((field, index) => (

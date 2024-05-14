@@ -68,15 +68,6 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
     setFormData({ ...formData, [field]: value });
   }, 500);
 
-  // const dcsvn = data.staffAdmissions.find(
-  //   (ele) => ele.type === STAFF_ADMISSION.DANG_CSVN
-  // );
-  // const doan = data.staffAdmissions.find(
-  //   (ele) => ele.type === STAFF_ADMISSION.DOAN_VIEN
-  // );
-  // data.dang_csvn = dcsvn?.place || "";
-  // data.doan_tncs_hcm = doan?.place || "";
-
   useEffect(() => {
     if (!loadingDepartment && departmentData) {
       setDepartmentList(departmentData);
