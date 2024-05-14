@@ -72,7 +72,7 @@ export const fieldsData: IFormData[] = [
   { id: "identityCode", label: "CMND/CCCD", type: "text" },
   { id: "identityDate", label: "Ngày cấp", type: "date" },
   { id: "placeOfIssue", label: "Nơi cấp", type: "text" },
-  { id: "bankNum", label: "Số tài khoản", type: "text" },
+  { id: "bankAccount", label: "Số tài khoản", type: "text" },
   { id: "bankName", label: "Ngân hàng", type: "text" },
   { id: "favorite", label: "Sở thích", type: "text" },
   {

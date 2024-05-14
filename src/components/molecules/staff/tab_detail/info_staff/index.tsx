@@ -128,7 +128,7 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
                                 {jobTitle.jobTitle}
                               </MenuItem>
                             ));
-                          } else if (field.options) {
+                          } else {
                             return field.options.map((option, index) => (
                               <MenuItem key={index} value={option.value}>
                                 {option.label}
