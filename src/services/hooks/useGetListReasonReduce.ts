@@ -88,7 +88,7 @@ export const useReasonReduce = () => {
     ) {
       return response.data?.content;
     } else {
-      return null;
+      return response.data;
     }
   };
   const deleteReasonReduce = async (id: string) => {

@@ -8,6 +8,9 @@ import {
   useReasonReduce,
 } from "services/hooks/useGetListReasonReduce";
 import { isNullOrEmpty } from "common/validation";
+import { Message } from "@mui/icons-material";
+import { MessageCode } from "types/enum/message_code";
+import { toastMessage } from "components/molecules/toast_message";
 
 interface Props {}
 export const GeneralResion: FC<Props> = () => {
@@ -23,7 +26,7 @@ export const GeneralResion: FC<Props> = () => {
       field: "code",
       headerName: "Mã lý do giảm trừ",
       width: 150,
-      editable: isAddingRow,
+      editable: true,
     },
     {
       field: "name",
@@ -33,60 +36,26 @@ export const GeneralResion: FC<Props> = () => {
     },
     {
       field: "ratio",
+      type: "number",
       headerName: "Giảm (%)",
       width: 150,
       editable: true,
     },
   ];
 
-  const handleSave = async (dataAdd: ReasonReduceType[]) => {
-    // Check for new rows
-    const maxId = Math.max(...data.map((item) => item.id));
-    const newReasons = dataAdd.filter((item) => item.id > maxId);
-
-    // Create new rows
-    if (!isNullOrEmpty(newReasons)) {
-      for (let i = 0; i < newReasons.length; i++) {
-        await createReasonReduce(newReasons[i]);
+  const handleSave = async (dataAdd: any) => {
+    createReasonReduce({
+      code: dataAdd.code,
+      name: dataAdd.name,
+      ratio:parseFloat(dataAdd.ratio),
+    }).then((res)=>{
+      if(res.msg_code === MessageCode.Success){
+        toastMessage("Thành công", "success")
       }
-    }
-
-    // Update existing rows
-    const updatedReasons = dataAdd.filter((item, index) => {
-      // Only update if the row has changed
-      return (
-        item.id <= maxId &&
-        JSON.stringify(item) !== JSON.stringify(originalData[index])
-      );
-    });
-
-    if (!isNullOrEmpty(updatedReasons)) {
-      await Promise.all(
-        updatedReasons.map((item) => updateReasonReduce(String(item.id), item))
-      );
-    }
-
-    // Delete rows
-    const deletedReasons = data
-      .filter((itemData) => {
-        return !originalData.some(
-          (originalData) => originalData.id === itemData.id
-        );
-      })
-      .map((item) => item.id);
-
-    if (!isNullOrEmpty(deletedReasons)) {
-      for (let i = 0; i < deletedReasons.length; i++) {
-        await deleteReasonReduce(String(deletedReasons[i]));
+      else{
+        toastMessage(res.message, "error")
       }
-    }
-
-    // Clear selection and editing state
-    setSelectedRows([]);
-    setIsAddingRow(false);
-
-    // Update the original data
-    setOriginalData(dataAdd);
+    })
   };
 
   return (
