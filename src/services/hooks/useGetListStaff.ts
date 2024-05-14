@@ -18,22 +18,21 @@ export const useGetListStaff = (params: GetListStaffParams) => {
   const [data, setData] = useState<IListStaff[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const fetchData = async () => {
-    setLoading(true);
-    const response = await NetWork.get(
-      API_URL.STAFFS,
-      deleteParamsNotUsing(params)
-    );
-    if (response.status === RESPONSE_CODE.SUCCESS) {
-      setData(response?.data?.content?.data);
-      setLoading(false);
-    } else {
-      setLoading(false);
-    }
-  };
   useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const response = await NetWork.get(
+        API_URL.STAFFS,
+        deleteParamsNotUsing(params)
+      );
+      if (response.status === RESPONSE_CODE.SUCCESS) {
+        setData(response?.data?.content?.data);
+        setLoading(false);
+      } else {
+        setLoading(false);
+      }
+    };
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);
   return { data, loading };
 };

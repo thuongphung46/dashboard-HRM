@@ -54,11 +54,9 @@ export const StatisticTemplate: FC<Props> = () => {
   const { loading, data: departmentData } = useGetListDepartment(
     DEPARTMENT_TYPE.EDUCATION
   );
-  const { loading: loadingStatistic, data: statisticData } =
-    useGetStatistic(statisticParams);
+  const { data: statisticData } = useGetStatistic(statisticParams);
 
-  const { data: listSchoolYear, loading: loadingSchoolYear } =
-    useGetSchoolYear();
+  const { data: listSchoolYear } = useGetSchoolYear();
 
   useEffect(() => {
     if (!loading && departmentData) {
@@ -99,12 +97,10 @@ export const StatisticTemplate: FC<Props> = () => {
   };
 
   const onClickAgain = (event: any) => {
-    console.log("click again", event?.target?.outerText);
     const schoolYear =
       statisticParams?.schoolYear === event?.target?.outerText
         ? undefined
         : event?.target?.outerText;
-    console.log("School year", schoolYear);
     setStatisticParams((prev) => {
       return {
         ...prev,

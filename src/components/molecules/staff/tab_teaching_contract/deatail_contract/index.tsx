@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   GetListStaffParams,
@@ -52,11 +52,9 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
     jobTitle: "",
   });
   const { getStaff } = useGetStaffSelected();
-
-  const { data: contractDetail, loading: detailLoading } = useGetDetailContract(
+  const { data: contractDetail } = useGetDetailContract(
     action === "edit" ? id : ""
   );
-
   const [params, setParams] = useState<GetListStaffParams>({
     query: "",
     active: undefined,
@@ -346,40 +344,11 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
         [field]: value,
       }));
     }
-    handleInputChange();
   }, 500);
-
-  const debounce = useDebouncedCallback(() => {
-    const formElement = document.getElementById(
-      "createForm"
-    ) as HTMLFormElement;
-    if (!formElement) {
-      console.error("Form element not found");
-      return;
-    }
-    const formData = new FormData(formElement);
-    const updatedData: any = {};
-    formData.forEach((value, key) => {
-      updatedData[key] = value;
-    });
-    setEditData(updatedData);
-  }, 1000);
-
-  const handleInputChange = useCallback(() => {
-    debounce();
-  }, [debounce]);
 
   const handleSave = () => {
     console.log(editData);
   };
-
-  // const handleSave = useCallback(() => {
-  //   // console.log("staffData: ", staffData);
-  //   // console.log("renterData: ", renterData);
-  //   // console.log("formData: ", formData);
-  //   console.log("formData: ", formData);
-
-  // }, [staffData, renterData, formData, editData]);
 
   return (
     <>
