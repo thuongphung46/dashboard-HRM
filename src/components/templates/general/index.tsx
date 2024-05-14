@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { GeneralPosition } from "components/molecules/general/position_columns";
 import { GeneralResion } from "components/molecules/general/resion_columns";
 import { GeneralRank } from "components/molecules/general/rank_columns";

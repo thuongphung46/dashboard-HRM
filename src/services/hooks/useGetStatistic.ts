@@ -5,7 +5,6 @@ import {
   getRequestUrl,
   isSuccessfulResponse,
 } from "services/api/utils";
-import queryString from "query-string";
 
 export type StatisticParams = {
   departmentIds?: string;

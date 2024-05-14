@@ -1,6 +1,5 @@
 import { Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { BaseGrid } from "components/atoms/datagrid";
 import { FC } from "react";
 import { StatisticData } from "services/hooks/useGetStatistic";
 

@@ -1,6 +1,11 @@
 import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { GetListStaffParams, useGetDetailContract, useGetListStaff, useGetStaffSelected } from "services/hooks/useGetListStaff";
+import {
+  GetListStaffParams,
+  useGetDetailContract,
+  useGetListStaff,
+  useGetStaffSelected,
+} from "services/hooks/useGetListStaff";
 import { IContent, IStaff, IRenter } from "types/teaching_contact";
 import { useDebouncedCallback } from "use-debounce";
 import Button from "@mui/material/Button";
@@ -42,10 +47,10 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
   const [staffData, setStaffData] = useState<IStaff>();
   const [renterData, setRenterData] = useState<IRenter>();
   const [editData, setEditData] = useState({
-    jobTitleRenter: '',
-    jobTitle: '',
+    jobTitleRenter: "",
+    jobTitle: "",
   });
-  const {getStaff} = useGetStaffSelected();
+  const { getStaff } = useGetStaffSelected();
 
   const { data: contractDetail, loading: detailLoading } = useGetDetailContract(
     action === "edit" ? id : ""
@@ -58,7 +63,8 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
     size: 25,
   });
   const [listStaff, setListStaff] = useState<any[]>([{}]);
-  const { loading: loadingListStaff, data: listStaffData } = useGetListStaff(params);
+  const { loading: loadingListStaff, data: listStaffData } =
+    useGetListStaff(params);
 
   useEffect(() => {
     if (contractDetail && contractDetail.staff && contractDetail.renter) {
@@ -283,14 +289,14 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
       defaultValue: "",
     },
   ];
-  
+
   const hanldeOnChangefield = useDebouncedCallback(async (e: any) => {
     const { name: field, value } = e.target;
-  
+
     if (field === "fullName") {
-      const selectedStaff = listStaff.find(staff => staff.username === value);
+      const selectedStaff = listStaff.find((staff) => staff.username === value);
       const dataDetail = await getStaff(selectedStaff.id);
-      setEditData(prevData => ({
+      setEditData((prevData) => ({
         ...prevData,
         [field]: value,
         jobTitle: dataDetail ? dataDetail.jobTitle : "",
@@ -336,10 +342,12 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
       }));
     }
     handleInputChange();
-  }, 500);  
+  }, 500);
 
   const debounce = useDebouncedCallback(() => {
-    const formElement = document.getElementById("createForm") as HTMLFormElement;
+    const formElement = document.getElementById(
+      "createForm"
+    ) as HTMLFormElement;
     if (!formElement) {
       console.error("Form element not found");
       return;
@@ -350,12 +358,12 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
       updatedData[key] = value;
     });
     setEditData(updatedData);
-  }, 1000);  
+  }, 1000);
 
   const handleInputChange = useCallback(() => {
     debounce();
   }, [debounce]);
-  
+
   const handleSave = () => {
     console.log(editData);
   };
@@ -382,50 +390,59 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                 height: "calc(100% - 60px)",
                 overflow: "auto",
               }}
-              container>
+              container
+            >
               <Grid
                 sx={{
                   marginTop: 2,
                   width: "100%",
                 }}
-                item>
-                <Typography variant="h5" marginBottom={2}>Bên A: HỌC VIÊN KỸ THUẬT MẬT MÃ</Typography>
+                item
+              >
+                <Typography variant="h5" marginBottom={2}>
+                  Bên A: HỌC VIÊN KỸ THUẬT MẬT MÃ
+                </Typography>
               </Grid>
               <Grid container spacing={2}>
                 {formDataA.map((field, index) => (
-                  <Grid item xs={6} key={field.id +index}>
+                  <Grid item xs={6} key={field.id + index}>
                     <Grid container alignItems="center">
                       <Grid item xs={5}>
-                        <InputLabel htmlFor={field.id}>{field.label}</InputLabel>
+                        <InputLabel htmlFor={field.id}>
+                          {field.label}
+                        </InputLabel>
                       </Grid>
                       <Grid item xs={6}>
                         {field.type === "select" && field.options ? (
                           <FormControl fullWidth>
-                          <Select
-                            name={field.id}
-                            ref={field?.ref}
-                            size="small"
-                            id={field.id}
-                            onChange={hanldeOnChangefield}
-                            defaultValue={data ? data[field.id] : ""}
-                          >
-                            {(() => {
-                              if (field.id === "fullName") {
-                                return listStaff.map((staff, index) => (
-                                  <MenuItem key={staff.id+index} value={staff.username}>
-                                    {staff.fullName}
-                                  </MenuItem>
-                                ));
-                              } else {
-                                return field.options.map((option, index) => (
-                                  <MenuItem key={index} value={option.value}>
-                                    {option.label}
-                                  </MenuItem>
-                                ));
-                              }
-                            })()}
-                          </Select>
-                        </FormControl>
+                            <Select
+                              name={field.id}
+                              ref={field?.ref}
+                              size="small"
+                              id={field.id}
+                              onChange={hanldeOnChangefield}
+                              defaultValue={data ? data[field.id] : ""}
+                            >
+                              {(() => {
+                                if (field.id === "fullName") {
+                                  return listStaff.map((staff, index) => (
+                                    <MenuItem
+                                      key={staff.id + index}
+                                      value={staff.username}
+                                    >
+                                      {staff.fullName}
+                                    </MenuItem>
+                                  ));
+                                } else {
+                                  return field.options.map((option, index) => (
+                                    <MenuItem key={index} value={option.value}>
+                                      {option.label}
+                                    </MenuItem>
+                                  ));
+                                }
+                              })()}
+                            </Select>
+                          </FormControl>
                         ) : (
                           <TextField
                             size="small"
@@ -449,38 +466,49 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                   marginTop: 2,
                   width: "100%",
                 }}
-                item>
-                <Typography variant="h5" marginBottom={2}>Bên B</Typography>
+                item
+              >
+                <Typography variant="h5" marginBottom={2}>
+                  Bên B
+                </Typography>
               </Grid>
               <Grid container spacing={2}>
                 {formDataB.map((field, index) => (
                   <Grid item xs={6} key={field.id}>
                     <Grid container alignItems="center">
                       <Grid item xs={5}>
-                        <InputLabel htmlFor={field.id}>{field.label}</InputLabel>
+                        <InputLabel htmlFor={field.id}>
+                          {field.label}
+                        </InputLabel>
                       </Grid>
                       <Grid item xs={6}>
                         {field.type === "select" && field.options ? (
                           <FormControl fullWidth>
-                          <Select
-                            name={field.id}
-                            size="small"
-                            id={field.id}
-                            onChange={hanldeOnChangefield}
-                            defaultValue={data ? data[field.id] : ""}
-                          >
-                            {(() => {
-                              if (field.id === "per_b") {
-                                const data = listStaff.filter((staff) => staff.jobTitle === "Giảng viên mời");
-                                return data.map((staff, index) => (
-                                  <MenuItem key={staff.id + index} value={staff.username}>
-                                    {staff.fullName}
-                                  </MenuItem>
-                                ));
-                              }
-                            })()}
-                          </Select>
-                        </FormControl>
+                            <Select
+                              name={field.id}
+                              size="small"
+                              id={field.id}
+                              onChange={hanldeOnChangefield}
+                              defaultValue={data ? data[field.id] : ""}
+                            >
+                              {(() => {
+                                if (field.id === "per_b") {
+                                  const data = listStaff.filter(
+                                    (staff) =>
+                                      staff.jobTitle === "Giảng viên mời"
+                                  );
+                                  return data.map((staff, index) => (
+                                    <MenuItem
+                                      key={staff.id + index}
+                                      value={staff.username}
+                                    >
+                                      {staff.fullName}
+                                    </MenuItem>
+                                  ));
+                                }
+                              })()}
+                            </Select>
+                          </FormControl>
                         ) : (
                           <TextField
                             size="small"
@@ -503,15 +531,20 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                   marginTop: 2,
                   width: "100%",
                 }}
-                item>
-                <Typography variant="h5" marginBottom={2}>Thông tin hợp đồng</Typography>
+                item
+              >
+                <Typography variant="h5" marginBottom={2}>
+                  Thông tin hợp đồng
+                </Typography>
               </Grid>
               <Grid container spacing={2}>
                 {formDataC.map((field, index) => (
-                  <Grid item xs={6} key={field.id +index}>
+                  <Grid item xs={6} key={field.id + index}>
                     <Grid container alignItems="center">
                       <Grid item xs={5}>
-                        <InputLabel htmlFor={field.id}>{field.label}</InputLabel>
+                        <InputLabel htmlFor={field.id}>
+                          {field.label}
+                        </InputLabel>
                       </Grid>
                       <Grid item xs={6}>
                         {field.type === "select" && field.options ? (
@@ -523,7 +556,8 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                               defaultValue={
                                 field.defaultValue || field.options[0].value
                               }
-                              onChange={hanldeOnChangefield}>
+                              onChange={hanldeOnChangefield}
+                            >
                               {field.options.map((option, index) => (
                                 <MenuItem key={index} value={option.value}>
                                   {option.label}
