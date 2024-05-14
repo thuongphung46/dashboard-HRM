@@ -21,7 +21,6 @@ import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
 import React from "react";
-import { GridSlots } from "@mui/x-data-grid-premium";
 
 interface BaseGridProps extends DataGridProps {
   columns: GridColDef[];

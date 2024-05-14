@@ -37,7 +37,7 @@ export const useGetListReasonReduce = () => {
     fetchReasonReduce();
   }, []);
 
-  return { data, setData, loading};
+  return { data, setData, loading };
 };
 
 export type CreateReasonReduceBody = {
@@ -54,7 +54,10 @@ export type UpdateReasonReduceBody = {
 export const useReasonReduce = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
-  const updateReasonReduce = async (id: string, body: UpdateReasonReduceBody) => {
+  const updateReasonReduce = async (
+    id: string,
+    body: UpdateReasonReduceBody
+  ) => {
     setLoading(true);
     const response = await NetWork.patch(
       getRequestUrl(API_URL.GENERAL, {
@@ -86,7 +89,7 @@ export const useReasonReduce = () => {
       response.status === RESPONSE_CODE.SUCCESS &&
       response.data.msg_code === RESPONSE_CODE.SUCCESS
     ) {
-      return response.data?.content;
+      return response.data;
     } else {
       return response.data;
     }
@@ -104,11 +107,16 @@ export const useReasonReduce = () => {
       response.status === RESPONSE_CODE.SUCCESS &&
       response.data.msg_code === RESPONSE_CODE.SUCCESS
     ) {
-      return response.data?.content;
+      return response.data;
     } else {
-      return null;
+      return response.data;
     }
   };
 
-  return { createReasonReduce, updateReasonReduce, deleteReasonReduce, loading };
+  return {
+    createReasonReduce,
+    updateReasonReduce,
+    deleteReasonReduce,
+    loading,
+  };
 };
