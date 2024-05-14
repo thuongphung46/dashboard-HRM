@@ -22,6 +22,7 @@ import { IListStaff } from "types/list_staff";
 import { StaffService } from "services/staff_service";
 import { MessageCode } from "types/enum/message_code";
 import { toastMessage } from "components/molecules/toast_message";
+import moment from "moment";
 
 interface Props {
   data: StaffDetail;
@@ -363,12 +364,16 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
           term: editData?.semeter,
           schoolYear: editData?.year,
           teachingAddress: editData?.teachingAddress,
-          numberOfLesson: editData?.numberOfLesson,
-          lessonPrice: editData?.lessonPrice,
-          taxPercent: editData?.taxPercent,
+          numberOfLesson: parseInt(editData?.numberOfLesson),
+          lessonPrice: parseFloat(editData?.lessonPrice),
+          taxPercent: parseFloat(editData?.taxPercent),
           renterId: editData.idPerB,
-          fromDate: editData?.fromDate,
-          toDate: editData?.toDate,
+          fromDate: moment(new Date(editData?.fromDate)).format(
+            "YYYY/MM/DD hh:mm:ss"
+          ),
+          toDate: moment(new Date(editData?.toDate)).format(
+            "YYYY/MM/DD hh:mm:ss"
+          ),
           status: 0,
           contractName: editData?.contractName,
         },
