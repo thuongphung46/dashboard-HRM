@@ -25,10 +25,11 @@ import React from "react";
 interface BaseGridProps extends DataGridProps {
   columns: GridColDef[];
   title: string;
-  rows: any[];
   onSave?: (data: any) => void;
+  onDel?: (id: any) => void;
   onRowSelectionChange: (selection: any) => void;
   selectedRows: GridRowId[];
+  rows: any[];
 }
 
 export const BaseGrid: FC<BaseGridProps> = ({
@@ -38,15 +39,16 @@ export const BaseGrid: FC<BaseGridProps> = ({
   onRowSelectionChange,
   selectedRows,
   rows,
+  onDel,
   ...rest
 }) => {
-  const [dataSource, setDataSource] = React.useState<any[]>([]);
+  const [data, setData] = React.useState<any[]>([]);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
   );
 
   React.useEffect(() => {
-    setDataSource(rows);
+    setData(rows);
   }, [rows]);
 
   const handleRowEditStop: GridEventListener<"rowEditStop"> = (
@@ -62,13 +64,13 @@ export const BaseGrid: FC<BaseGridProps> = ({
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
   };
 
-  const handleSaveClick = (id: GridRowId, row: any) => () => {
+  const handleSaveClick = (id: GridRowId) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-    onSave && onSave(row);
   };
 
   const handleDeleteClick = (id: GridRowId) => () => {
-    setDataSource(dataSource.filter((row) => row.id !== id));
+    setData(data.filter((row) => row.id !== id));
+    onDel && onDel(id);
   };
 
   const handleCancelClick = (id: GridRowId) => () => {
@@ -77,17 +79,16 @@ export const BaseGrid: FC<BaseGridProps> = ({
       [id]: { mode: GridRowModes.View, ignoreModifications: true },
     });
 
-    const editedRow = dataSource.find((row) => row.id === id);
+    const editedRow = data.find((row) => row.id === id);
     if (editedRow!.isNew) {
-      setDataSource(dataSource.filter((row) => row.id !== id));
+      setData(data.filter((row) => row.id !== id));
     }
   };
 
   const processRowUpdate = (newRow: GridRowModel) => {
-    const updatedRow = { ...newRow, isNew: false };
-    setDataSource(
-      dataSource.map((row) => (row.id === newRow.id ? updatedRow : row))
-    );
+    const updatedRow = { ...newRow };
+    setData(data.map((row) => (row.id === newRow.id ? updatedRow : row)));
+    onSave && onSave(updatedRow);
     return updatedRow;
   };
 
@@ -103,7 +104,7 @@ export const BaseGrid: FC<BaseGridProps> = ({
       headerName: "",
       width: 100,
       cellClassName: "actions",
-      getActions: ({ id, row }) => {
+      getActions: ({ id }) => {
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
 
         if (isInEditMode) {
@@ -114,7 +115,7 @@ export const BaseGrid: FC<BaseGridProps> = ({
               sx={{
                 color: "primary.main",
               }}
-              onClick={handleSaveClick(id, row)}
+              onClick={handleSaveClick(id)}
             />,
             <GridActionsCellItem
               icon={<CancelIcon />}
@@ -150,15 +151,9 @@ export const BaseGrid: FC<BaseGridProps> = ({
         {title}
       </Typography>
       <DataGrid
-        rows={dataSource}
+        rows={data}
         columns={Custcolumns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 10,
-            },
-          },
-        }}
+        editMode="row"
         checkboxSelection
         disableRowSelectionOnClick
         rowModesModel={rowModesModel}
@@ -171,27 +166,26 @@ export const BaseGrid: FC<BaseGridProps> = ({
           toolbar: EditToolbar,
         }}
         slotProps={{
-          toolbar: { setDataSource, setRowModesModel, dataSource },
+          toolbar: { setData, setRowModesModel },
         }}
-        {...rest}
       />
     </div>
   );
 };
 
 interface EditToolbarProps {
-  dataSource: any[];
-  setDataSource: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
+  setData: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
   setRowModesModel: (
     newModel: (oldModel: GridRowModesModel) => GridRowModesModel
   ) => void;
 }
+
 function EditToolbar(props: EditToolbarProps) {
-  const { setDataSource, setRowModesModel, dataSource } = props;
+  const { setData, setRowModesModel } = props;
 
   const handleClick = () => {
-    const id = dataSource.length + 1;
-    setDataSource((oldRows) => [...oldRows, { id, isNew: true }]);
+    const id = Math.floor(Math.random() * 100);
+    setData((oldRows) => [...oldRows, { id, isNew: true }]);
     setRowModesModel((oldModel) => ({
       ...oldModel,
       [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
@@ -201,14 +195,8 @@ function EditToolbar(props: EditToolbarProps) {
   return (
     <GridToolbarContainer>
       <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
-        Add row
+        Add record
       </Button>
-      {/* <Button
-        color="primary"
-        startIcon={<SaveIcon />}
-        onClick={handleClickSave}>
-        Save
-      </Button> */}
     </GridToolbarContainer>
   );
 }
