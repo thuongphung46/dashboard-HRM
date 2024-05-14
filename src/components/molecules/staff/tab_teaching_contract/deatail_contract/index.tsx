@@ -83,23 +83,23 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
 
   const formDataA: IFormData[] = [
     {
-      id: "semeter",
+      id: "term",
       label: "Học kỳ:",
       type: "select",
       options: [
         {
-          value: "hk1",
+          value: "Học kỳ I",
           label: "Học kỳ I",
         },
         {
-          value: "hk2",
+          value: "Học kỳ II",
           label: "Học kỳ II",
         },
       ],
       defaultValue: "",
     },
     {
-      id: "year",
+      id: "schoolYear",
       label: "Năm học:",
       type: "text",
       defaultValue: "",
@@ -274,15 +274,9 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
     },
     {
       id: "taxPercent",
-      label: "Trừ thuế TNCN (nếu có):",
+      label: "Trừ thuế TNCN:",
       type: "text",
       defaultValue: formData?.taxPercent || "",
-    },
-    {
-      id: "taxValue",
-      label: "Giá trị thuế:",
-      type: "text",
-      defaultValue: formData?.taxValue || "",
     },
     {
       id: "file1",
@@ -361,13 +355,13 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
     if (editData?.idPerA && editData?.idPerB && action === "add") {
       StaffService.AddContracts(
         {
-          term: editData?.semeter,
-          schoolYear: editData?.year,
+          term: editData?.term,
+          schoolYear: editData?.schoolYear,
           teachingAddress: editData?.teachingAddress,
           numberOfLesson: parseInt(editData?.numberOfLesson),
           lessonPrice: parseFloat(editData?.lessonPrice),
           taxPercent: parseFloat(editData?.taxPercent),
-          renterId: editData.idPerB,
+          renterId: editData.idPerA,
           fromDate: moment(new Date(editData?.fromDate)).format(
             "YYYY/MM/DD hh:mm:ss"
           ),
@@ -377,7 +371,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
           status: 0,
           contractName: editData?.contractName,
         },
-        editData.idPerA
+        editData.idPerB
       ).then((res) => {
         if (res.msg_code === MessageCode.Success) {
           toastMessage(res.message, "success");
@@ -439,7 +433,11 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                             >
                               {(() => {
                                 if (field.id === "fullName") {
-                                  return listStaff.map((staff, index) => (
+                                  const data = listStaff.filter(
+                                    (staff) =>
+                                      staff.active === 1
+                                  );
+                                  return data.map((staff, index) => (
                                     <MenuItem
                                       key={staff.id + index}
                                       value={staff.username}
@@ -509,7 +507,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                                 if (field.id === "per_b") {
                                   const data = listStaff.filter(
                                     (staff) =>
-                                      staff.jobTitle === "Giảng viên mời"
+                                      staff.jobTitle === "Giảng viên mời" && staff.active === 1
                                   );
                                   return data.map((staff, index) => (
                                     <MenuItem
