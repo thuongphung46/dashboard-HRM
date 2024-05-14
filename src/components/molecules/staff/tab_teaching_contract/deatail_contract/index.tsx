@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   GetListStaffParams,
@@ -19,6 +19,9 @@ import { IFormData } from "components/atoms/field";
 import { Typography } from "@mui/material";
 import { StaffDetail } from "types/ApplicationType";
 import { IListStaff } from "types/list_staff";
+import { StaffService } from "services/staff_service";
+import { MessageCode } from "types/enum/message_code";
+import { toastMessage } from "components/molecules/toast_message";
 
 interface Props {
   data: StaffDetail;
@@ -47,10 +50,8 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
   const [formData, setFormData] = useState<IContent>();
   const [staffData, setStaffData] = useState<IStaff>();
   const [renterData, setRenterData] = useState<IRenter>();
-  const [editData, setEditData] = useState({
-    jobTitleRenter: "",
-    jobTitle: "",
-  });
+  const [editData, setEditData] = useState<any>({});
+
   const { getStaff } = useGetStaffSelected();
   const { data: contractDetail } = useGetDetailContract(
     action === "edit" ? id : ""
@@ -94,12 +95,13 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
           label: "Học kỳ II",
         },
       ],
+      defaultValue: "",
     },
     {
       id: "year",
       label: "Năm học:",
       type: "text",
-      defaultValue: "2024",
+      defaultValue: "",
     },
     {
       id: "fullName",
@@ -222,6 +224,12 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
   ];
   const formDataC: IFormData[] = [
     {
+      id: "contractName",
+      label: "Tên hợp đồng",
+      type: "text",
+      defaultValue: formData?.contractName || "",
+    },
+    {
       id: "fromDate",
       label: "Ngày bắt đầu thực hiện hợp đồng:",
       type: "date",
@@ -295,9 +303,10 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
     if (field === "fullName") {
       const selectedStaff = listStaff.find((staff) => staff.username === value);
       const dataDetail = await getStaff(selectedStaff?.id);
-      setEditData((prevData) => ({
+      setEditData((prevData: any) => ({
         ...prevData,
         [field]: value,
+        idPerA: dataDetail ? dataDetail?.id : "",
         jobTitle: dataDetail ? dataDetail?.jobTitle : "",
         phoneNumberRenter: dataDetail ? dataDetail?.phoneNumber : "",
         bank_a_account: dataDetail ? dataDetail?.bankAccount : "",
@@ -311,9 +320,10 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
     } else if (field === "per_b") {
       const selectedStaff = listStaff.find((staff) => staff.username === value);
       const dataDetail = await getStaff(selectedStaff?.id);
-      setEditData((prevData) => ({
+      setEditData((prevData: any) => ({
         ...prevData,
         [field]: value,
+        idPerB: dataDetail ? dataDetail?.id : "",
         identityCode: dataDetail ? dataDetail.identityCode : "",
         identityDate: dataDetail ? dataDetail.identityDate : "",
         identityPlace: dataDetail ? dataDetail.identityPlace : "",
@@ -339,16 +349,41 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
       refBankNameB.current.value = dataDetail ? dataDetail.bankName : "";
       refRatioB.current.value = dataDetail ? dataDetail.ratio : "";
     } else {
-      setEditData((prevData) => ({
+      setEditData((prevData: any) => ({
         ...prevData,
         [field]: value,
       }));
     }
   }, 500);
 
-  const handleSave = () => {
-    console.log(editData);
-  };
+  const handleSave = useCallback(() => {
+    if (editData?.idPerA && editData?.idPerB && action === "add") {
+      StaffService.AddContracts(
+        {
+          term: editData?.semeter,
+          schoolYear: editData?.year,
+          teachingAddress: editData?.teachingAddress,
+          numberOfLesson: editData?.numberOfLesson,
+          lessonPrice: editData?.lessonPrice,
+          taxPercent: editData?.taxPercent,
+          renterId: editData.idPerB,
+          fromDate: editData?.fromDate,
+          toDate: editData?.toDate,
+          status: 0,
+          contractName: editData?.contractName,
+        },
+        editData.idPerA
+      ).then((res) => {
+        if (res.msg_code === MessageCode.Success) {
+          toastMessage(res.message, "success");
+        } else {
+          toastMessage(res.message, "error");
+        }
+      });
+    } else if (!editData.idPerA && !editData.idPerB) {
+      toastMessage("Vui lòng điền đầy đủ thông tin Bên A và Bên B", "error");
+    }
+  }, [action, editData]);
 
   return (
     <>
@@ -395,9 +430,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                               size="small"
                               id={field.id}
                               onChange={hanldeOnChangefield}
-                              defaultValue={
-                                field.defaultValue || field.options[0].value
-                              }
+                              defaultValue={field.defaultValue}
                             >
                               {(() => {
                                 if (field.id === "fullName") {
