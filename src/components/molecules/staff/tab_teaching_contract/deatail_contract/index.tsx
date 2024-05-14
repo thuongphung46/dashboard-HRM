@@ -29,7 +29,6 @@ interface Props {
 
 export const AddNewContract: FC<Props> = ({ data, action }) => {
   const { id } = useParams();
-
   const refJobTitleA = useRef<any>(null);
   const refphoneNumberA = useRef<any>(null);
   const refBankAccountA = useRef<any>(null);
@@ -47,25 +46,22 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
   const [formData, setFormData] = useState<IContent>();
   const [staffData, setStaffData] = useState<IStaff>();
   const [renterData, setRenterData] = useState<IRenter>();
+  const [listStaff, setListStaff] = useState<IListStaff[]>([]);
   const [editData, setEditData] = useState({
     jobTitleRenter: "",
     jobTitle: "",
   });
-  const { getStaff } = useGetStaffSelected();
 
+  const { getStaff } = useGetStaffSelected();
   const { data: contractDetail, loading: detailLoading } = useGetDetailContract(
     action === "edit" ? id : ""
   );
-
-  const [params, setParams] = useState<GetListStaffParams>({
+  const { loading: loadingListStaff, data: listStaffData } = useGetListStaff({
     query: "",
     active: undefined,
     page: 0,
     size: 25,
   });
-  const [listStaff, setListStaff] = useState<IListStaff[]>([]);
-  const { loading: loadingListStaff, data: listStaffData } =
-    useGetListStaff(params);
 
   useEffect(() => {
     if (contractDetail && contractDetail.staff && contractDetail.renter) {
@@ -372,14 +368,6 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
   const handleSave = () => {
     console.log(editData);
   };
-
-  // const handleSave = useCallback(() => {
-  //   // console.log("staffData: ", staffData);
-  //   // console.log("renterData: ", renterData);
-  //   // console.log("formData: ", formData);
-  //   console.log("formData: ", formData);
-
-  // }, [staffData, renterData, formData, editData]);
 
   return (
     <>
