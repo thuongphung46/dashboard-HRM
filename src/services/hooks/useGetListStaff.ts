@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { API_URL, NetWork } from "services/api";
 import { RESPONSE_CODE } from "services/api/config";
-import { deleteParamsNotUsing } from "services/api/utils";
+import { deleteParamsNotUsing, getRequestUrl } from "services/api/utils";
 import { StaffDetail } from "types/ApplicationType";
 import { IContent } from "types/teaching_contact";
 
@@ -165,4 +165,79 @@ export const useGetDetailContract = (id: string | undefined | null) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
   return { data, loading };
+};
+
+export type CreareContractBody = {
+  term: string;
+  schoolYear: string;
+  teachingAddress: string;
+  numberOfLesson: number;
+  lessonPrice: number;
+  taxPercent: number;
+  renterId: string;
+  fromDate: string;
+  toDate: string;
+  status: string;
+  contractName: string;
+};
+
+export type UpdateContractBody = {
+  term: string;
+  schoolYear: string;
+  teachingAddress: string;
+  numberOfLesson: number;
+  lessonPrice: number;
+  taxPercent: number;
+  renterId: string;
+  fromDate: string;
+  toDate: string;
+  status: string;
+  contractName: string;
+};
+
+export const useContract = () => {
+  // const [data, setData] = useState<IContent[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const updateContract = async (idStaffRenter: string, idContract: string, body: UpdateContractBody) => {
+    setLoading(true);
+    const response = await NetWork.patch(
+      getRequestUrl(API_URL.STAFFS, {
+        parentId: idStaffRenter,
+        partial: API_URL.CONTRACT,
+        subId: idContract,
+      }),
+      body
+    );
+    setLoading(false);
+    if (
+      response.status === RESPONSE_CODE.SUCCESS &&
+      response.data.msg_code === RESPONSE_CODE.SUCCESS
+    ) {
+      return response.data?.content;
+    } else {
+      return null;
+    }
+  };
+  const createContract = async (idStaffRenter: string, body: CreareContractBody) => {
+    setLoading(true);
+    const response = await NetWork.post(
+      getRequestUrl(API_URL.STAFFS, {
+        parentId: idStaffRenter,
+        partial: API_URL.CONTRACT,
+      }),
+      body
+    );
+    setLoading(false);
+    if (
+      response.status === RESPONSE_CODE.SUCCESS &&
+      response.data.msg_code === RESPONSE_CODE.SUCCESS
+    ) {
+      return response.data?.content;
+    } else {
+      return null;
+    }
+  };
+
+  return { createContract, updateContract, loading };
 };

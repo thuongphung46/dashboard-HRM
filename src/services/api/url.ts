@@ -10,6 +10,7 @@ export const API_URL = {
   // Staffs
   STAFFS: "/staffs",
   WORKING_HISTORIES: "/working-histories",
+  CONTRACT: "/contracts",
 
   // Department
   DEPARTMENT: "/department",
