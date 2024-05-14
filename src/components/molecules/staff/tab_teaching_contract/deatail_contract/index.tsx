@@ -18,6 +18,7 @@ import TextField from "@mui/material/TextField";
 import { IFormData } from "components/atoms/field";
 import { Typography } from "@mui/material";
 import { StaffDetail } from "types/ApplicationType";
+import { IListStaff } from "types/list_staff";
 
 interface Props {
   data: StaffDetail;
@@ -62,7 +63,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
     page: 0,
     size: 25,
   });
-  const [listStaff, setListStaff] = useState<any[]>([{}]);
+  const [listStaff, setListStaff] = useState<IListStaff[]>([]);
   const { loading: loadingListStaff, data: listStaffData } =
     useGetListStaff(params);
 
@@ -106,7 +107,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
       id: "fullName",
       label: "Đại diện:",
       type: "select",
-      defaultValue: renterData?.fullName || "",
+      defaultValue: renterData?.username || "",
       options: [],
     },
     {
@@ -149,7 +150,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
       id: "per_b",
       label: "Ông/Bà:",
       type: "select",
-      defaultValue: staffData?.fullName || "",
+      defaultValue: staffData?.username || "",
       options: [],
     },
     {
@@ -295,25 +296,24 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
 
     if (field === "fullName") {
       const selectedStaff = listStaff.find((staff) => staff.username === value);
-      const dataDetail = await getStaff(selectedStaff.id);
+      const dataDetail = await getStaff(selectedStaff?.id);
       setEditData((prevData) => ({
         ...prevData,
         [field]: value,
-        jobTitle: dataDetail ? dataDetail.jobTitle : "",
-        phoneNumberRenter: dataDetail ? dataDetail.phoneNumber : "",
-        bank_a_account: dataDetail ? dataDetail.bankAccount : "",
-        bank_a: dataDetail ? dataDetail.bankName : "",
+        jobTitle: dataDetail ? dataDetail?.jobTitle : "",
+        phoneNumberRenter: dataDetail ? dataDetail?.phoneNumber : "",
+        bank_a_account: dataDetail ? dataDetail?.bankAccount : "",
+        bank_a: dataDetail ? dataDetail?.bankName : "",
         ...dataDetail,
       }));
-      refJobTitleA.current.value = selectedStaff.jobTitle;
-      refphoneNumberA.current.value = dataDetail.phoneNumber;
-      refBankAccountA.current.value = dataDetail.bankAccount;
-      refBankNameA.current.value = dataDetail.bankName;
-  
+      refJobTitleA.current.value = selectedStaff?.jobTitle;
+      refphoneNumberA.current.value = dataDetail ? dataDetail?.phoneNumber : "";
+      refBankAccountA.current.value = dataDetail ? dataDetail?.bankAccount : "";
+      refBankNameA.current.value = dataDetail ? dataDetail?.bankName : "";
     } else if (field === "per_b") {
-      const selectedStaff = listStaff.find(staff => staff.username === value);
-      const dataDetail = await getStaff(selectedStaff.id);
-      setEditData(prevData => ({
+      const selectedStaff = listStaff.find((staff) => staff.username === value);
+      const dataDetail = await getStaff(selectedStaff?.id);
+      setEditData((prevData) => ({
         ...prevData,
         [field]: value,
         identityCode: dataDetail ? dataDetail.identityCode : "",
@@ -321,22 +321,27 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
         identityPlace: dataDetail ? dataDetail.identityPlace : "",
         jobTitleRenter: dataDetail ? dataDetail.jobTitle : "",
         ratio: dataDetail ? dataDetail.ratio : "",
-        phoneNumber: dataDetail ? dataDetail.phoneNumber : "",
-        bank_b_account: dataDetail ? dataDetail.bankAccount : "",
+        phoneNumber: dataDetail ? dataDetail?.phoneNumber : "",
+        bank_b_account: dataDetail ? dataDetail?.bankAccount : "",
         bank_b: dataDetail ? dataDetail.bankName : "",
         ...dataDetail,
       }));
-      refJobTitleB.current.value = dataDetail.jobTitle;
-      refIdentityCodeB.current.value = dataDetail.identityCode;
-      refIdentityDateB.current.value = dataDetail.identityDate;
-      refplaceOfIssueB.current.value = dataDetail.identityPlace;
-      refphoneNumberB.current.value = dataDetail.phoneNumber;
-      refBankAccountB.current.value = dataDetail.bankAccount;
-      refBankNameB.current.value = dataDetail.bankName;
-      refRatioB.current.value = dataDetail.ratio;
-  
+      refJobTitleB.current.value = dataDetail ? dataDetail.jobTitle : "";
+      refIdentityCodeB.current.value = dataDetail
+        ? dataDetail.identityCode
+        : "";
+      refIdentityDateB.current.value = dataDetail
+        ? dataDetail.identityDate
+        : "";
+      refplaceOfIssueB.current.value = dataDetail
+        ? dataDetail.identityPlace
+        : "";
+      refphoneNumberB.current.value = dataDetail ? dataDetail?.phoneNumber : "";
+      refBankAccountB.current.value = dataDetail ? dataDetail?.bankAccount : "";
+      refBankNameB.current.value = dataDetail ? dataDetail.bankName : "";
+      refRatioB.current.value = dataDetail ? dataDetail.ratio : "";
     } else {
-      setEditData(prevData => ({
+      setEditData((prevData) => ({
         ...prevData,
         [field]: value,
       }));
@@ -421,7 +426,9 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                               size="small"
                               id={field.id}
                               onChange={hanldeOnChangefield}
-                              defaultValue={data ? data[field.id] : ""}
+                              defaultValue={
+                                field.defaultValue || field.options[0].value
+                              }
                             >
                               {(() => {
                                 if (field.id === "fullName") {

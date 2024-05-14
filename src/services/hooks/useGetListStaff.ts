@@ -3,6 +3,7 @@ import { API_URL, NetWork } from "services/api";
 import { RESPONSE_CODE } from "services/api/config";
 import { deleteParamsNotUsing, getRequestUrl } from "services/api/utils";
 import { StaffDetail } from "types/ApplicationType";
+import { IListStaff } from "types/list_staff";
 import { IContent } from "types/teaching_contact";
 
 export type GetListStaffParams = {
@@ -14,7 +15,7 @@ export type GetListStaffParams = {
 
 //get danh sách nhân viên
 export const useGetListStaff = (params: GetListStaffParams) => {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<IListStaff[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const fetchData = async () => {
@@ -79,7 +80,7 @@ export const useGetStaffSelected = () => {
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [id]);
 
-  const getStaff = async (id?:string | number) => {
+  const getStaff = async (id?: string | number) => {
     if (id) {
       const response = await NetWork.get(`${API_URL.STAFFS}/${id}`);
       if (response.status === RESPONSE_CODE.SUCCESS) {
@@ -90,7 +91,7 @@ export const useGetStaffSelected = () => {
     } else {
       return null;
     }
-}
+  };
 
   return { getStaff };
 };
@@ -199,7 +200,11 @@ export const useContract = () => {
   // const [data, setData] = useState<IContent[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const updateContract = async (idStaffRenter: string, idContract: string, body: UpdateContractBody) => {
+  const updateContract = async (
+    idStaffRenter: string,
+    idContract: string,
+    body: UpdateContractBody
+  ) => {
     setLoading(true);
     const response = await NetWork.patch(
       getRequestUrl(API_URL.STAFFS, {
@@ -219,7 +224,10 @@ export const useContract = () => {
       return null;
     }
   };
-  const createContract = async (idStaffRenter: string, body: CreareContractBody) => {
+  const createContract = async (
+    idStaffRenter: string,
+    body: CreareContractBody
+  ) => {
     setLoading(true);
     const response = await NetWork.post(
       getRequestUrl(API_URL.STAFFS, {
