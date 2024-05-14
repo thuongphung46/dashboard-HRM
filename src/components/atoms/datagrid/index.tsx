@@ -166,7 +166,7 @@ export const BaseGrid: FC<BaseGridProps> = ({
           toolbar: EditToolbar,
         }}
         slotProps={{
-          toolbar: { setData, setRowModesModel },
+          toolbar: { data, setData, setRowModesModel },
         }}
       />
     </div>
@@ -174,6 +174,7 @@ export const BaseGrid: FC<BaseGridProps> = ({
 };
 
 interface EditToolbarProps {
+  data: any[];
   setData: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
   setRowModesModel: (
     newModel: (oldModel: GridRowModesModel) => GridRowModesModel
@@ -181,10 +182,23 @@ interface EditToolbarProps {
 }
 
 function EditToolbar(props: EditToolbarProps) {
-  const { setData, setRowModesModel } = props;
+  const { setData, setRowModesModel, data } = props;
 
   const handleClick = () => {
-    const id = Math.floor(Math.random() * 100);
+    const getRandomUniqueId = (): number => {
+      return Math.floor(Math.random() * 100); // Generate a random ID
+    };
+
+    const generateUniqueRandomId = (): number => {
+      const id = getRandomUniqueId();
+      if (data.some((item) => item.id === id)) {
+        return generateUniqueRandomId(); // If ID exists, recursively generate a new one
+      }
+      return id;
+    };
+
+    const id = generateUniqueRandomId();
+
     setData((oldRows) => [...oldRows, { id, isNew: true }]);
     setRowModesModel((oldModel) => ({
       ...oldModel,
