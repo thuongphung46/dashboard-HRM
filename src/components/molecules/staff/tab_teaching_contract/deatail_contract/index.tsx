@@ -1,6 +1,6 @@
 import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { GetListStaffParams, useGetDetailContract, useGetListStaff } from "services/hooks/useGetListStaff";
+import { GetListStaffParams, useGetDetailContract, useGetListStaff, useGetStaff, useGetStaffSelected } from "services/hooks/useGetListStaff";
 import { IContent, IStaff, IRenter } from "types/teaching_contact";
 import { useDebouncedCallback } from "use-debounce";
 import Button from "@mui/material/Button";
@@ -23,15 +23,31 @@ interface Props {
 
 export const AddNewContract: FC<Props> = ({ data, action }) => {
   const { id } = useParams();
+
   const refJobTitleA = useRef<any>(null);
+  const refphoneNumberA = useRef<any>(null);
+  const refBankNumA = useRef<any>(null);
+  const refBankNameA = useRef<any>(null);
+
   const refJobTitleB = useRef<any>(null);
+  const refIdentityCodeB = useRef<any>(null);
+  const refIdentityDateB = useRef<any>(null);
+  const refplaceOfIssueB = useRef<any>(null);
+  const refphoneNumberB = useRef<any>(null);
+  const refRatioB = useRef<any>(null);
+  const refBankNumB = useRef<any>(null);
+  const refBankNameB = useRef<any>(null);
+
   const [formData, setFormData] = useState<IContent>();
   const [staffData, setStaffData] = useState<IStaff>();
+  const [staffDetailDataA, setStaffDetailDataA] = useState<any>({});
+  const [staffDetailDataB, setStaffDetailDataB] = useState<any>({});
   const [renterData, setRenterData] = useState<IRenter>();
   const [editData, setEditData] = useState({
     jobTitleRenter: '',
     jobTitle: '',
   });
+  const {getStaff} = useGetStaffSelected();
 
   const { data: contractDetail, loading: detailLoading } = useGetDetailContract(
     action === "edit" ? id : ""
@@ -100,22 +116,25 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
       id: "address",
       label: "Địa chỉ:",
       type: "text",
-      defaultValue: "",
+      defaultValue: "141 Đường Chiến Thắng - Tân Triều - Thanh Trì - Hà Nội.",
     },
     {
-      id: "phoneNumber",
+      id: "phoneNumberRenter",
+      ref: refphoneNumberA,
       label: "Điện thoại:",
       type: "text",
       defaultValue: renterData?.phoneNumber || "",
     },
     {
-      id: "bank_a_num",
+      id: "bank_a_account",
+      ref: refBankNumA,
       label: "Tài khoản:",
       type: "text",
       defaultValue: "",
     },
     {
       id: "bank_a",
+      ref: refBankNameA,
       label: "Mở tại:",
       type: "text",
       defaultValue: "",
@@ -131,18 +150,21 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
     },
     {
       id: "identityCode",
+      ref: refIdentityCodeB,
       label: "CCCD:",
       type: "text",
       defaultValue: staffData?.identityCode || "",
     },
     {
       id: "identityDate",
+      ref: refIdentityDateB,
       label: "Ngày cấp:",
       type: "text",
       defaultValue: staffData?.identityDate || "",
     },
     {
       id: "identityPlace",
+      ref: refplaceOfIssueB,
       label: "Nơi cấp:",
       type: "text",
       defaultValue: staffData?.identityPlace || "",
@@ -161,7 +183,8 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
       defaultValue: staffData?.rankName || "",
     },
     {
-      id: "coefficients_sal",
+      id: "ratio",
+      ref: refRatioB,
       label: "Hệ số lương:",
       type: "text",
       defaultValue: "",
@@ -173,19 +196,22 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
       defaultValue: "",
     },
     {
-      id: "phoneNumberRenter",
+      id: "phoneNumber",
+      ref: refphoneNumberB,
       label: "Điện thoại:",
       type: "text",
       defaultValue: staffData?.phoneNumber || "",
     },
     {
-      id: "bank_b_num",
+      id: "bank_b_account",
+      ref: refBankNumB,
       label: "Số tài khoản:",
       type: "text",
       defaultValue: "",
     },
     {
       id: "bank_b",
+      ref: refBankNameB,
       label: "Mở tại:",
       type: "text",
       defaultValue: "",
@@ -260,30 +286,56 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
     },
   ];
 
-  const hanldeOnChangefield = useDebouncedCallback((e: any) => {
+  const hanldeOnChangefield = useDebouncedCallback(async (e: any) => {
     let value = e.target.value;
     let field = e.target.name;
 
-    if (field === "per_b") {
-      // Tìm staff tương ứng với per_b được chọn
+    if (field === "fullName") {
       const selectedStaff = listStaff.find(staff => staff.username === value);
-      // Lấy giá trị jobTitle của staff đó và cập nhật vào state của jobTitleRenter
-      setEditData({
-        ...editData,
-        [field]: value,
-        jobTitleRenter: selectedStaff ? selectedStaff.jobTitle : "",
-      });
-      refJobTitleB.current.value = selectedStaff.jobTitle;
+      const dataDetail = await getStaff(selectedStaff.id);
 
-    } else if (field === "fullName") {
-      const selectedStaff = listStaff.find(staff => staff.username === value);
       setEditData({
         ...editData,
         [field]: value,
-        jobTitle: selectedStaff ? selectedStaff.jobTitle : "",
+        jobTitle: dataDetail ? dataDetail.jobTitle : "",
+        phoneNumberRenter: dataDetail ? dataDetail.phoneNumber : "",
+        bank_a_account: dataDetail ? dataDetail.bankAccount : "",
+        bank_a: dataDetail ? dataDetail.bankName : "",
+        ...dataDetail,
       });
       refJobTitleA.current.value = selectedStaff.jobTitle;
-    } else {
+      refphoneNumberA.current.value = dataDetail.phoneNumber;
+      refBankNameA.current.value = dataDetail.bankAccount;
+      refBankNumA.current.value = dataDetail.bankNum;
+
+    } else if (field === "per_b") {
+      const selectedStaff = listStaff.find(staff => staff.username === value);
+      const dataDetail = await getStaff(selectedStaff.id);
+
+      setEditData({
+        ...editData,
+        [field]: value,
+        identityCode: dataDetail ? dataDetail.identityCode : "",
+        identityDate: dataDetail ? dataDetail.identityDate : "",
+        identityPlace: dataDetail ? dataDetail.identityPlace : "",
+        jobTitleRenter: dataDetail ? dataDetail.jobTitle : "",
+        ratio: dataDetail ? dataDetail.ratio : "",
+        phoneNumber: dataDetail ? dataDetail.phoneNumber : "",
+        bank_b_account: dataDetail ? dataDetail.bankAccount : "",
+        bank_b: dataDetail ? dataDetail.bankName : "",
+        ...dataDetail,
+      });
+      refJobTitleB.current.value = dataDetail.jobTitle;
+      refIdentityCodeB.current.value = dataDetail.identityCode;
+      refIdentityDateB.current.value = dataDetail.identityDate;
+      refplaceOfIssueB.current.value = dataDetail.identityPlace;
+      refphoneNumberB.current.value = dataDetail.phoneNumber;
+      refBankNameB.current.value = dataDetail.bankAccount;
+      refBankNumB.current.value = dataDetail.bankNum;
+      refRatioB.current.value = dataDetail.ratio;
+
+    } 
+    else {
       setEditData({
         ...editData,
         [field]: value,

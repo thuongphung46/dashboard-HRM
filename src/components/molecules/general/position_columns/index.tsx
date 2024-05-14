@@ -8,6 +8,7 @@ import {
   useJobTitle,
 } from "services/hooks/useGetListJobTitle";
 import { isNullOrEmpty } from "common/validation";
+import { MenuItem, Select } from "@mui/material";
 
 interface Props {}
 export const GeneralPosition: FC<Props> = () => {
@@ -30,6 +31,23 @@ export const GeneralPosition: FC<Props> = () => {
       width: 300,
       editable: true,
     },
+    {
+      field: "level",
+      headerName: "Level",
+      width: 150,
+      editable: true,
+      type: "select",
+      renderCell: (params) => {
+        return (
+          <Select fullWidth>
+            <MenuItem value="LEVEL_1">Level 1</MenuItem>
+            <MenuItem value="LEVEL_2">Level 2</MenuItem>
+            <MenuItem value="LEVEL_3">Level 3</MenuItem>
+            <MenuItem value="LEVEL_4">Level 4</MenuItem>
+          </Select>
+        );
+      },
+    }
   ];
 
   const handleSave = async (dataAdd: JobTitleType[] | any) => {
