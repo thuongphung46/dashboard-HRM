@@ -95,13 +95,13 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
           label: "Học kỳ II",
         },
       ],
-      defaultValue: "",
+      defaultValue: formData?.term || "",
     },
     {
       id: "schoolYear",
       label: "Năm học:",
       type: "text",
-      defaultValue: "",
+      defaultValue: formData?.schoolYear || "",
     },
     {
       id: "fullName",
@@ -228,6 +228,30 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
       label: "Tên hợp đồng",
       type: "text",
       defaultValue: formData?.contractName || "",
+    },
+    {
+      id: "status",
+      label: "Trạng thái hợp đồng",
+      type: "select",
+      options: [
+        {
+          value: 0,
+          label: "Chưa thực hiện",
+        },
+        {
+          value: 1,
+          label: "Đang thực hiện",
+        },
+        {
+          value: 2,
+          label: "Đã thực hiện",
+        },
+        {
+          value: 3,
+          label: "Đã thanh lý",
+        },
+      ],
+      defaultValue: formData?.status || "",
     },
     {
       id: "fromDate",
@@ -367,7 +391,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
           toDate: moment(new Date(editData?.toDate)).format(
             "YYYY/MM/DD hh:mm:ss"
           ),
-          status: 0,
+          status: parseInt(editData?.status),
           contractName: editData?.contractName,
         },
         editData.idPerB
