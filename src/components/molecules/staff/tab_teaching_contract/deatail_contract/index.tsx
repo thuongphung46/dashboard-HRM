@@ -497,10 +497,10 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                               size="small"
                               id={field.id}
                               onChange={hanldeOnChangefield}
-                              defaultValue={data ? data[field.id] : ""}>
+                              defaultValue={field.defaultValue}>
                               {(() => {
                                 if (field.id === "per_b") {
-                                  const data = listStaff.filter(
+                                  const data: IListStaff[] = listStaff.filter(
                                     (staff) =>
                                       staff.jobTitle === "Giảng viên mời"
                                   );
@@ -509,6 +509,12 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                                       key={staff.id + index}
                                       value={staff.username}>
                                       {staff.fullName}
+                                    </MenuItem>
+                                  ));
+                                } else {
+                                  return field.options.map((option, index) => (
+                                    <MenuItem key={index} value={option.value}>
+                                      {option.label}
                                     </MenuItem>
                                   ));
                                 }
