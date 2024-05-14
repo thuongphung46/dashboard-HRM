@@ -1,6 +1,11 @@
 import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { GetListStaffParams, useGetDetailContract, useGetListStaff, useGetStaffSelected } from "services/hooks/useGetListStaff";
+import {
+  GetListStaffParams,
+  useGetDetailContract,
+  useGetListStaff,
+  useGetStaffSelected,
+} from "services/hooks/useGetListStaff";
 import { IContent, IStaff, IRenter } from "types/teaching_contact";
 import { useDebouncedCallback } from "use-debounce";
 import Button from "@mui/material/Button";
@@ -13,6 +18,10 @@ import TextField from "@mui/material/TextField";
 import { IFormData } from "components/atoms/field";
 import { Typography } from "@mui/material";
 import { StaffDetail } from "types/ApplicationType";
+import { IListStaff } from "types/list_staff";
+import { StaffService } from "services/staff_service";
+import { MessageCode } from "types/enum/message_code";
+import { toastMessage } from "components/molecules/toast_message";
 
 interface Props {
   data: StaffDetail;
@@ -41,24 +50,21 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
   const [formData, setFormData] = useState<IContent>();
   const [staffData, setStaffData] = useState<IStaff>();
   const [renterData, setRenterData] = useState<IRenter>();
-  const [editData, setEditData] = useState({
-    jobTitleRenter: '',
-    jobTitle: '',
-  });
-  const {getStaff} = useGetStaffSelected();
+  const [editData, setEditData] = useState<any>({});
 
-  const { data: contractDetail, loading: detailLoading } = useGetDetailContract(
+  const { getStaff } = useGetStaffSelected();
+  const { data: contractDetail } = useGetDetailContract(
     action === "edit" ? id : ""
   );
-
   const [params, setParams] = useState<GetListStaffParams>({
     query: "",
     active: undefined,
     page: 0,
     size: 25,
   });
-  const [listStaff, setListStaff] = useState<any[]>([{}]);
-  const { loading: loadingListStaff, data: listStaffData } = useGetListStaff(params);
+  const [listStaff, setListStaff] = useState<IListStaff[]>([]);
+  const { loading: loadingListStaff, data: listStaffData } =
+    useGetListStaff(params);
 
   useEffect(() => {
     if (contractDetail && contractDetail.staff && contractDetail.renter) {
@@ -89,18 +95,19 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
           label: "Học kỳ II",
         },
       ],
+      defaultValue: "",
     },
     {
       id: "year",
       label: "Năm học:",
       type: "text",
-      defaultValue: "2024",
+      defaultValue: "",
     },
     {
       id: "fullName",
       label: "Đại diện:",
       type: "select",
-      defaultValue: renterData?.fullName || "",
+      defaultValue: renterData?.username || "",
       options: [],
     },
     {
@@ -143,7 +150,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
       id: "per_b",
       label: "Ông/Bà:",
       type: "select",
-      defaultValue: staffData?.fullName || "",
+      defaultValue: staffData?.username || "",
       options: [],
     },
     {
@@ -217,6 +224,12 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
   ];
   const formDataC: IFormData[] = [
     {
+      id: "contractName",
+      label: "Tên hợp đồng",
+      type: "text",
+      defaultValue: formData?.contractName || "",
+    },
+    {
       id: "fromDate",
       label: "Ngày bắt đầu thực hiện hợp đồng:",
       type: "date",
@@ -283,90 +296,94 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
       defaultValue: "",
     },
   ];
-  
+
   const hanldeOnChangefield = useDebouncedCallback(async (e: any) => {
     const { name: field, value } = e.target;
-  
+
     if (field === "fullName") {
-      const selectedStaff = listStaff.find(staff => staff.username === value);
-      const dataDetail = await getStaff(selectedStaff.id);
-      setEditData(prevData => ({
+      const selectedStaff = listStaff.find((staff) => staff.username === value);
+      const dataDetail = await getStaff(selectedStaff?.id);
+      setEditData((prevData: any) => ({
         ...prevData,
         [field]: value,
-        jobTitle: dataDetail ? dataDetail.jobTitle : "",
-        phoneNumberRenter: dataDetail ? dataDetail.phoneNumber : "",
-        bank_a_account: dataDetail ? dataDetail.bankAccount : "",
-        bank_a: dataDetail ? dataDetail.bankName : "",
+        idPerA: dataDetail ? dataDetail?.id : "",
+        jobTitle: dataDetail ? dataDetail?.jobTitle : "",
+        phoneNumberRenter: dataDetail ? dataDetail?.phoneNumber : "",
+        bank_a_account: dataDetail ? dataDetail?.bankAccount : "",
+        bank_a: dataDetail ? dataDetail?.bankName : "",
         ...dataDetail,
       }));
-      refJobTitleA.current.value = selectedStaff.jobTitle;
-      refphoneNumberA.current.value = dataDetail.phoneNumber;
-      refBankAccountA.current.value = dataDetail.bankAccount;
-      refBankNameA.current.value = dataDetail.bankName;
-  
+      refJobTitleA.current.value = selectedStaff?.jobTitle;
+      refphoneNumberA.current.value = dataDetail ? dataDetail?.phoneNumber : "";
+      refBankAccountA.current.value = dataDetail ? dataDetail?.bankAccount : "";
+      refBankNameA.current.value = dataDetail ? dataDetail?.bankName : "";
     } else if (field === "per_b") {
-      const selectedStaff = listStaff.find(staff => staff.username === value);
-      const dataDetail = await getStaff(selectedStaff.id);
-      setEditData(prevData => ({
+      const selectedStaff = listStaff.find((staff) => staff.username === value);
+      const dataDetail = await getStaff(selectedStaff?.id);
+      setEditData((prevData: any) => ({
         ...prevData,
         [field]: value,
+        idPerB: dataDetail ? dataDetail?.id : "",
         identityCode: dataDetail ? dataDetail.identityCode : "",
         identityDate: dataDetail ? dataDetail.identityDate : "",
         identityPlace: dataDetail ? dataDetail.identityPlace : "",
         jobTitleRenter: dataDetail ? dataDetail.jobTitle : "",
         ratio: dataDetail ? dataDetail.ratio : "",
-        phoneNumber: dataDetail ? dataDetail.phoneNumber : "",
-        bank_b_account: dataDetail ? dataDetail.bankAccount : "",
+        phoneNumber: dataDetail ? dataDetail?.phoneNumber : "",
+        bank_b_account: dataDetail ? dataDetail?.bankAccount : "",
         bank_b: dataDetail ? dataDetail.bankName : "",
         ...dataDetail,
       }));
-      refJobTitleB.current.value = dataDetail.jobTitle;
-      refIdentityCodeB.current.value = dataDetail.identityCode;
-      refIdentityDateB.current.value = dataDetail.identityDate;
-      refplaceOfIssueB.current.value = dataDetail.identityPlace;
-      refphoneNumberB.current.value = dataDetail.phoneNumber;
-      refBankAccountB.current.value = dataDetail.bankAccount;
-      refBankNameB.current.value = dataDetail.bankName;
-      refRatioB.current.value = dataDetail.ratio;
-  
+      refJobTitleB.current.value = dataDetail ? dataDetail.jobTitle : "";
+      refIdentityCodeB.current.value = dataDetail
+        ? dataDetail.identityCode
+        : "";
+      refIdentityDateB.current.value = dataDetail
+        ? dataDetail.identityDate
+        : "";
+      refplaceOfIssueB.current.value = dataDetail
+        ? dataDetail.identityPlace
+        : "";
+      refphoneNumberB.current.value = dataDetail ? dataDetail?.phoneNumber : "";
+      refBankAccountB.current.value = dataDetail ? dataDetail?.bankAccount : "";
+      refBankNameB.current.value = dataDetail ? dataDetail.bankName : "";
+      refRatioB.current.value = dataDetail ? dataDetail.ratio : "";
     } else {
-      setEditData(prevData => ({
+      setEditData((prevData: any) => ({
         ...prevData,
         [field]: value,
       }));
     }
-    handleInputChange();
-  }, 500);  
+  }, 500);
 
-  const debounce = useDebouncedCallback(() => {
-    const formElement = document.getElementById("createForm") as HTMLFormElement;
-    if (!formElement) {
-      console.error("Form element not found");
-      return;
+  const handleSave = useCallback(() => {
+    if (editData?.idPerA && editData?.idPerB && action === "add") {
+      StaffService.AddContracts(
+        {
+          term: editData?.semeter,
+          schoolYear: editData?.year,
+          teachingAddress: editData?.teachingAddress,
+          numberOfLesson: editData?.numberOfLesson,
+          lessonPrice: editData?.lessonPrice,
+          taxPercent: editData?.taxPercent,
+          renterId: editData.idPerB,
+          fromDate: editData?.fromDate,
+          toDate: editData?.toDate,
+          status: 0,
+          contractName: editData?.contractName,
+        },
+        editData.idPerA
+      ).then((res) => {
+        if (res.msg_code === MessageCode.Success) {
+          toastMessage(res.message, "success");
+        } else {
+          toastMessage(res.message, "error");
+        }
+      });
+    } else if (!editData.idPerA && !editData.idPerB) {
+      toastMessage("Vui lòng điền đầy đủ thông tin Bên A và Bên B", "error");
     }
-    const formData = new FormData(formElement);
-    const updatedData: any = {};
-    formData.forEach((value, key) => {
-      updatedData[key] = value;
-    });
-    setEditData(updatedData);
-  }, 1000);  
-
-  const handleInputChange = useCallback(() => {
-    debounce();
-  }, [debounce]);
-  
-  const handleSave = () => {
-    console.log(editData);
-  };
-
-  // const handleSave = useCallback(() => {
-  //   // console.log("staffData: ", staffData);
-  //   // console.log("renterData: ", renterData);
-  //   // console.log("formData: ", formData);
-  //   console.log("formData: ", formData);
-
-  // }, [staffData, renterData, formData, editData]);
+  }, [action, editData]);
 
   return (
     <>
@@ -382,50 +399,59 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                 height: "calc(100% - 60px)",
                 overflow: "auto",
               }}
-              container>
+              container
+            >
               <Grid
                 sx={{
                   marginTop: 2,
                   width: "100%",
                 }}
-                item>
-                <Typography variant="h5" marginBottom={2}>Bên A: HỌC VIÊN KỸ THUẬT MẬT MÃ</Typography>
+                item
+              >
+                <Typography variant="h5" marginBottom={2}>
+                  Bên A: HỌC VIÊN KỸ THUẬT MẬT MÃ
+                </Typography>
               </Grid>
               <Grid container spacing={2}>
                 {formDataA.map((field, index) => (
-                  <Grid item xs={6} key={field.id +index}>
+                  <Grid item xs={6} key={field.id + index}>
                     <Grid container alignItems="center">
                       <Grid item xs={5}>
-                        <InputLabel htmlFor={field.id}>{field.label}</InputLabel>
+                        <InputLabel htmlFor={field.id}>
+                          {field.label}
+                        </InputLabel>
                       </Grid>
                       <Grid item xs={6}>
                         {field.type === "select" && field.options ? (
                           <FormControl fullWidth>
-                          <Select
-                            name={field.id}
-                            ref={field?.ref}
-                            size="small"
-                            id={field.id}
-                            onChange={hanldeOnChangefield}
-                            defaultValue={data ? data[field.id] : ""}
-                          >
-                            {(() => {
-                              if (field.id === "fullName") {
-                                return listStaff.map((staff, index) => (
-                                  <MenuItem key={staff.id+index} value={staff.username}>
-                                    {staff.fullName}
-                                  </MenuItem>
-                                ));
-                              } else {
-                                return field.options.map((option, index) => (
-                                  <MenuItem key={index} value={option.value}>
-                                    {option.label}
-                                  </MenuItem>
-                                ));
-                              }
-                            })()}
-                          </Select>
-                        </FormControl>
+                            <Select
+                              name={field.id}
+                              ref={field?.ref}
+                              size="small"
+                              id={field.id}
+                              onChange={hanldeOnChangefield}
+                              defaultValue={field.defaultValue}
+                            >
+                              {(() => {
+                                if (field.id === "fullName") {
+                                  return listStaff.map((staff, index) => (
+                                    <MenuItem
+                                      key={staff.id + index}
+                                      value={staff.username}
+                                    >
+                                      {staff.fullName}
+                                    </MenuItem>
+                                  ));
+                                } else {
+                                  return field.options.map((option, index) => (
+                                    <MenuItem key={index} value={option.value}>
+                                      {option.label}
+                                    </MenuItem>
+                                  ));
+                                }
+                              })()}
+                            </Select>
+                          </FormControl>
                         ) : (
                           <TextField
                             size="small"
@@ -449,38 +475,49 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                   marginTop: 2,
                   width: "100%",
                 }}
-                item>
-                <Typography variant="h5" marginBottom={2}>Bên B</Typography>
+                item
+              >
+                <Typography variant="h5" marginBottom={2}>
+                  Bên B
+                </Typography>
               </Grid>
               <Grid container spacing={2}>
                 {formDataB.map((field, index) => (
                   <Grid item xs={6} key={field.id}>
                     <Grid container alignItems="center">
                       <Grid item xs={5}>
-                        <InputLabel htmlFor={field.id}>{field.label}</InputLabel>
+                        <InputLabel htmlFor={field.id}>
+                          {field.label}
+                        </InputLabel>
                       </Grid>
                       <Grid item xs={6}>
                         {field.type === "select" && field.options ? (
                           <FormControl fullWidth>
-                          <Select
-                            name={field.id}
-                            size="small"
-                            id={field.id}
-                            onChange={hanldeOnChangefield}
-                            defaultValue={data ? data[field.id] : ""}
-                          >
-                            {(() => {
-                              if (field.id === "per_b") {
-                                const data = listStaff.filter((staff) => staff.jobTitle === "Giảng viên mời");
-                                return data.map((staff, index) => (
-                                  <MenuItem key={staff.id + index} value={staff.username}>
-                                    {staff.fullName}
-                                  </MenuItem>
-                                ));
-                              }
-                            })()}
-                          </Select>
-                        </FormControl>
+                            <Select
+                              name={field.id}
+                              size="small"
+                              id={field.id}
+                              onChange={hanldeOnChangefield}
+                              defaultValue={data ? data[field.id] : ""}
+                            >
+                              {(() => {
+                                if (field.id === "per_b") {
+                                  const data = listStaff.filter(
+                                    (staff) =>
+                                      staff.jobTitle === "Giảng viên mời"
+                                  );
+                                  return data.map((staff, index) => (
+                                    <MenuItem
+                                      key={staff.id + index}
+                                      value={staff.username}
+                                    >
+                                      {staff.fullName}
+                                    </MenuItem>
+                                  ));
+                                }
+                              })()}
+                            </Select>
+                          </FormControl>
                         ) : (
                           <TextField
                             size="small"
@@ -503,15 +540,20 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                   marginTop: 2,
                   width: "100%",
                 }}
-                item>
-                <Typography variant="h5" marginBottom={2}>Thông tin hợp đồng</Typography>
+                item
+              >
+                <Typography variant="h5" marginBottom={2}>
+                  Thông tin hợp đồng
+                </Typography>
               </Grid>
               <Grid container spacing={2}>
                 {formDataC.map((field, index) => (
-                  <Grid item xs={6} key={field.id +index}>
+                  <Grid item xs={6} key={field.id + index}>
                     <Grid container alignItems="center">
                       <Grid item xs={5}>
-                        <InputLabel htmlFor={field.id}>{field.label}</InputLabel>
+                        <InputLabel htmlFor={field.id}>
+                          {field.label}
+                        </InputLabel>
                       </Grid>
                       <Grid item xs={6}>
                         {field.type === "select" && field.options ? (
@@ -523,7 +565,8 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                               defaultValue={
                                 field.defaultValue || field.options[0].value
                               }
-                              onChange={hanldeOnChangefield}>
+                              onChange={hanldeOnChangefield}
+                            >
                               {field.options.map((option, index) => (
                                 <MenuItem key={index} value={option.value}>
                                   {option.label}

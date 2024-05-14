@@ -44,6 +44,9 @@ const StaffService = {
       return false;
     }
   },
+  AddContracts: async (param: any, id: string) => {
+    return Request(controller).postAsync(`${id}/contracts`, param);
+  },
 };
 
 export { StaffService };

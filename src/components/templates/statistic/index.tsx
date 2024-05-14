@@ -1,10 +1,9 @@
-import { useState, useEffect, FC, MouseEventHandler } from "react";
+import { useState, useEffect, FC } from "react";
 import { ChartsOverview } from "components/molecules/statistic/chart";
 import { GridStatistic } from "components/molecules/statistic/grid";
 import { useGetListDepartment } from "services/hooks/useGetListDepartment";
 import {
   FormControl,
-  Input,
   InputLabel,
   MenuItem,
   NativeSelect,
@@ -42,30 +41,6 @@ interface Group {
   groups: any[];
 }
 
-const rows = [
-  {
-    id: 1,
-    name: "Khoa CNTT",
-    sum_teaching: 100,
-    sum_guide: 50,
-    sum_research: 20,
-  },
-  {
-    id: 2,
-    name: "Khoa ATTT",
-    sum_teaching: 80,
-    sum_guide: 40,
-    sum_research: 10,
-  },
-  {
-    id: 3,
-    name: "Khoa Mật mã",
-    sum_teaching: 60,
-    sum_guide: 30,
-    sum_research: 15,
-  },
-];
-
 export const StatisticTemplate: FC<Props> = () => {
   const [statisticParams, setStatisticParams] = useState<StatisticParams>({
     departmentIds: "",
@@ -79,11 +54,9 @@ export const StatisticTemplate: FC<Props> = () => {
   const { loading, data: departmentData } = useGetListDepartment(
     DEPARTMENT_TYPE.EDUCATION
   );
-  const { loading: loadingStatistic, data: statisticData } =
-    useGetStatistic(statisticParams);
+  const { data: statisticData } = useGetStatistic(statisticParams);
 
-  const { data: listSchoolYear, loading: loadingSchoolYear } =
-    useGetSchoolYear();
+  const { data: listSchoolYear } = useGetSchoolYear();
 
   useEffect(() => {
     if (!loading && departmentData) {
@@ -124,12 +97,10 @@ export const StatisticTemplate: FC<Props> = () => {
   };
 
   const onClickAgain = (event: any) => {
-    console.log("click again", event?.target?.outerText);
     const schoolYear =
       statisticParams?.schoolYear === event?.target?.outerText
         ? undefined
         : event?.target?.outerText;
-    console.log("School year", schoolYear);
     setStatisticParams((prev) => {
       return {
         ...prev,
