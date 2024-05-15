@@ -447,11 +447,18 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
     editData?.taxPercent,
     editData?.fromDate,
     editData?.toDate,
+    editData?.status,
     editData?.contractName,
     action,
     staffData?.id,
     id,
-    formData,
+    formData?.teachingAddress,
+    formData?.numberOfLesson,
+    formData?.lessonPrice,
+    formData?.taxPercent,
+    formData?.fromDate,
+    formData?.toDate,
+    formData?.contractName,
   ]);
 
   return (
