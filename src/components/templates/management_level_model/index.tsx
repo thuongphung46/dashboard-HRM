@@ -7,17 +7,13 @@ import {
 } from "services/hooks/useGetListDepartment";
 
 export const ManagementLevelModelTemplate = () => {
-  const { loading, data: departmentData } = useGetListDepartment();
-  const [dataDetail, setDataDetail] = useState<any>({});
   const [listSubject, setListSubject] = useState<any[]>([]);
   const [selectedId, setSelectedId] = useState<any>(null);
-
-  const { data: department, loading: departmentLoading } =
-    useGetDepartment(selectedId);
+  const { data: departmentData } = useGetListDepartment();
+  const { data: department } = useGetDepartment(selectedId);
 
   useEffect(() => {
     if (selectedId !== null && department) {
-      setDataDetail(department);
     }
   }, [selectedId, department]);
 
