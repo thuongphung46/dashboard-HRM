@@ -3,20 +3,17 @@ import Box from "@mui/material/Box";
 import { GridColDef, GridRowId } from "@mui/x-data-grid";
 import { BaseGrid } from "components/atoms/datagrid";
 import {
-  JobTitleType,
   useGetListJobTitle,
   useJobTitle,
 } from "services/hooks/useGetListJobTitle";
-import { isNullOrEmpty } from "common/validation";
-import { MenuItem, Select } from "@mui/material";
+import { toastMessage } from "components/molecules/toast_message";
+import { MessageCode } from "types/enum/message_code";
 
 interface Props {}
 export const GeneralPosition: FC<Props> = () => {
-  // const [isAddingRow, setIsAddingRow] = useState(false);
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
   const { createJobTitle, updateJobTitle, deleteJobTitle } = useJobTitle();
   const { data } = useGetListJobTitle();
-  const [originalData, setOriginalData] = useState<JobTitleType[]>([]);
   const columns: GridColDef[] = [
     { field: "id", headerName: "STT", width: 90 },
     {
@@ -31,78 +28,41 @@ export const GeneralPosition: FC<Props> = () => {
       width: 300,
       editable: true,
     },
-    {
-      field: "level",
-      headerName: "Level",
-      width: 150,
-      editable: true,
-      type: "select",
-      renderCell: (params) => {
-        return (
-          <Select fullWidth>
-            <MenuItem value="LEVEL_1">Level 1</MenuItem>
-            <MenuItem value="LEVEL_2">Level 2</MenuItem>
-            <MenuItem value="LEVEL_3">Level 3</MenuItem>
-            <MenuItem value="LEVEL_4">Level 4</MenuItem>
-          </Select>
-        );
-      },
-    }
   ];
 
-  const handleSave = async (dataAdd: JobTitleType[] | any) => {
-    try {
-      // Ensure dataAdd is an array
-      const dataArray = Array.isArray(dataAdd) ? dataAdd : [];
-  
-      // Check for new rows
-      const maxId = Math.max(...data.map((item) => item.id));
-      const newJobTitles = dataArray.filter((item: JobTitleType) => item.id > maxId);
-  
-      // Create new rows
-      if (!isNullOrEmpty(newJobTitles)) {
-        for (let i = 0; i < newJobTitles.length; i++) {
-          await createJobTitle(newJobTitles[i]);
+  const handleSave = async (dataAdd: any) => {
+    if (dataAdd?.isNew) {
+      createJobTitle({
+        code: dataAdd.code,
+        jobTitle: dataAdd.jobTitle,
+      }).then((res) => {
+        if (res.msg_code === MessageCode.Success) {
+          toastMessage("Thành công", "success");
+        } else {
+          toastMessage(res.message, "error");
         }
-      }
-  
-      // Update existing rows
-      const updatedJobTitles = dataArray.filter((item: JobTitleType, index: number) => {
-        // Only update if the row has changed
-        return (
-          item.id <= maxId &&
-          JSON.stringify(item) !== JSON.stringify(originalData[index])
-        );
       });
-  
-      if (!isNullOrEmpty(updatedJobTitles)) {
-        for (let i = 0; i < updatedJobTitles.length; i++) {
-          await updateJobTitle(
-            updatedJobTitles[i].id.toString(),
-            updatedJobTitles[i]
-          );
+    } else {
+      updateJobTitle(dataAdd.id, {
+        jobTitle: dataAdd.jobTitle,
+      }).then((res) => {
+        if (res.msg_code === MessageCode.Success) {
+          toastMessage("Thành công", "success");
+        } else {
+          toastMessage(res.message, "error");
         }
-      }
-  
-      // Delete rows
-      const deletedJobTitles = originalData.filter((item: JobTitleType) => {
-        return !dataArray.some((row: JobTitleType) => row.id === item.id);
       });
-  
-      if (!isNullOrEmpty(deletedJobTitles)) {
-        for (let i = 0; i < deletedJobTitles.length; i++) {
-          await deleteJobTitle(deletedJobTitles[i].id.toString());
-        }
-      }
-  
-      // Clear selection and editing state
-      setSelectedRows([]);
-  
-      // Update the original data
-      setOriginalData(dataArray);
-    } catch (error) {
-      console.error("Error handling save:", error);
     }
+  };
+  
+  const handleDel = async (dataDel: any) => {
+    deleteJobTitle(dataDel).then((res) => {
+      if (res.msg_code === MessageCode.Success) {
+        toastMessage("Thành công", "success");
+      } else {
+        toastMessage(res.message, "error");
+      }
+    });
   };
   
 
@@ -114,6 +74,7 @@ export const GeneralPosition: FC<Props> = () => {
           rows={data}
           title="Chức vụ"
           onSave={handleSave}
+          onDel={handleDel}
           onRowSelectionChange={setSelectedRows}
           selectedRows={selectedRows}
         />

@@ -65,7 +65,7 @@ export const useJobTitle = () => {
       response.status === RESPONSE_CODE.SUCCESS &&
       response.data.msg_code === RESPONSE_CODE.SUCCESS
     ) {
-      return response.data?.content;
+      return response.data;
     } else {
       return null;
     }
