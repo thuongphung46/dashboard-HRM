@@ -82,7 +82,9 @@ export const Overview: React.FC<Props> = ({ data, all_data }) => {
   const numberOfLesson = [
     numOfImplementationPeriods,
     sum.numOfclassesTaught,
-    sum.numOfUnfinishedPeriods - 300 < 0 ? sum.numOfUnfinishedPeriods - 300 : 0,
+    sum.numOfUnfinishedPeriods - 300 < 0
+      ? Math.abs(sum.numOfUnfinishedPeriods - 300)
+      : 0,
     sum.numOfPeriodsReduced,
     numOfImplementationPeriods -
       sum.numOfclassesTaught -
