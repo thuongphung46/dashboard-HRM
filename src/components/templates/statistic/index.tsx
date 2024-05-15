@@ -58,6 +58,8 @@ export const StatisticTemplate: FC<Props> = () => {
 
   const { data: listSchoolYear } = useGetSchoolYear();
 
+  const { data: departmentDataFull } = useGetListDepartment();
+
   useEffect(() => {
     if (!loading && departmentData) {
       setDepartmentList(departmentData);
@@ -112,7 +114,7 @@ export const StatisticTemplate: FC<Props> = () => {
   return (
     <div>
       <div>
-        <FormControl sx={{ m: 1, minWidth: 120 }}>
+        {/* <FormControl sx={{ m: 1, minWidth: 120 }}>
           <InputLabel variant="standard" htmlFor="semester">
             Học kỳ:
           </InputLabel>
@@ -126,9 +128,9 @@ export const StatisticTemplate: FC<Props> = () => {
             <option value={10}>Học kỳ I</option>
             <option value={20}>Học kỳ II</option>
           </NativeSelect>
-        </FormControl>
+        </FormControl> */}
 
-        <FormControl sx={{ m: 1, minWidth: 120 }} variant="standard">
+        <FormControl sx={{ m: 1, minWidth: 120 }}>
           <InputLabel htmlFor="year">Năm học: </InputLabel>
           <Select
             labelId="select-department-label"
@@ -191,8 +193,11 @@ export const StatisticTemplate: FC<Props> = () => {
           </Select>
         </FormControl>
       </div>
-      <ChartsOverview data={statisticData} />
-      <GridStatistic data={statisticData} />
+      <ChartsOverview
+        data={statisticData}
+        departmentData={departmentDataFull}
+      />
+      <GridStatistic data={statisticData} departmentData={departmentDataFull} />
     </div>
   );
 };

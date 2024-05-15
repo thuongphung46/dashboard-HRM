@@ -6,9 +6,9 @@ import { StatisticData } from "services/hooks/useGetStatistic";
 
 interface Props {
   data: StatisticData;
+  departmentData: any[];
 }
-export const GridStatistic: FC<Props> = ({ data }) => {
-  const { data: departmentData } = useGetListDepartment();
+export const GridStatistic: FC<Props> = ({ data, departmentData }) => {
   const columns = [
     { field: "id", headerName: "STT", width: 90 },
     { field: "name", headerName: "Khoa/Bộ môn", width: 300, editable: true },
@@ -41,7 +41,6 @@ export const GridStatistic: FC<Props> = ({ data }) => {
   }, {} as { [key: string]: string });
 
   const dataShow = Object.entries(data).map(([key, value], index) => {
-    console.log(departmentData);
     return {
       id: index + 1,
       name: departmentMap[key] || key,

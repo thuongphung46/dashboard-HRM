@@ -5,11 +5,11 @@ import { useGetListDepartment } from "services/hooks/useGetListDepartment";
 
 interface Props {
   data: StatisticData;
+  departmentData: any[];
 }
 
 const KEYS = ["teaching", "instructProject", "research"];
-export const ChartsOverview: React.FC<Props> = ({ data }) => {
-  const { data: departmentData } = useGetListDepartment();
+export const ChartsOverview: React.FC<Props> = ({ data, departmentData }) => {
   const listCode = Object.keys(data);
   const series = listCode.map((code) => {
     const obj: any = {};
