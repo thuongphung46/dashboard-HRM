@@ -5,9 +5,9 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Typography,
 } from "@mui/material";
 import Box from "@mui/material/Box";
-import { BaseGrid } from "components/atoms/datagrid";
 import { FC, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -15,6 +15,7 @@ import {
   useGetListStaff,
 } from "services/hooks/useGetListStaff";
 import { columns } from "./columns";
+import { DataGrid } from "@mui/x-data-grid";
 
 interface Props {}
 
@@ -49,7 +50,8 @@ export const ListStaff: FC<Props> = () => {
             maxWidth: "450px",
             display: "flex",
             justifyContent: "space-between",
-          }}>
+          }}
+        >
           <Input
             value={params.query}
             onChange={(e) => setParams({ ...params, query: e.target.value })}
@@ -67,7 +69,8 @@ export const ListStaff: FC<Props> = () => {
               defaultValue={undefined}
               onChange={(e) => {
                 setParams({ ...params, active: e.target.value as 0 | 1 });
-              }}>
+              }}
+            >
               <MenuItem value={undefined}>Tất cả</MenuItem>
               <MenuItem value={1}>Đang làm việc</MenuItem>
               <MenuItem value={0}>Đã nghỉ việc</MenuItem>
@@ -78,16 +81,18 @@ export const ListStaff: FC<Props> = () => {
         {loading ? (
           <div>Loading...</div>
         ) : (
-          <BaseGrid
-            columns={columns}
-            rows={staffList}
-            title="Danh sách nhân viên"
-            checkboxSelection
-            disableRowSelectionOnClick
-            onCellClick={handleCellClick}
-            onRowSelectionChange={(selection: any) => {}}
-            selectedRows={[]}
-          />
+          <>
+            <Typography variant="h5">Danh sách nhân viên</Typography>
+            <DataGrid
+              sx={{
+                height: "calc(100vh - 250px)",
+              }}
+              columns={columns}
+              rows={staffList}
+              disableRowSelectionOnClick
+              onCellClick={handleCellClick}
+            />
+          </>
         )}
       </Box>
     </div>
