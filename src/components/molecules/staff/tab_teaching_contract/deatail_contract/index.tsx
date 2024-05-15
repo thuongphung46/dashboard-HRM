@@ -56,7 +56,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
   const { data: contractDetail } = useGetDetailContract(
     action === "edit" ? id : ""
   );
-  const [params, setParams] = useState<GetListStaffParams>({
+  const [params] = useState<GetListStaffParams>({
     query: "",
     active: undefined,
     page: 0,
