@@ -44,14 +44,6 @@ export const TeachingContractPage: React.FC = () => {
       },
     },
     {
-      field: "presenter",
-      headerName: "Người đại diện bên A",
-      width: 200,
-      editable: true,
-      type: "singleSelect",
-      valueOptions: ["ds nhan vien cap 4"],
-    },
-    {
       field: "status",
       headerName: "Trạng thái hợp đồng",
       width: 200,
@@ -63,20 +55,6 @@ export const TeachingContractPage: React.FC = () => {
         "Đã thực hiện",
         "Đã thanh lý",
       ],
-    },
-    {
-      field: "file1",
-      headerName: "File hợp đồng",
-      width: 150,
-      editable: true,
-      type: "file",
-    },
-    {
-      field: "file2",
-      headerName: "File phụ lục",
-      width: 150,
-      editable: true,
-      type: "file",
     },
   ];
 
