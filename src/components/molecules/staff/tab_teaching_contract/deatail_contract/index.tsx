@@ -72,7 +72,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
       setRenterData(contractDetail.renter);
       setFormData(contractDetail);
     }
-  }, [contractDetail]);
+  }, [action, contractDetail]);
 
   useEffect(() => {
     if (!loadingListStaff && listStaffData) {
@@ -378,10 +378,57 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
           toastMessage(res.message, "error");
         }
       });
-    } else if (!editData.idPerA && !editData.idPerB) {
+    } else if (!editData.idPerA && !editData.idPerB && action === "add") {
       toastMessage("Vui lòng điền đầy đủ thông tin Bên A và Bên B", "error");
+    } else if (staffData?.id && id && action === "edit") {
+      StaffService.UpdateContracts(
+        {
+          term: editData?.term,
+          schoolYear: editData?.schoolYear,
+          teachingAddress:
+            editData?.teachingAddress || formData?.teachingAddress,
+          numberOfLesson:
+            parseInt(editData?.numberOfLesson) || formData?.numberOfLesson,
+          lessonPrice:
+            parseFloat(editData?.lessonPrice) || formData?.lessonPrice,
+          taxPercent: parseFloat(editData?.taxPercent) || formData?.taxPercent,
+          renterId: editData.idPerA,
+          fromDate: formData?.fromDate
+            ? moment(new Date(formData?.fromDate)).format("YYYY/MM/DD hh:mm:ss")
+            : "",
+          toDate: formData?.toDate
+            ? moment(new Date(formData?.toDate)).format("YYYY/MM/DD hh:mm:ss")
+            : "",
+          status: 0,
+          contractName: editData?.contractName || formData?.contractName,
+        },
+        staffData.id,
+        id
+      ).then((res) => {
+        if (res.msg_code === MessageCode.Success) {
+          toastMessage(res.message, "success");
+        } else {
+          toastMessage(res.message, "error");
+        }
+      });
     }
-  }, [action, editData]);
+  }, [
+    editData.idPerA,
+    editData.idPerB,
+    editData?.term,
+    editData?.schoolYear,
+    editData?.teachingAddress,
+    editData?.numberOfLesson,
+    editData?.lessonPrice,
+    editData?.taxPercent,
+    editData?.fromDate,
+    editData?.toDate,
+    editData?.contractName,
+    action,
+    staffData?.id,
+    id,
+    formData,
+  ]);
 
   return (
     <>
