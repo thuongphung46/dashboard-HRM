@@ -3,12 +3,9 @@ import Box from "@mui/material/Box";
 import { GridColDef, GridRowId } from "@mui/x-data-grid";
 import { BaseGrid } from "components/atoms/datagrid";
 import {
-  JobTitleType,
   useGetListJobTitle,
   useJobTitle,
 } from "services/hooks/useGetListJobTitle";
-import { isNullOrEmpty } from "common/validation";
-import { MenuItem, Select } from "@mui/material";
 import { toastMessage } from "components/molecules/toast_message";
 import { MessageCode } from "types/enum/message_code";
 
@@ -17,7 +14,6 @@ export const GeneralPosition: FC<Props> = () => {
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
   const { createJobTitle, updateJobTitle, deleteJobTitle } = useJobTitle();
   const { data } = useGetListJobTitle();
-  const [originalData, setOriginalData] = useState<JobTitleType[]>([]);
   const columns: GridColDef[] = [
     { field: "id", headerName: "STT", width: 90 },
     {
@@ -35,7 +31,7 @@ export const GeneralPosition: FC<Props> = () => {
   ];
 
   const handleSave = async (dataAdd: any) => {
-    if (dataAdd.isNew === true) {
+    if (dataAdd?.isNew) {
       createJobTitle({
         code: dataAdd.code,
         jobTitle: dataAdd.jobTitle,

@@ -38,7 +38,7 @@ export const GeneralResion: FC<Props> = () => {
   ];
 
   const handleSave = async (dataAdd: any) => {
-    if (dataAdd.isNew === true){
+    if (dataAdd?.isNew){
       createReasonReduce({
       code: dataAdd.code,
       name: dataAdd.name,

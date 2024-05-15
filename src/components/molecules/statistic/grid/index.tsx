@@ -1,15 +1,17 @@
 import { Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { FC } from "react";
+import { useGetListDepartment } from "services/hooks/useGetListDepartment";
 import { StatisticData } from "services/hooks/useGetStatistic";
 
 interface Props {
   data: StatisticData;
 }
 export const GridStatistic: FC<Props> = ({ data }) => {
+  const { data: departmentData } = useGetListDepartment();
   const columns = [
     { field: "id", headerName: "STT", width: 90 },
-    { field: "name", headerName: "Khoa/Bộ môn", width: 150, editable: true },
+    { field: "name", headerName: "Khoa/Bộ môn", width: 300, editable: true },
     {
       field: "teaching",
       headerName: "Tổng giảng dạy",
@@ -33,15 +35,16 @@ export const GridStatistic: FC<Props> = ({ data }) => {
     },
   ];
 
+  const departmentMap = departmentData.reduce((acc, dept) => {
+    acc[dept.code] = dept.name;
+    return acc;
+  }, {} as { [key: string]: string });
+
   const dataShow = Object.entries(data).map(([key, value], index) => {
+    console.log(departmentData);
     return {
       id: index + 1,
-      name:
-        key === "attt"
-          ? "Khoa ATTT"
-          : key === "cntt"
-          ? "Khoa CNTT"
-          : "Khoa Mật mã",
+      name: departmentMap[key] || key,
       teaching: value.teaching,
       instructionProject: value.instructProject,
       research: value.research,
