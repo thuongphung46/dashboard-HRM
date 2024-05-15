@@ -1,61 +1,37 @@
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import ReusableField, { IFormData } from "components/atoms/field";
 import { FC, useState, useCallback, useEffect } from "react";
-import { DataGridPro } from "@mui/x-data-grid-pro/DataGridPro";
 import { GridColDef } from "@mui/x-data-grid/models/colDef";
-import { DataGridProProps } from "@mui/x-data-grid-pro/models/dataGridProProps";
 import { Link } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IDataDetail } from "types/model";
+import { DataGrid } from "@mui/x-data-grid";
 
 interface Props {
   dataDetail: IDataDetail;
   listSubject: any[];
 }
-const fieldsData: IFormData[] = [
-  { id: "dean_of_department", label: "Chủ nhiệm khoa", type: "text" },
-  {
-    id: "deputy_dean_of_department",
-    label: "Phó chủ nhiệm khoa",
-    type: "text",
-  },
-];
+interface IMember {
+  fullName?: string;
+  id?: number;
+  jobTitle?: string;
+}
+interface IGroup {
+  id?: number;
+  name?: string;
+}
 export const DetailDepartMent: FC<Props> = ({ dataDetail, listSubject }) => {
   const [formData, setFormData] = useState<any>({});
-  const [dataRows, setDataRows] = useState<any[]>([]);
+  const [gridGroup, setGridGroup] = useState<IGroup[]>([]);
+  const [gridMember, setGridMember] = useState<IMember[]>([]);
 
   useEffect(() => {
-    //convert dataDetail to row
-    let data: any[] = [];
-    if (dataDetail.groups) {
-      dataDetail.groups.flatMap((group) => {
-        return group.members.forEach((member) => {
-          if (
-            data.filter((item) => item?.hierarchy[0] === group.name).length ===
-            0
-          ) {
-            data.push({
-              hierarchy: [group.name],
-              subject: group.name,
-              name: "",
-              id: group.id,
-            });
-          }
-          data.push({
-            hierarchy: [group.name, member.jobTitle],
-            subject: group.name,
-            name: member.fullName,
-            id: member.id,
-          });
-        });
-      });
-
-      setDataRows(data);
+    if (dataDetail.groups && dataDetail.members) {
+      setGridMember(dataDetail.members);
+      setGridGroup(dataDetail.groups);
     }
-  }, [dataDetail.groups, dataDetail.name]);
+  }, [dataDetail]);
 
   const hanldeOnChangefield = useCallback(
     (e: any) => {
@@ -69,19 +45,19 @@ export const DetailDepartMent: FC<Props> = ({ dataDetail, listSubject }) => {
     // handle delete
   }, []);
 
-  const columns: GridColDef[] = [
+  const columnsGroup: GridColDef[] = [
     {
       field: "name",
-      headerName: "Họ tên",
+      headerName: "",
       type: "string",
       minWidth: 400,
-      renderCell: (params) => {
-        return (
-          <Link to={`/detail_employee/${params.id}`}>
-            <span>{params.value}</span>
-          </Link>
-        );
-      },
+      // renderCell: (params) => {
+      //   return (
+      //     <Link to={`/detail_employee/${params.id}`}>
+      //       <span>{params.value}</span>
+      //     </Link>
+      //   );
+      // },
     },
     {
       field: "actions",
@@ -96,44 +72,49 @@ export const DetailDepartMent: FC<Props> = ({ dataDetail, listSubject }) => {
       },
     },
   ];
-  return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Grid container>
-        <Typography>
-          Tên cấp quản lý: <span>{dataDetail.name}</span>
-        </Typography>
 
-        <Grid container>
-          {fieldsData.map((item) => {
-            return (
-              <ReusableField
-                key={item.id}
-                field={item}
-                formData={formData}
-                hanldeOnChangefield={hanldeOnChangefield}
-              ></ReusableField>
-            );
-          })}
-        </Grid>
-        <Grid sx={{ marginTop: "20px" }} container>
-          <DataGridPro
+  const columnsGridMember: GridColDef[] = [
+    {
+      field: "jobTitle",
+      headerName: "Chức vụ",
+      minWidth: 300,
+    },
+    {
+      field: "fullName",
+      headerName: "Họ tên",
+      minWidth: 200,
+      renderCell: (params) => {
+        return (
+          <Link to={`/detail_employee/${params.id}`}>
+            <span>{params.value}</span>
+          </Link>
+        );
+      },
+    },
+  ];
+
+  return (
+    <Box sx={{ width: "70%" }}>
+      <Grid container>
+        <Grid sx={{ width: "90%" }} item>
+          <DataGrid
             sx={{
-              height: `calc(100vh - 210px)`,
-              width: "100%",
+              height: "400px",
             }}
-            editMode="row"
-            treeData
-            rows={dataRows}
-            columns={columns}
-            getTreeDataPath={
-              getTreeDataPath as DataGridProProps["getTreeDataPath"]
-            }
+            rows={gridMember}
+            columns={columnsGridMember}
+          />
+        </Grid>
+        <Grid sx={{ marginTop: "20px", width: "90%" }} item>
+          <DataGrid
+            sx={{
+              height: "400px",
+            }}
+            rows={gridGroup}
+            columns={columnsGroup}
           />
         </Grid>
       </Grid>
     </Box>
   );
 };
-
-const getTreeDataPath: DataGridProProps["getTreeDataPath"] = (row) =>
-  row.hierarchy;
