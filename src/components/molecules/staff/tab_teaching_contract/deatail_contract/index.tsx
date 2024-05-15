@@ -56,7 +56,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
   const { data: contractDetail } = useGetDetailContract(
     action === "edit" ? id : ""
   );
-  const [params, setParams] = useState<GetListStaffParams>({
+  const [params] = useState<GetListStaffParams>({
     query: "",
     active: undefined,
     page: 0,
@@ -72,7 +72,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
       setRenterData(contractDetail.renter);
       setFormData(contractDetail);
     }
-  }, [contractDetail]);
+  }, [action, contractDetail]);
 
   useEffect(() => {
     if (!loadingListStaff && listStaffData) {
@@ -402,10 +402,64 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
           toastMessage(res.message, "error");
         }
       });
-    } else if (!editData.idPerA && !editData.idPerB) {
+    } else if (!editData.idPerA && !editData.idPerB && action === "add") {
       toastMessage("Vui lòng điền đầy đủ thông tin Bên A và Bên B", "error");
+    } else if (staffData?.id && id && action === "edit") {
+      StaffService.UpdateContracts(
+        {
+          term: editData?.term,
+          schoolYear: editData?.schoolYear,
+          teachingAddress:
+            editData?.teachingAddress || formData?.teachingAddress,
+          numberOfLesson:
+            parseInt(editData?.numberOfLesson) || formData?.numberOfLesson,
+          lessonPrice:
+            parseFloat(editData?.lessonPrice) || formData?.lessonPrice,
+          taxPercent: parseFloat(editData?.taxPercent) || formData?.taxPercent,
+          renterId: editData.idPerA,
+          fromDate: formData?.fromDate
+            ? moment(new Date(formData?.fromDate)).format("YYYY/MM/DD hh:mm:ss")
+            : "",
+          toDate: formData?.toDate
+            ? moment(new Date(formData?.toDate)).format("YYYY/MM/DD hh:mm:ss")
+            : "",
+          status: 0,
+          contractName: editData?.contractName || formData?.contractName,
+        },
+        staffData.id,
+        id
+      ).then((res) => {
+        if (res.msg_code === MessageCode.Success) {
+          toastMessage(res.message, "success");
+        } else {
+          toastMessage(res.message, "error");
+        }
+      });
     }
-  }, [action, editData]);
+  }, [
+    editData.idPerA,
+    editData.idPerB,
+    editData?.term,
+    editData?.schoolYear,
+    editData?.teachingAddress,
+    editData?.numberOfLesson,
+    editData?.lessonPrice,
+    editData?.taxPercent,
+    editData?.fromDate,
+    editData?.toDate,
+    editData?.status,
+    editData?.contractName,
+    action,
+    staffData?.id,
+    id,
+    formData?.teachingAddress,
+    formData?.numberOfLesson,
+    formData?.lessonPrice,
+    formData?.taxPercent,
+    formData?.fromDate,
+    formData?.toDate,
+    formData?.contractName,
+  ]);
 
   return (
     <>
@@ -421,13 +475,15 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                 height: "calc(100% - 60px)",
                 overflow: "auto",
               }}
-              container>
+              container
+            >
               <Grid
                 sx={{
                   marginTop: 2,
                   width: "100%",
                 }}
-                item>
+                item
+              >
                 <Typography variant="h5" marginBottom={2}>
                   Bên A: HỌC VIÊN KỸ THUẬT MẬT MÃ
                 </Typography>
@@ -450,17 +506,18 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                               size="small"
                               id={field.id}
                               onChange={hanldeOnChangefield}
-                              defaultValue={field.defaultValue}>
+                              defaultValue={field.defaultValue}
+                            >
                               {(() => {
                                 if (field.id === "fullName") {
                                   const data = listStaff.filter(
-                                    (staff) =>
-                                      staff.active === 1
+                                    (staff) => staff.active === 1
                                   );
                                   return data.map((staff, index) => (
                                     <MenuItem
                                       key={staff.id + index}
-                                      value={staff.username}>
+                                      value={staff.username}
+                                    >
                                       {staff.fullName}
                                     </MenuItem>
                                   ));
@@ -497,7 +554,8 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                   marginTop: 2,
                   width: "100%",
                 }}
-                item>
+                item
+              >
                 <Typography variant="h5" marginBottom={2}>
                   Bên B
                 </Typography>
@@ -519,17 +577,20 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                               size="small"
                               id={field.id}
                               onChange={hanldeOnChangefield}
-                              defaultValue={field.defaultValue}>
+                              defaultValue={field.defaultValue}
+                            >
                               {(() => {
                                 if (field.id === "per_b") {
                                   const data: IListStaff[] = listStaff.filter(
                                     (staff) =>
-                                      staff.jobTitle === "Giảng viên mời" && staff.active === 1
+                                      staff.jobTitle === "Giảng viên mời" &&
+                                      staff.active === 1
                                   );
                                   return data.map((staff, index) => (
                                     <MenuItem
                                       key={staff.id + index}
-                                      value={staff.username}>
+                                      value={staff.username}
+                                    >
                                       {staff.fullName}
                                     </MenuItem>
                                   ));
@@ -565,7 +626,8 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                   marginTop: 2,
                   width: "100%",
                 }}
-                item>
+                item
+              >
                 <Typography variant="h5" marginBottom={2}>
                   Thông tin hợp đồng
                 </Typography>
@@ -589,7 +651,8 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                               defaultValue={
                                 field.defaultValue || field.options[0].value
                               }
-                              onChange={hanldeOnChangefield}>
+                              onChange={hanldeOnChangefield}
+                            >
                               {field.options.map((option, index) => (
                                 <MenuItem key={index} value={option.value}>
                                   {option.label}

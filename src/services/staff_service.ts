@@ -40,12 +40,17 @@ const StaffService = {
       }
     } catch (error) {
       console.log(error);
-
       return false;
     }
   },
   AddContracts: async (param: any, id: string) => {
     return Request(controller).postAsync(`${id}/contracts`, param);
+  },
+  UpdateContracts: async (param: any, id: number, contractId: string) => {
+    return Request(controller).patchAsync(
+      `${id}/contracts/${contractId}`,
+      param
+    );
   },
 };
 
