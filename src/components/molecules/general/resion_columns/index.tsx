@@ -12,8 +12,7 @@ import { toastMessage } from "components/molecules/toast_message";
 interface Props {}
 export const GeneralResion: FC<Props> = () => {
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
-  const { createReasonReduce, updateReasonReduce, deleteReasonReduce } =
-    useReasonReduce();
+  const { createReasonReduce, updateReasonReduce, deleteReasonReduce } = useReasonReduce();
   const { data } = useGetListReasonReduce();
   const columns: GridColDef[] = [
     { field: "id", headerName: "STT", width: 90 },
@@ -39,11 +38,40 @@ export const GeneralResion: FC<Props> = () => {
   ];
 
   const handleSave = async (dataAdd: any) => {
-    createReasonReduce({
+    if (dataAdd.isNew === true){
+      createReasonReduce({
       code: dataAdd.code,
       name: dataAdd.name,
       ratio: parseFloat(dataAdd.ratio),
-    }).then((res) => {
+      
+      }).then((res) => {
+        if (res.msg_code === MessageCode.Success) {
+          toastMessage("Thành công", "success");
+        } else {
+          toastMessage(res.message, "error");
+        }
+      });
+    } else {
+      updateReasonReduce(
+        dataAdd.id,
+        {
+          name: dataAdd.name,
+          ratio: parseFloat(dataAdd.ratio),
+        }
+      ).then((res) => {
+        console.log("res", res);
+        if (res.msg_code === MessageCode.Success) {
+          toastMessage("Thành công", "success");
+        } else {
+          toastMessage(res.message, "error");
+        }
+      });
+    }
+    
+  };
+
+  const handleDel = async (dataDel: any) => {
+    deleteReasonReduce(dataDel).then((res) => {
       if (res.msg_code === MessageCode.Success) {
         toastMessage("Thành công", "success");
       } else {
@@ -60,6 +88,7 @@ export const GeneralResion: FC<Props> = () => {
           rows={data}
           title="Lí do giảm trừ"
           onSave={handleSave}
+          onDel={handleDel}
           onRowSelectionChange={setSelectedRows}
           selectedRows={selectedRows}
         />
