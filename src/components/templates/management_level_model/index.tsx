@@ -25,6 +25,7 @@ export const ManagementLevelModelTemplate = () => {
     <div
       style={{
         display: "flex",
+        width: "100%",
       }}
     >
       <ListDepartment

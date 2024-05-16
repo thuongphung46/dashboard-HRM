@@ -47,14 +47,20 @@ export const ListDepartment: FC<Props> = ({
         id: "parent",
         label: "Trực thuộc cấp",
         type: "select",
-        options: departmentList.map((department) => ({ label: department.name, value: department.id })),
+        options: departmentList.map((department) => ({
+          label: department.name,
+          value: department.id,
+        })),
       },
-      { id: "type", label: "Loại", type: "select", 
+      {
+        id: "type",
+        label: "Loại",
+        type: "select",
         options: [
-          {value: "education", label: "Giảng dạy"}, 
-          {value: "back_office", label: "Quản trị"}
-        ]
-      }
+          { value: "education", label: "Giảng dạy" },
+          { value: "back_office", label: "Quản trị" },
+        ],
+      },
     ];
 
     const handleSave = async () => {
@@ -132,14 +138,13 @@ export const ListDepartment: FC<Props> = ({
   return (
     <div
       style={{
-        minWidth: "300px",
+        width: "40%",
       }}
     >
       <Button onClick={handleShowPopupAdd}>Add</Button>
       <List
         sx={{
           width: "100%",
-          maxWidth: 360,
           bgcolor: "background.paper",
           position: "relative",
           overflow: "auto",

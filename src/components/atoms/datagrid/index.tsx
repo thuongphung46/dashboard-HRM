@@ -168,6 +168,7 @@ export const BaseGrid: FC<BaseGridProps> = ({
         slotProps={{
           toolbar: { data, setData, setRowModesModel },
         }}
+        {...rest}
       />
     </div>
   );
