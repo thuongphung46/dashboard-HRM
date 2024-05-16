@@ -20,7 +20,6 @@ export const MultipleTablesPage: FC<Props> = () => {
     ?.value;
   const thoiGianCongTac = data.filter((item) => item.name === "time_worked")[0]
     ?.value;
-  console.log("data", data);
 
   const handleGiangDayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // setGiangDay(event.target.value); // Update state for "Số tiết phải giảng dạy"

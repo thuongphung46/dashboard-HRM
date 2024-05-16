@@ -13,7 +13,6 @@ const FileTkbService = {
         "file/import-schedule-standard",
         formData
       );
-      console.log("Response: ", response.data);
       return response.data;
     } catch (error) {
       throw error;
@@ -26,11 +25,7 @@ const FileKeKhaiService = {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      const response = await NetWork.postFormData(
-        "file/declaration",
-        formData
-      );
-      console.log("Response: ", response.data);
+      const response = await NetWork.postFormData("file/declaration", formData);
       return response.data;
     } catch (error) {
       throw error;
