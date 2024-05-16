@@ -17,7 +17,6 @@ export const Assess: FC<Props> = ({ data }) => {
   const end = data.filter((item) => item.examName === STAFF_EXAM.END);
 
   const columns1 = [
-    { field: "id", headerName: "STT", width: 90 },
     {
       field: "term",
       headerName: "Học kỳ",
@@ -87,7 +86,6 @@ export const Assess: FC<Props> = ({ data }) => {
   ];
 
   const columns2 = [
-    { field: "id", headerName: "STT", width: 90 },
     {
       field: "term",
       headerName: "Học kỳ",

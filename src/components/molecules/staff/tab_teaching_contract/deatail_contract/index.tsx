@@ -475,15 +475,13 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                 height: "calc(100% - 60px)",
                 overflow: "auto",
               }}
-              container
-            >
+              container>
               <Grid
                 sx={{
                   marginTop: 2,
                   width: "100%",
                 }}
-                item
-              >
+                item>
                 <Typography variant="h5" marginBottom={2}>
                   Bên A: HỌC VIÊN KỸ THUẬT MẬT MÃ
                 </Typography>
@@ -506,8 +504,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                               size="small"
                               id={field.id}
                               onChange={hanldeOnChangefield}
-                              defaultValue={field.defaultValue}
-                            >
+                              defaultValue={field.defaultValue}>
                               {(() => {
                                 if (field.id === "fullName") {
                                   const data = listStaff.filter(
@@ -516,8 +513,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                                   return data.map((staff, index) => (
                                     <MenuItem
                                       key={staff.id + index}
-                                      value={staff.username}
-                                    >
+                                      value={staff.username}>
                                       {staff.fullName}
                                     </MenuItem>
                                   ));
@@ -554,8 +550,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                   marginTop: 2,
                   width: "100%",
                 }}
-                item
-              >
+                item>
                 <Typography variant="h5" marginBottom={2}>
                   Bên B
                 </Typography>
@@ -577,8 +572,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                               size="small"
                               id={field.id}
                               onChange={hanldeOnChangefield}
-                              defaultValue={field.defaultValue}
-                            >
+                              defaultValue={field.defaultValue}>
                               {(() => {
                                 if (field.id === "per_b") {
                                   const data: IListStaff[] = listStaff.filter(
@@ -589,8 +583,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                                   return data.map((staff, index) => (
                                     <MenuItem
                                       key={staff.id + index}
-                                      value={staff.username}
-                                    >
+                                      value={staff.username}>
                                       {staff.fullName}
                                     </MenuItem>
                                   ));
@@ -626,8 +619,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                   marginTop: 2,
                   width: "100%",
                 }}
-                item
-              >
+                item>
                 <Typography variant="h5" marginBottom={2}>
                   Thông tin hợp đồng
                 </Typography>
@@ -651,8 +643,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                               defaultValue={
                                 field.defaultValue || field.options[0].value
                               }
-                              onChange={hanldeOnChangefield}
-                            >
+                              onChange={hanldeOnChangefield}>
                               {field.options.map((option, index) => (
                                 <MenuItem key={index} value={option.value}>
                                   {option.label}

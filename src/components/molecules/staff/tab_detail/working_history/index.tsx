@@ -1,5 +1,4 @@
-import Box from "@mui/material/Box/Box";
-import { FC, useRef, useState } from "react";
+import { FC, useState } from "react";
 import { GridColDef, GridRowId } from "@mui/x-data-grid";
 import { BaseGrid } from "components/atoms/datagrid";
 import { Grid } from "@mui/material";
@@ -16,18 +15,15 @@ interface IGridWorkingHistory {
   handleRowSelect: (e: any) => void;
   dataSelectRow: any;
   dataSource: any;
-  gridRef: any;
 }
 
 export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
   handleSave,
   dataSource,
-  gridRef,
   dataSelectRow,
   handleRowSelect,
 }) => {
   const columns: GridColDef[] = [
-    { field: "id", headerName: "STT", width: 150 },
     {
       field: "fromDate",
       headerName: "Từ ngày",
@@ -71,8 +67,11 @@ export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
   ];
 
   return (
-    <div>
+    <>
       <BaseGrid
+        sx={{
+          width: "100%",
+        }}
         onRowSelectionChange={handleRowSelect}
         title="working history"
         columns={columns}
@@ -80,14 +79,12 @@ export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
         checkboxSelection
         disableRowSelectionOnClick
         selectedRows={dataSelectRow}
-        onSave={handleSave}
-      ></BaseGrid>
-    </div>
+        onSave={handleSave}></BaseGrid>
+    </>
   );
 };
 
 export const WorkingHistory = ({ data, id, action }: Props) => {
-  const gridRef = useRef<any>(null);
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
 
   const handleSave = async (e: any) => {
@@ -104,18 +101,17 @@ export const WorkingHistory = ({ data, id, action }: Props) => {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Grid sx={{ marginTop: "24px" }} container alignItems="center">
+    <>
+      <Grid sx={{ marginTop: "24px" }} container>
         <GridWorkingHistory
           dataSelectRow={selectedRows}
           dataSource={
             action === "edit" ? data.staffWorkingHistoriesInAcademy : []
           }
-          gridRef={gridRef}
           handleRowSelect={handleRowSelectionChange}
           handleSave={handleSave}
         />
       </Grid>
-    </Box>
+    </>
   );
 };

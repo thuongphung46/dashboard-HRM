@@ -13,7 +13,6 @@ export const Teaching: FC<Props> = ({ data }) => {
 
   // Các cột cho lưới dữ liệu 1
   const columns1 = [
-    { field: "id", headerName: "STT", width: 90 },
     {
       field: "term",
       headerName: "Học kỳ",

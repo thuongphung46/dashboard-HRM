@@ -12,10 +12,10 @@ import { toastMessage } from "components/molecules/toast_message";
 interface Props {}
 export const GeneralResion: FC<Props> = () => {
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
-  const { createReasonReduce, updateReasonReduce, deleteReasonReduce } = useReasonReduce();
+  const { createReasonReduce, updateReasonReduce, deleteReasonReduce } =
+    useReasonReduce();
   const { data } = useGetListReasonReduce();
   const columns: GridColDef[] = [
-    { field: "id", headerName: "STT", width: 90 },
     {
       field: "code",
       headerName: "Mã lý do giảm trừ",
@@ -38,12 +38,11 @@ export const GeneralResion: FC<Props> = () => {
   ];
 
   const handleSave = async (dataAdd: any) => {
-    if (dataAdd?.isNew){
+    if (dataAdd?.isNew) {
       createReasonReduce({
-      code: dataAdd.code,
-      name: dataAdd.name,
-      ratio: parseFloat(dataAdd.ratio),
-      
+        code: dataAdd.code,
+        name: dataAdd.name,
+        ratio: parseFloat(dataAdd.ratio),
       }).then((res) => {
         if (res.msg_code === MessageCode.Success) {
           toastMessage("Thành công", "success");
@@ -52,13 +51,10 @@ export const GeneralResion: FC<Props> = () => {
         }
       });
     } else {
-      updateReasonReduce(
-        dataAdd.id,
-        {
-          name: dataAdd.name,
-          ratio: parseFloat(dataAdd.ratio),
-        }
-      ).then((res) => {
+      updateReasonReduce(dataAdd.id, {
+        name: dataAdd.name,
+        ratio: parseFloat(dataAdd.ratio),
+      }).then((res) => {
         console.log("res", res);
         if (res.msg_code === MessageCode.Success) {
           toastMessage("Thành công", "success");
@@ -67,7 +63,6 @@ export const GeneralResion: FC<Props> = () => {
         }
       });
     }
-    
   };
 
   const handleDel = async (dataDel: any) => {

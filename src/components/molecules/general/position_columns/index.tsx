@@ -15,10 +15,9 @@ export const GeneralPosition: FC<Props> = () => {
   const { createJobTitle, updateJobTitle, deleteJobTitle } = useJobTitle();
   const { data } = useGetListJobTitle();
   const columns: GridColDef[] = [
-    { field: "id", headerName: "STT", width: 90 },
     {
       field: "code",
-      headerName: "Mã chức  vụ",
+      headerName: "Mã chức vụ",
       width: 150,
       editable: true,
     },
@@ -54,7 +53,7 @@ export const GeneralPosition: FC<Props> = () => {
       });
     }
   };
-  
+
   const handleDel = async (dataDel: any) => {
     deleteJobTitle(dataDel).then((res) => {
       if (res.msg_code === MessageCode.Success) {
@@ -64,7 +63,6 @@ export const GeneralPosition: FC<Props> = () => {
       }
     });
   };
-  
 
   return (
     <div>

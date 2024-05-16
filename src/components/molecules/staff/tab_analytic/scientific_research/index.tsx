@@ -25,7 +25,6 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
   const building = data.buildingProgram;
   // Các cột cho lưới dữ liệu 1
   const columns1 = [
-    { field: "id", headerName: "STT", width: 90 },
     {
       field: "projectName",
       headerName: "Tên đề tài",
@@ -74,7 +73,6 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
   ];
   // Các cột cho lưới dữ liệu 2
   const columns2 = [
-    { field: "id", headerName: "STT", width: 90 },
     {
       field: "magazineName",
       headerName: "Tên bài báo",
@@ -121,7 +119,6 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
   ];
   // Các cột cho lưới dữ liệu 3
   const columns3 = [
-    { field: "id", headerName: "STT", width: 90 },
     {
       field: "inventionName",
       headerName: "Tên bằng sáng chế, giải thưởng",
@@ -169,7 +166,6 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
   ];
   // Các cột cho lưới dữ liệu 4
   const columns4 = [
-    { field: "id", headerName: "STT", width: 90 },
     {
       field: "bookName",
       headerName: "Tên sách, giáo trình",
@@ -217,7 +213,6 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
   ];
   // Các cột cho lưới dữ liệu 5
   const columns5 = [
-    { field: "id", headerName: "STT", width: 90 },
     {
       field: "projectName",
       headerName: "Tên đề tài",
@@ -266,7 +261,6 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
   ];
   // Các cột cho lưới dữ liệu 6
   const columns6 = [
-    { field: "id", headerName: "STT", width: 90 },
     {
       field: "buildingProgramName",
       headerName: "Tên chương trình đào tạo",
@@ -313,7 +307,6 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
   ];
   // Các cột cho lưới dữ liệu 7
   const columns7 = [
-    { field: "id", headerName: "STT", width: 90 },
     {
       field: "topic_name",
       headerName: "Tên giáo trình/ bài giảng",

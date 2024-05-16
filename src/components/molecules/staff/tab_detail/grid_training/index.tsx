@@ -31,12 +31,6 @@ export const GridTraining: FC<IGridTraining> = ({
 
   const columns2: GridColDef[] = [
     {
-      field: "id",
-      headerName: "ID",
-      width: 100,
-      editable: false,
-    },
-    {
       field: "fromDate",
       headerName: "Từ tháng năm",
       width: 150,
@@ -85,8 +79,7 @@ export const GridTraining: FC<IGridTraining> = ({
         pageSizeOptions={[5]}
         checkboxSelection
         disableRowSelectionOnClick
-        selectedRows={dataSelectRow}
-      ></BaseGrid>
+        selectedRows={dataSelectRow}></BaseGrid>
     </>
   );
 };

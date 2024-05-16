@@ -22,7 +22,6 @@ export const Guide: FC<Props> = ({ data }) => {
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
 
   const columns = [
-    { field: "id", headerName: "STT", width: 90 },
     {
       field: "studentName",
       headerName: "Họ tên NCS",
