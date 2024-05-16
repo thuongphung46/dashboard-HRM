@@ -11,7 +11,6 @@ import { DataGrid } from "@mui/x-data-grid";
 
 interface Props {
   dataDetail: IDataDetail;
-  listSubject: any[];
 }
 interface IMember {
   fullName?: string;
@@ -22,7 +21,7 @@ interface IGroup {
   id?: number;
   name?: string;
 }
-export const DetailDepartMent: FC<Props> = ({ dataDetail, listSubject }) => {
+export const DetailDepartMent: FC<Props> = ({ dataDetail }) => {
   const [gridGroup, setGridGroup] = useState<IGroup[]>([]);
   const [gridMember, setGridMember] = useState<IMember[]>([]);
 

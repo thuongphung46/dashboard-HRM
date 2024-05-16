@@ -7,7 +7,6 @@ import {
 } from "services/hooks/useGetListDepartment";
 
 export const ManagementLevelModelTemplate = () => {
-  const [listSubject, setListSubject] = useState<any[]>([]);
   const [selectedId, setSelectedId] = useState<any>(null);
   const { data: departmentData } = useGetListDepartment();
   const { data: department } = useGetDepartment(selectedId);
@@ -33,7 +32,7 @@ export const ManagementLevelModelTemplate = () => {
         departmentList={departmentData}
         active={selectedId}
       />
-      <DetailDepartMent dataDetail={department} listSubject={listSubject} />
+      <DetailDepartMent dataDetail={department} />
     </div>
   );
 };
