@@ -69,11 +69,8 @@ export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
   return (
     <>
       <BaseGrid
-        sx={{
-          width: "100%",
-        }}
         onRowSelectionChange={handleRowSelect}
-        title="working history"
+        title=""
         columns={columns}
         rows={dataSource}
         checkboxSelection
@@ -103,14 +100,16 @@ export const WorkingHistory = ({ data, id, action }: Props) => {
   return (
     <>
       <Grid sx={{ marginTop: "24px" }} container>
-        <GridWorkingHistory
-          dataSelectRow={selectedRows}
-          dataSource={
-            action === "edit" ? data.staffWorkingHistoriesInAcademy : []
-          }
-          handleRowSelect={handleRowSelectionChange}
-          handleSave={handleSave}
-        />
+        <Grid width={"100%"} item>
+          <GridWorkingHistory
+            dataSelectRow={selectedRows}
+            dataSource={
+              action === "edit" ? data.staffWorkingHistoriesInAcademy : []
+            }
+            handleRowSelect={handleRowSelectionChange}
+            handleSave={handleSave}
+          />
+        </Grid>
       </Grid>
     </>
   );
