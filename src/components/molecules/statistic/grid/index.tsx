@@ -9,7 +9,6 @@ interface Props {
 }
 export const GridStatistic: FC<Props> = ({ data, departmentData }) => {
   const columns = [
-    { field: "id", headerName: "STT", width: 90 },
     { field: "name", headerName: "Khoa/Bộ môn", width: 300, editable: true },
     {
       field: "teaching",

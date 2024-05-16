@@ -13,7 +13,6 @@ export const TeachingContractPage: React.FC = () => {
   const { data: TeachingContractPageData } = useGetListContractStaff(idUser);
 
   const columns: GridColDef[] = [
-    { field: "id", headerName: "STT", width: 90 },
     {
       field: "contractName",
       headerName: "Tên hợp đồng",

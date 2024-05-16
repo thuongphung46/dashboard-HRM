@@ -18,12 +18,6 @@ export const GridTrainingSummary: FC<IGridTraining> = ({
 }) => {
   const columns1: GridColDef[] = [
     {
-      field: "id",
-      headerName: "ID",
-      width: 100,
-      editable: true,
-    },
-    {
       field: "fromDate",
       headerName: "Từ tháng năm",
       width: 150,

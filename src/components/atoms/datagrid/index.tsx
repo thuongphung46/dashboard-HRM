@@ -48,7 +48,8 @@ export const BaseGrid: FC<BaseGridProps> = ({
   );
 
   React.useEffect(() => {
-    setData(rows);
+    const newData = rows.map((row, index) => ({ ...row, "#": index + 1 }));
+    setData(newData);
   }, [rows]);
 
   const handleRowEditStop: GridEventListener<"rowEditStop"> = (
@@ -97,6 +98,7 @@ export const BaseGrid: FC<BaseGridProps> = ({
   };
 
   const Custcolumns: GridColDef[] = [
+    { field: "#", headerName: "STT", width: 70 },
     ...columns,
     {
       field: "actions",
@@ -200,7 +202,10 @@ function EditToolbar(props: EditToolbarProps) {
 
     const id = generateUniqueRandomId();
 
-    setData((oldRows) => [...oldRows, { id, isNew: true }]);
+    setData((oldRows) => [
+      ...oldRows,
+      { id, isNew: true, "#": data.length + 1 },
+    ]);
     setRowModesModel((oldModel) => ({
       ...oldModel,
       [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },

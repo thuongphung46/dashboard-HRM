@@ -27,7 +27,6 @@ export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
   handleRowSelect,
 }) => {
   const columns: GridColDef[] = [
-    { field: "id", headerName: "STT", width: 150 },
     {
       field: "fromDate",
       headerName: "Từ ngày",
@@ -80,8 +79,7 @@ export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
         checkboxSelection
         disableRowSelectionOnClick
         selectedRows={dataSelectRow}
-        onSave={handleSave}
-      ></BaseGrid>
+        onSave={handleSave}></BaseGrid>
     </div>
   );
 };
