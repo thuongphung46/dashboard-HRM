@@ -1,6 +1,6 @@
 import { DetailDepartMent } from "components/molecules/management_department/detail_department";
 import { ListDepartment } from "components/molecules/management_department/list_management";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   useGetListDepartment,
   useGetDepartment,
@@ -8,28 +8,34 @@ import {
 
 export const ManagementLevelModelTemplate = () => {
   const [selectedId, setSelectedId] = useState<any>(null);
+  const [departmentList, setDepartmentList] = useState<any[]>([]);
   const { data: departmentData } = useGetListDepartment();
   const { data: department } = useGetDepartment(selectedId);
 
   useEffect(() => {
-    if (selectedId !== null && department) {
+    if (departmentData) {
+      setDepartmentList(departmentData);
     }
-  }, [selectedId, department]);
+  }, [departmentData]);
 
   const handleClickItem = (e: any) => {
     setSelectedId(e.id);
   };
+
+  const handleSetDepartmentList = useCallback((data: any) => {
+    setDepartmentList(data);
+  }, []);
 
   return (
     <div
       style={{
         display: "flex",
         width: "100%",
-      }}
-    >
+      }}>
       <ListDepartment
         handleClickItem={handleClickItem}
-        departmentList={departmentData}
+        departmentList={departmentList}
+        setDepartmentList={handleSetDepartmentList}
         active={selectedId}
       />
       <DetailDepartMent dataDetail={department} />

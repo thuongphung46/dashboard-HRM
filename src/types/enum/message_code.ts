@@ -1,4 +1,5 @@
 export enum MessageCode {
+  Failed = -1,
   None = 0,
   Success = 200,
   Error = 2,

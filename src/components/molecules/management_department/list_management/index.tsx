@@ -1,15 +1,24 @@
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
+import ListItem from "@mui/material/ListItem";
 import { FC, useCallback, useMemo, useState } from "react";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import ReusableField, { IFormData } from "components/atoms/field";
 import { useCreateDepartment } from "services/hooks/useGetListDepartment";
 import { toast } from "react-toastify";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import FormControl from "@mui/material/FormControl";
+import { InputLabel, Typography, TextField } from "@mui/material";
+import { DepartmentService } from "services/model_management_service";
+import { MessageCode } from "types/enum/message_code";
+import { toastMessage } from "components/molecules/toast_message";
 
 interface Props {
   departmentList: any[];
+  setDepartmentList: (id: any) => void;
   handleClickItem: (item: any) => void;
   active: any;
 }
@@ -17,10 +26,19 @@ interface Props {
 export const ListDepartment: FC<Props> = ({
   departmentList,
   handleClickItem,
+  setDepartmentList,
   active,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
+  const [openPEdit, setOpenPEdit] = useState<boolean>(false);
   const [formData, setFormData] = useState<any>({});
+  const [dataEdit, setDataEdit] = useState<any>({
+    id: 0,
+    name: "",
+    parentDeptId: "",
+    type: "",
+  });
+  const { createDepartment } = useCreateDepartment();
 
   const hanldeOnChangefield = useCallback(
     (e: any) => {
@@ -39,7 +57,6 @@ export const ListDepartment: FC<Props> = ({
     setOpen(false);
   }, []);
 
-  const { createDepartment } = useCreateDepartment();
   const renderPopup = useMemo(() => {
     const fieldData: IFormData[] = [
       { id: "name", label: "Tên cấp quản lý", type: "text" },
@@ -62,7 +79,6 @@ export const ListDepartment: FC<Props> = ({
         ],
       },
     ];
-
     const handleSave = async () => {
       // Kiểm tra xem tên cấp quản lý đã được nhập hay chưa
       const nameField = fieldData.find((field) => field.id === "name");
@@ -99,8 +115,7 @@ export const ListDepartment: FC<Props> = ({
           alignItems: "center",
           height: "100%",
           width: "100%",
-        }}
-      >
+        }}>
         <div
           style={{
             height: "400px",
@@ -109,8 +124,7 @@ export const ListDepartment: FC<Props> = ({
             padding: "24px",
             borderRadius: "4px",
             boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
-          }}
-        >
+          }}>
           <h4>Thêm cấp quản lý</h4>
           <Button variant="outlined" onClick={handleSave}>
             Lưu
@@ -120,8 +134,7 @@ export const ListDepartment: FC<Props> = ({
               field={field}
               formData={formData}
               hanldeOnChangefield={hanldeOnChangefield}
-              key={field.id}
-            ></ReusableField>
+              key={field.id}></ReusableField>
           ))}
         </div>
       </Modal>
@@ -135,13 +148,107 @@ export const ListDepartment: FC<Props> = ({
     hanldeOnChangefield,
   ]);
 
+  const handleOpenEdit = useCallback((e: any) => {
+    setDataEdit({
+      id: e.id,
+      name: e.name,
+      parentDeptId: e.parentDeptId,
+      type: e.type,
+    });
+    setOpenPEdit(true);
+  }, []);
+
+  const handleCloseEdit = useCallback(() => {
+    setOpenPEdit(false);
+  }, []);
+
+  const handleDel = useCallback((e: any) => {
+    DepartmentService.Delete({
+      id: e.id,
+    }).then((res) => {
+      if (res && res?.msg_code === MessageCode.Failed) {
+        toastMessage(
+          "Xóa thất bại! Phòng ban đang tồn tại nhân viên.",
+          "error"
+        );
+      } else {
+        setDepartmentList(departmentList.filter((item) => item.id !== e.id));
+        toastMessage("Xóa thành công", "success");
+      }
+    });
+  }, []);
+  const handleEdit = useCallback(() => {
+    console.log("data: ", dataEdit);
+    // DepartmentService.Update({
+    //   id: dataEdit.id,
+    //   name: dataEdit.name,
+    //   parentDeptId: dataEdit.parentDeptId,
+    //   type: dataEdit.type,
+    // }).then((res) => {
+    //   console.log(res);
+    // });
+  }, [dataEdit]);
+
+  const handleOnChange = useCallback(
+    (e: any) => {
+      console.log("e.target.value: ", e.target.value);
+      // setDataEdit({ ...dataEdit, name: e.target.value });
+      // những trường khác không đổi  chỉ đổi name
+      setDataEdit({ ...dataEdit, name: e.target.value });
+    },
+    [dataEdit]
+  );
+
+  const renderPopupEdit = useMemo(() => {
+    return (
+      <>
+        <Modal
+          open={openPEdit}
+          onClose={handleCloseEdit}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+            width: "100%",
+          }}>
+          <div
+            style={{
+              height: "400px",
+              width: "600px",
+              backgroundColor: "#fff",
+              padding: "24px",
+              borderRadius: "4px",
+              boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
+            }}>
+            <Button onClick={handleEdit} variant="outlined">
+              Lưu
+            </Button>
+            <InputLabel>Tên cấp quản lý</InputLabel>
+            <TextField
+              size="small"
+              fullWidth
+              name={"department"}
+              type={"text"}
+              onChange={handleOnChange}
+            />
+            <FormControl></FormControl>
+          </div>
+        </Modal>
+      </>
+    );
+  }, [openPEdit]);
+
   return (
     <div
       style={{
         width: "40%",
-      }}
-    >
-      <Button onClick={handleShowPopupAdd}>Add</Button>
+      }}>
+      <Button variant="outlined" onClick={handleShowPopupAdd}>
+        Thêm phòng ban
+      </Button>
       <List
         sx={{
           width: "100%",
@@ -152,24 +259,47 @@ export const ListDepartment: FC<Props> = ({
           maxHeight: `calc(100vh - 120px)`,
         }}
         component="nav"
-        aria-labelledby="nested-list-subheader"
-      >
+        aria-labelledby="nested-list-subheader">
         {departmentList.map((item) => {
           return (
-            <ListItemButton
-              style={{
+            <ListItem
+              sx={{
+                "&:hover": {
+                  backgroundColor: "#f5f5f5",
+                  cursor: "pointer",
+                },
                 backgroundColor:
                   active === item.id ? "rgba(0,0,0,0.1)" : "transparent",
+                padding: "0px 4px",
+                height: 54,
               }}
-              key={item.id}
-              onClick={() => handleClickItem(item)}
-            >
-              <ListItemText primary={`${item.name}`} />
-            </ListItemButton>
+              key={item.id}>
+              <ListItemText
+                sx={{
+                  height: "100%",
+                  width: "76%",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+                onClick={() => handleClickItem(item)}>
+                {item.name}
+              </ListItemText>
+              <ListItemButton
+                onClick={() => handleOpenEdit(item)}
+                sx={{ height: "100%", width: "14%" }}>
+                <EditIcon />
+              </ListItemButton>
+              <ListItemButton
+                onClick={() => handleDel(item)}
+                sx={{ height: "100%", width: "14%" }}>
+                <DeleteIcon />
+              </ListItemButton>
+            </ListItem>
           );
         })}
       </List>
       {renderPopup}
+      {renderPopupEdit}
     </div>
   );
 };
