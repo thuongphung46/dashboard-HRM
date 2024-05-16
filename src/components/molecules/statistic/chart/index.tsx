@@ -1,7 +1,6 @@
 import * as React from "react";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { StatisticData } from "services/hooks/useGetStatistic";
-import { useGetListDepartment } from "services/hooks/useGetListDepartment";
 
 interface Props {
   data: StatisticData;

@@ -1,41 +1,54 @@
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { FC, useState, useCallback, useEffect } from "react";
+import { FC, useState, useEffect } from "react";
 import { GridColDef } from "@mui/x-data-grid/models/colDef";
 import { Link } from "react-router-dom";
-import { IconButton } from "@mui/material";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { IDataDetail } from "types/model";
 import { DataGrid } from "@mui/x-data-grid";
 
+import {
+  DataGrid as DevExtremeDataGrid,
+  Column,
+  Grouping,
+  Summary,
+  GroupItem,
+} from "devextreme-react/data-grid";
+
 interface Props {
   dataDetail: IDataDetail;
-  listSubject: any[];
 }
 interface IMember {
   fullName?: string;
   id?: number;
   jobTitle?: string;
 }
-interface IGroup {
+interface IGroup extends IMember {
   id?: number;
   name?: string;
+  idGroup?: number;
 }
-export const DetailDepartMent: FC<Props> = ({ dataDetail, listSubject }) => {
+export const DetailDepartMent: FC<Props> = ({ dataDetail }) => {
   const [gridGroup, setGridGroup] = useState<IGroup[]>([]);
   const [gridMember, setGridMember] = useState<IMember[]>([]);
 
   useEffect(() => {
+    let data: IGroup[] = [];
     if (dataDetail.groups && dataDetail.members) {
       setGridMember(dataDetail.members);
-      setGridGroup(dataDetail.groups);
+      dataDetail.groups.forEach((group) => {
+        group.members.forEach((i) => {
+          data.push({
+            id: i.id,
+            jobTitle: i.jobTitle,
+            fullName: i.fullName,
+            name: group.name,
+            idGroup: group.id,
+          });
+        });
+      });
+      setGridGroup(data);
     }
   }, [dataDetail]);
-
-  const handleDel = useCallback((e: any, row: any) => {
-    // handle delete
-  }, []);
   const columnsGridMember: GridColDef[] = [
     {
       field: "jobTitle",
@@ -48,34 +61,16 @@ export const DetailDepartMent: FC<Props> = ({ dataDetail, listSubject }) => {
       minWidth: 200,
       renderCell: (params) => {
         return (
-          <Link to={`/detail_employee/${params.id}`}>
+          <Link
+            style={{
+              textDecoration: "none",
+              color: "#5ae1ff",
+              fontWeight: "bold",
+            }}
+            to={`/detail_employee/${params.id}`}
+          >
             <span>{params.value}</span>
           </Link>
-        );
-      },
-    },
-  ];
-  const columnsGroup: GridColDef[] = [
-    {
-      field: "name",
-      headerName: "",
-      type: "string",
-      minWidth: 400,
-    },
-    {
-      field: "actions",
-      headerName: "Actions",
-      width: 400,
-      renderCell: (params) => {
-        return (
-          <>
-            <IconButton onClick={(e) => handleDel(e, params.row)}>
-              <DeleteIcon />
-            </IconButton>
-            <IconButton>
-              <MoreHorizIcon />
-            </IconButton>
-          </>
         );
       },
     },
@@ -95,23 +90,46 @@ export const DetailDepartMent: FC<Props> = ({ dataDetail, listSubject }) => {
             columns={columnsGridMember}
           />
         </Grid>
+
         <Grid sx={{ marginTop: "20px", width: "100%" }} item>
-          <DataGrid
-            sx={{
-              height: "400px",
-            }}
-            rows={gridGroup}
-            columns={columnsGroup}
-          />
-        </Grid>
-        <Grid sx={{ marginTop: "20px", width: "100%" }} item>
-          <DataGrid
-            sx={{
-              height: "400px",
-            }}
-            rows={gridGroup}
-            columns={columnsGroup}
-          />
+          <DevExtremeDataGrid
+            allowColumnReordering={true}
+            width="100%"
+            height="400px"
+            showBorders={true}
+            hoverStateEnabled
+            dataSource={gridGroup}
+          >
+            <Grouping autoExpandAll={false} expandMode="rowClick" />
+            <Column dataField="jobTitle" caption="Chức vụ"></Column>
+            <Column
+              dataField="fullName"
+              caption="Họ tên"
+              cellRender={(e) => {
+                return (
+                  <Link
+                    style={{
+                      textDecoration: "none",
+                      color: "#5ae1ff",
+                      fontWeight: "bold",
+                    }}
+                    to={`/detail_employee/${e.data.id}`}
+                  >
+                    <span>{e.data.fullName}</span>
+                  </Link>
+                );
+              }}
+            ></Column>
+            <Column
+              dataField="name"
+              caption=""
+              dataType="string"
+              groupIndex={0}
+            />
+            <Summary>
+              <GroupItem column="name" />
+            </Summary>
+          </DevExtremeDataGrid>
         </Grid>
       </Grid>
     </Box>

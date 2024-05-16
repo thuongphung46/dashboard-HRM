@@ -1,7 +1,6 @@
 import { Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { FC } from "react";
-import { useGetListDepartment } from "services/hooks/useGetListDepartment";
 import { StatisticData } from "services/hooks/useGetStatistic";
 
 interface Props {
