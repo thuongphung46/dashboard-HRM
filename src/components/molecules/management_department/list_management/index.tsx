@@ -10,15 +10,13 @@ import { useCreateDepartment } from "services/hooks/useGetListDepartment";
 import { toast } from "react-toastify";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import FormControl from "@mui/material/FormControl";
-import { InputLabel, Typography, TextField } from "@mui/material";
 import { DepartmentService } from "services/model_management_service";
 import { MessageCode } from "types/enum/message_code";
 import { toastMessage } from "components/molecules/toast_message";
 
 interface Props {
   departmentList: any[];
-  setDepartmentList: (id: any) => void;
+  setDepartmentList: (data: any) => void;
   handleClickItem: (item: any) => void;
   active: any;
 }
@@ -162,44 +160,65 @@ export const ListDepartment: FC<Props> = ({
     setOpenPEdit(false);
   }, []);
 
-  const handleDel = useCallback((e: any) => {
-    DepartmentService.Delete({
-      id: e.id,
-    }).then((res) => {
-      if (res && res?.msg_code === MessageCode.Failed) {
-        toastMessage(
-          "Xóa thất bại! Phòng ban đang tồn tại nhân viên.",
-          "error"
-        );
-      } else {
-        setDepartmentList(departmentList.filter((item) => item.id !== e.id));
-        toastMessage("Xóa thành công", "success");
-      }
-    });
-  }, []);
+  const handleDel = useCallback(
+    (e: any) => {
+      DepartmentService.Delete({
+        id: e.id,
+      }).then((res) => {
+        if (res && res?.msg_code === MessageCode.Failed) {
+          toastMessage(
+            "Xóa thất bại! Phòng ban đang tồn tại nhân viên.",
+            "error"
+          );
+        } else {
+          setDepartmentList(departmentList.filter((item) => item.id !== e.id));
+          toastMessage("Xóa thành công", "success");
+        }
+      });
+    },
+    [setDepartmentList, departmentList]
+  );
   const handleEdit = useCallback(() => {
     console.log("data: ", dataEdit);
-    // DepartmentService.Update({
-    //   id: dataEdit.id,
-    //   name: dataEdit.name,
-    //   parentDeptId: dataEdit.parentDeptId,
-    //   type: dataEdit.type,
-    // }).then((res) => {
-    //   console.log(res);
-    // });
+    DepartmentService.Update({
+      id: dataEdit.id,
+      name: dataEdit.name,
+      parentDeptId: dataEdit.parentDeptId,
+      type: dataEdit.type,
+    }).then((res) => {
+      console.log(res);
+    });
   }, [dataEdit]);
 
   const handleOnChange = useCallback(
     (e: any) => {
-      console.log("e.target.value: ", e.target.value);
-      // setDataEdit({ ...dataEdit, name: e.target.value });
-      // những trường khác không đổi  chỉ đổi name
-      setDataEdit({ ...dataEdit, name: e.target.value });
+      setDataEdit({ ...dataEdit, [e.target.name]: e.target.value });
     },
     [dataEdit]
   );
 
   const renderPopupEdit = useMemo(() => {
+    const fieldPopupEdit: IFormData[] = [
+      { id: "name", label: "Tên cấp quản lý", type: "text" },
+      {
+        id: "parentDeptId",
+        label: "Trực thuộc cấp",
+        type: "select",
+        options: departmentList.map((department) => ({
+          label: department.name,
+          value: department.id,
+        })),
+      },
+      {
+        id: "type",
+        label: "Loại",
+        type: "select",
+        options: [
+          { value: "education", label: "Giảng dạy" },
+          { value: "back_office", label: "Quản trị" },
+        ],
+      },
+    ];
     return (
       <>
         <Modal
@@ -226,20 +245,25 @@ export const ListDepartment: FC<Props> = ({
             <Button onClick={handleEdit} variant="outlined">
               Lưu
             </Button>
-            <InputLabel>Tên cấp quản lý</InputLabel>
-            <TextField
-              size="small"
-              fullWidth
-              name={"department"}
-              type={"text"}
-              onChange={handleOnChange}
-            />
-            <FormControl></FormControl>
+            {fieldPopupEdit.map((field) => (
+              <ReusableField
+                field={field}
+                formData={dataEdit}
+                hanldeOnChangefield={handleOnChange}
+                key={field.id}></ReusableField>
+            ))}
           </div>
         </Modal>
       </>
     );
-  }, [openPEdit]);
+  }, [
+    openPEdit,
+    departmentList,
+    dataEdit,
+    handleCloseEdit,
+    handleEdit,
+    handleOnChange,
+  ]);
 
   return (
     <div
