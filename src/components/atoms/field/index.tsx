@@ -27,7 +27,7 @@ const ReusableField: FC<Props> = ({ field, hanldeOnChangefield, formData }) => {
   return (
     <>
       <Grid item xs={6} key={field.id}>
-        <Grid container alignItems="center">
+        <Grid container  alignItems="center">
           <Grid item xs={5}>
             <InputLabel htmlFor={field.id}>{field.label}</InputLabel>
           </Grid>

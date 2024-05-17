@@ -279,7 +279,7 @@ export const ListDepartment: FC<Props> = ({
   return (
     <div
       style={{
-        width: "40%",
+        width: "30%",
       }}>
       <Button variant="outlined" onClick={handleShowPopupAdd}>
         Thêm phòng ban
