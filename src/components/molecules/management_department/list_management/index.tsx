@@ -179,16 +179,27 @@ export const ListDepartment: FC<Props> = ({
     [setDepartmentList, departmentList]
   );
   const handleEdit = useCallback(() => {
-    console.log("data: ", dataEdit);
     DepartmentService.Update({
       id: dataEdit.id,
       name: dataEdit.name,
       parentDeptId: dataEdit.parentDeptId,
       type: dataEdit.type,
     }).then((res) => {
-      console.log(res);
+      if (res && res?.msg_code === MessageCode.Success) {
+        setDepartmentList(
+          departmentList.map((item) => {
+            if (item.id === dataEdit.id) {
+              return dataEdit;
+            }
+            return item;
+          })
+        );
+        toastMessage("Cập nhật thành công!", "success");
+      } else {
+        toastMessage("Thất bại", "error");
+      }
     });
-  }, [dataEdit]);
+  }, [dataEdit, departmentList, setDepartmentList]);
 
   const handleOnChange = useCallback(
     (e: any) => {
