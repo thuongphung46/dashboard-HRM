@@ -54,6 +54,10 @@ export const ListDepartment: FC<Props> = ({
   const handleClose = useCallback(() => {
     setOpen(false);
   }, []);
+  const dataOptions = departmentList.map((department) => ({
+    label: department.name,
+    value: department.id,
+  }));
 
   const renderPopup = useMemo(() => {
     const fieldData: IFormData[] = [
@@ -62,10 +66,10 @@ export const ListDepartment: FC<Props> = ({
         id: "parent",
         label: "Trực thuộc cấp",
         type: "select",
-        options: departmentList.map((department) => ({
-          label: department.name,
-          value: department.id,
-        })),
+        options: [
+          { value: undefined, label: "không thuộc cấp quản lý nào" },
+          ...dataOptions,
+        ],
       },
       {
         id: "type",
@@ -95,6 +99,8 @@ export const ListDepartment: FC<Props> = ({
       if (response && response?.message === "success") {
         toast("Thành công");
         handleClose();
+        //add lại state
+        setDepartmentList([...departmentList, body]);
         setFormData({});
       } else {
         toast(response?.message || "Tạo mới phòng ban không thành công");
