@@ -1,33 +1,19 @@
 import { GridColDef } from "@mui/x-data-grid/models/colDef";
 import { BaseGrid } from "components/atoms/datagrid";
-import { FC, useEffect } from "react";
+import { FC } from "react";
 
 interface IGridTraining {
   handleSave: (data: any) => void;
   handleRowSelect: (e: any) => void;
   dataSelectRow: any;
   dataSource: any;
-  gridRef: any;
 }
 export const GridTraining: FC<IGridTraining> = ({
   handleSave,
   dataSource,
-  gridRef,
   dataSelectRow,
   handleRowSelect,
 }) => {
-  useEffect(() => {
-    dataSource?.forEach((ele: any) => {
-      if (ele.fromDate) {
-        const fromDate = new Date(ele.fromDate);
-        ele.fromDate = fromDate;
-      }
-      if (ele.toDate) {
-        const toDate = new Date(ele.toDate);
-        ele.toDate = toDate;
-      }
-    });
-  }, [dataSource]);
 
   const columns2: GridColDef[] = [
     {
@@ -36,8 +22,9 @@ export const GridTraining: FC<IGridTraining> = ({
       width: 150,
       editable: true,
       type: "date",
-      renderCell: (params) =>
-        params.value ? new Date(params.value).toLocaleDateString() : "",
+      valueFormatter: (params) => {
+        return params.value ? new Date(params.value).toLocaleDateString() : "";
+      },
     },
     {
       field: "toDate",
@@ -45,8 +32,9 @@ export const GridTraining: FC<IGridTraining> = ({
       width: 150,
       editable: true,
       type: "date",
-      renderCell: (params) =>
-        params.value ? new Date(params.value).toLocaleDateString() : "",
+      valueFormatter: (params) => {
+        return params.value ? new Date(params.value).toLocaleDateString() : "";
+      },
     },
     {
       field: "workingPlace",
