@@ -19,10 +19,10 @@ export const Overview: React.FC<Props> = ({ data, all_data }) => {
     numOfPeriodsReduced: 0, //số tiết được giảm trừ
   });
   const { data: ListReason } = useGetListReasonReduce();
-  const handleChangeRearon = useCallback((data:any) => {
+  const handleChangeRearon = useCallback((data: any) => {
     setSum((prevSum) => ({
       ...prevSum,
-      numOfPeriodsReduced: Math.ceil(data.target.value * 270 / 100),
+      numOfPeriodsReduced: Math.ceil((data.target.value * 270) / 100),
     }));
   }, []);
 
@@ -43,9 +43,26 @@ export const Overview: React.FC<Props> = ({ data, all_data }) => {
               }}
             >
               <FormControl fullWidth>
-                <Select name="reason" label={"Lý do giảm trừ"}  onChange={handleChangeRearon}>
+                <Select
+                  name="reason"
+                  label={"Lý do giảm trừ"}
+                  onChange={handleChangeRearon}
+                >
                   {ListReason?.map((item, index) => {
-                    return <MenuItem key={index} value={item.ratio}>{item.name}</MenuItem>;
+                    return (
+                      <MenuItem key={index} value={item.ratio}>
+                        <div
+                          style={{
+                            display: "flex",
+                            width: "100%",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          {item.name} <span>{item.ratio}%</span>
+                        </div>
+                      </MenuItem>
+                    );
                   })}
                 </Select>
               </FormControl>
