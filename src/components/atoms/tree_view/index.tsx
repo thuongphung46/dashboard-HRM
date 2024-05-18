@@ -76,9 +76,7 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData }) => {
             "error"
           );
         } else {
-          setData(
-            data.filter((item) => item.itemId !== e.itemId)
-          );
+          setData(data.filter((item) => item.itemId !== e.itemId));
           toastMessage("Xóa thành công", "success");
         }
       });
@@ -105,12 +103,20 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData }) => {
             return item;
           })
         );
+        setOpen(false);
         toastMessage("Cập nhật thành công!", "success");
       } else {
         toastMessage("Thất bại", "error");
       }
     });
-  }, [data, dataEdit.id, dataEdit.name, dataEdit.parentDeptId, dataEdit.type, setData]);
+  }, [
+    data,
+    dataEdit.id,
+    dataEdit.name,
+    dataEdit.parentDeptId,
+    dataEdit.type,
+    setData,
+  ]);
 
   const renderPopup = useMemo(() => {
     const fieldData: IFormData[] = [
@@ -137,8 +143,7 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData }) => {
           alignItems: "center",
           height: "100%",
           width: "100%",
-        }}
-      >
+        }}>
         <div
           style={{
             height: "300px",
@@ -147,41 +152,40 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData }) => {
             padding: "24px",
             borderRadius: "4px",
             boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
-          }}
-        >
+          }}>
           <Box>
-            {departmentData && fieldData.map((field, index) => (
-              <div key={index}>
-                <InputLabel htmlFor={field.id}>{field.label}</InputLabel>
-                {field.type === "select" && field.options ? (
-                  <FormControl fullWidth>
-                    <Select
-                      name={field.id}
+            {departmentData &&
+              fieldData.map((field, index) => (
+                <div key={index}>
+                  <InputLabel htmlFor={field.id}>{field.label}</InputLabel>
+                  {field.type === "select" && field.options ? (
+                    <FormControl fullWidth>
+                      <Select
+                        name={field.id}
+                        size="small"
+                        id={field.id}
+                        defaultValue={dataEdit[field.id] || ""}
+                        onChange={hanldeOnChangefield}>
+                        {field.options.map((option, index) => (
+                          <MenuItem key={index} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  ) : (
+                    <TextField
                       size="small"
+                      fullWidth
                       id={field.id}
-                      defaultValue={dataEdit[field.id]||""}
+                      name={field.id}
+                      type={field.type}
+                      defaultValue={dataEdit[field.id] || ""}
                       onChange={hanldeOnChangefield}
-                    >
-                      {field.options.map((option, index) => (
-                        <MenuItem key={index} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                ) : (
-                  <TextField
-                    size="small"
-                    fullWidth
-                    id={field.id}
-                    name={field.id}
-                    type={field.type}
-                    defaultValue={dataEdit[field.id] || ""}
-                    onChange={hanldeOnChangefield}
-                  />
-                )}
-              </div>
-            ))}
+                    />
+                  )}
+                </div>
+              ))}
           </Box>
           <Box
             sx={{
@@ -189,12 +193,8 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData }) => {
               alignItems: "center",
               justifyContent: "flex-end",
               marginTop: "10px",
-            }}
-          >
-            <Button
-              variant="outlined"
-              onClick={handleSave}
-            >
+            }}>
+            <Button variant="outlined" onClick={handleSave}>
               Lưu
             </Button>
           </Box>
@@ -220,8 +220,7 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData }) => {
             justifyContent: "space-between",
           }}
           container
-          alignItems="center"
-        >
+          alignItems="center">
           <Grid item>
             <Typography> {item.label}</Typography>
           </Grid>
@@ -229,7 +228,7 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData }) => {
             <Button onClick={() => handleShowPopupEdit(item)}>
               <EditIcon />
             </Button>
-            <Button onClick={()=>handleDel(item)}>
+            <Button onClick={() => handleDel(item)}>
               <DeleteIcon />
             </Button>
           </Grid>
@@ -248,13 +247,11 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData }) => {
           alignItems: "center",
         }}
         container
-        alignItems="center"
-      >
+        alignItems="center">
         <Typography
           sx={{
             width: "250px",
-          }}
-        >
+          }}>
           {item.jobTitle}
         </Typography>
         <Link
@@ -263,8 +260,7 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData }) => {
             color: "#5ae1ff",
             fontWeight: "bold",
           }}
-          to={`/detail_employee/${item.id}`}
-        >
+          to={`/detail_employee/${item.id}`}>
           <Typography>{item.fullName}</Typography>
         </Link>
       </Grid>
@@ -279,14 +275,12 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData }) => {
           flexGrow: 1,
           width: "100%",
           overflowY: "auto",
-        }}
-      >
+        }}>
         {data.map((item) => (
           <TreeItem
             key={item.itemId}
             itemId={item.itemId}
-            label={renderLabelParent(item)}
-          >
+            label={renderLabelParent(item)}>
             {item.children?.map((child) => (
               <TreeItem
                 key={child.id}

@@ -45,7 +45,7 @@ export const fieldsData: IFormData[] = [
   { id: "dateOfBirth", label: "Ngày sinh", type: "date" },
   { id: "personalEmail", label: "Email", type: "text" },
   { id: "phoneNumber", label: "Số điện thoại", type: "text" },
-  { id: "currentWorking", label: "Đơn vị công tác", type: "text" },
+  { id: "workingPlace", label: "Đơn vị công tác hiện tại", type: "text" },
   { id: "departmentId", label: "Cấp quản lý", type: "select", options: [] },
   {
     id: "groupId",
