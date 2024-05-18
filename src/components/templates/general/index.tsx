@@ -1,74 +1,111 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { GeneralPosition } from "components/molecules/general/position_columns";
 import { GeneralResion } from "components/molecules/general/resion_columns";
 import { GeneralRank } from "components/molecules/general/rank_columns";
+import InputLabel from "@mui/material/InputLabel";
+import Input from "@mui/material/Input";
 import { Box, Button } from "@mui/material";
-import ReusableField from "components/atoms/field";
-import { fields } from "./fields";
 
 interface Props {
-  GenneralData: GeneralEdit;
+  GenneralData: any[];
 }
 
-export interface GeneralEdit {
-  teaching?: number;
-  base_salary?: number;
-  time_worked?: number;
-  [key: string]: any;
+interface GeneralEdit {
+  teaching: string;
+  base_salary: string;
+  time_worked: string;
 }
 
-export interface GeneralField {
+interface GeneralField {
   name: string;
   label: string;
-  type: string;
-  defaultValue: number | string;
+  value: number | string;
 }
 
-export const MultipleTablesPage = ({ GenneralData }: Props) => {
+export const MultipleTablesPage: FC<Props> = ({ GenneralData }) => {
+  const [GeneralField, setGeneralField] = useState<GeneralField[]>([]);
   const [GeneralEdit, setGeneralEdit] = useState<GeneralEdit>({
-    teaching: 0,
-    base_salary: 0,
-    time_worked: 0,
+    teaching: "",
+    base_salary: "",
+    time_worked: "",
   });
   const [edited, setEdited] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (GenneralData) {
+      const initialFieldData = [
+        {
+          name: "teaching",
+          label: "Số tiết phải giảng dạy",
+          value:
+            GenneralData.find((item) => item.name === "teaching")?.value || "",
+        },
+        {
+          name: "base_salary",
+          label: "Mức lương cơ sở",
+          value:
+            GenneralData.find((item) => item.name === "base_salary")?.value ||
+            "",
+        },
+        {
+          name: "time_worked",
+          label: "Thời gian công tác để đề xuất tăng hệ số lương",
+          value:
+            GenneralData.find((item) => item.name === "time_worked")?.value ||
+            "",
+        },
+      ];
+      setGeneralField(initialFieldData);
+
+      setGeneralEdit({
+        teaching: initialFieldData[0].value.toString(),
+        base_salary: initialFieldData[1].value.toString(),
+        time_worked: initialFieldData[2].value.toString(),
+      });
+    }
+  }, [GenneralData]);
 
   const handleValueChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = event.target;
-      setGeneralEdit((prevState) => {
-        return {
-          ...prevState,
-          [name]: value,
-        };
-      });
+      setGeneralEdit((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
       setEdited(true);
     },
     []
   );
 
   const handleUpdate = useCallback(() => {
-    // Perform update logic here
     console.log("Updated data:", GeneralEdit);
   }, [GeneralEdit]);
 
   const renderGeneralFields = useMemo(() => {
     return (
       <>
-        {GenneralData &&
-          fields.map((item, index) => {
-            return (
-              <div key={index}>
-                <ReusableField
-                  field={item}
-                  formData={GenneralData}
-                  hanldeOnChangefield={handleValueChange}
-                />
-              </div>
-            );
-          })}
+        {GeneralField.map((item, index) => (
+          <Box
+            key={index}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              marginBottom: "1rem",
+              width: "80%",
+              justifyContent: "space-between",
+            }}
+          >
+            <InputLabel>{item.label}</InputLabel>
+            <Input
+              name={item.name}
+              value={GeneralEdit[item.name as keyof GeneralEdit]}
+              onChange={handleValueChange}
+            />
+          </Box>
+        ))}
       </>
     );
-  }, [GenneralData, handleValueChange]);
+  }, [GeneralField, GeneralEdit, handleValueChange]);
 
   return (
     <Box
