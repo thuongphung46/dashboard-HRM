@@ -111,29 +111,18 @@ export const StatisticTemplate: FC<Props> = () => {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        padding: "8px",
+      }}
+    >
       <div>
-        {/* <FormControl sx={{ m: 1, minWidth: 120 }}>
-          <InputLabel variant="standard" htmlFor="semester">
-            Học kỳ:
-          </InputLabel>
-          <NativeSelect
-            defaultValue={10}
-            inputProps={{
-              name: "semester",
-              id: "semester",
-            }}
-          >
-            <option value={10}>Học kỳ I</option>
-            <option value={20}>Học kỳ II</option>
-          </NativeSelect>
-        </FormControl> */}
-
         <FormControl sx={{ m: 1, minWidth: 120 }}>
           <InputLabel htmlFor="year">Năm học: </InputLabel>
           <Select
             labelId="select-department-label"
             id="year"
+            label={"Năm học:"}
             value={statisticParams.schoolYear}
             onClick={onClickAgain}
             displayEmpty={false}
@@ -153,6 +142,7 @@ export const StatisticTemplate: FC<Props> = () => {
             labelId="select-department-label"
             id="select-department"
             multiple
+            label={"Chọn khoa"}
             value={selectedDepartments}
             onChange={handleDepartmentChange}
             renderValue={(selected) =>
@@ -176,6 +166,7 @@ export const StatisticTemplate: FC<Props> = () => {
             labelId="select-group-label"
             id="select-group"
             multiple
+            label={"Bộ môn"}
             value={selectedGroups} // Use selectedGroups state
             onChange={handleGroupChange}
             disabled={selectedDepartments.length > 1}
