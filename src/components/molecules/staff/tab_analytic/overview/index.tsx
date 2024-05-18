@@ -1,7 +1,8 @@
-import { Box } from "@mui/material";
+import { Box, FormControl, MenuItem, Select } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid/DataGrid/DataGrid";
 import { GridColDef } from "@mui/x-data-grid/models/colDef/gridColDef";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { useGetListReasonReduce } from "services/hooks/useGetListReasonReduce";
 import { StaffDetail, StaffSummary } from "types/ApplicationType";
 
 interface Props {
@@ -17,12 +18,42 @@ export const Overview: React.FC<Props> = ({ data, all_data }) => {
     numOfUnfinishedPeriods: 0, //số tiết chưa hoàn thành nghiên cứu KH
     numOfPeriodsReduced: 0, //số tiết được giảm trừ
   });
+  const { data: ListReason } = useGetListReasonReduce();
+  const handleChangeRearon = useCallback((data:any) => {
+    setSum((prevSum) => ({
+      ...prevSum,
+      numOfPeriodsReduced: Math.ceil(data.target.value * 270 / 100),
+    }));
+  }, []);
 
   const columns: GridColDef[] = [
     { field: "schoolYear", headerName: "Năm học", width: 150 },
     { field: "contentWork", headerName: "Nội dung công việc", width: 400 },
     { field: "numberOfLesson", headerName: "Số tiết dạy", width: 150 },
-    { field: "reasonReduce", headerName: "Lý do giảm trừ", width: 500 },
+    {
+      field: "reasonReduce",
+      headerName: "Lý do giảm trừ",
+      width: 500,
+      renderCell: (prams) => {
+        if (prams.id === "IV") {
+          return (
+            <Box
+              sx={{
+                width: "500px",
+              }}
+            >
+              <FormControl fullWidth>
+                <Select name="reason" label={"Lý do giảm trừ"}  onChange={handleChangeRearon}>
+                  {ListReason?.map((item, index) => {
+                    return <MenuItem key={index} value={item.ratio}>{item.name}</MenuItem>;
+                  })}
+                </Select>
+              </FormControl>
+            </Box>
+          );
+        }
+      },
+    },
   ];
 
   useEffect(() => {
