@@ -42,7 +42,6 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData }) => {
   const { data: departmentData } = useGetListDepartment();
 
   const handleShowPopupEdit = useCallback((data: any) => {
-    console.log(data);
     setDataEdit({
       id: data.itemId,
       name: data.label,
@@ -73,15 +72,14 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData }) => {
       parentDeptId: dataEdit.parentDeptId,
       type: dataEdit.type,
     }).then((res) => {
+      console.log(res);
       if (res && res?.msg_code === MessageCode.Success) {
         setData(
-          departmentData.map((item) => {
-            if (item.id === dataEdit.id) {
+          data.map((item) => {
+            if (item.itemId === dataEdit.id) {
               return {
                 ...item,
-                name: dataEdit.name,
-                parentDeptId: dataEdit.parentDeptId,
-                type: dataEdit.type,
+                label: dataEdit.name,
               };
             }
             return item;
@@ -92,20 +90,11 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData }) => {
         toastMessage("Thất bại", "error");
       }
     });
-  }, [dataEdit, departmentData, setData]);
+  }, [data, dataEdit.id, dataEdit.name, dataEdit.parentDeptId, dataEdit.type, setData]);
 
   const renderPopup = useMemo(() => {
     const fieldData: IFormData[] = [
       { id: "name", label: "Tên cấp quản lý", type: "text" },
-      {
-        id: "parentDeptId",
-        label: "Trực thuộc cấp",
-        type: "select",
-        options: departmentData.map((department) => ({
-          label: department.name,
-          value: department.id,
-        })),
-      },
       {
         id: "type",
         label: "Loại",
