@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import { InfoStaff } from "./info_staff";
 import { WorkingHistory } from "./working_history";
 import { Analytic } from "components/molecules/staff/tab_analytic";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetStaff } from "services/hooks/useGetListStaff";
 import { Action } from "types/action";
 import { StaffService } from "services/staff_service";
@@ -17,6 +17,7 @@ interface Props extends Action {}
 
 export const TabDetailStaff: FC<Props> = ({ action }) => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [value, setValue] = useState(0);
   const [formData, setFormData] = useState<any>({});
   const { data, loading } = useGetStaff(id);
@@ -40,13 +41,23 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
   }, [formData]);
 
   return (
-    <div>
-      <Button onClick={handleOnClickSave}>Lưu</Button>
+    <div style={{ padding: "8px" }}>
+      <Button variant="outlined" onClick={() => navigate(-1)}>
+        Thoát
+      </Button>
+      <Button
+        variant="outlined"
+        sx={{ marginLeft: "4px" }}
+        onClick={handleOnClickSave}
+      >
+        Lưu
+      </Button>
       <Tabs
         value={value}
         onChange={handleChange}
         aria-label="nav tabs example"
-        role="navigation">
+        role="navigation"
+      >
         <Tab label="Thông tin chung" />
         {action === "edit" && <Tab label="Quá trình làm việc tại đơn vị" />}
         {action === "edit" && <Tab label="Thống kê" />}
@@ -92,7 +103,8 @@ function TabPanel(props: TabPanelProps) {
       hidden={value !== index}
       id={`tabpanel-${index}`}
       aria-labelledby={`tab-${index}`}
-      {...other}>
+      {...other}
+    >
       {value === index && (
         <Box sx={{ p: 3, height: "calc(100vh - 150px)", overflow: "auto" }}>
           {children}

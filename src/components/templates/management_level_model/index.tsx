@@ -31,8 +31,9 @@ export const ManagementLevelModelTemplate = () => {
       style={{
         display: "flex",
         width: "100%",
-        padding:"8px"
-      }}>
+        height: "calc(100vh - 100px)",
+      }}
+    >
       <ListDepartment
         handleClickItem={handleClickItem}
         departmentList={departmentList}

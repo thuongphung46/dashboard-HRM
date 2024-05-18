@@ -7,7 +7,7 @@ interface Props {
 
 export const ManagementLevelModelPage: FC<Props> = ({ form_state }) => {
   return (
-    <div>
+    <div style={{ padding: "8px" }}>
       <ManagementLevelModelTemplate></ManagementLevelModelTemplate>
     </div>
   );
