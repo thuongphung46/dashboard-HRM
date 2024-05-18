@@ -98,7 +98,7 @@ export const ListDepartment: FC<Props> = ({
       const response = await createDepartment(body);
       if (response && response?.message === "success") {
         toast("Thành công");
-        handleClose();
+        setOpen(false);
         //add lại state
         setDepartmentList([...departmentList, body]);
         setFormData({});
@@ -200,6 +200,7 @@ export const ListDepartment: FC<Props> = ({
             return item;
           })
         );
+        setOpenPEdit(false);
         toastMessage("Cập nhật thành công!", "success");
       } else {
         toastMessage("Thất bại", "error");
@@ -216,16 +217,7 @@ export const ListDepartment: FC<Props> = ({
 
   const renderPopupEdit = useMemo(() => {
     const fieldPopupEdit: IFormData[] = [
-      { id: "name", label: "Tên cấp quản lý", type: "text" },
-      {
-        id: "parentDeptId",
-        label: "Trực thuộc cấp",
-        type: "select",
-        options: departmentList.map((department) => ({
-          label: department.name,
-          value: department.id,
-        })),
-      },
+      { id: "name", label: "Tên cấp quản lýP", type: "text" },
       {
         id: "type",
         label: "Loại",
