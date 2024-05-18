@@ -4,7 +4,11 @@ export const TeachingContractTemplate = () => {
   // code truyền state từ đây
 
   return (
-    <div>
+    <div
+      style={{
+        padding: "8px",
+      }}
+    >
       <TeachingContractPage />
     </div>
   );
