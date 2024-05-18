@@ -78,12 +78,12 @@ export const DetailDepartMent: FC<Props> = ({ dataDetail }) => {
         </Grid>
 
         <Grid sx={{ marginTop: "20px", width: "100%" }} item>
-          <TreeView data={gridGroup} setData={
-            (data: TreeItemData[]) => {
+          <TreeView
+            data={gridGroup}
+            setData={(data: TreeItemData[]) => {
               setGridGroup(data);
-            }
-          
-          }></TreeView>
+            }}
+          ></TreeView>
         </Grid>
       </Grid>
     </Box>
