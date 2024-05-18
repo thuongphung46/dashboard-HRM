@@ -119,7 +119,8 @@ export const ListDepartment: FC<Props> = ({
           alignItems: "center",
           height: "100%",
           width: "100%",
-        }}>
+        }}
+      >
         <div
           style={{
             height: "400px",
@@ -128,7 +129,8 @@ export const ListDepartment: FC<Props> = ({
             padding: "24px",
             borderRadius: "4px",
             boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
-          }}>
+          }}
+        >
           <h4>Thêm cấp quản lý</h4>
           <Button variant="outlined" onClick={handleSave}>
             Lưu
@@ -138,17 +140,20 @@ export const ListDepartment: FC<Props> = ({
               field={field}
               formData={formData}
               hanldeOnChangefield={hanldeOnChangefield}
-              key={field.id}></ReusableField>
+              key={field.id}
+            ></ReusableField>
           ))}
         </div>
       </Modal>
     );
   }, [
-    departmentList,
+    dataOptions,
     open,
     handleClose,
     formData,
     createDepartment,
+    setDepartmentList,
+    departmentList,
     hanldeOnChangefield,
   ]);
 
@@ -241,7 +246,8 @@ export const ListDepartment: FC<Props> = ({
             alignItems: "center",
             height: "100%",
             width: "100%",
-          }}>
+          }}
+        >
           <div
             style={{
               height: "400px",
@@ -250,7 +256,8 @@ export const ListDepartment: FC<Props> = ({
               padding: "24px",
               borderRadius: "4px",
               boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
-            }}>
+            }}
+          >
             <Button onClick={handleEdit} variant="outlined">
               Lưu
             </Button>
@@ -259,26 +266,21 @@ export const ListDepartment: FC<Props> = ({
                 field={field}
                 formData={dataEdit}
                 hanldeOnChangefield={handleOnChange}
-                key={field.id}></ReusableField>
+                key={field.id}
+              ></ReusableField>
             ))}
           </div>
         </Modal>
       </>
     );
-  }, [
-    openPEdit,
-    departmentList,
-    dataEdit,
-    handleCloseEdit,
-    handleEdit,
-    handleOnChange,
-  ]);
+  }, [openPEdit, dataEdit, handleCloseEdit, handleEdit, handleOnChange]);
 
   return (
     <div
       style={{
         width: "30%",
-      }}>
+      }}
+    >
       <Button variant="outlined" onClick={handleShowPopupAdd}>
         Thêm phòng ban
       </Button>
@@ -292,7 +294,8 @@ export const ListDepartment: FC<Props> = ({
           maxHeight: `calc(100vh - 120px)`,
         }}
         component="nav"
-        aria-labelledby="nested-list-subheader">
+        aria-labelledby="nested-list-subheader"
+      >
         {departmentList.map((item) => {
           return (
             <ListItem
@@ -306,7 +309,8 @@ export const ListDepartment: FC<Props> = ({
                 padding: "0px 4px",
                 height: 54,
               }}
-              key={item.id}>
+              key={item.id}
+            >
               <ListItemText
                 sx={{
                   height: "100%",
@@ -314,17 +318,20 @@ export const ListDepartment: FC<Props> = ({
                   display: "flex",
                   alignItems: "center",
                 }}
-                onClick={() => handleClickItem(item)}>
+                onClick={() => handleClickItem(item)}
+              >
                 {item.name}
               </ListItemText>
               <ListItemButton
                 onClick={() => handleOpenEdit(item)}
-                sx={{ height: "100%", width: "14%" }}>
+                sx={{ height: "100%", width: "14%" }}
+              >
                 <EditIcon />
               </ListItemButton>
               <ListItemButton
                 onClick={() => handleDel(item)}
-                sx={{ height: "100%", width: "14%" }}>
+                sx={{ height: "100%", width: "14%" }}
+              >
                 <DeleteIcon />
               </ListItemButton>
             </ListItem>

@@ -42,19 +42,18 @@ export const useGetStaff = (id: string | undefined) => {
   const [data, setData] = useState<StaffDetail | any>({});
   const [loading, setLoading] = useState<boolean>(true);
 
-  const fetchData = async () => {
-    setLoading(true);
-    if (id) {
-      const response = await NetWork.get(`${API_URL.STAFFS}/${id}`);
-      if (response.status === RESPONSE_CODE.SUCCESS) {
-        setData(response?.data?.content);
-      }
-    }
-    setLoading(false);
-  };
   useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      if (id) {
+        const response = await NetWork.get(`${API_URL.STAFFS}/${id}`);
+        if (response.status === RESPONSE_CODE.SUCCESS) {
+          setData(response?.data?.content);
+        }
+      }
+      setLoading(false);
+    };
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   return { data, loading };
