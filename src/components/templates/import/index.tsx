@@ -87,14 +87,16 @@ export const ImportTemplate = () => {
   }
 
   return (
-    <div>
+    <div style={{
+      padding:"8px"
+    }}>
       
       <div>
         <Select
           value={importOptionFile}
           onChange={onChangeOptionFile}
           displayEmpty
-          style={{ margin: "10px", width: "200px" }}
+          style={{ marginTop: "10px",marginRight: "10px",  width: "200px" }}
         >
           <MenuItem value="" disabled>
             Chọn loại file
@@ -104,7 +106,7 @@ export const ImportTemplate = () => {
         </Select>
         <input
           accept=".xlsx"
-          style={{ display: "none" }}
+          style={{ display: "none"}}
           id="raised-button-file"
           type="file"
           ref={fileInput1}
@@ -122,11 +124,10 @@ export const ImportTemplate = () => {
           onChange={onChangeOptinTerm}
           displayEmpty
           disabled = {isDisableField()}
-          style={{ margin: "10px", width: "200px" }}
+          style={{ marginTop: "10px", width: "200px" }}
         >
           <MenuItem value="" disabled>
-            {" "}
-            Chọn học kỳ{" "}
+            Chọn học kỳ
           </MenuItem>
           <MenuItem value="Học kỳ I">Học kỳ I</MenuItem>
           <MenuItem value="Học kỳ II">Học kỳ II</MenuItem>
@@ -138,7 +139,7 @@ export const ImportTemplate = () => {
           onChange={onChangeSchoolYear}
           displayEmpty
           disabled = {isDisableField()}
-          style={{ margin: "10px", width: "200px" }}
+          style={{ marginTop: "10px", width: "200px" }}
         >
           <MenuItem value="" disabled>
             Chọn năm học
