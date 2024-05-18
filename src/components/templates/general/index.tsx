@@ -1,82 +1,88 @@
-import React, { FC } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { GeneralPosition } from "components/molecules/general/position_columns";
 import { GeneralResion } from "components/molecules/general/resion_columns";
 import { GeneralRank } from "components/molecules/general/rank_columns";
-import InputLabel from "@mui/material/InputLabel";
-import Input from "@mui/material/Input";
-import { useGeneralConfig } from "services/hooks/useGeneralConfig";
+import { Box, Button } from "@mui/material";
+import ReusableField from "components/atoms/field";
+import { fields } from "./fields";
 
-interface Props {}
+interface Props {
+  GenneralData: GeneralEdit;
+}
 
-export const MultipleTablesPage: FC<Props> = () => {
-  // const [giangDay, setGiangDay] = useState(""); // State for "Số tiết phải giảng dạy"
-  // const [luongCoSo, setLuongCoSo] = useState(""); // State for "Mức lương cơ sở"
-  // const [thoiGianCongTac, setThoiGianCongTac] = useState(""); // State for "Thời gian công tác để đề xuất tăng hệ số lương"
+export interface GeneralEdit {
+  teaching?: number;
+  base_salary?: number;
+  time_worked?: number;
+  [key: string]: any;
+}
 
-  const { data } = useGeneralConfig();
+export interface GeneralField {
+  name: string;
+  label: string;
+  type: string;
+  defaultValue: number | string;
+}
 
-  const giangDay = data.filter((item) => item.name === "teaching")[0]?.value;
-  const luongCoSo = data.filter((item) => item.name === "base_salary")[0]
-    ?.value;
-  const thoiGianCongTac = data.filter((item) => item.name === "time_worked")[0]
-    ?.value;
+export const MultipleTablesPage = ({ GenneralData }: Props) => {
+  const [GeneralEdit, setGeneralEdit] = useState<GeneralEdit>({
+    teaching: 0,
+    base_salary: 0,
+    time_worked: 0,
+  });
+  const [edited, setEdited] = useState<boolean>(false);
 
-  const handleGiangDayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // setGiangDay(event.target.value); // Update state for "Số tiết phải giảng dạy"
-  };
+  const handleValueChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = event.target;
+      setGeneralEdit((prevState) => {
+        return {
+          ...prevState,
+          [name]: value,
+        };
+      });
+      setEdited(true);
+    },
+    []
+  );
 
-  const handleLuongCoSoChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    // setLuongCoSo(event.target.value); // Update state for "Mức lương cơ sở"
-  };
+  const handleUpdate = useCallback(() => {
+    // Perform update logic here
+    console.log("Updated data:", GeneralEdit);
+  }, [GeneralEdit]);
 
-  const handleThoiGianCongTacChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    // setThoiGianCongTac(event.target.value); // Update state for "Thời gian công tác để đề xuất tăng hệ số lương"
-  };
+  const renderGeneralFields = useMemo(() => {
+    return (
+      <>
+        {GenneralData &&
+          fields.map((item, index) => {
+            return (
+              <div key={index}>
+                <ReusableField
+                  field={item}
+                  formData={GenneralData}
+                  hanldeOnChangefield={handleValueChange}
+                />
+              </div>
+            );
+          })}
+      </>
+    );
+  }, [GenneralData, handleValueChange]);
 
   return (
-    <div>
-      <div>
-        <InputLabel htmlFor="input">Số tiết phải giảng dạy</InputLabel>
-        <Input
-          id="input"
-          value={giangDay}
-          onChange={handleGiangDayChange}
-          style={{ marginBottom: "1rem" }}
-          disabled
-        />
-      </div>
-
-      <div>
-        <InputLabel htmlFor="base_salary">Mức lương cơ sở</InputLabel>
-        <Input
-          id="base_salary"
-          value={luongCoSo}
-          onChange={handleLuongCoSoChange}
-          style={{ marginBottom: "1rem" }}
-          disabled
-        />
-      </div>
-
-      <div>
-        <InputLabel htmlFor="work_time">
-          Thời gian công tác để đề xuất tăng hệ số lương
-        </InputLabel>
-        <Input
-          id="work_time"
-          value={thoiGianCongTac}
-          onChange={handleThoiGianCongTacChange}
-          style={{ marginBottom: "1rem" }}
-          disabled
-        />
-      </div>
-
+    <Box
+      sx={{
+        padding: "1rem",
+      }}
+    >
+      <Button disabled={!edited} onClick={handleUpdate}>
+        Lưu
+      </Button>
+      {renderGeneralFields}
       <GeneralResion />
       <GeneralPosition />
       <GeneralRank />
-    </div>
+    </Box>
   );
 };
