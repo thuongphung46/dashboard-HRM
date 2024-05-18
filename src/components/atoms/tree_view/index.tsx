@@ -65,6 +65,26 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData }) => {
     },
     [dataEdit]
   );
+  const handleDel = useCallback(
+    (e: any) => {
+      DepartmentService.Delete({
+        id: e.itemId,
+      }).then((res) => {
+        if (res && res?.msg_code === MessageCode.Failed) {
+          toastMessage(
+            "Xóa thất bại! Phòng ban đang tồn tại nhân viên.",
+            "error"
+          );
+        } else {
+          setData(
+            data.filter((item) => item.itemId !== e.itemId)
+          );
+          toastMessage("Xóa thành công", "success");
+        }
+      });
+    },
+    [data, setData]
+  );
   const handleSave = useCallback(() => {
     DepartmentService.Update({
       id: dataEdit.id,
@@ -209,14 +229,14 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData }) => {
             <Button onClick={() => handleShowPopupEdit(item)}>
               <EditIcon />
             </Button>
-            <Button>
+            <Button onClick={()=>handleDel(item)}>
               <DeleteIcon />
             </Button>
           </Grid>
         </Grid>
       );
     },
-    [handleShowPopupEdit]
+    [handleDel, handleShowPopupEdit]
   );
 
   const renderLabelChild = useCallback((item: any) => {
