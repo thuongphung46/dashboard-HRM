@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -44,7 +44,6 @@ interface Group {
 }
 
 export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
-  const gridRef = useRef<any>(null);
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
   const [departmentList, setDepartmentList] = useState<DepartmentData[]>([]);
   const { loading: loadingDepartment, data: departmentData } =
@@ -159,7 +158,6 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
           <GridTrainingSummary
             dataSource={action === "edit" ? data.trainingSummary : []}
             dataSelectRow={selectedRows}
-            gridRef={gridRef}
             handleSave={handleSave}
             handleRowSelect={handleRowSelectionChange}
           />
@@ -170,7 +168,6 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
               action === "edit" ? data.staffWorkingHistoriesOutAcademy : []
             }
             dataSelectRow={selectedRows}
-            gridRef={gridRef}
             handleSave={handleSave}
             handleRowSelect={handleRowSelectionChange}
           />

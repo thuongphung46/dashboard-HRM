@@ -7,12 +7,10 @@ interface IGridTraining {
   handleRowSelect: (e: any) => void;
   dataSelectRow: any;
   dataSource: any;
-  gridRef: any;
 }
 export const GridTrainingSummary: FC<IGridTraining> = ({
   handleSave,
   dataSource,
-  gridRef,
   dataSelectRow,
   handleRowSelect,
 }) => {
