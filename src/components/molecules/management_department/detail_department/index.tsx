@@ -64,7 +64,7 @@ export const DetailDepartMent: FC<Props> = ({ dataDetail }) => {
   return (
     <Box sx={{ width: "70%" }}>
       <Grid
-        sx={{ overflow: "auto", height: "calc(100vh - 70px)", padding: 2 }}
+        sx={{ overflow: "auto", height: "calc(100vh - 80px)", padding: 2 }}
         container
       >
         <Grid sx={{ width: "100%" }} item>

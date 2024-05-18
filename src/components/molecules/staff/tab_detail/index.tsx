@@ -41,9 +41,17 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
   }, [formData]);
 
   return (
-    <div>
-      <Button onClick={() => navigate(-1)}>Thoát</Button>
-      <Button onClick={handleOnClickSave}>Lưu</Button>
+    <div style={{ padding: "8px" }}>
+      <Button variant="outlined" onClick={() => navigate(-1)}>
+        Thoát
+      </Button>
+      <Button
+        variant="outlined"
+        sx={{ marginLeft: "4px" }}
+        onClick={handleOnClickSave}
+      >
+        Lưu
+      </Button>
       <Tabs
         value={value}
         onChange={handleChange}
