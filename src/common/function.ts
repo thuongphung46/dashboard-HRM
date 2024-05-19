@@ -106,3 +106,46 @@ const HRMStorage = {
 
 export default HRMStorage;
 export { HRMStorage, decrypt, encrypt };
+
+interface Group {
+  id: number;
+  name: string;
+  type: string | null;
+  code: string;
+  parentDeptId: number | null;
+  createdDate: string;
+  modifiedDate: string;
+  createdBy: string | null;
+  modifiedBy: string | null;
+  groups: Group[] | null;
+}
+
+export interface FlatGroup {
+  id: number;
+  name: string;
+  type: string | null;
+  code: string;
+  parentDeptId: number | null;
+  createdDate: string;
+  modifiedDate: string;
+  createdBy: string | null;
+  modifiedBy: string | null;
+  groups: any[]; // Empty array as per requirement
+}
+
+export function flattenGroups(data: Group[]): FlatGroup[] {
+  const result: FlatGroup[] = [];
+
+  function flatten(group: Group): void {
+    const { groups, ...rest } = group;
+    result.push({ ...rest, groups: [] });
+
+    if (groups) {
+      groups.forEach(flatten);
+    }
+  }
+
+  data.forEach(flatten);
+
+  return result;
+}
