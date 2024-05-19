@@ -1,6 +1,8 @@
 import { Box } from "@mui/material";
+import HRMStorage from "common/function";
 import { PrimarySearchAppBar } from "components/molecules/navbar";
 import { Playground } from "components/molecules/side_bar";
+import { KeyValue } from "constants/GlobalConstant";
 import React, { useCallback, useEffect } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 type Theme = "light" | "dark";
@@ -10,7 +12,7 @@ const RootLayout = () => {
   const [toggled, setToggled] = React.useState(false);
   const [broken, setBroken] = React.useState(false);
   const [theme, setTheme] = React.useState<Theme>("light");
-  const currentUser = Boolean(localStorage.getItem("access_token"));
+  const currentUser = Boolean(HRMStorage.get(KeyValue.TokenKey));
 
   useEffect(() => {
     if (!currentUser) {
@@ -43,7 +45,8 @@ const RootLayout = () => {
           flex: 1,
           height: "100vh",
           width: "100%",
-        }}>
+        }}
+      >
         <Playground
           collapsed={collapsed}
           setToggled={handleToggled}
@@ -59,7 +62,8 @@ const RootLayout = () => {
             flexDirection: "column",
             width: `calc(100% - ${collapsed ? 80 : 250}px)`,
             height: "100%",
-          }}>
+          }}
+        >
           <PrimarySearchAppBar
             setCollapsed={handleCollapsed}
             collapsed={collapsed}
@@ -72,7 +76,8 @@ const RootLayout = () => {
             sx={{
               height: "100%",
               overflow: "auto",
-            }}>
+            }}
+          >
             <Outlet />
           </Box>
         </Box>

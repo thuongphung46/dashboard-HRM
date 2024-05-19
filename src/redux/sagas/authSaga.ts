@@ -4,7 +4,7 @@ import { call, fork, take } from "redux-saga/effects";
 import { LoginPayload, authActions } from "../slices/authSlice";
 import { AuthService } from "services/auth_service";
 import { StaffService } from "services/staff_service";
-import { storageAction } from "common/function";
+import { HRMStorage } from "common/function";
 import { KeyValue } from "constants/GlobalConstant";
 import { ApiRes } from "types/ApiResponse";
 import { toastMessage } from "components/molecules/toast_message";
@@ -14,11 +14,12 @@ function* handleLogin(payload: LoginPayload) {
     const response: ApiRes = yield call(AuthService.LoginAdmin, payload);
     if (response.status === 200 && response.data.msg_code === 200) {
       let token = response.data.content.body.access_token;
-      storageAction("set", KeyValue.TokenKey, token);
+      HRMStorage.set(KeyValue.TokenKey, token.toString());
+
       const resProfile: ApiRes = yield call(StaffService.GetMyProfile);
       if (resProfile.msg_code === 200) {
-        storageAction("set", KeyValue.Level, resProfile.content.level);
-        storageAction("set", KeyValue.id, resProfile.content.id);
+        HRMStorage.set(KeyValue.Level, resProfile.content.level);
+        HRMStorage.set(KeyValue.id, resProfile.content.id.toString());
         yield put(
           authActions.loginSuccess({
             id: 1,
@@ -28,7 +29,7 @@ function* handleLogin(payload: LoginPayload) {
         toastMessage(`Wellcome ${payload.UserName}`, "success");
       } else {
         yield put(authActions.loginFailed(response.message)); // Dispatch action
-        toastMessage(response.message, "error");
+        toastMessage(resProfile.message, "error");
       }
     } else {
       yield put(authActions.loginFailed(response.message)); // Dispatch action
@@ -42,7 +43,7 @@ function* handleLogin(payload: LoginPayload) {
 
 function* handleLogout() {
   yield put(authActions.logout());
-  yield storageAction("clear", KeyValue.TokenKey);
+  yield HRMStorage.clear();
   // Redirect to Login page
 }
 

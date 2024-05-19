@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Button } from "@mui/material";
 import { useGetListContractStaff } from "services/hooks/useGetListStaff";
-import { storageAction } from "common/function";
+import HRMStorage from "common/function";
 import { KeyValue } from "constants/GlobalConstant";
 import { GridColDef } from "@mui/x-data-grid/models/colDef";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,8 @@ import { DataGrid } from "@mui/x-data-grid";
 
 export const TeachingContractPage: React.FC = () => {
   const navigate = useNavigate();
-  const idUser = storageAction("get", KeyValue.id);
+  const idUser = HRMStorage.get(KeyValue.id);
+
   const { data: TeachingContractPageData } = useGetListContractStaff(idUser);
 
   const columns: GridColDef[] = [

@@ -1,10 +1,10 @@
-import { storageAction } from "common/function";
+import HRMStorage from "common/function";
 import { RESPONSE_CODE } from "./config";
 import { KeyValue } from "constants/GlobalConstant";
 
 export const AccessTokenInterceptor = {
-  addAccessToken: (config: any) => {
-    const token = storageAction("get", KeyValue.TokenKey);
+  addAccessToken: async (config: any) => {
+    const token = await HRMStorage.get(KeyValue.TokenKey);
     if (token) {
       const headers = {
         ...config.headers,
