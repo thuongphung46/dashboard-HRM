@@ -19,6 +19,7 @@ import { KeyValue } from "constants/GlobalConstant";
 enum FORM_STATE {
   EDIT = "edit",
   ADD = "add",
+  ME = "me",
 }
 
 interface PropType {
@@ -32,6 +33,14 @@ const PrivateRoute: FC<PropType> = ({ component: Component, action }) => {
   if (level === "LEVEL_1") return <Component action={action} />;
   return <Navigate to="/model" />;
 };
+
+const PrivateRouteAdmin: FC<PropType> = ({ component: Component, action }) => {
+  const level = HRMStorage.get(KeyValue.Level);
+
+  if (level === "LEVEL_4") return <Component action={action} />;
+  return <Navigate to="/model" />;
+};
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -56,11 +65,25 @@ const router = createBrowserRouter([
       },
       {
         path: "/detail_employee/:id",
-        element: <TabDetailStaff action={FORM_STATE.EDIT} />,
+        element: (
+          <PrivateRouteAdmin
+            component={TabDetailStaff}
+            action={FORM_STATE.EDIT}
+          />
+        ),
+      },
+      {
+        path: "/detail_me",
+        element: <TabDetailStaff action={FORM_STATE.ME} />,
       },
       {
         path: "/detail_employee/add",
-        element: <TabDetailStaff action={FORM_STATE.ADD} />,
+        element: (
+          <PrivateRouteAdmin
+            component={TabDetailStaff}
+            action={FORM_STATE.ADD}
+          />
+        ),
       },
       {
         path: "/teaching_contract",
