@@ -92,7 +92,6 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData, disable }) => {
       parentDeptId: dataEdit.parentDeptId,
       type: dataEdit.type,
     }).then((res) => {
-      console.log(res);
       if (res && res?.msg_code === MessageCode.Success) {
         setData(
           data.map((item) => {

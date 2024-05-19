@@ -7,7 +7,7 @@ export type GetRequestParams = {
 };
 
 export interface StaffDetail {
-  id: number;
+  id?: number;
   username: string;
   fullName: string;
   level: string;
@@ -29,14 +29,14 @@ export interface StaffDetail {
   favorite: string;
   department: string;
   group: string;
-  departmentId: number;
-  groupId: number;
+  departmentId?: number;
+  groupId?: number;
   staffAdmissions: StaffAdmissionResponse[];
   staffRankHistories: StaffRankHistoryResponse[];
   staffWorkingHistoriesInAcademy: StaffWorkingHistoryResponse[];
   staffWorkingHistoriesOutAcademy: StaffWorkingHistoryResponse[];
   createdDate: string;
-  ratio: number;
+  ratio?: number;
   examCourses: StaffExamCourse[];
   instructProject: StaffInstructProject[];
   project: StaffProject[];
@@ -57,21 +57,21 @@ export interface StaffDetail {
 }
 
 interface StaffAdmissionResponse {
-  id: number;
+  id?: number;
   type: string;
   date: string;
   place: string;
 }
 
 interface StaffRankHistoryResponse {
-  id: number;
-  rankId: number;
+  id?: number;
+  rankId?: number;
   rankName: string;
   date: string;
 }
 
 interface StaffWorkingHistoryResponse {
-  id: number;
+  id?: number;
   jobTitle: string;
   date: string;
   bonus: string;
