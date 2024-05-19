@@ -7,7 +7,7 @@ import { GridColDef } from "@mui/x-data-grid/models/colDef";
 import { useNavigate } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 
-export const TeachingContractPage: React.FC = () => {
+export const TeachingContract: React.FC = () => {
   const navigate = useNavigate();
   const idUser = HRMStorage.get(KeyValue.id);
 
