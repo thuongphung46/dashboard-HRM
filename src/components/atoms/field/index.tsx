@@ -5,12 +5,13 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
+import { MenuProps } from "components/molecules/staff/tab_detail/info_staff";
 
 export interface IFormData {
   id: string;
   label: string;
   type: string;
-  ref?:any;
+  ref?: any;
   options?: {
     value: string | number | undefined;
     label: string;
@@ -27,7 +28,7 @@ const ReusableField: FC<Props> = ({ field, hanldeOnChangefield, formData }) => {
   return (
     <>
       <Grid item xs={6} key={field.id}>
-        <Grid container  alignItems="center">
+        <Grid container alignItems="center">
           <Grid item xs={5}>
             <InputLabel htmlFor={field.id}>{field.label}</InputLabel>
           </Grid>
@@ -38,8 +39,10 @@ const ReusableField: FC<Props> = ({ field, hanldeOnChangefield, formData }) => {
                   name={field.id}
                   size="small"
                   id={field.id}
+                  MenuProps={MenuProps}
                   onChange={hanldeOnChangefield}
-                  defaultValue={formData ? formData[field.id] : ""}>
+                  defaultValue={formData ? formData[field.id] : ""}
+                >
                   {field.options.map((option, index) => (
                     <MenuItem key={index} value={option.value}>
                       {option.label}
