@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import Box from "@mui/material/Box";
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   GetListStaffParams,
@@ -16,11 +16,16 @@ import {
 } from "services/hooks/useGetListStaff";
 import { columns } from "./columns";
 import { DataGrid } from "@mui/x-data-grid";
+import HRMStorage from "common/function";
+import { KeyValue } from "constants/GlobalConstant";
+import { toastMessage } from "components/molecules/toast_message";
 
 interface Props {}
 
 export const ListStaff: FC<Props> = () => {
   const navigate = useNavigate();
+  const level = HRMStorage.get(KeyValue.Level);
+  const [disable, setDisable] = useState<boolean>(true);
   const [params, setParams] = useState<GetListStaffParams>({
     query: "",
     active: undefined,
@@ -29,17 +34,35 @@ export const ListStaff: FC<Props> = () => {
   });
   const { data: staffList, loading } = useGetListStaff(params);
 
+  useEffect(() => {
+    if (level === "LEVEL_4") {
+      setDisable(false);
+    }
+  }, [level]);
+
   const handleCellClick = useCallback(
     (e: any) => {
-      navigate(`/detail_employee/${e.id}`);
+      if (!disable) {
+        navigate(`/detail_employee/${e.id}`);
+      } else if (e.id.toString() === HRMStorage.get(KeyValue.id)) {
+        navigate(`/detail_me`);
+      } else {
+        toastMessage("Bạn không có quyền truy cập", "error");
+        return;
+      }
     },
-    [navigate]
+    [disable, navigate]
   );
   const handleAddNew = useCallback(
     (e: any) => {
-      navigate(`/detail_employee/add`);
+      if (!disable) {
+        navigate(`/detail_employee/add`);
+      } else {
+        toastMessage("Bạn không có quyền thêm nhân viên!", "error");
+        return;
+      }
     },
-    [navigate]
+    [disable, navigate]
   );
 
   return (
@@ -47,7 +70,7 @@ export const ListStaff: FC<Props> = () => {
       <Box>
         <Box
           sx={{
-            maxWidth: "450px",
+            maxWidth: "500px",
             display: "flex",
             justifyContent: "space-between",
           }}
@@ -76,7 +99,15 @@ export const ListStaff: FC<Props> = () => {
               <MenuItem value={0}>Đã nghỉ việc</MenuItem>
             </Select>
           </FormControl>
-          <Button onClick={handleAddNew}>Thêm</Button>
+          <Button
+            size="small"
+            variant="outlined"
+            sx={{ width: "80px" }}
+            onClick={handleAddNew}
+            disabled={disable}
+          >
+            Thêm
+          </Button>
         </Box>
         {loading ? (
           <div>Loading...</div>

@@ -1,4 +1,10 @@
-import React, { FC, useState, ChangeEvent, useCallback } from "react";
+import React, {
+  FC,
+  useState,
+  ChangeEvent,
+  useCallback,
+  useEffect,
+} from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
@@ -20,13 +26,27 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
   const navigate = useNavigate();
   const [value, setValue] = useState(0);
   const [formData, setFormData] = useState<any>({});
+  const [dataDetailMe, setDataDetailMe] = useState<any>({});
   const { data, loading } = useGetStaff(id);
+
+  useEffect(() => {
+    const fetch = async () => {
+      const res = await StaffService.GetMyProfile();
+      if (res.msg_code === MessageCode.Success) {
+        setDataDetailMe(res.data);
+      } else {
+        toastMessage(res.message, "error");
+      }
+    };
+    if (action === "me") {
+      fetch();
+    }
+  }, [data, action]);
 
   const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
   const handleOnClickSave = useCallback(() => {
-    //xử lý thêm nhân viên
     if (action === "add") {
       StaffService.createStaff(formData)
         .then((res) => {
@@ -94,7 +114,7 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
             formData={formData}
             setFormData={setFormData}
             action={action}
-            data={data}
+            data={action === "me" ? dataDetailMe : data}
           />
         )}
       </TabPanel>
