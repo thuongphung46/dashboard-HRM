@@ -28,12 +28,12 @@ function* handleLogin(payload: LoginPayload) {
         );
         toastMessage(`Wellcome ${payload.UserName}`, "success");
       } else {
-        yield put(authActions.loginFailed(response.message)); // Dispatch action
+        yield put(authActions.loginFailed(response.data.message)); // Dispatch action
         toastMessage(resProfile.message, "error");
       }
     } else {
       yield put(authActions.loginFailed(response.message)); // Dispatch action
-      toastMessage(response.message, "error");
+      toastMessage(response.data.message, "error");
     }
   } catch (error: any) {
     yield put(authActions.loginFailed(error.message));

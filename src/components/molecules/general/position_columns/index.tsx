@@ -59,7 +59,7 @@ export const GeneralPosition: FC<Props> = ({ disable }) => {
   const handleDel = async (dataDel: any) => {
     deleteJobTitle(dataDel).then((res) => {
       if (res.msg_code === MessageCode.Success) {
-        toastMessage("Thành công", "success");
+        toastMessage(res.message, "success");
       } else {
         toastMessage(res.message, "error");
       }

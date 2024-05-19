@@ -67,7 +67,7 @@ export const useJobTitle = () => {
     ) {
       return response.data;
     } else {
-      return null;
+      return response.data;
     }
   };
   const createJobTitle = async (body: CreateJobTitleBody) => {
@@ -83,9 +83,9 @@ export const useJobTitle = () => {
       response.status === RESPONSE_CODE.SUCCESS &&
       response.data.msg_code === RESPONSE_CODE.SUCCESS
     ) {
-      return response.data?.content;
+      return response.data;
     } else {
-      return null;
+      return response.data;
     }
   };
   const deleteJobTitle = async (id: string) => {
@@ -101,9 +101,9 @@ export const useJobTitle = () => {
       response.status === RESPONSE_CODE.SUCCESS &&
       response.data.msg_code === RESPONSE_CODE.SUCCESS
     ) {
-      return response.data?.content;
+      return response.data;
     } else {
-      return null;
+      return response.data;
     }
   };
 
