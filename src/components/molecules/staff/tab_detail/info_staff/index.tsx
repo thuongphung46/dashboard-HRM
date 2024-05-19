@@ -88,79 +88,80 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
     <Box sx={{ flexGrow: 1 }}>
       <Grid container>
         <Grid container spacing={2}>
-          {fieldsData.map((field) => {
-            if (
-              field.id === "password" &&
-              (action === "edit" || action === "me")
-            )
-              return null;
-            return (
-              <Grid item xs={6} key={field.id}>
-                <Grid container alignItems="center">
-                  <Grid item xs={5}>
-                    <InputLabel htmlFor={field.id}>{field.label}</InputLabel>
-                  </Grid>
-                  <Grid item xs={6}>
-                    {data && field.type === "select" && field.options ? (
-                      <FormControl fullWidth>
-                        <Select
-                          name={field.id}
+          {data?.id &&
+            fieldsData.map((field) => {
+              if (
+                field.id === "password" &&
+                (action === "edit" || action === "me")
+              )
+                return null;
+              return (
+                <Grid item xs={6} key={field.id}>
+                  <Grid container alignItems="center">
+                    <Grid item xs={5}>
+                      <InputLabel htmlFor={field.id}>{field.label}</InputLabel>
+                    </Grid>
+                    <Grid item xs={6}>
+                      {data && field.type === "select" && field.options ? (
+                        <FormControl fullWidth>
+                          <Select
+                            name={field.id}
+                            size="small"
+                            id={field.id}
+                            onChange={hanldeOnChangefield}
+                            defaultValue={data ? data[field.id] : ""}
+                          >
+                            {(() => {
+                              if (field.id === "departmentId") {
+                                return departmentList.map((department) => (
+                                  <MenuItem
+                                    key={department.id}
+                                    value={department.id}
+                                  >
+                                    {department.name}
+                                  </MenuItem>
+                                ));
+                              } else if (field.id === "rankId") {
+                                return rankList.map((rank) => (
+                                  <MenuItem key={rank.id} value={rank.code}>
+                                    {rank.rankName}
+                                  </MenuItem>
+                                ));
+                              } else if (field.id === "jobTitle") {
+                                return jobTitleList.map((jobTitle) => (
+                                  <MenuItem
+                                    key={jobTitle.id}
+                                    value={jobTitle.code}
+                                  >
+                                    {jobTitle.jobTitle}
+                                  </MenuItem>
+                                ));
+                              } else {
+                                return field.options.map((option, index) => (
+                                  <MenuItem key={index} value={option.value}>
+                                    {option.label}
+                                  </MenuItem>
+                                ));
+                              }
+                            })()}
+                          </Select>
+                        </FormControl>
+                      ) : (
+                        <TextField
                           size="small"
+                          fullWidth
                           id={field.id}
-                          onChange={hanldeOnChangefield}
+                          name={field.id}
+                          type={field.type}
                           defaultValue={data ? data[field.id] : ""}
-                        >
-                          {(() => {
-                            if (field.id === "departmentId") {
-                              return departmentList.map((department) => (
-                                <MenuItem
-                                  key={department.id}
-                                  value={department.id}
-                                >
-                                  {department.name}
-                                </MenuItem>
-                              ));
-                            } else if (field.id === "rankId") {
-                              return rankList.map((rank) => (
-                                <MenuItem key={rank.id} value={rank.code}>
-                                  {rank.rankName}
-                                </MenuItem>
-                              ));
-                            } else if (field.id === "jobTitle") {
-                              return jobTitleList.map((jobTitle) => (
-                                <MenuItem
-                                  key={jobTitle.id}
-                                  value={jobTitle.code}
-                                >
-                                  {jobTitle.jobTitle}
-                                </MenuItem>
-                              ));
-                            } else {
-                              return field.options.map((option, index) => (
-                                <MenuItem key={index} value={option.value}>
-                                  {option.label}
-                                </MenuItem>
-                              ));
-                            }
-                          })()}
-                        </Select>
-                      </FormControl>
-                    ) : (
-                      <TextField
-                        size="small"
-                        fullWidth
-                        id={field.id}
-                        name={field.id}
-                        type={field.type}
-                        defaultValue={data ? data[field.id] : ""}
-                        onChange={hanldeOnChangefield}
-                      />
-                    )}
+                          onChange={hanldeOnChangefield}
+                        />
+                      )}
+                    </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
-            );
-          })}
+              );
+            })}
         </Grid>
 
         {(action === "edit" || action === "me") && (

@@ -18,6 +18,7 @@ import { Action } from "types/action";
 import { StaffService } from "services/staff_service";
 import { MessageCode } from "types/enum/message_code";
 import { toastMessage } from "components/molecules/toast_message";
+import { initStaffInfo } from "services/mock_data/staff_info";
 
 interface Props extends Action {}
 
@@ -26,14 +27,14 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
   const navigate = useNavigate();
   const [value, setValue] = useState(0);
   const [formData, setFormData] = useState<any>({});
-  const [dataDetailMe, setDataDetailMe] = useState<any>({});
+  const [dataDetailMe, setDataDetailMe] = useState<any>(initStaffInfo);
   const { data, loading } = useGetStaff(id);
 
   useEffect(() => {
     const fetch = async () => {
       const res = await StaffService.GetMyProfile();
       if (res.msg_code === MessageCode.Success) {
-        setDataDetailMe(res.data);
+        setDataDetailMe(res.content);
       } else {
         toastMessage(res.message, "error");
       }
@@ -103,8 +104,10 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
         role="navigation"
       >
         <Tab label="Thông tin chung" />
-        {action === "edit" && <Tab label="Quá trình làm việc tại đơn vị" />}
-        {action === "edit" && <Tab label="Thống kê" />}
+        {(action === "edit" || action === "me") && (
+          <Tab label="Quá trình làm việc tại đơn vị" />
+        )}
+        {(action === "edit" || action === "me") && <Tab label="Thống kê" />}
       </Tabs>
       <TabPanel value={value} index={0}>
         {loading ? (
