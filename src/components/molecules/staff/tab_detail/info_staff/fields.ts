@@ -59,7 +59,7 @@ export const fieldsData: IFormData[] = [
     ],
   },
   { id: "jobTitle", label: "Chức vụ", type: "select", options: [] },
-  { id: "rankId", label: "Hàm (Sĩ quan)", type: "select", options: [] },
+  { id: "rankName", label: "Hàm (Sĩ quan)", type: "select", options: [] },
   { id: "ratio", label: "Hệ số lương", type: "number" },
   { id: "country", label: "Quốc tịch", type: "text" },
   { id: "identityBirthPlace", label: "Nơi sinh", type: "text" },

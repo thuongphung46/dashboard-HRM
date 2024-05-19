@@ -116,7 +116,7 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
                                   {department.name}
                                 </MenuItem>
                               ));
-                            } else if (field.id === "rankId") {
+                            } else if (field.id === "rankName") {
                               return rankList.map((rank) => (
                                 <MenuItem key={rank.id} value={rank.code}>
                                   {rank.rankName}
