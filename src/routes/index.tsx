@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, useLocation } from "react-router-dom";
 import { ErrorPage } from "components/pages/error";
 import { HomePage } from "components/pages/home";
 import { GeneralPage } from "components/pages/general";
@@ -28,17 +28,20 @@ interface PropType {
 }
 
 const PrivateRoute: FC<PropType> = ({ component: Component, action }) => {
+  const location = useLocation();
   const level = HRMStorage.get(KeyValue.Level);
 
-  if (level === "LEVEL_1") return <Component action={action} />;
-  return <Navigate to="/model" />;
+  if (level === "LEVEL_1" || level === "LEVEL_4")
+    return <Component action={action} />;
+  return <Navigate to={location.pathname} />;
 };
 
 const PrivateRouteAdmin: FC<PropType> = ({ component: Component, action }) => {
+  const location = useLocation();
   const level = HRMStorage.get(KeyValue.Level);
 
   if (level === "LEVEL_4") return <Component action={action} />;
-  return <Navigate to="/model" />;
+  return <Navigate to={location.pathname} />;
 };
 
 const router = createBrowserRouter([
@@ -92,7 +95,10 @@ const router = createBrowserRouter([
       {
         path: "/teaching_contract/add",
         element: (
-          <PrivateRoute action={FORM_STATE.ADD} component={AddNewContract} />
+          <PrivateRouteAdmin
+            action={FORM_STATE.ADD}
+            component={AddNewContract}
+          />
         ),
       },
       {

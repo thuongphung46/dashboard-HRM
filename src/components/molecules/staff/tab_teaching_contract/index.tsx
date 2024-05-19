@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Box, Button } from "@mui/material";
 import { useGetListContractStaff } from "services/hooks/useGetListStaff";
 import HRMStorage from "common/function";
@@ -6,12 +6,19 @@ import { KeyValue } from "constants/GlobalConstant";
 import { GridColDef } from "@mui/x-data-grid/models/colDef";
 import { useNavigate } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
+import { toastMessage } from "components/molecules/toast_message";
 
 export const TeachingContract: React.FC = () => {
   const navigate = useNavigate();
   const idUser = HRMStorage.get(KeyValue.id);
-
+  const level = HRMStorage.get(KeyValue.Level);
+  const [disable, setDisable] = useState<boolean>(true);
   const { data: TeachingContractPageData } = useGetListContractStaff(idUser);
+  useEffect(() => {
+    if (level === "LEVEL_4") {
+      setDisable(false);
+    }
+  }, [level]);
 
   const columns: GridColDef[] = [
     {
@@ -57,10 +64,16 @@ export const TeachingContract: React.FC = () => {
       ],
     },
   ];
-
+  const hanldAdd = useCallback(() => {
+    if (disable) {
+      toastMessage("Bạn không có quyền thêm hợp đồng!", "error");
+      return;
+    }
+    navigate("add");
+  }, [disable, navigate]);
   return (
     <div>
-      <Button onClick={() => navigate("add")}>Add contact</Button>
+      <Button onClick={hanldAdd}>Add contact</Button>
       <Box>
         <DataGrid
           columns={columns}
