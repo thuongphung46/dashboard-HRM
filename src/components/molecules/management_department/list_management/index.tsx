@@ -288,7 +288,7 @@ export const ListDepartment: FC<Props> = ({
         variant="outlined"
         onClick={handleShowPopupAdd}
       >
-        Thêm phòng ban
+        Thêm cấp quản lý
       </Button>
       <List
         sx={{
