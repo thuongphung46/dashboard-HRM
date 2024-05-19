@@ -62,7 +62,6 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
   useEffect(() => {
     if (!loadingDepartment && departmentData) {
       const dataConvert = flattenGroups(departmentData);
-      console.log("dataConvert", dataConvert);
       setDepartmentList(dataConvert);
     }
   }, [loadingDepartment, departmentData]);
