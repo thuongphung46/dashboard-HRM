@@ -19,6 +19,9 @@ const StaffService = {
       `?query=${param.query}&active=${param.active}&page=${param.page}&size=${param.size}`
     );
   },
+  GetDetailStaff: async (id: string) => {
+    return await Request(controller).getAsync(`${id}`);
+  },
   GetMyProfile: async () => {
     return await Request(controller).getAsync("me");
   },
@@ -51,6 +54,9 @@ const StaffService = {
       `${id}/contracts/${contractId}`,
       param
     );
+  },
+  UpdateInfoStaff: async (param: any, id: string) => {
+    return Request(controller).patchAsync(`${id}`, param);
   },
 };
 

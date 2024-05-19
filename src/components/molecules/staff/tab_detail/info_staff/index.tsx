@@ -48,7 +48,6 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
   const [departmentList, setDepartmentList] = useState<DepartmentData[]>([]);
   const { loading: loadingDepartment, data: departmentData } =
     useGetListDepartment();
-  // const [selectedGroups, setSelectedGroups] = useState<number[]>([]);
 
   const [rankList, setRankList] = useState<any[]>([]);
   const { loading: loadingRank, data: rankData } = useGetListRank();
@@ -160,24 +159,28 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
           })}
         </Grid>
 
-        <Grid sx={{ marginTop: "24px" }} width={"100%"} minWidth={500}>
-          <GridTrainingSummary
-            dataSource={action === "edit" ? data.trainingSummary : []}
-            dataSelectRow={selectedRows}
-            handleSave={handleSave}
-            handleRowSelect={handleRowSelectionChange}
-          />
-        </Grid>
-        <Grid sx={{ marginTop: "24px" }} width={"100%"}>
-          <GridTraining
-            dataSource={
-              action === "edit" ? data.staffWorkingHistoriesOutAcademy : []
-            }
-            dataSelectRow={selectedRows}
-            handleSave={handleSave}
-            handleRowSelect={handleRowSelectionChange}
-          />
-        </Grid>
+        {action === "edit" && (
+          <>
+            <Grid sx={{ marginTop: "24px" }} width={"100%"} minWidth={500}>
+              <GridTrainingSummary
+                dataSource={action === "edit" ? data.trainingSummary : []}
+                dataSelectRow={selectedRows}
+                handleSave={handleSave}
+                handleRowSelect={handleRowSelectionChange}
+              />
+            </Grid>
+            <Grid sx={{ marginTop: "24px" }} width={"100%"}>
+              <GridTraining
+                dataSource={
+                  action === "edit" ? data.staffWorkingHistoriesOutAcademy : []
+                }
+                dataSelectRow={selectedRows}
+                handleSave={handleSave}
+                handleRowSelect={handleRowSelectionChange}
+              />
+            </Grid>
+          </>
+        )}
       </Grid>
     </Box>
   );

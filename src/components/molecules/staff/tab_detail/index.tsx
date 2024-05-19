@@ -27,32 +27,53 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
   };
   const handleOnClickSave = useCallback(() => {
     //xử lý thêm nhân viên
-    StaffService.createStaff(formData)
-      .then((res) => {
-        if (res.msg_code === MessageCode.Success) {
-          toastMessage(res.message, "success");
-        } else {
-          toastMessage(res.message, "error");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [formData]);
+    if (action === "add") {
+      StaffService.createStaff(formData)
+        .then((res) => {
+          if (res.msg_code === MessageCode.Success) {
+            toastMessage(res.message, "success");
+          } else {
+            toastMessage(res.message, "error");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if (id) {
+      StaffService.UpdateInfoStaff(formData, id)
+        .then((res) => {
+          if (res.msg_code === MessageCode.Success) {
+            toastMessage(res.message, "success");
+          } else {
+            toastMessage(res.message, "error");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [action, formData, id]);
 
   return (
-    <div style={{ padding: "8px" }}>
-      <Button variant="outlined" onClick={() => navigate(-1)}>
+    <div
+      style={{
+        padding: "8px",
+      }}
+    >
+      <Button size="small" variant="outlined" onClick={() => navigate(-1)}>
         Thoát
       </Button>
-      <Button
-        variant="outlined"
-        sx={{ marginLeft: "4px" }}
-        onClick={handleOnClickSave}
-      >
-        Lưu
-      </Button>
-      <Button variant="outlined" sx={{ marginLeft: "4px" }}>
+      {value === 0 && (
+        <Button
+          variant="outlined"
+          size="small"
+          sx={{ marginLeft: "4px" }}
+          onClick={handleOnClickSave}
+        >
+          Lưu
+        </Button>
+      )}
+      <Button size="small" variant="outlined" sx={{ marginLeft: "4px" }}>
         Scan
       </Button>
       <Tabs
@@ -109,7 +130,7 @@ function TabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3, height: "calc(100vh - 150px)", overflow: "auto" }}>
+        <Box sx={{ p: 3, height: "calc(100vh - 180px)", overflow: "auto" }}>
           {children}
         </Box>
       )}
