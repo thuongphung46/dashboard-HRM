@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { API_URL, NetWork } from "services/api";
 import { RESPONSE_CODE } from "services/api/config";
 import { deleteParamsNotUsing, getRequestUrl } from "services/api/utils";
+import { StaffService } from "services/staff_service";
 import { StaffDetail } from "types/ApplicationType";
+import { MessageCode } from "types/enum/message_code";
 import { IListStaff } from "types/list_staff";
 import { IContent } from "types/teaching_contact";
 
@@ -46,9 +48,9 @@ export const useGetStaff = (id: string | undefined) => {
     const fetchData = async () => {
       setLoading(true);
       if (id) {
-        const response = await NetWork.get(`${API_URL.STAFFS}/${id}`);
-        if (response.status === RESPONSE_CODE.SUCCESS) {
-          setData(response?.data?.content);
+        const res = await StaffService.GetDetailStaff(id);
+        if (res.msg_code === MessageCode.Success) {
+          setData(res.content);
         }
       }
       setLoading(false);
