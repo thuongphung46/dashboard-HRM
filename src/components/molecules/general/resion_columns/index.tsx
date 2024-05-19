@@ -9,8 +9,10 @@ import {
 import { MessageCode } from "types/enum/message_code";
 import { toastMessage } from "components/molecules/toast_message";
 
-interface Props {}
-export const GeneralResion: FC<Props> = () => {
+interface Props {
+  disable?: boolean;
+}
+export const GeneralResion: FC<Props> = ({ disable }) => {
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
   const { createReasonReduce, updateReasonReduce, deleteReasonReduce } =
     useReasonReduce();
@@ -79,6 +81,7 @@ export const GeneralResion: FC<Props> = () => {
     <div>
       <Box>
         <BaseGrid
+          disable={disable}
           columns={columns}
           rows={data}
           title="Lí do giảm trừ"

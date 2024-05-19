@@ -220,7 +220,7 @@ export const Playground: React.FC<SidebarProps> = ({
                 <MenuItem onClick={() => setTheme("dark")}>Dark</MenuItem>
                 <MenuItem onClick={() => setTheme("light")}> Light</MenuItem>
               </SubMenu>
-              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
             </Menu>
           </div>
           <SidebarFooter collapsed={collapsed} />

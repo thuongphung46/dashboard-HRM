@@ -30,6 +30,7 @@ interface BaseGridProps extends DataGridProps {
   onRowSelectionChange: (selection: any) => void;
   selectedRows: GridRowId[];
   rows: any[];
+  disable?: boolean;
 }
 
 export const BaseGrid: FC<BaseGridProps> = ({
@@ -40,6 +41,7 @@ export const BaseGrid: FC<BaseGridProps> = ({
   selectedRows,
   rows,
   onDel,
+  disable,
   ...rest
 }) => {
   const [data, setData] = React.useState<any[]>([]);
@@ -134,12 +136,14 @@ export const BaseGrid: FC<BaseGridProps> = ({
             icon={<EditIcon />}
             label="Edit"
             className="textPrimary"
+            disabled={disable}
             onClick={handleEditClick(id)}
             color="inherit"
           />,
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
+            disabled={disable}
             onClick={handleDeleteClick(id)}
             color="inherit"
           />,
@@ -168,7 +172,7 @@ export const BaseGrid: FC<BaseGridProps> = ({
           toolbar: EditToolbar,
         }}
         slotProps={{
-          toolbar: { data, setData, setRowModesModel },
+          toolbar: { data, setData, setRowModesModel, disable },
         }}
         {...rest}
       />
@@ -182,10 +186,11 @@ interface EditToolbarProps {
   setRowModesModel: (
     newModel: (oldModel: GridRowModesModel) => GridRowModesModel
   ) => void;
+  disable?: boolean;
 }
 
 function EditToolbar(props: EditToolbarProps) {
-  const { setData, setRowModesModel, data } = props;
+  const { setData, setRowModesModel, data, disable } = props;
 
   const handleClick = () => {
     const getRandomUniqueId = (): number => {
@@ -214,7 +219,12 @@ function EditToolbar(props: EditToolbarProps) {
 
   return (
     <GridToolbarContainer>
-      <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
+      <Button
+        disabled={disable}
+        color="primary"
+        startIcon={<AddIcon />}
+        onClick={handleClick}
+      >
         Add record
       </Button>
     </GridToolbarContainer>

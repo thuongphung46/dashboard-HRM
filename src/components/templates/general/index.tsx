@@ -5,6 +5,8 @@ import { GeneralRank } from "components/molecules/general/rank_columns";
 import InputLabel from "@mui/material/InputLabel";
 import Input from "@mui/material/Input";
 import { Box, Button } from "@mui/material";
+import HRMStorage from "common/function";
+import { KeyValue } from "constants/GlobalConstant";
 
 interface Props {
   GenneralData: any[];
@@ -23,6 +25,7 @@ interface GeneralField {
 }
 
 export const MultipleTablesPage: FC<Props> = ({ GenneralData }) => {
+  const level = HRMStorage.get(KeyValue.Level);
   const [GeneralField, setGeneralField] = useState<GeneralField[]>([]);
   const [GeneralEdit, setGeneralEdit] = useState<GeneralEdit>({
     teaching: "",
@@ -30,6 +33,13 @@ export const MultipleTablesPage: FC<Props> = ({ GenneralData }) => {
     time_worked: "",
   });
   const [edited, setEdited] = useState<boolean>(false);
+  const [disable, setDisable] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (level !== "LEVEL_4") {
+      setDisable(true);
+    }
+  }, [level]);
 
   useEffect(() => {
     if (GenneralData) {
@@ -113,12 +123,12 @@ export const MultipleTablesPage: FC<Props> = ({ GenneralData }) => {
         padding: "1rem",
       }}
     >
-      <Button disabled={!edited} onClick={handleUpdate}>
+      <Button disabled={!edited && disable} onClick={handleUpdate}>
         Lưu
       </Button>
       {renderGeneralFields}
-      <GeneralResion />
-      <GeneralPosition />
+      <GeneralResion disable={disable} />
+      <GeneralPosition disable={disable} />
       <GeneralRank />
     </Box>
   );
