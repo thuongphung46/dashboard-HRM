@@ -1,4 +1,4 @@
-import { TeachingContractPage } from "components/molecules/staff/tab_teaching_contract";
+import { TeachingContract } from "components/molecules/staff/tab_teaching_contract";
 
 export const TeachingContractTemplate = () => {
   // code truyền state từ đây
@@ -9,7 +9,7 @@ export const TeachingContractTemplate = () => {
         padding: "8px",
       }}
     >
-      <TeachingContractPage />
+      <TeachingContract />
     </div>
   );
 };

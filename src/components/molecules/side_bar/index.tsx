@@ -56,7 +56,7 @@ export const Playground: React.FC<SidebarProps> = ({
   const level = HRMStorage.get(KeyValue.Level);
 
   useEffect(() => {
-    if (level !== "LEVEL_1") {
+    if (level !== "LEVEL_1" && level !== "LEVEL_4") {
       setDissable(true);
     } else {
       setDissable(false);
