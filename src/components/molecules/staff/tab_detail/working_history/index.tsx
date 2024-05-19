@@ -3,7 +3,6 @@ import { GridColDef, GridRowId } from "@mui/x-data-grid";
 import { BaseGrid } from "components/atoms/datagrid";
 import { Grid } from "@mui/material";
 import { StaffDetail } from "types/ApplicationType";
-import { StaffService } from "services/staff_service";
 import { Action } from "types/action";
 
 interface Props extends Action {
@@ -76,7 +75,8 @@ export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
         checkboxSelection
         disableRowSelectionOnClick
         selectedRows={dataSelectRow}
-        onSave={handleSave}></BaseGrid>
+        onSave={handleSave}
+      ></BaseGrid>
     </>
   );
 };
@@ -84,13 +84,19 @@ export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
 export const WorkingHistory = ({ data, id, action }: Props) => {
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
 
-  const handleSave = async (e: any) => {
-    const isSuccess = await StaffService.updateStaffWorkingHistory(id, e.data);
-    if (isSuccess) {
-      alert("Lưu thành công");
-    } else {
-      alert("Lưu không thành công");
-    }
+  const handleSave = async (data: any) => {
+    console.log("data", data);
+    // const res = await StaffService.updateStaffWorkingHistory(id, {
+    //   jobTitle: data?.jobTitle,
+    //   date: data?.date,
+    //   bonus: data?.bonus,
+    //   discipline: data?.discipline,
+    // });
+    // if (isSuccess) {
+    //   alert("Lưu thành công");
+    // } else {
+    //   alert("Lưu không thành công");
+    // }
   };
 
   const handleRowSelectionChange = (selection: GridRowId[]) => {

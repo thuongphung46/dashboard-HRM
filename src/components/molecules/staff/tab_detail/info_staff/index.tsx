@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -16,36 +16,28 @@ import { useDebouncedCallback } from "use-debounce";
 import { useGetListDepartment } from "services/hooks/useGetListDepartment";
 import { useGetListRank } from "services/hooks/useGetListRank";
 import { useGetListJobTitle } from "services/hooks/useGetListJobTitle";
+import { FlatGroup, flattenGroups } from "common/function";
 
 interface Props extends Action {
   data: StaffDetail;
   formData: any;
   setFormData: (value: React.SetStateAction<StaffDetail>) => void;
 }
-interface DepartmentData {
-  id: number;
-  name: string;
-  parentDeptId: string;
-  createdDate: string;
-  modifiedDate: string;
-  createdBy: string;
-  modifiedBy: string;
-  groups: Group[];
-}
-interface Group {
-  id: number;
-  name: string;
-  parentDeptId: string;
-  createdDate: string;
-  modifiedDate: string;
-  createdBy: string;
-  modifiedBy: string;
-  groups: any[];
-}
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
-  const [departmentList, setDepartmentList] = useState<DepartmentData[]>([]);
+  const [departmentList, setDepartmentList] = useState<FlatGroup[]>([]);
   const { loading: loadingDepartment, data: departmentData } =
     useGetListDepartment();
 
@@ -54,7 +46,8 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
   const [jobTitleList, setJobTitleList] = useState<any[]>([]);
   const { loading: loadingJobTitle, data: jobTitleData } = useGetListJobTitle();
 
-  const handleSave = () => {};
+  const handleSaveTrainingSummary = useCallback((data: any) => {}, []);
+  const handleSaveTraining = useCallback((data: any) => {}, []);
 
   const handleRowSelectionChange = (selection: GridRowId[]) => {
     setSelectedRows(selection);
@@ -68,7 +61,9 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
 
   useEffect(() => {
     if (!loadingDepartment && departmentData) {
-      setDepartmentList(departmentData);
+      const dataConvert = flattenGroups(departmentData);
+      console.log("dataConvert", dataConvert);
+      setDepartmentList(dataConvert);
     }
   }, [loadingDepartment, departmentData]);
 
@@ -110,6 +105,7 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
                             id={field.id}
                             onChange={hanldeOnChangefield}
                             defaultValue={data ? data[field.id] : ""}
+                            MenuProps={MenuProps}
                           >
                             {(() => {
                               if (field.id === "departmentId") {
@@ -174,7 +170,7 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
                     : []
                 }
                 dataSelectRow={selectedRows}
-                handleSave={handleSave}
+                handleSave={handleSaveTrainingSummary}
                 handleRowSelect={handleRowSelectionChange}
               />
             </Grid>
@@ -186,7 +182,7 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
                     : []
                 }
                 dataSelectRow={selectedRows}
-                handleSave={handleSave}
+                handleSave={handleSaveTraining}
                 handleRowSelect={handleRowSelectionChange}
               />
             </Grid>
