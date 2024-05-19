@@ -9,6 +9,7 @@ import { TreeView, TreeItemData } from "components/atoms/tree_view";
 
 interface Props {
   dataDetail: IDataDetail;
+  disable?: boolean;
 }
 interface IMember {
   fullName?: string;
@@ -16,7 +17,7 @@ interface IMember {
   jobTitle?: string;
 }
 
-export const DetailDepartMent: FC<Props> = ({ dataDetail }) => {
+export const DetailDepartMent: FC<Props> = ({ dataDetail, disable }) => {
   const [gridGroup, setGridGroup] = useState<TreeItemData[]>([]);
   const [gridMember, setGridMember] = useState<IMember[]>([]);
 
@@ -83,6 +84,7 @@ export const DetailDepartMent: FC<Props> = ({ dataDetail }) => {
             setData={(data: TreeItemData[]) => {
               setGridGroup(data);
             }}
+            disable={disable}
           ></TreeView>
         </Grid>
       </Grid>

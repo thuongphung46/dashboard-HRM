@@ -30,8 +30,9 @@ export interface TreeItemData {
 export interface ITreeViewProps {
   data: TreeItemData[];
   setData: (data: any) => void;
+  disable?: boolean;
 }
-export const TreeView: FC<ITreeViewProps> = ({ data, setData }) => {
+export const TreeView: FC<ITreeViewProps> = ({ data, setData, disable }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [dataEdit, setDataEdit] = useState<any>({
     id: 0,
@@ -39,6 +40,7 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData }) => {
     parentDeptId: "",
     type: "",
   });
+
   const { data: departmentData } = useGetListDepartment();
 
   const handleShowPopupEdit = useCallback((data: any) => {
@@ -143,7 +145,8 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData }) => {
           alignItems: "center",
           height: "100%",
           width: "100%",
-        }}>
+        }}
+      >
         <div
           style={{
             height: "300px",
@@ -152,7 +155,8 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData }) => {
             padding: "24px",
             borderRadius: "4px",
             boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
-          }}>
+          }}
+        >
           <Box>
             {departmentData &&
               fieldData.map((field, index) => (
@@ -165,7 +169,8 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData }) => {
                         size="small"
                         id={field.id}
                         defaultValue={dataEdit[field.id] || ""}
-                        onChange={hanldeOnChangefield}>
+                        onChange={hanldeOnChangefield}
+                      >
                         {field.options.map((option, index) => (
                           <MenuItem key={index} value={option.value}>
                             {option.label}
@@ -193,7 +198,8 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData }) => {
               alignItems: "center",
               justifyContent: "flex-end",
               marginTop: "10px",
-            }}>
+            }}
+          >
             <Button variant="outlined" onClick={handleSave}>
               Lưu
             </Button>
@@ -220,22 +226,26 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData }) => {
             justifyContent: "space-between",
           }}
           container
-          alignItems="center">
+          alignItems="center"
+        >
           <Grid item>
             <Typography> {item.label}</Typography>
           </Grid>
           <Grid item>
-            <Button onClick={() => handleShowPopupEdit(item)}>
+            <Button
+              disabled={disable}
+              onClick={() => handleShowPopupEdit(item)}
+            >
               <EditIcon />
             </Button>
-            <Button onClick={() => handleDel(item)}>
+            <Button disabled={disable} onClick={() => handleDel(item)}>
               <DeleteIcon />
             </Button>
           </Grid>
         </Grid>
       );
     },
-    [handleDel, handleShowPopupEdit]
+    [disable, handleDel, handleShowPopupEdit]
   );
 
   const renderLabelChild = useCallback((item: any) => {
@@ -247,11 +257,13 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData }) => {
           alignItems: "center",
         }}
         container
-        alignItems="center">
+        alignItems="center"
+      >
         <Typography
           sx={{
             width: "250px",
-          }}>
+          }}
+        >
           {item.jobTitle}
         </Typography>
         <Link
@@ -260,7 +272,8 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData }) => {
             color: "#5ae1ff",
             fontWeight: "bold",
           }}
-          to={`/detail_employee/${item.id}`}>
+          to={`/detail_employee/${item.id}`}
+        >
           <Typography>{item.fullName}</Typography>
         </Link>
       </Grid>
@@ -275,12 +288,14 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData }) => {
           flexGrow: 1,
           width: "100%",
           overflowY: "auto",
-        }}>
+        }}
+      >
         {data.map((item) => (
           <TreeItem
             key={item.itemId}
             itemId={item.itemId}
-            label={renderLabelParent(item)}>
+            label={renderLabelParent(item)}
+          >
             {item.children?.map((child) => (
               <TreeItem
                 key={child.id}

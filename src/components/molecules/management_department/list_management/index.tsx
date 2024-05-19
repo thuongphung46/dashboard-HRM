@@ -19,6 +19,7 @@ interface Props {
   setDepartmentList: (data: any) => void;
   handleClickItem: (item: any) => void;
   active: any;
+  disable?: boolean;
 }
 
 export const ListDepartment: FC<Props> = ({
@@ -26,6 +27,7 @@ export const ListDepartment: FC<Props> = ({
   handleClickItem,
   setDepartmentList,
   active,
+  disable,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [openPEdit, setOpenPEdit] = useState<boolean>(false);
@@ -281,7 +283,11 @@ export const ListDepartment: FC<Props> = ({
         width: "30%",
       }}
     >
-      <Button variant="outlined" onClick={handleShowPopupAdd}>
+      <Button
+        disabled={disable}
+        variant="outlined"
+        onClick={handleShowPopupAdd}
+      >
         Thêm phòng ban
       </Button>
       <List
@@ -323,12 +329,14 @@ export const ListDepartment: FC<Props> = ({
                 {item.name}
               </ListItemText>
               <ListItemButton
+                disabled={disable}
                 onClick={() => handleOpenEdit(item)}
                 sx={{ height: "100%", width: "14%" }}
               >
                 <EditIcon />
               </ListItemButton>
               <ListItemButton
+                disabled={disable}
                 onClick={() => handleDel(item)}
                 sx={{ height: "100%", width: "14%" }}
               >
