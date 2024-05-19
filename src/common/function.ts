@@ -1,28 +1,4 @@
 const SHA256 = require("crypto-js/sha256");
-export const toString = (data: any) => {
-  return `${data}`;
-};
-
-export const storageAction = (
-  action: "get" | "set" | "clear",
-  key: string,
-  value?: any
-) => {
-  const storage = localStorage;
-
-  switch (action) {
-    case "get":
-      return storage.getItem(key);
-    case "set":
-      storage.setItem(key, value);
-      break;
-    case "clear":
-      storage.removeItem(key);
-      break;
-    default:
-      throw new Error("Invalid action provided");
-  }
-};
 
 /**
  * Mã hóa dữ liệu
