@@ -16,6 +16,8 @@ import { authActions } from "../../../redux/slices/authSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/hook";
 import { useNavigate } from "react-router-dom";
 import { toastMessage } from "components/molecules/toast_message";
+import HRMStorage from "common/function";
+import { KeyValue } from "constants/GlobalConstant";
 
 function Copyright(props: any) {
   return (
@@ -40,7 +42,7 @@ const theme = createTheme();
 export const SignIn = () => {
   const navigate = useNavigate();
   const { isLoggedIn } = useAppSelector((state) => state.auth);
-  const isLoggedInEd = Boolean(localStorage.getItem("access_token"));
+  const isLoggedInEd = Boolean(HRMStorage.get(KeyValue.TokenKey));
 
   const dispatch = useAppDispatch();
   const [state, setstate] = useState({
