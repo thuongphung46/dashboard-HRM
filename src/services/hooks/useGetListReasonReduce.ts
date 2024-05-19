@@ -73,7 +73,7 @@ export const useReasonReduce = () => {
     ) {
       return response.data;
     } else {
-      return null;
+      return response.data;
     }
   };
   const createReasonReduce = async (body: CreateReasonReduceBody) => {

@@ -1,8 +1,9 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { GridColDef, GridRowId } from "@mui/x-data-grid";
 import { BaseGrid } from "components/atoms/datagrid";
 import {
+  JobTitleType,
   useGetListJobTitle,
   useJobTitle,
 } from "services/hooks/useGetListJobTitle";
@@ -14,8 +15,16 @@ interface Props {
 }
 export const GeneralPosition: FC<Props> = ({ disable }) => {
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
+  const [dataRows, setDataRows] = useState<JobTitleType[]>([]);
   const { createJobTitle, updateJobTitle, deleteJobTitle } = useJobTitle();
   const { data } = useGetListJobTitle();
+
+  useEffect(() => {
+    if (data) {
+      setDataRows(data);
+    }
+  }, [data]);
+
   const columns: GridColDef[] = [
     {
       field: "code",
@@ -38,6 +47,7 @@ export const GeneralPosition: FC<Props> = ({ disable }) => {
         jobTitle: dataAdd.jobTitle,
       }).then((res) => {
         if (res.msg_code === MessageCode.Success) {
+          setDataRows([...dataRows, res.content]);
           toastMessage("Thành công", "success");
         } else {
           toastMessage(res.message, "error");
@@ -48,6 +58,9 @@ export const GeneralPosition: FC<Props> = ({ disable }) => {
         jobTitle: dataAdd.jobTitle,
       }).then((res) => {
         if (res.msg_code === MessageCode.Success) {
+          const index = dataRows.findIndex((row) => row.id === dataAdd.id);
+          dataRows[index] = res.content;
+          setDataRows([...dataRows]);
           toastMessage("Thành công", "success");
         } else {
           toastMessage(res.message, "error");
@@ -59,6 +72,7 @@ export const GeneralPosition: FC<Props> = ({ disable }) => {
   const handleDel = async (dataDel: any) => {
     deleteJobTitle(dataDel).then((res) => {
       if (res.msg_code === MessageCode.Success) {
+        setDataRows(dataRows.filter((row) => row.id !== dataDel));
         toastMessage(res.message, "success");
       } else {
         toastMessage(res.message, "error");
@@ -72,7 +86,7 @@ export const GeneralPosition: FC<Props> = ({ disable }) => {
         <BaseGrid
           disable={disable}
           columns={columns}
-          rows={data}
+          rows={dataRows}
           title="Chức vụ"
           onSave={handleSave}
           onDel={handleDel}
