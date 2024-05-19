@@ -1,6 +1,5 @@
 import axios from "axios";
-import { storageAction } from "common/function";
-import { KeyValue } from "constants/GlobalConstant";
+import HRMStorage from "common/function";
 import { NetWork } from "./api";
 import { getRequestUrl } from "./api/utils";
 
@@ -30,9 +29,7 @@ const AuthService = {
   },
 
   logout: () => {
-    localStorage.removeItem("user");
-    storageAction("clear", KeyValue.TokenKey);
-    storageAction("clear", KeyValue.Level);
+    HRMStorage.clear();
   },
 };
 export { AuthService };

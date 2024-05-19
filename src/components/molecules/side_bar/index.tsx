@@ -15,7 +15,7 @@ import { SidebarFooter } from "./sidebar_footer";
 import { themes } from "constants/themes/styles";
 import { Link, useLocation } from "react-router-dom";
 import { KeyValue } from "constants/GlobalConstant";
-import { storageAction } from "common/function";
+import HRMStorage from "common/function";
 
 // hex to rgba converter
 const hexToRgba = (hex: string, alpha: number) => {
@@ -53,7 +53,7 @@ export const Playground: React.FC<SidebarProps> = ({
   const [dissable, setDissable] = useState(false);
   const rtl = false;
   const hasImage = false;
-  const level = storageAction("get", KeyValue.Level);
+  const level = HRMStorage.get(KeyValue.Level);
 
   useEffect(() => {
     if (level !== "LEVEL_1") {

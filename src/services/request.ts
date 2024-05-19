@@ -1,9 +1,10 @@
 import axios, { HttpStatusCode } from "axios";
-import { storageAction } from "common/function";
+import HRMStorage from "common/function";
 import { KeyValue } from "constants/GlobalConstant";
 import { APP_CONFIG } from "constants/app_config";
 
 import { GlobalData } from "constants/global_data";
+import { MessageCode } from "types/enum/message_code";
 
 const baseUrl = APP_CONFIG.API_URL;
 const INVALID_TOKEN = [401, 403, 404, 405, 406, 407, 203];
@@ -82,7 +83,7 @@ interface RequestHandleParams {
 const requestHandle = async (data: RequestHandleParams) => {
   try {
     const { controller, action, params, method } = data;
-    const jwt = await storageAction("get", KeyValue.TokenKey);
+    const jwt = await HRMStorage.get(KeyValue.TokenKey);
     // const lang = await PxStorage.get(PX_CONSTANTS.LANGUAGE);
     const paramsUri = method === "get" ? params : {};
     const uri = composeUri(controller, action, paramsUri);
@@ -109,10 +110,14 @@ const requestHandle = async (data: RequestHandleParams) => {
         }
       })
       .catch((error) => {
-        if (error.response) {
-          return error.response;
+        if (
+          error.response &&
+          error.response.status === MessageCode.Unauthorized
+        ) {
+          return INVALID_TOKEN_MSG;
+        } else {
+          return CANNOT_CONNECT_API;
         }
-        throw error;
       });
   } catch (error) {
     throw error;

@@ -10,4 +10,5 @@ export enum MessageCode {
   UserLock = 15,
   TableNotExists = 16,
   DataNotFound = 10003,
+  Unauthorized = 401,
 }
