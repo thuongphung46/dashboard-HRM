@@ -13,6 +13,8 @@ import { TabDetailStaff } from "components/molecules/staff/tab_detail";
 import { StatisticPage } from "components/pages/statistic";
 import { FC } from "react";
 import { Navigate } from "react-router-dom";
+import HRMStorage from "common/function";
+import { KeyValue } from "constants/GlobalConstant";
 
 enum FORM_STATE {
   EDIT = "edit",
@@ -25,7 +27,7 @@ interface PropType {
 }
 
 const PrivateRoute: FC<PropType> = ({ component: Component, action }) => {
-  const level = localStorage.getItem("level");
+  const level = HRMStorage.get(KeyValue.Level);
 
   if (level === "LEVEL_1") return <Component action={action} />;
   return <Navigate to="/model" />;
