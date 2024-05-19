@@ -5,11 +5,14 @@ import {
   MenuItem,
   SelectChangeEvent,
 } from "@mui/material";
+import HRMStorage from "common/function";
+import { KeyValue } from "constants/GlobalConstant";
 import { ChangeEvent, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { FileTkbService, FileKeKhaiService } from "services/upload_service";
 
 export const ImportTemplate = () => {
+  const level = HRMStorage.get(KeyValue.Level);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileSelected, setFileSelected] = useState(false);
   const [importOptionFile, setImportOptionFile] = useState<string>("");
@@ -39,12 +42,8 @@ export const ImportTemplate = () => {
         } else {
           toast.error("Import thất bại");
         }
-      }
-
-      else if (importOptionFile === "Import Kê khai") {
-        const result = await FileKeKhaiService.uploadFile(
-          selectedFile
-        );
+      } else if (importOptionFile === "Import Kê khai") {
+        const result = await FileKeKhaiService.uploadFile(selectedFile);
 
         if (result.msg_code === 200) {
           toast.success("Import thành công");
@@ -62,51 +61,50 @@ export const ImportTemplate = () => {
   const onChangeOptionFile = (event: SelectChangeEvent<string>) => {
     setImportOptionFile(event.target.value);
   };
+
   const onChangeSchoolYear = (event: SelectChangeEvent<string>) => {
     setSchoolYear(event.target.value);
   };
 
-  const isDisableBtn = () =>{
-    if (importOptionFile ==="Import TKB") {
-      return !fileSelected || !importOptionFile || !importOptionTerm
+  const isDisableBtn = () => {
+    if (importOptionFile === "Import TKB") {
+      return !fileSelected || !importOptionFile || !importOptionTerm;
+    } else if (importOptionFile === "Import Kê khai") {
+      return !fileSelected || !importOptionFile;
     }
-    else if (importOptionFile ==="Import Kê khai") {
-      return !fileSelected || !importOptionFile
-    }
-    return true
-  }
+    return true;
+  };
 
-  const isDisableField = () =>{
-    if (importOptionFile ==="Import TKB") {
-      return false
+  const isDisableField = () => {
+    if (importOptionFile === "Import TKB") {
+      return false;
+    } else if (importOptionFile === "Import Kê khai") {
+      return true;
     }
-    else if (importOptionFile ==="Import Kê khai") {
-      return true
-    }
-    return true
-  }
+    return true;
+  };
 
   return (
-    <div style={{
-      padding:"8px"
-    }}>
-      
+    <div style={{ padding: "8px" }}>
       <div>
         <Select
           value={importOptionFile}
           onChange={onChangeOptionFile}
           displayEmpty
-          style={{ marginTop: "10px",marginRight: "10px",  width: "200px" }}
+          style={{ marginTop: "10px", marginRight: "10px", width: "200px" }}
         >
           <MenuItem value="" disabled>
             Chọn loại file
           </MenuItem>
-          <MenuItem value="Import TKB">Import TKB</MenuItem>
-          <MenuItem value="Import Kê khai">Import Kê khai</MenuItem>
+          {level === "LEVEL_4" ? (
+            <MenuItem value="Import TKB">Import TKB</MenuItem>
+          ) : (
+            <MenuItem value="Import Kê khai">Import Kê khai</MenuItem>
+          )}
         </Select>
         <input
           accept=".xlsx"
-          style={{ display: "none"}}
+          style={{ display: "none" }}
           id="raised-button-file"
           type="file"
           ref={fileInput1}
@@ -118,37 +116,41 @@ export const ImportTemplate = () => {
           </Button>
         </label>
       </div>
-      <div>
-        <Select
-          value={importOptionTerm}
-          onChange={onChangeOptinTerm}
-          displayEmpty
-          disabled = {isDisableField()}
-          style={{ marginTop: "10px", width: "200px" }}
-        >
-          <MenuItem value="" disabled>
-            Chọn học kỳ
-          </MenuItem>
-          <MenuItem value="Học kỳ I">Học kỳ I</MenuItem>
-          <MenuItem value="Học kỳ II">Học kỳ II</MenuItem>
-        </Select>
-      </div>
-      <div>
-        <Select
-          value={schoolYear}
-          onChange={onChangeSchoolYear}
-          displayEmpty
-          disabled = {isDisableField()}
-          style={{ marginTop: "10px", width: "200px" }}
-        >
-          <MenuItem value="" disabled>
-            Chọn năm học
-          </MenuItem>
-          <MenuItem value="2022-2023">2022-2023</MenuItem>
-          <MenuItem value="2023-2024">2023-2024</MenuItem>
-          {/* Thêm các năm học khác nếu cần */}
-        </Select>
-      </div>
+      {level === "LEVEL_4" && (
+        <div>
+          <Select
+            value={importOptionTerm}
+            onChange={onChangeOptinTerm}
+            displayEmpty
+            disabled={isDisableField()}
+            style={{ marginTop: "10px", width: "200px" }}
+          >
+            <MenuItem value="" disabled>
+              Chọn học kỳ
+            </MenuItem>
+            <MenuItem value="Học kỳ I">Học kỳ I</MenuItem>
+            <MenuItem value="Học kỳ II">Học kỳ II</MenuItem>
+          </Select>
+        </div>
+      )}
+      {level === "LEVEL_4" && (
+        <div>
+          <Select
+            value={schoolYear}
+            onChange={onChangeSchoolYear}
+            displayEmpty
+            disabled={isDisableField()}
+            style={{ marginTop: "10px", width: "200px" }}
+          >
+            <MenuItem value="" disabled>
+              Chọn năm học
+            </MenuItem>
+            <MenuItem value="2022-2023">2022-2023</MenuItem>
+            <MenuItem value="2023-2024">2023-2024</MenuItem>
+            {/* Thêm các năm học khác nếu cần */}
+          </Select>
+        </div>
+      )}
       {fileSelected && selectedFile && (
         <Typography variant="body1">
           Selected file: {selectedFile.name}
@@ -158,13 +160,11 @@ export const ImportTemplate = () => {
         <Button
           variant="contained"
           onClick={handleImport}
-          
           disabled={isDisableBtn()}
         >
           Import
         </Button>
       </div>
-      
     </div>
   );
 };
