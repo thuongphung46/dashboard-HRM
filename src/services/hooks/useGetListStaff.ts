@@ -1,7 +1,9 @@
+import { toastMessage } from "components/molecules/toast_message";
 import { useEffect, useState } from "react";
 import { API_URL, NetWork } from "services/api";
 import { RESPONSE_CODE } from "services/api/config";
 import { deleteParamsNotUsing, getRequestUrl } from "services/api/utils";
+import { initStaffInfo } from "services/mock_data/staff_info";
 import { StaffService } from "services/staff_service";
 import { StaffDetail } from "types/ApplicationType";
 import { MessageCode } from "types/enum/message_code";
@@ -41,7 +43,7 @@ export const useGetListStaff = (params: GetListStaffParams) => {
 
 //get detail nhân viên
 export const useGetStaff = (id: string | undefined) => {
-  const [data, setData] = useState<StaffDetail | any>({});
+  const [data, setData] = useState<StaffDetail | any>(initStaffInfo);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -51,6 +53,8 @@ export const useGetStaff = (id: string | undefined) => {
         const res = await StaffService.GetDetailStaff(id);
         if (res.msg_code === MessageCode.Success) {
           setData(res.content);
+        } else {
+          toastMessage("Nhân viên không tồn tại hoặc đã nghỉ việc!", "error");
         }
       }
       setLoading(false);
