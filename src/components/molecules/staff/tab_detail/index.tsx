@@ -41,7 +41,11 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
   }, [formData]);
 
   return (
-    <div style={{ padding: "8px" }}>
+    <div
+      style={{
+        padding: "8px",
+      }}
+    >
       <Button variant="outlined" onClick={() => navigate(-1)}>
         Thoát
       </Button>
@@ -109,7 +113,7 @@ function TabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3, height: "calc(100vh - 150px)", overflow: "auto" }}>
+        <Box sx={{ p: 3, height: "calc(100vh - 180px)", overflow: "auto" }}>
           {children}
         </Box>
       )}
