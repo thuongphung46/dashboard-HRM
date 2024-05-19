@@ -52,6 +52,9 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
       >
         Lưu
       </Button>
+      <Button variant="outlined" sx={{ marginLeft: "4px" }}>
+        Scan
+      </Button>
       <Tabs
         value={value}
         onChange={handleChange}

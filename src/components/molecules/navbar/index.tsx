@@ -205,7 +205,7 @@ export const PrimarySearchAppBar: React.FC<PrimarySearchAppBarProps> = ({
                 <SearchIcon />
               </SearchIconWrapper>
               <StyledInputBase
-                placeholder="Search…"
+                placeholder="Tìm kiếm…"
                 inputProps={{ "aria-label": "search" }}
               />
             </Search>
