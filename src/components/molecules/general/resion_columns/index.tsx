@@ -1,8 +1,9 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { GridColDef, GridRowId } from "@mui/x-data-grid";
 import { BaseGrid } from "components/atoms/datagrid";
 import {
+  ReasonReduceType,
   useGetListReasonReduce,
   useReasonReduce,
 } from "services/hooks/useGetListReasonReduce";
@@ -14,9 +15,16 @@ interface Props {
 }
 export const GeneralResion: FC<Props> = ({ disable }) => {
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
+  const [dataRows, setDataRows] = useState<ReasonReduceType[]>([]);
   const { createReasonReduce, updateReasonReduce, deleteReasonReduce } =
     useReasonReduce();
   const { data } = useGetListReasonReduce();
+
+  useEffect(() => {
+    if (data) {
+      setDataRows(data);
+    }
+  }, [data]);
   const columns: GridColDef[] = [
     {
       field: "code",
@@ -47,6 +55,7 @@ export const GeneralResion: FC<Props> = ({ disable }) => {
         ratio: parseFloat(dataAdd.ratio),
       }).then((res) => {
         if (res.msg_code === MessageCode.Success) {
+          setDataRows([...dataRows, res.content]);
           toastMessage("Thành công", "success");
         } else {
           toastMessage(res.message, "error");
@@ -58,6 +67,9 @@ export const GeneralResion: FC<Props> = ({ disable }) => {
         ratio: parseFloat(dataAdd.ratio),
       }).then((res) => {
         if (res.msg_code === MessageCode.Success) {
+          setDataRows(
+            dataRows.map((row) => (row.id === dataAdd.id ? dataAdd : row))
+          );
           toastMessage("Thành công", "success");
         } else {
           toastMessage(res.message, "error");
@@ -69,6 +81,7 @@ export const GeneralResion: FC<Props> = ({ disable }) => {
   const handleDel = async (dataDel: any) => {
     deleteReasonReduce(dataDel).then((res) => {
       if (res.msg_code === MessageCode.Success) {
+        setDataRows(dataRows.filter((row) => row.id !== dataDel));
         toastMessage("Thành công", "success");
       } else {
         toastMessage(res.message, "error");
@@ -82,7 +95,7 @@ export const GeneralResion: FC<Props> = ({ disable }) => {
         <BaseGrid
           disable={disable}
           columns={columns}
-          rows={data}
+          rows={dataRows}
           title="Lí do giảm trừ"
           onSave={handleSave}
           onDel={handleDel}

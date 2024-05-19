@@ -89,9 +89,17 @@ export const BaseGrid: FC<BaseGridProps> = ({
   };
 
   const processRowUpdate = (newRow: GridRowModel) => {
-    const updatedRow = { ...newRow };
+    const updatedRow = { ...newRow, isNew: false };
     setData(data.map((row) => (row.id === newRow.id ? updatedRow : row)));
-    onSave && onSave(updatedRow);
+
+    if (onSave) {
+      if (newRow.isNew) {
+        onSave({ ...updatedRow, isNew: true });
+      } else {
+        onSave(updatedRow);
+      }
+    }
+
     return updatedRow;
   };
 
