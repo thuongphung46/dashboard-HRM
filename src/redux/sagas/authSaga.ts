@@ -49,7 +49,7 @@ function* handleLogout() {
 
 function* watchLoginFlow() {
   while (true) {
-    const isLoggedIn = Boolean(localStorage.getItem("access_token"));
+    const isLoggedIn = Boolean(HRMStorage.get(KeyValue.TokenKey));
 
     if (!isLoggedIn) {
       const action: PayloadAction<LoginPayload> = yield take(

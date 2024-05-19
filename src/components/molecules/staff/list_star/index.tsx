@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import Box from "@mui/material/Box";
-import { FC, useCallback, useState, useMemo } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   GetListStaffParams,
@@ -16,13 +16,16 @@ import {
 } from "services/hooks/useGetListStaff";
 import { columns } from "./columns";
 import { DataGrid } from "@mui/x-data-grid";
-import { useGetListJobTitle } from "services/hooks/useGetListJobTitle";
-import { useGetListRank } from "services/hooks/useGetListRank"; // Assuming you have a hook for fetching rank data
+import HRMStorage from "common/function";
+import { KeyValue } from "constants/GlobalConstant";
+import { toastMessage } from "components/molecules/toast_message";
 
 interface Props {}
 
 export const ListStaff: FC<Props> = () => {
   const navigate = useNavigate();
+  const level = HRMStorage.get(KeyValue.Level);
+  const [disable, setDisable] = useState<boolean>(true);
   const [params, setParams] = useState<GetListStaffParams>({
     query: "",
     active: undefined,
@@ -30,61 +33,44 @@ export const ListStaff: FC<Props> = () => {
     size: 25,
   });
   const { data: staffList, loading } = useGetListStaff(params);
-  const { loading: loadingJobTitle, data: jobTitleData } = useGetListJobTitle();
-  const { loading: loadingRank, data: rankData } = useGetListRank(); // Fetching rank data
+
+  useEffect(() => {
+    if (level === "LEVEL_4") {
+      setDisable(false);
+    }
+  }, [level]);
 
   const handleCellClick = useCallback(
     (e: any) => {
-      navigate(`/detail_employee/${e.id}`);
+      if (!disable) {
+        navigate(`/detail_employee/${e.id}`);
+      } else if (e.id.toString() === HRMStorage.get(KeyValue.id)) {
+        navigate(`/detail_me`);
+      } else {
+        toastMessage("Bạn không có quyền truy cập", "error");
+        return;
+      }
     },
-    [navigate]
+    [disable, navigate]
   );
   const handleAddNew = useCallback(
     (e: any) => {
-      navigate(`/detail_employee/add`);
+      if (!disable) {
+        navigate(`/detail_employee/add`);
+      } else {
+        toastMessage("Bạn không có quyền thêm nhân viên!", "error");
+        return;
+      }
     },
-    [navigate]
+    [disable, navigate]
   );
-
-  // Create a mapping from job title code to job title name
-  const jobTitleMap = useMemo(() => {
-    if (!jobTitleData) return {};
-    const map: { [key: string]: string } = {};
-    jobTitleData.forEach((job) => {
-      map[job.code] = job.jobTitle;
-    });
-    return map;
-  }, [jobTitleData]);
-
-  const rankMap = useMemo(() => {
-    if (!rankData) return {};
-    const map: { [key: string]: string } = {};
-    rankData.forEach((rank) => {
-      map[rank.code] = rank.rankName;
-    });
-    return map;
-  }, [rankData]);
-
-  // Transform the staffList to include job title and rank names
-  const transformedStaffList = useMemo(() => {
-    if (!staffList) return [];
-    return staffList.map((staff) => ({
-      ...staff,
-      jobTitle: staff.jobTitle && jobTitleMap[staff.jobTitle] ? jobTitleMap[staff.jobTitle] : staff.jobTitle,
-      rankName: staff.rankName && rankMap[staff.rankName] ? rankMap[staff.rankName] : staff.rankName,
-    }));
-  }, [staffList, jobTitleMap, rankMap]);
-
-  // console.log(jobTitleData);
-  // console.log(rankData);
-  // console.log(transformedStaffList);
 
   return (
     <div>
       <Box>
         <Box
           sx={{
-            maxWidth: "450px",
+            maxWidth: "500px",
             display: "flex",
             justifyContent: "space-between",
           }}
@@ -113,7 +99,15 @@ export const ListStaff: FC<Props> = () => {
               <MenuItem value={0}>Đã nghỉ việc</MenuItem>
             </Select>
           </FormControl>
-          <Button onClick={handleAddNew}>Thêm</Button>
+          <Button
+            size="small"
+            variant="outlined"
+            sx={{ width: "80px" }}
+            onClick={handleAddNew}
+            disabled={disable}
+          >
+            Thêm
+          </Button>
         </Box>
         {loading ? (
           <div>Loading...</div>
@@ -125,7 +119,7 @@ export const ListStaff: FC<Props> = () => {
                 height: "calc(100vh - 250px)",
               }}
               columns={columns}
-              rows={transformedStaffList}
+              rows={staffList}
               disableRowSelectionOnClick
               onCellClick={handleCellClick}
             />

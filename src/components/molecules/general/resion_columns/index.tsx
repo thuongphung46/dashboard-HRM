@@ -57,7 +57,6 @@ export const GeneralResion: FC<Props> = ({ disable }) => {
         name: dataAdd.name,
         ratio: parseFloat(dataAdd.ratio),
       }).then((res) => {
-        console.log("res", res);
         if (res.msg_code === MessageCode.Success) {
           toastMessage("Thành công", "success");
         } else {

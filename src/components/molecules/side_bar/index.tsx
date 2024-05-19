@@ -64,7 +64,7 @@ export const Playground: React.FC<SidebarProps> = ({
   }, [level, dissable]);
 
   const handleLogout = useCallback(() => {
-    localStorage.removeItem("access_token");
+    HRMStorage.clear();
     window.location.href = "/login";
   }, []);
 
