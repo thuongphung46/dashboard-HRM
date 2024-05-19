@@ -9,8 +9,10 @@ import {
 import { toastMessage } from "components/molecules/toast_message";
 import { MessageCode } from "types/enum/message_code";
 
-interface Props {}
-export const GeneralPosition: FC<Props> = () => {
+interface Props {
+  disable?: boolean;
+}
+export const GeneralPosition: FC<Props> = ({ disable }) => {
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
   const { createJobTitle, updateJobTitle, deleteJobTitle } = useJobTitle();
   const { data } = useGetListJobTitle();
@@ -68,6 +70,7 @@ export const GeneralPosition: FC<Props> = () => {
     <div>
       <Box>
         <BaseGrid
+          disable={disable}
           columns={columns}
           rows={data}
           title="Chức vụ"
