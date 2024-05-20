@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   GetListStaffParams,
@@ -23,6 +23,7 @@ import { StaffService } from "services/staff_service";
 import { MessageCode } from "types/enum/message_code";
 import { toastMessage } from "components/molecules/toast_message";
 import moment from "moment";
+import { useGetListJobTitle } from "services/hooks/useGetListJobTitle";
 
 interface Props {
   data: StaffDetail;
@@ -80,6 +81,8 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
       setListStaff(listStaffData);
     }
   }, [loadingListStaff, listStaffData]);
+
+  const { loading: loadingJobTitle, data: jobTitleData } = useGetListJobTitle();
 
   const formDataA: IFormData[] = [
     {
@@ -601,8 +604,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                                   if (field.id === "per_b") {
                                     const data: IListStaff[] = listStaff.filter(
                                       (staff) =>
-                                        staff.jobTitle === "Giảng viên mời" &&
-                                        staff.active === 1
+                                        staff.jobTitle === "gvm" && staff.active === 1
                                     );
                                     return data.map((staff, index) => (
                                       <MenuItem
