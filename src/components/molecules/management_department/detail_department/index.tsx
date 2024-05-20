@@ -81,10 +81,8 @@ export const DetailDepartMent: FC<Props> = ({ dataDetail, disable }) => {
       ...member,
       jobTitle: member.jobTitle && jobTitleMap[member.jobTitle] ? jobTitleMap[member.jobTitle] : member.jobTitle,
     }));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gridMember, jobTitleData]);
-
-  console.log(transformedGridMember);
-  console.log(jobTitleData);
 
   return (
     <Box sx={{ width: "70%" }}>
