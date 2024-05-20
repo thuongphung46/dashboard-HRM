@@ -52,7 +52,7 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
       StaffService.createStaff(formData)
         .then((res) => {
           if (res.msg_code === MessageCode.Success) {
-            toastMessage(res.message, "success");
+            toastMessage("Thành công", "success");
           } else {
             toastMessage(res.message, "error");
           }
@@ -64,7 +64,7 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
       StaffService.UpdateInfoStaff(formData, id)
         .then((res) => {
           if (res.msg_code === MessageCode.Success) {
-            toastMessage(res.message, "success");
+            toastMessage("Thành công", "success");
           } else {
             toastMessage(res.message, "error");
           }

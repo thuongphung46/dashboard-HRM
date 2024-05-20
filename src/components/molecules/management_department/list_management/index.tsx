@@ -224,7 +224,7 @@ export const ListDepartment: FC<Props> = ({
 
   const renderPopupEdit = useMemo(() => {
     const fieldPopupEdit: IFormData[] = [
-      { id: "name", label: "Tên cấp quản lýP", type: "text" },
+      { id: "name", label: "Tên cấp quản lý", type: "text" },
       {
         id: "type",
         label: "Loại",
