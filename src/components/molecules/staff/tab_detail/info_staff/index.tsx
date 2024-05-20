@@ -82,7 +82,7 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
     <Box sx={{ flexGrow: 1 }}>
       <Grid container>
         <Grid container spacing={2}>
-          {data?.id &&
+          {(data?.id || action === "add") &&
             fieldsData.map((field) => {
               if (
                 field.id === "password" &&
@@ -118,7 +118,7 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
                                 ));
                               } else if (field.id === "rankId") {
                                 return rankList.map((rank) => (
-                                  <MenuItem key={rank.id} value={rank.code}>
+                                  <MenuItem key={rank.id} value={rank.id}>
                                     {rank.rankName}
                                   </MenuItem>
                                 ));
