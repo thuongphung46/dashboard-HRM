@@ -4,7 +4,7 @@ import { GeneralResion } from "components/molecules/general/resion_columns";
 import { GeneralRank } from "components/molecules/general/rank_columns";
 import InputLabel from "@mui/material/InputLabel";
 import Input from "@mui/material/Input";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import HRMStorage from "common/function";
 import { KeyValue } from "constants/GlobalConstant";
 
@@ -32,7 +32,7 @@ export const MultipleTablesPage: FC<Props> = ({ GenneralData }) => {
     base_salary: "",
     // time_worked: "",
   });
-  const [edited, setEdited] = useState<boolean>(false);
+  // const [edited, setEdited] = useState<boolean>(false);
   const [disable, setDisable] = useState<boolean>(false);
 
   useEffect(() => {
@@ -82,14 +82,14 @@ export const MultipleTablesPage: FC<Props> = ({ GenneralData }) => {
         ...prevState,
         [name]: value,
       }));
-      setEdited(true);
+      // setEdited(true);
     },
     []
   );
 
-  const handleUpdate = useCallback(() => {
-    console.log("Updated data:", GeneralEdit);
-  }, [GeneralEdit]);
+  // const handleUpdate = useCallback(() => {
+  //   console.log("Updated data:", GeneralEdit);
+  // }, [GeneralEdit]);
 
   const renderGeneralFields = useMemo(() => {
     return (

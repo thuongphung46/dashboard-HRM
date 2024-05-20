@@ -11,6 +11,7 @@ export interface IFormData {
   id: string;
   label: string;
   type: string;
+  isRequire?: boolean;
   ref?: any;
   options?: {
     value: string | number | undefined;

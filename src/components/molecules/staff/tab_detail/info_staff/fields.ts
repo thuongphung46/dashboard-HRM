@@ -1,13 +1,14 @@
 import { IFormData } from "components/atoms/field";
 
 export const fieldsData: IFormData[] = [
-  { id: "username", label: "Mã nhân viên", type: "text" },
-  { id: "fullName", label: "Họ và tên", type: "text" },
-  { id: "password", label: "Mật khẩu", type: "password" },
+  { id: "username", label: "Mã nhân viên", type: "text", isRequire: true },
+  { id: "fullName", label: "Họ và tên", type: "text", isRequire: true },
+  { id: "password", label: "Mật khẩu", type: "password", isRequire: true },
   {
     id: "level",
     label: "Level",
     type: "select",
+    isRequire: true,
     options: [
       {
         value: "LEVEL_1",
@@ -46,7 +47,13 @@ export const fieldsData: IFormData[] = [
   { id: "personalEmail", label: "Email", type: "text" },
   { id: "phoneNumber", label: "Số điện thoại", type: "text" },
   { id: "workingPlace", label: "Đơn vị công tác hiện tại", type: "text" },
-  { id: "departmentId", label: "Cấp quản lý", type: "select", options: [] },
+  {
+    id: "departmentId",
+    label: "Cấp quản lý",
+    type: "select",
+    options: [],
+    isRequire: true,
+  },
   {
     id: "groupId",
     label: "Bộ môn (nếu có)",
@@ -58,9 +65,19 @@ export const fieldsData: IFormData[] = [
       },
     ],
   },
-  { id: "jobTitle", label: "Chức vụ", type: "select", options: [] },
+  {
+    id: "jobTitle",
+    label: "Chức vụ",
+    type: "select",
+    options: [],
+    isRequire: true,
+  },
   { id: "rankId", label: "Hàm (Sĩ quan)", type: "select", options: [] },
-  { id: "academicRank", label: "Học hàm", type: "select", options: [
+  {
+    id: "academicRank",
+    label: "Học hàm",
+    type: "select",
+    options: [
       {
         value: "Phó giáo sư",
         label: "Phó giáo sư",
@@ -68,10 +85,14 @@ export const fieldsData: IFormData[] = [
       {
         value: "Giáo sư",
         label: "Giáo sư",
-      }
+      },
     ],
   },
-  { id: "academicTitle", label: "Học vị", type: "select", options: [
+  {
+    id: "academicTitle",
+    label: "Học vị",
+    type: "select",
+    options: [
       {
         value: "Tú tài",
         label: "Tú tài",
@@ -87,8 +108,8 @@ export const fieldsData: IFormData[] = [
       {
         value: "Thạc sĩ",
         label: "Thạc sĩ",
-      }
-    ]
+      },
+    ],
   },
   { id: "ratio", label: "Hệ số lương", type: "number" },
   { id: "country", label: "Quốc tịch", type: "text" },
@@ -111,6 +132,7 @@ export const fieldsData: IFormData[] = [
     id: "active",
     label: "Trạng thái",
     type: "select",
+    isRequire: true,
     options: [
       {
         value: 1,

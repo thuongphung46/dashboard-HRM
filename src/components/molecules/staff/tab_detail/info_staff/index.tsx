@@ -105,6 +105,7 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
                             onChange={hanldeOnChangefield}
                             defaultValue={data ? data[field.id] : ""}
                             MenuProps={MenuProps}
+                            required={field?.isRequire}
                           >
                             {(() => {
                               if (field.id === "departmentId") {
@@ -147,6 +148,7 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
                           fullWidth
                           id={field.id}
                           name={field.id}
+                          required={field?.isRequire}
                           type={field.type}
                           defaultValue={data ? data[field.id] : ""}
                           onChange={hanldeOnChangefield}

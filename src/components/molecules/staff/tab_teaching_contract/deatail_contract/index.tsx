@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   GetListStaffParams,
@@ -81,8 +81,6 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
       setListStaff(listStaffData);
     }
   }, [loadingListStaff, listStaffData]);
-
-  const { loading: loadingJobTitle, data: jobTitleData } = useGetListJobTitle();
 
   const formDataA: IFormData[] = [
     {
@@ -604,7 +602,8 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                                   if (field.id === "per_b") {
                                     const data: IListStaff[] = listStaff.filter(
                                       (staff) =>
-                                        staff.jobTitle === "gvm" && staff.active === 1
+                                        staff.jobTitle === "gvm" &&
+                                        staff.active === 1
                                     );
                                     return data.map((staff, index) => (
                                       <MenuItem
