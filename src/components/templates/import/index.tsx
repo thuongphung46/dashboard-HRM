@@ -96,11 +96,10 @@ export const ImportTemplate = () => {
           <MenuItem value="" disabled>
             Chọn loại file
           </MenuItem>
-          {level === "LEVEL_4" ? (
+          if (level === "LEVEL_4") {
             <MenuItem value="Import TKB">Import TKB</MenuItem>
-          ) : (
-            <MenuItem value="Import Kê khai">Import Kê khai</MenuItem>
-          )}
+          }
+          <MenuItem value="Import Kê khai">Import Kê khai</MenuItem>
         </Select>
         <input
           accept=".xlsx"
