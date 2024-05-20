@@ -60,6 +60,36 @@ export const fieldsData: IFormData[] = [
   },
   { id: "jobTitle", label: "Chức vụ", type: "select", options: [] },
   { id: "rankId", label: "Hàm (Sĩ quan)", type: "select", options: [] },
+  { id: "academicRank", label: "Học hàm", type: "select", options: [
+      {
+        value: "Phó giáo sư",
+        label: "Phó giáo sư",
+      },
+      {
+        value: "Giáo sư",
+        label: "Giáo sư",
+      }
+    ],
+  },
+  { id: "academicTitle", label: "Học vị", type: "select", options: [
+      {
+        value: "Tú tài",
+        label: "Tú tài",
+      },
+      {
+        value: "Cử nhân, Kỹ sư",
+        label: "Cử nhân, Kỹ sư",
+      },
+      {
+        value: "Tiến sĩ",
+        label: "Tiến sĩ",
+      },
+      {
+        value: "Thạc sĩ",
+        label: "Thạc sĩ",
+      }
+    ]
+  },
   { id: "ratio", label: "Hệ số lương", type: "number" },
   { id: "country", label: "Quốc tịch", type: "text" },
   { id: "identityBirthPlace", label: "Nơi sinh", type: "text" },
