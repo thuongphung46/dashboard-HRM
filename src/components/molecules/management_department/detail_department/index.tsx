@@ -1,11 +1,12 @@
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useMemo } from "react";
 import { GridColDef } from "@mui/x-data-grid/models/colDef";
 import { Link } from "react-router-dom";
 import { IDataDetail } from "types/model";
 import { DataGrid } from "@mui/x-data-grid";
 import { TreeView, TreeItemData } from "components/atoms/tree_view";
+import { useGetListJobTitle } from "services/hooks/useGetListJobTitle";
 
 interface Props {
   dataDetail: IDataDetail;
@@ -20,6 +21,8 @@ interface IMember {
 export const DetailDepartMent: FC<Props> = ({ dataDetail, disable }) => {
   const [gridGroup, setGridGroup] = useState<TreeItemData[]>([]);
   const [gridMember, setGridMember] = useState<IMember[]>([]);
+  const { loading: loadingJobTitle, data: jobTitleData } = useGetListJobTitle();
+  
 
   useEffect(() => {
     let data: TreeItemData[] = [];
@@ -62,6 +65,27 @@ export const DetailDepartMent: FC<Props> = ({ dataDetail, disable }) => {
       },
     },
   ];
+
+  const jobTitleMap = useMemo(() => {
+    if (!jobTitleData) return {};
+    const map: { [key: string]: string } = {};
+    jobTitleData.forEach((job) => {
+      map[job.code] = job.jobTitle;
+    });
+    return map;
+  }, [jobTitleData]);
+
+  const transformedGridMember = useMemo(() => {
+    if (!gridMember) return [];
+    return gridMember.map((member) => ({
+      ...member,
+      jobTitle: member.jobTitle && jobTitleMap[member.jobTitle] ? jobTitleMap[member.jobTitle] : member.jobTitle,
+    }));
+  }, [gridMember, jobTitleData]);
+
+  console.log(transformedGridMember);
+  console.log(jobTitleData);
+
   return (
     <Box sx={{ width: "70%" }}>
       <Grid
@@ -73,7 +97,7 @@ export const DetailDepartMent: FC<Props> = ({ dataDetail, disable }) => {
             sx={{
               height: "400px",
             }}
-            rows={gridMember}
+            rows={transformedGridMember}
             columns={columnsGridMember}
           />
         </Grid>
