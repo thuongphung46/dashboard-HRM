@@ -11,9 +11,9 @@ export const fields: IFormData[] = [
     label: "Mức lương cơ sở",
     type: "number",
   },
-  {
-    id: "time_worked",
-    label: "Thời gian công tác để đề xuất tăng hệ số lương",
-    type: "number",
-  },
+  // {
+  //   id: "time_worked",
+  //   label: "Thời gian công tác để đề xuất tăng hệ số lương",
+  //   type: "number",
+  // },
 ];
