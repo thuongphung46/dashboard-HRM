@@ -7,6 +7,7 @@ export type JobTitleType = {
   id: number;
   code: string;
   jobTitle: string;
+  level: string;
 };
 
 export const useGetListJobTitle = () => {

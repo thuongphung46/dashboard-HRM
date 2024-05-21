@@ -9,8 +9,6 @@ import {
 } from "services/hooks/useGetListJobTitle";
 import { toastMessage } from "components/molecules/toast_message";
 import { MessageCode } from "types/enum/message_code";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 
 interface Props {
   disable?: boolean;
@@ -45,33 +43,21 @@ export const GeneralPosition: FC<Props> = ({ disable }) => {
       field: "level",
       headerName: "Level",
       width: 150,
-      renderCell: (params) => {
-        const handleChange = (event: any) => {
-          // const newValue = event.target.value;
-          // const updatedRows = dataRows.map((row) => 
-          //   row.id === params.row.id ? { ...row, level: newValue } : row
-          // );
-          // setDataRows(updatedRows);
-        };
-
-        return (
-          <Select
-            fullWidth
-            value={params.row.level ? params.row.level : ""}
-            onChange={handleChange}
-          >
-            <MenuItem value="LEVEL_1">LEVEL_1</MenuItem>
-            <MenuItem value="LEVEL_2">LEVEL_2</MenuItem>
-            <MenuItem value="LEVEL_3">LEVEL_3</MenuItem>
-            <MenuItem value="LEVEL_4">LEVEL_4</MenuItem>
-          </Select>
-        );
-      },
-    }
+      type: "singleSelect",
+      editable: true,
+      valueOptions: [
+        { code: "LEVEL_1", name: "Level 1" },
+        { code: "LEVEL_2", name: "Level 2" },
+        { code: "LEVEL_3", name: "Level 3" },
+        { code: "LEVEL_4", name: "Level 4" },
+      ],
+      getOptionValue: (value: any) => value.code,
+      getOptionLabel: (value: any) => value.name,
+    },
   ];
 
   const handleSave = async (dataAdd: any) => {
-    if (dataAdd?.isNew) {
+    if (dataAdd.isNew) {
       createJobTitle({
         code: dataAdd.code,
         jobTitle: dataAdd.jobTitle,
