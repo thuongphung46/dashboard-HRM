@@ -122,15 +122,6 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData, disable }) => {
   const renderPopup = useMemo(() => {
     const fieldData: IFormData[] = [
       { id: "name", label: "Tên cấp quản lý", type: "text" },
-      {
-        id: "type",
-        label: "Loại",
-        type: "select",
-        options: [
-          { value: "education", label: "Giảng dạy" },
-          { value: "back_office", label: "Quản trị" },
-        ],
-      },
     ];
     return (
       <Modal

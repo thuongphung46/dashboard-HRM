@@ -86,6 +86,14 @@ export const DetailDepartMent: FC<Props> = ({ dataDetail, disable }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gridMember, jobTitleData]);
 
+  const transformedGridGroup = gridGroup.map(group => ({
+    ...group,
+    children: group?.children?.map(child => ({
+      ...child,
+      jobTitle: jobTitleMap[child.jobTitle] || child.jobTitle
+    }))
+  }));
+
   return (
     <Box sx={{ width: "70%" }}>
       <Grid
@@ -104,7 +112,7 @@ export const DetailDepartMent: FC<Props> = ({ dataDetail, disable }) => {
 
         <Grid sx={{ marginTop: "20px", width: "100%" }} item>
           <TreeView
-            data={gridGroup}
+            data={transformedGridGroup}
             setData={(data: TreeItemData[]) => {
               setGridGroup(data);
             }}
