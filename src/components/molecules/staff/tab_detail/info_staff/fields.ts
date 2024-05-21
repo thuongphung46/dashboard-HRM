@@ -46,7 +46,7 @@ export const fieldsData: IFormData[] = [
   { id: "dateOfBirth", label: "Ngày sinh", type: "date" },
   { id: "personalEmail", label: "Email", type: "text" },
   { id: "phoneNumber", label: "Số điện thoại", type: "text" },
-  { id: "workingPlace", label: "Đơn vị công tác hiện tại", type: "text" },
+  { id: "currentWorking", label: "Đơn vị công tác hiện tại", type: "text" },
   {
     id: "departmentId",
     label: "Cấp quản lý",
@@ -67,7 +67,7 @@ export const fieldsData: IFormData[] = [
     options: [],
     isRequire: true,
   },
-  { id: "rankId", label: "Hàm (Sĩ quan)", type: "select", options: [] },
+  { id: "rankName", label: "Hàm (Sĩ quan)", type: "select", options: [] },
   {
     id: "academicRank",
     label: "Học hàm",
@@ -109,9 +109,8 @@ export const fieldsData: IFormData[] = [
   { id: "ratio", label: "Hệ số lương", type: "number" },
   { id: "country", label: "Quốc tịch", type: "text" },
   { id: "identityBirthPlace", label: "Nơi sinh", type: "text" },
-  { id: "identityBirthPlace2", label: "Nguyên quán", type: "text" },
+  { id: "domicile", label: "Nguyên quán", type: "text" },
   { id: "currentPlace", label: "Chỗ ở hiện nay", type: "text" },
-
   {
     id: "identityPlace",
     label: "Nơi đăng ký hộ khẩu thường trú",
@@ -140,9 +139,9 @@ export const fieldsData: IFormData[] = [
     ],
   },
 
-  { id: "ethnicity", label: "Dân tộc", type: "text" },
+  { id: "nation", label: "Dân tộc", type: "text" },
   { id: "religion", label: "Tôn giáo", type: "text" },
-  { id: "education_level", label: "Trình độ văn hóa", type: "text" },
+  { id: "educationLevel", label: "Trình độ văn hóa", type: "text" },
   { id: "doan_tncs_hcm", label: "Kết nạp Đoàn TNCS HCM tại", type: "text" },
   { id: "dang_csvn", label: "Kết nạp Đảng CSVN tại", type: "text" },
 ];
