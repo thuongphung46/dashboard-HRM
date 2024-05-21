@@ -35,8 +35,8 @@ export const ListStaff: FC<Props> = () => {
     size: 25,
   });
   const { data: staffList, loading } = useGetListStaff(params);
-  const { loading: loadingJobTitle, data: jobTitleData } = useGetListJobTitle();
-  const { loading: loadingRank, data: rankData } = useGetListRank(); // Fetching rank data
+  const { data: jobTitleData } = useGetListJobTitle();
+  const { data: rankData } = useGetListRank(); // Fetching rank data
 
   useEffect(() => {
     if (level === "LEVEL_4") {
@@ -93,8 +93,14 @@ export const ListStaff: FC<Props> = () => {
     if (!staffList) return [];
     return staffList.map((staff) => ({
       ...staff,
-      jobTitle: staff.jobTitle && jobTitleMap[staff.jobTitle] ? jobTitleMap[staff.jobTitle] : staff.jobTitle,
-      rankName: staff.rankName && rankMap[staff.rankName] ? rankMap[staff.rankName] : staff.rankName,
+      jobTitle:
+        staff.jobTitle && jobTitleMap[staff.jobTitle]
+          ? jobTitleMap[staff.jobTitle]
+          : staff.jobTitle,
+      rankName:
+        staff.rankName && rankMap[staff.rankName]
+          ? rankMap[staff.rankName]
+          : staff.rankName,
     }));
   }, [staffList, jobTitleMap, rankMap]);
 

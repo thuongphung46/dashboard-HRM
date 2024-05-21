@@ -58,12 +58,7 @@ export const fieldsData: IFormData[] = [
     id: "groupId",
     label: "Bộ môn (nếu có)",
     type: "select",
-    options: [
-      {
-        value: "1",
-        label: "Đây là bộ môn (phòng ban cấp 2)",
-      },
-    ],
+    options: [],
   },
   {
     id: "jobTitle",
