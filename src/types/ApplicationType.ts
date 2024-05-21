@@ -56,7 +56,7 @@ export interface StaffDetail {
   dang_csvn?: string;
 }
 
-interface StaffAdmissionResponse {
+export interface StaffAdmissionResponse {
   id?: number;
   type: string;
   date: string;

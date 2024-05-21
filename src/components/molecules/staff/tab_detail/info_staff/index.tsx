@@ -10,7 +10,7 @@ import { GridRowId } from "@mui/x-data-grid";
 import { GridTrainingSummary } from "../grid_training_summary";
 import { GridTraining } from "../grid_training";
 import { fieldsData } from "./fields";
-import { StaffDetail } from "types/ApplicationType";
+import { StaffAdmissionResponse, StaffDetail } from "types/ApplicationType";
 import { Action } from "types/action";
 import { useDebouncedCallback } from "use-debounce";
 import { useGetListDepartment } from "services/hooks/useGetListDepartment";
@@ -87,6 +87,22 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
       setJobTitleList(jobTitleData);
     }
   }, [loadingJobTitle, jobTitleData]);
+
+  const doanTncs = data?.staffAdmissions?.find(
+    (ele: StaffAdmissionResponse) => ele.type === "doan_tncs_hcm"
+  );
+
+  const dangCsvn = data?.staffAdmissions?.find(
+    (ele: StaffAdmissionResponse) => ele.type === "dang_csvn"
+  );
+
+  if (doanTncs) {
+    data.doan_tncs_hcm = doanTncs?.place;
+  }
+
+  if (dangCsvn) {
+    data.dang_csvn = dangCsvn?.place;
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
