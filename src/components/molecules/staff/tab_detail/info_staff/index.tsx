@@ -16,7 +16,7 @@ import { useDebouncedCallback } from "use-debounce";
 import { useGetListDepartment } from "services/hooks/useGetListDepartment";
 import { useGetListRank } from "services/hooks/useGetListRank";
 import { useGetListJobTitle } from "services/hooks/useGetListJobTitle";
-import { FlatGroup, flattenGroups } from "common/function";
+import { FlatGroup } from "common/function";
 
 interface Props extends Action {
   data: StaffDetail;
@@ -38,6 +38,9 @@ export const MenuProps = {
 export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
   const [departmentList, setDepartmentList] = useState<FlatGroup[]>([]);
+  const [departmentListChild, setDepartmentListChild] = useState<FlatGroup[]>(
+    []
+  );
   const { loading: loadingDepartment, data: departmentData } =
     useGetListDepartment();
 
@@ -56,13 +59,21 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
   const hanldeOnChangefield = useDebouncedCallback((e: any) => {
     let value = e.target.value;
     let field = e.target.name;
+    if (field === "departmentId") {
+      let department = departmentList.find(
+        (department) => department.id === value
+      );
+      if (department) {
+        setDepartmentListChild(department.groups);
+      }
+    }
     setFormData({ ...formData, [field]: value });
   }, 500);
 
   useEffect(() => {
     if (!loadingDepartment && departmentData) {
-      const dataConvert = flattenGroups(departmentData);
-      setDepartmentList(dataConvert);
+      // const dataConvert = flattenGroups(departmentData);
+      setDepartmentList(departmentData);
     }
   }, [loadingDepartment, departmentData]);
 
@@ -130,6 +141,15 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
                                     value={jobTitle.code}
                                   >
                                     {jobTitle.jobTitle}
+                                  </MenuItem>
+                                ));
+                              } else if (field.id === "groupId") {
+                                return departmentListChild.map((department) => (
+                                  <MenuItem
+                                    key={department.id}
+                                    value={department.id}
+                                  >
+                                    {department.name}
                                   </MenuItem>
                                 ));
                               } else {
