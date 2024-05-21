@@ -325,48 +325,65 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
       setEditData((prevData: any) => ({
         ...prevData,
         [field]: value,
-        idPerA: dataDetail ? dataDetail?.id : "",
-        jobTitle: dataDetail ? dataDetail?.jobTitle : "",
-        phoneNumberRenter: dataDetail ? dataDetail?.phoneNumber : "",
-        bank_a_account: dataDetail ? dataDetail?.bankAccount : "",
-        bank_a: dataDetail ? dataDetail?.bankName : "",
+        idPerA: dataDetail?.id ? dataDetail?.id : "",
+        jobTitle: dataDetail?.jobTitle ? dataDetail?.jobTitle : "",
+        phoneNumberRenter: dataDetail?.phoneNumber
+          ? dataDetail?.phoneNumber
+          : "",
+        bank_a_account: dataDetail?.bankAccount ? dataDetail?.bankAccount : "",
+        bank_a: dataDetail?.bankName ? dataDetail?.bankName : "",
         ...dataDetail,
       }));
       refJobTitleA.current.value = selectedStaff?.jobTitle;
-      refphoneNumberA.current.value = dataDetail ? dataDetail?.phoneNumber : "";
-      refBankAccountA.current.value = dataDetail ? dataDetail?.bankAccount : "";
-      refBankNameA.current.value = dataDetail ? dataDetail?.bankName : "";
+      refphoneNumberA.current.value = dataDetail?.phoneNumber
+        ? dataDetail?.phoneNumber
+        : "";
+      refBankAccountA.current.value = dataDetail?.bankAccount
+        ? dataDetail?.bankAccount
+        : "";
+      refBankNameA.current.value = dataDetail?.bankName
+        ? dataDetail?.bankName
+        : "";
     } else if (field === "per_b") {
       const selectedStaff = listStaff.find((staff) => staff.username === value);
       const dataDetail = await getStaff(selectedStaff?.id);
       setEditData((prevData: any) => ({
         ...prevData,
         [field]: value,
-        idPerB: dataDetail ? dataDetail?.id : "",
-        identityCode: dataDetail ? dataDetail.identityCode : "",
-        identityDate: dataDetail ? dataDetail.identityDate : "",
-        identityPlace: dataDetail ? dataDetail.identityPlace : "",
-        jobTitleRenter: dataDetail ? dataDetail.jobTitle : "",
-        ratio: dataDetail ? dataDetail.ratio : "",
-        phoneNumber: dataDetail ? dataDetail?.phoneNumber : "",
-        bank_b_account: dataDetail ? dataDetail?.bankAccount : "",
-        bank_b: dataDetail ? dataDetail.bankName : "",
+        idPerB: dataDetail?.id ? dataDetail?.id : "",
+        identityCode: dataDetail.identityCode ? dataDetail.identityCode : "",
+        identityDate: dataDetail?.identityDate ? dataDetail.identityDate : "",
+        identityPlace: dataDetail.identityPlace ? dataDetail.identityPlace : "",
+        jobTitleRenter: dataDetail.jobTitle ? dataDetail.jobTitle : "",
+        ratio: dataDetail.ratio ? dataDetail.ratio : "",
+        phoneNumber: dataDetail?.phoneNumber ? dataDetail?.phoneNumber : "",
+        bank_b_account: dataDetail?.bankAccount ? dataDetail?.bankAccount : "",
+
+        bank_b: dataDetail.bankName ? dataDetail.bankName : "",
         ...dataDetail,
       }));
-      refJobTitleB.current.value = dataDetail ? dataDetail.jobTitle : "";
-      refIdentityCodeB.current.value = dataDetail
+      refJobTitleB.current.value = dataDetail.jobTitle
+        ? dataDetail.jobTitle
+        : "";
+      refIdentityCodeB.current.value = dataDetail.identityCode
         ? dataDetail.identityCode
         : "";
-      refIdentityDateB.current.value = dataDetail
+      refIdentityDateB.current.value = dataDetail.identityDate
         ? dataDetail.identityDate
         : "";
-      refplaceOfIssueB.current.value = dataDetail
+      refplaceOfIssueB.current.value = dataDetail.identityPlace
         ? dataDetail.identityPlace
         : "";
-      refphoneNumberB.current.value = dataDetail ? dataDetail?.phoneNumber : "";
-      refBankAccountB.current.value = dataDetail ? dataDetail?.bankAccount : "";
-      refBankNameB.current.value = dataDetail ? dataDetail.bankName : "";
-      refRatioB.current.value = dataDetail ? dataDetail.ratio : "";
+      refphoneNumberB.current.value = dataDetail?.phoneNumber
+        ? dataDetail?.phoneNumber
+        : "";
+      refBankAccountB.current.value = dataDetail?.bankAccount
+        ? dataDetail?.bankAccount
+        : "";
+      refBankNameB.current.value = dataDetail.bankName
+        ? dataDetail.bankName
+        : "";
+      refRatioB.current.value = dataDetail.ratio ? dataDetail.ratio : "";
     } else {
       setEditData((prevData: any) => ({
         ...prevData,

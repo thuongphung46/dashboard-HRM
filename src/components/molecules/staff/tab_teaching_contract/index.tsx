@@ -73,8 +73,10 @@ export const TeachingContract: React.FC = () => {
   }, [disable, navigate]);
   return (
     <div>
-      <Button onClick={hanldAdd}>Add contract</Button>
-      <Box>
+      <Button variant="outlined" size="small" onClick={hanldAdd}>
+        Add contract
+      </Button>
+      <Box marginTop={2}>
         <DataGrid
           columns={columns}
           rows={TeachingContractPageData}
