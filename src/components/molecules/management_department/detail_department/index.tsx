@@ -21,8 +21,7 @@ interface IMember {
 export const DetailDepartMent: FC<Props> = ({ dataDetail, disable }) => {
   const [gridGroup, setGridGroup] = useState<TreeItemData[]>([]);
   const [gridMember, setGridMember] = useState<IMember[]>([]);
-  const { loading: loadingJobTitle, data: jobTitleData } = useGetListJobTitle();
-  
+  const { data: jobTitleData } = useGetListJobTitle();
 
   useEffect(() => {
     let data: TreeItemData[] = [];
@@ -79,9 +78,12 @@ export const DetailDepartMent: FC<Props> = ({ dataDetail, disable }) => {
     if (!gridMember) return [];
     return gridMember.map((member) => ({
       ...member,
-      jobTitle: member.jobTitle && jobTitleMap[member.jobTitle] ? jobTitleMap[member.jobTitle] : member.jobTitle,
+      jobTitle:
+        member.jobTitle && jobTitleMap[member.jobTitle]
+          ? jobTitleMap[member.jobTitle]
+          : member.jobTitle,
     }));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gridMember, jobTitleData]);
 
   return (

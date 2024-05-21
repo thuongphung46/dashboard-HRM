@@ -23,7 +23,6 @@ import { StaffService } from "services/staff_service";
 import { MessageCode } from "types/enum/message_code";
 import { toastMessage } from "components/molecules/toast_message";
 import moment from "moment";
-import { useGetListJobTitle } from "services/hooks/useGetListJobTitle";
 
 interface Props {
   data: StaffDetail;
