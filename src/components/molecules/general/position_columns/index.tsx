@@ -9,10 +9,13 @@ import {
 } from "services/hooks/useGetListJobTitle";
 import { toastMessage } from "components/molecules/toast_message";
 import { MessageCode } from "types/enum/message_code";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
 interface Props {
   disable?: boolean;
 }
+
 export const GeneralPosition: FC<Props> = ({ disable }) => {
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
   const [dataRows, setDataRows] = useState<JobTitleType[]>([]);
@@ -38,6 +41,33 @@ export const GeneralPosition: FC<Props> = ({ disable }) => {
       width: 300,
       editable: true,
     },
+    {
+      field: "level",
+      headerName: "Level",
+      width: 150,
+      renderCell: (params) => {
+        const handleChange = (event: any) => {
+          // const newValue = event.target.value;
+          // const updatedRows = dataRows.map((row) => 
+          //   row.id === params.row.id ? { ...row, level: newValue } : row
+          // );
+          // setDataRows(updatedRows);
+        };
+
+        return (
+          <Select
+            fullWidth
+            value={params.row.level ? params.row.level : ""}
+            onChange={handleChange}
+          >
+            <MenuItem value="LEVEL_1">LEVEL_1</MenuItem>
+            <MenuItem value="LEVEL_2">LEVEL_2</MenuItem>
+            <MenuItem value="LEVEL_3">LEVEL_3</MenuItem>
+            <MenuItem value="LEVEL_4">LEVEL_4</MenuItem>
+          </Select>
+        );
+      },
+    }
   ];
 
   const handleSave = async (dataAdd: any) => {
@@ -45,6 +75,7 @@ export const GeneralPosition: FC<Props> = ({ disable }) => {
       createJobTitle({
         code: dataAdd.code,
         jobTitle: dataAdd.jobTitle,
+        level: dataAdd.level,
       }).then((res) => {
         if (res.msg_code === MessageCode.Success) {
           setDataRows([...dataRows, res.content]);
@@ -56,6 +87,7 @@ export const GeneralPosition: FC<Props> = ({ disable }) => {
     } else {
       updateJobTitle(dataAdd.id, {
         jobTitle: dataAdd.jobTitle,
+        level: dataAdd.level,
       }).then((res) => {
         if (res.msg_code === MessageCode.Success) {
           const index = dataRows.findIndex((row) => row.id === dataAdd.id);

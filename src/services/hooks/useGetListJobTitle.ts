@@ -42,10 +42,12 @@ export const useGetListJobTitle = () => {
 export type CreateJobTitleBody = {
   code: string;
   jobTitle: string;
+  level: string;
 };
 
 export type UpdateJobTitleBody = {
   jobTitle: string;
+  level: string;
 };
 
 export const useJobTitle = () => {
