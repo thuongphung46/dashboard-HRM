@@ -83,12 +83,11 @@ export const ListStaff: FC<Props> = () => {
     if (!rankData) return {};
     const map: { [key: string]: string } = {};
     rankData.forEach((rank) => {
-      map[rank.code] = rank.rankName;
+      map[rank.id] = rank.rankName;
     });
     return map;
   }, [rankData]);
 
-  // Transform the staffList to include job title and rank names
   const transformedStaffList = useMemo(() => {
     if (!staffList) return [];
     return staffList.map((staff) => ({
