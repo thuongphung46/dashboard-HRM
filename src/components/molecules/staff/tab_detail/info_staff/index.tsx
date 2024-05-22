@@ -87,6 +87,7 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
       setJobTitleList(jobTitleData);
     }
   }, [loadingJobTitle, jobTitleData]);
+  // console.log("data", data);
 
   const doanTncs = data?.staffAdmissions?.find(
     (ele: StaffAdmissionResponse) => ele.type === "doan_tncs_hcm"
@@ -143,7 +144,7 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
                                     {department.name}
                                   </MenuItem>
                                 ));
-                              } else if (field.id === "rankId") {
+                              } else if (field.id === "rankName") {
                                 return rankList.map((rank) => (
                                   <MenuItem key={rank.id} value={rank.id}>
                                     {rank.rankName}
