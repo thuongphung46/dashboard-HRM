@@ -4,7 +4,7 @@ import { useGetListContractStaff } from "services/hooks/useGetListStaff";
 import HRMStorage from "common/function";
 import { KeyValue } from "constants/GlobalConstant";
 import { GridColDef } from "@mui/x-data-grid/models/colDef";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 import { toastMessage } from "components/molecules/toast_message";
 
@@ -25,16 +25,21 @@ export const TeachingContract: React.FC = () => {
       field: "contractName",
       headerName: "Tên hợp đồng",
       width: 300,
-      editable: true,
+      editable: false,
       renderCell: (params: any) => (
-        <div style={{ whiteSpace: "pre-wrap" }}>{params.value}</div>
+        <Link
+          style={{ whiteSpace: "pre-wrap" }}
+          to={`/teaching_contract/edit/${params.row.id}`}
+        >
+          {params.value}
+        </Link>
       ),
     },
     {
       field: "fromDate",
       headerName: "Từ ngày",
       width: 150,
-      editable: true,
+      editable: false,
       type: "date",
       valueFormatter: (params) => {
         return params.value ? new Date(params.value).toLocaleDateString() : "";
@@ -44,7 +49,7 @@ export const TeachingContract: React.FC = () => {
       field: "toDate",
       headerName: "Đến ngày",
       width: 150,
-      editable: true,
+      editable: false,
       type: "date",
       valueFormatter: (params) => {
         return params.value ? new Date(params.value).toLocaleDateString() : "";
@@ -54,7 +59,7 @@ export const TeachingContract: React.FC = () => {
       field: "status",
       headerName: "Trạng thái hợp đồng",
       width: 200,
-      editable: true,
+      editable: false,
       type: "singleSelect",
       valueOptions: [
         "Chưa thực hiện",
@@ -64,26 +69,22 @@ export const TeachingContract: React.FC = () => {
       ],
     },
   ];
+
   const hanldAdd = useCallback(() => {
     if (disable) {
       toastMessage("Bạn không có quyền thêm hợp đồng!", "error");
       return;
     }
-    navigate("add");
+    navigate(`/teaching_contract/add`);
   }, [disable, navigate]);
+
   return (
     <div>
       <Button variant="outlined" size="small" onClick={hanldAdd}>
         Add contract
       </Button>
       <Box marginTop={2}>
-        <DataGrid
-          columns={columns}
-          rows={TeachingContractPageData}
-          onCellClick={(e) => {
-            navigate(`edit/${e.row.id}`);
-          }}
-        />
+        <DataGrid columns={columns} rows={TeachingContractPageData} />
       </Box>
     </div>
   );

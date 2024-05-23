@@ -19,6 +19,9 @@ import { StaffService } from "services/staff_service";
 import { MessageCode } from "types/enum/message_code";
 import { toastMessage } from "components/molecules/toast_message";
 import { initStaffInfo } from "services/mock_data/staff_info";
+import HRMStorage from "common/function";
+import { KeyValue } from "constants/GlobalConstant";
+import { TeachingContract } from "../tab_teaching_contract";
 
 interface Props extends Action {}
 
@@ -29,6 +32,7 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
   const [formData, setFormData] = useState<any>({});
   const [dataDetailMe, setDataDetailMe] = useState<any>(initStaffInfo);
   const { data, loading } = useGetStaff(id);
+  const level = HRMStorage.get(KeyValue.Level);
 
   useEffect(() => {
     const fetch = async () => {
@@ -103,11 +107,16 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
         aria-label="nav tabs example"
         role="navigation"
       >
-        <Tab label="Thông tin chung" />
+        <Tab value={0} label="Thông tin chung" />
         {(action === "edit" || action === "me") && (
-          <Tab label="Quá trình làm việc tại đơn vị" />
+          <Tab value={1} label="Quá trình làm việc tại đơn vị" />
         )}
-        {(action === "edit" || action === "me") && <Tab label="Thống kê" />}
+        {(action === "edit" || action === "me") && level !== "LEVEL_1" && (
+          <Tab value={2} label="Thống kê" />
+        )}
+        {(action === "edit" || action === "me") && (
+          <Tab value={3} label={"Hợp đồng giảng dạy"} />
+        )}
       </Tabs>
       <TabPanel value={value} index={0}>
         {loading ? (
@@ -129,7 +138,18 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
         )}
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <Analytic action={action} data={data} />
+        {level !== "LEVEL_1" ? (
+          <>
+            <Analytic action={action} data={data} />
+          </>
+        ) : null}
+      </TabPanel>
+      <TabPanel value={value} index={3}>
+        {level === "LEVEL_1" || level === "LEVEL_4" ? (
+          <>
+            <TeachingContract />
+          </>
+        ) : null}
       </TabPanel>
     </div>
   );

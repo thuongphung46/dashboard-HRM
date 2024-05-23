@@ -169,13 +169,6 @@ export const Playground: React.FC<SidebarProps> = ({
                   Danh sách nhân viên
                 </MenuItem>
                 <MenuItem
-                  disabled={dissable}
-                  active={location.pathname === "/teaching_contract"}
-                  component={<Link to={"/teaching_contract"}></Link>}
-                >
-                  Hợp đồng giảng dạy
-                </MenuItem>
-                <MenuItem
                   active={location.pathname === "/import"}
                   component={<Link to={"/import"}></Link>}
                 >
