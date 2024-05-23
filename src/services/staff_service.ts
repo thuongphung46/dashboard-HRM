@@ -58,6 +58,45 @@ const StaffService = {
   UpdateInfoStaff: async (param: any, id: string) => {
     return Request(controller).patchAsync(`${id}`, param);
   },
+  //thống kê - tạo mới, sửa giảng dạy 
+  AddTeaching: async (param: any, idStaff: string) => {
+    return Request(controller).postAsync(`${idStaff}/teaching`, param);
+  },
+  UpdateTeaching: async (param: any, idStaff: string, idTeaching:string) => {
+    return Request(controller).patchAsync(`${idStaff}/teaching/${idTeaching}`, param);
+  },
+
+  //thống kê - tạo mới, sửa thông tin đánh giá học phần,
+  AddExamCourse: async (param: any, idStaff: string) => {
+    return Request(controller).postAsync(`${idStaff}/exam-course`, param);
+  },
+  UpdateExamCourse: async (param: any, idStaff: string, idExamCourse:string) => {
+    return Request(controller).patchAsync(`${idStaff}/exam-course/${idExamCourse}`, param);
+  },
+
+  // thống kê - tạo mới, sửa thông tin hướng dẫn đồ án
+  AddInstructProject: async (param: any, idStaff: string) => {
+    return Request(controller).postAsync(`${idStaff}/instruct-project`, param);
+  },
+  UpdateInstructProject: async (param: any, idStaff: string, idInstructProject:string) => {
+    return Request(controller).patchAsync(`${idStaff}/instruct-project/${idInstructProject}`, param);
+  },
+  // thống kê - tạo mới, sửa thông tin đề tài dự án
+  AddProject: async (param: any, idStaff: string) => {
+    return Request(controller).postAsync(`${idStaff}/project`, param);
+  },
+  UpdateProject: async (param: any, idStaff: string, idProject:string) => {
+    return Request(controller).patchAsync(`${idStaff}/project/${idProject}`, param);
+  },
+
+  // thống kê - tạo mới, sửa thông tin bài báo khoa học
+  AddMagazine: async (param: any, idStaff: string) => {
+    return Request(controller).postAsync(`${idStaff}/magazine`, param);
+  },
+  UpdateMagazine: async (param: any, idStaff: string, idMagazine:string) => {
+    return Request(controller).patchAsync(`${idStaff}/magazine/${idMagazine}`, param);
+  },
+
 };
 
 export { StaffService };
