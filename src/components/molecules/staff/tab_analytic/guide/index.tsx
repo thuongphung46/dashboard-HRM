@@ -1,9 +1,12 @@
-import { FC, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import { GridRenderCellParams, GridRowId } from "@mui/x-data-grid";
 import { BaseGrid } from "components/atoms/datagrid";
 import { Checkbox } from "@mui/material";
 import Box from "@mui/material/Box/Box";
 import { StaffInstructProject } from "types/ApplicationType";
+import { useParams } from "react-router-dom";
+import { toastMessage } from "components/molecules/toast_message";
+import { StaffService } from "services/staff_service";
 
 interface Row {
   id: number;
@@ -19,6 +22,7 @@ interface Props {
   data: StaffInstructProject[];
 }
 export const Guide: FC<Props> = ({ data }) => {
+  const { id } = useParams();
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
 
   const columns = [
@@ -57,13 +61,12 @@ export const Guide: FC<Props> = ({ data }) => {
           checked={params.value}
           onChange={(event) => {
             const checked = event.target.checked;
-            const updatedRows = rows.map((row) => {
+            const updatedRows = data.map((row) => {
               if (row.id === params.row.id) {
                 return { ...row, main_instructors: checked };
               }
               return row;
             });
-            setRows(updatedRows);
           }}
         />
       ),
@@ -77,48 +80,30 @@ export const Guide: FC<Props> = ({ data }) => {
     },
   ];
 
-  const [rows, setRows] = useState<Row[]>([
-    {
-      id: 1,
-      student_name: "Vũ Trung Kiên",
-      training: "CT4",
-      num_decision: "1677 / QĐ-HVM",
-      num_instructors: "2",
-      main_instructors: false,
-      num_lesion: "15",
-    },
-    {
-      id: 2,
-      student_name: "Phạm Thị Kim",
-      training: "CT4",
-      num_decision: "1677 / QĐ-HVM",
-      num_instructors: "2",
-      main_instructors: true,
-      num_lesion: "15",
-    },
-    {
-      id: 3,
-      student_name: "Phan Kim Liên",
-      training: "CT4",
-      num_decision: "1677 / QĐ-HVM",
-      num_instructors: "2",
-      main_instructors: true,
-      num_lesion: "15",
-    },
-    {
-      id: 4,
-      student_name: "Trần Minh Đức",
-      training: "CT4",
-      num_decision: "1677 / QĐ-HVM",
-      num_instructors: "2",
-      main_instructors: true,
-      num_lesion: "15",
-    },
-  ]);
+  const handleAddNewORUpdate = useCallback((data: any) => {
+    if (data?.isNew && id) {
+      StaffService.AddInstructProject(data, id).then((res) => {
+        if (res.msg_code === 200) {
+          toastMessage("Thêm mới thành công", "success");
+        } else {
+          toastMessage("Thêm mới thất bại", "error");
+        }
+      })
+    }
+    else if (id) {
+      StaffService.UpdateInstructProject(data, id, data.id).then((res) => {
+        if (res.msg_code === 200) {
+          toastMessage("Cập nhật thành công", "success");
+        } else {
+          toastMessage("Cập nhật thất bại", "error");
+        }
+      })
+    } else {
+      toastMessage("Cập nhật thất bại", "error");
+    }
+  }, [id])
 
-  const handleSave = () => {
-    // Handle save logic here
-  };
+  const handleDelete = useCallback((data:any) => {}, []);
 
   return (
     <Box>
@@ -126,7 +111,8 @@ export const Guide: FC<Props> = ({ data }) => {
         columns={columns}
         rows={data}
         title=""
-        onSave={handleSave}
+        onSave={handleAddNewORUpdate}
+        onDel={handleDelete}
         onRowSelectionChange={setSelectedRows}
         selectedRows={selectedRows}
       />

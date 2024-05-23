@@ -97,6 +97,46 @@ const StaffService = {
     return Request(controller).patchAsync(`${idStaff}/magazine/${idMagazine}`, param);
   },
 
+  //thống kê - tạo mới, sửa thông tin bằng sáng chế
+  AddInvention: async (param: any, idStaff: string) => {
+    return Request(controller).postAsync(`${idStaff}/invention`, param);
+  },
+  UpdateInvention: async (param: any, idStaff: string, idInvention:string) => {
+    return Request(controller).patchAsync(`${idStaff}/invention/${idInvention}`, param);
+  },
+
+  //thống kê - tạo mới, sửa thông tin sách
+  AddBook: async (param: any, idStaff: string) => {
+    return Request(controller).postAsync(`${idStaff}/book`, param);
+  },
+  UpdateBook: async (param: any, idStaff: string, idBook:string) => {
+    return Request(controller).patchAsync(`${idStaff}/book/${idBook}`, param);
+  },
+  
+  //thống kê - tạo mới, sửa thông tin hướng dẫn sv NCKH
+  AddTraining: async (param: any, idStaff: string) => {
+    return Request(controller).postAsync(`${idStaff}/training`, param);
+  },
+  UpdateTraining: async (param: any, idStaff: string, idTraining:string) => {
+    return Request(controller).patchAsync(`${idStaff}/training/${idTraining}`, param);
+  },
+
+  //thống kê - tạo mới, sửa thông tin chương trình biên soạn
+  AddBuildingProgram: async (param: any, idStaff: string) => {
+    return Request(controller).postAsync(`${idStaff}/building-program`, param);
+  },
+  UpdateBuildingProgram: async (param: any, idStaff: string, idBuildingProgram:string) => {
+    return Request(controller).patchAsync(`${idStaff}/building-program/${idBuildingProgram}`, param);
+  },
+
+  //thống kê - tạo mới, sửa thông tin chương trình biên soạn
+  AddEditorProgram: async (param: any, idStaff: string) => {
+    return Request(controller).postAsync(`${idStaff}/editor-program`, param);
+  },
+  UpdateEditorProgram: async (param: any, idStaff: string, idEditorProgram:string) => {
+    return Request(controller).patchAsync(`${idStaff}/editor-program/${idEditorProgram}`, param);
+  },
+
 };
 
 export { StaffService };
