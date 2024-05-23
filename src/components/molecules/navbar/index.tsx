@@ -14,8 +14,8 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
-// import  from 'material-ui/styles/MuiThemeProvider';
-// import MuiThemeProvider from '@mate';
+import LinearProgress from "@mui/material/LinearProgress";
+import { useAppSelector } from "../../../redux/hook";
 
 export const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -73,6 +73,7 @@ export const PrimarySearchAppBar: React.FC<PrimarySearchAppBarProps> = ({
   broken,
 }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const { loading } = useAppSelector((state) => state.loading);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
 
@@ -249,6 +250,19 @@ export const PrimarySearchAppBar: React.FC<PrimarySearchAppBarProps> = ({
         {renderMobileMenu}
         {renderMenu}
       </Box>
+      <div
+        style={{
+          position: "relative",
+          height: 4,
+          width: "100%",
+        }}
+      >
+        {loading && (
+          <LinearProgress
+            sx={{ position: "absolute", top: 0, left: 0, right: 0 }}
+          />
+        )}
+      </div>
     </>
   );
 };
