@@ -1,14 +1,18 @@
-import React, { FC, useState } from "react";
+import React, { FC, useCallback, useState } from "react";
 import { GridRowId } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 import { BaseGrid } from "components/atoms/datagrid";
 import { StaffTeaching } from "types/ApplicationType";
+import { StaffService } from "services/staff_service";
+import { useParams } from "react-router-dom";
+import { toastMessage } from "components/molecules/toast_message";
 
 interface Props {
   data: StaffTeaching[];
 }
 
 export const Teaching: FC<Props> = ({ data }) => {
+  const { id } = useParams();
   const [selectedRows1, setSelectedRows1] = useState<GridRowId[]>([]);
 
   // Các cột cho lưới dữ liệu 1
@@ -79,6 +83,47 @@ export const Teaching: FC<Props> = ({ data }) => {
     },
   ];
 
+
+  const handleAddNewORUpdate = useCallback((data: any) => {
+    if (data?.isNew && id) {
+      StaffService.AddTeaching(data, id).then((res) => {
+        if (res.msg_code === 200) {
+          toastMessage("Thêm mới thành công", "success");
+        } else {
+          toastMessage("Thêm mới thất bại", "error");
+        }
+
+      })
+
+    }
+    else if (id) {
+      StaffService.UpdateTeaching(data, id, data.id).then((res) => {
+        if (res.msg_code === 200) {
+          toastMessage("Cập nhật thành công", "success");
+        } else {
+          toastMessage("Cập nhật thất bại", "error");
+        }
+      })
+    } else {
+      toastMessage("Cập nhật thất bại", "error");
+    }
+  }, [id])
+
+  const handleDelete = useCallback((data:any) => {
+    // if (id) {
+    //   selectedRows1.forEach((row) => {
+    //     StaffService.DeleteTeaching(id, row).then((res) => {
+    //       if (res.msg_code === 200) {
+    //         toastMessage("Xóa thành công", "success");
+    //       } else {
+    //         toastMessage("Xóa thất bại", "error");
+    //       }
+    //     })
+    //   })
+    // } else {
+    //   toastMessage("Xóa thất bại", "error");
+    // }
+  }, []);
   return (
     <div>
       <Box>
@@ -86,11 +131,10 @@ export const Teaching: FC<Props> = ({ data }) => {
           columns={columns1}
           rows={data}
           title=""
-          onSave={() => {
-            /* Logic lưu cho lưới dữ liệu 1 */
-          }}
+          onSave={handleAddNewORUpdate}
           onRowSelectionChange={setSelectedRows1}
           selectedRows={selectedRows1}
+          onDel={handleDelete}
         />
       </Box>
     </div>
