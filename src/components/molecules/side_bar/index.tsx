@@ -223,6 +223,7 @@ export const Playground: React.FC<SidebarProps> = ({
               <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
             </Menu>
           </div>
+
           <SidebarFooter collapsed={collapsed} />
         </div>
       </Sidebar>
