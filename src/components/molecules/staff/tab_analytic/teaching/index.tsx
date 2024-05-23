@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useState } from "react";
-import { GridRowId } from "@mui/x-data-grid";
+import { GridColDef, GridRowId } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 import { BaseGrid } from "components/atoms/datagrid";
 import { StaffTeaching } from "types/ApplicationType";
@@ -16,7 +16,7 @@ export const Teaching: FC<Props> = ({ data }) => {
   const [selectedRows1, setSelectedRows1] = useState<GridRowId[]>([]);
 
   // Các cột cho lưới dữ liệu 1
-  const columns1 = [
+  const columns1:  GridColDef[] = [
     {
       field: "term",
       headerName: "Học kỳ",
@@ -47,6 +47,7 @@ export const Teaching: FC<Props> = ({ data }) => {
       renderCell: (params: any) => (
         <div style={{ whiteSpace: "pre-wrap" }}>{params.value}</div>
       ),
+    
     },
     {
       field: "numberOfCredit",
@@ -58,14 +59,23 @@ export const Teaching: FC<Props> = ({ data }) => {
     {
       field: "startDate",
       headerName: "Ngày bắt đầu",
+      type: "date",
       width: 150,
       editable: true,
+      valueFormatter: (params) => {
+        return params.value ? new Date(params.value).toLocaleDateString() : "";
+      },
     },
     {
       field: "endDate",
       headerName: "Ngày kết thúc",
       width: 150,
+      type: "date",
       editable: true,
+      valueFormatter: (params) => {
+        return params.value ? new Date(params.value).toLocaleDateString() : "";
+      },
+  
     },
     {
       field: "numberOfStudent",
