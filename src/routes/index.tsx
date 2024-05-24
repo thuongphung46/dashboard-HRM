@@ -27,7 +27,6 @@ interface PropType {
   component: any;
   action?: FORM_STATE;
 }
-
 const PrivateRoute: FC<PropType> = ({ component: Component, action }) => {
   const location = useLocation();
   const level = HRMStorage.get(KeyValue.Level);
@@ -118,7 +117,12 @@ const router = createBrowserRouter([
       },
       {
         path: "/active_page",
-        element: <ActivePage />,
+        element: (
+          <PrivateRouteAdmin
+            action={FORM_STATE.ADD}
+            component={ActivePage}
+          />
+        ),
       },
     ],
   },
