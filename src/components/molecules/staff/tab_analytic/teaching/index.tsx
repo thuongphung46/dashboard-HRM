@@ -102,9 +102,7 @@ export const Teaching: FC<Props> = ({ data }) => {
         } else {
           toastMessage("Thêm mới thất bại", "error");
         }
-
       })
-
     }
     else if (id) {
       StaffService.UpdateTeaching(data, id, data.id).then((res) => {

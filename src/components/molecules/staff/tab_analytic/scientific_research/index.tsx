@@ -1,14 +1,18 @@
-import React, { FC, useState } from "react";
+import React, { FC, useCallback, useState } from "react";
 import { GridRowId } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 import { BaseGrid } from "components/atoms/datagrid";
 import { StaffDetail } from "types/ApplicationType";
+import { useParams } from "react-router-dom";
+import { toastMessage } from "components/molecules/toast_message";
+import { StaffService } from "services/staff_service";
 
 interface Props {
   data: StaffDetail;
 }
 
 export const ScientificResearch: FC<Props> = ({ data }) => {
+  const { id } = useParams();
   const [selectedRows1, setSelectedRows1] = useState<GridRowId[]>([]);
   const [selectedRows2, setSelectedRows2] = useState<GridRowId[]>([]);
   const [selectedRows3, setSelectedRows3] = useState<GridRowId[]>([]);
@@ -17,13 +21,13 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
   const [selectedRows6, setSelectedRows6] = useState<GridRowId[]>([]);
   const [selectedRows7, setSelectedRows7] = useState<GridRowId[]>([]);
 
-  const detaiDuan = data.project;
+  const project = data.project;
   const magazine = data.magazine;
   const invention = data.invention;
   const book = data.book;
   const training = data.training;
   const building = data.buildingProgram;
-  // Các cột cho lưới dữ liệu 1
+  // Đề tài dự án
   const columns1 = [
     {
       field: "projectName",
@@ -71,7 +75,7 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
       type: "number",
     },
   ];
-  // Các cột cho lưới dữ liệu 2
+  // bài báo khoa học
   const columns2 = [
     {
       field: "magazineName",
@@ -117,7 +121,7 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
       type: "number",
     },
   ];
-  // Các cột cho lưới dữ liệu 3
+  // Bằng sáng chế, giải thưởng
   const columns3 = [
     {
       field: "inventionName",
@@ -164,7 +168,7 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
       type: "number",
     },
   ];
-  // Các cột cho lưới dữ liệu 4
+  // Sách, giáo trình
   const columns4 = [
     {
       field: "bookName",
@@ -211,7 +215,7 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
       type: "number",
     },
   ];
-  // Các cột cho lưới dữ liệu 5
+  // Hướng dẫn sinh viên NCKH
   const columns5 = [
     {
       field: "projectName",
@@ -259,7 +263,7 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
       type: "number",
     },
   ];
-  // Các cột cho lưới dữ liệu 6
+  // Xây dựng chương trình đào tạo
   const columns6 = [
     {
       field: "buildingProgramName",
@@ -305,7 +309,7 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
       editable: true,
     },
   ];
-  // Các cột cho lưới dữ liệu 7
+  // Biên soạn giáo trình, bài giảng
   const columns7 = [
     {
       field: "topic_name",
@@ -371,16 +375,55 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
     },
   ];
 
+  const handleAddNewORUpdate = useCallback((data: any) => {
+      if (data?.isNew && id) {
+        StaffService.AddProject(data, id).then((res) => {
+          if (res.msg_code === 200) {
+            toastMessage("Thêm mới thành công", "success");
+          } else {
+            toastMessage("Thêm mới thất bại", "error");
+          }
+        })
+      }
+      else if (id) {
+        StaffService.UpdateProject(data, id, data.id).then((res) => {
+          if (res.msg_code === 200) {
+            toastMessage("Cập nhật thành công", "success");
+          } else {
+            toastMessage("Cập nhật thất bại", "error");
+          }
+        })
+      } else {
+        toastMessage("Cập nhật thất bại", "error");
+      }
+    
+  }, [id])
+
+  const handleDelete = useCallback((data:any) => {
+    // if (id) {
+    //   selectedRows1.forEach((row) => {
+    //     StaffService.DeleteTeaching(id, row).then((res) => {
+    //       if (res.msg_code === 200) {
+    //         toastMessage("Xóa thành công", "success");
+    //       } else {
+    //         toastMessage("Xóa thất bại", "error");
+    //       }
+    //     })
+    //   })
+    // } else {
+    //   toastMessage("Xóa thất bại", "error");
+    // }
+  }, []);
+
   return (
     <div>
       <Box>
         <BaseGrid
           columns={columns1}
-          rows={detaiDuan}
+          rows={project}
           title="C.1 Đề tài, dự án (Phụ lục II.1 Quyết định số 1409/QĐ-HVM)"
-          onSave={() => {
-            /* Logic lưu cho lưới dữ liệu 1 */
-          }}
+          onSave={handleAddNewORUpdate}
+          onDel={handleDelete}
           onRowSelectionChange={setSelectedRows1}
           selectedRows={selectedRows1}
         />

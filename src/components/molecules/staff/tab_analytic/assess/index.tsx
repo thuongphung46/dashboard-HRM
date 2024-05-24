@@ -1,15 +1,19 @@
-import { FC, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import { Box } from "@mui/material";
 import { BaseGrid } from "components/atoms/datagrid";
 import { GridRowId } from "@mui/x-data-grid";
 import { STAFF_EXAM } from "constants/global_data";
 import { StaffExamCourse } from "types/ApplicationType";
+import { StaffService } from "services/staff_service";
+import { toastMessage } from "components/molecules/toast_message";
+import { useParams } from "react-router-dom";
 
 interface Props {
   data: StaffExamCourse[];
 }
 
 export const Assess: FC<Props> = ({ data }) => {
+  const { id } = useParams();
   const [selectedRows1, setSelectedRows1] = useState<GridRowId[]>([]);
   const [selectedRows2, setSelectedRows2] = useState<GridRowId[]>([]);
 
@@ -154,9 +158,33 @@ export const Assess: FC<Props> = ({ data }) => {
     },
   ];
 
-  const handleSave = () => {
-    // Handle save logic here
-  };
+  const handleAddNewORUpdate = useCallback((data: any, examName: string) => {
+    const dataWithExamName = { ...data, examName };
+    if (data?.isNew && id) {
+      StaffService.AddExamCourse(dataWithExamName, id).then((res) => {
+        if (res.msg_code === 200) {
+          toastMessage("Thêm mới thành công", "success");
+        } else {
+          toastMessage("Thêm mới thất bại", "error");
+        }
+      })
+    }
+    else if (id) {
+      StaffService.UpdateExamCourse(dataWithExamName, id, data.id).then((res) => {
+        if (res.msg_code === 200) {
+          toastMessage("Cập nhật thành công", "success");
+        } else {
+          toastMessage("Cập nhật thất bại", "error");
+        }
+      })
+    } else {
+      toastMessage("Cập nhật thất bại", "error");
+    }
+  }, [id])
+
+  const handleDelete = useCallback((data:any) => {
+    //
+  }, []);
 
   return (
     <div>
@@ -165,7 +193,8 @@ export const Assess: FC<Props> = ({ data }) => {
           columns={columns1}
           rows={middle}
           title="Đánh giá giữa học phần"
-          onSave={handleSave}
+          onSave={(data: any) => handleAddNewORUpdate(data, "MIDDLE_EXAM")}
+          onDel={handleDelete}
           onRowSelectionChange={setSelectedRows1}
           selectedRows={selectedRows1}
         />
@@ -175,7 +204,8 @@ export const Assess: FC<Props> = ({ data }) => {
           columns={columns2}
           rows={end}
           title="Đánh giá hết học phần"
-          onSave={() => {}}
+          onSave={(data: any) => handleAddNewORUpdate(data, "END_EXAM")}
+          onDel={handleDelete}
           onRowSelectionChange={setSelectedRows2}
           selectedRows={selectedRows2}
         />
