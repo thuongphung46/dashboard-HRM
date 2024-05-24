@@ -153,7 +153,7 @@ export const ListStaff: FC<Props> = () => {
             <Typography variant="h5">Danh sách nhân viên</Typography>
             <DataGrid
               sx={{
-                height: "calc(100vh - 250px)",
+                height: "calc(100vh - 180px)",
               }}
               columns={columns}
               rows={transformedStaffList}
