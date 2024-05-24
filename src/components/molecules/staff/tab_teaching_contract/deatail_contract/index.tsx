@@ -23,6 +23,7 @@ import { StaffService } from "services/staff_service";
 import { MessageCode } from "types/enum/message_code";
 import { toastMessage } from "components/molecules/toast_message";
 import moment from "moment";
+import { useGetListJobTitle } from "services/hooks/useGetListJobTitle";
 
 interface Props {
   data: StaffDetail;
@@ -32,6 +33,9 @@ interface Props {
 }
 
 export const AddNewContract: FC<Props> = ({ data, action }) => {
+  const {data: jobTitleData } = useGetListJobTitle();
+      
+
   const { id } = useParams();
   const navigate = useNavigate();
   const refJobTitleA = useRef<any>(null);
@@ -322,11 +326,13 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
     if (field === "fullName") {
       const selectedStaff = listStaff.find((staff) => staff.username === value);
       const dataDetail = await getStaff(selectedStaff?.id);
+      const findJobTitle = jobTitleData.find(j => j.code === dataDetail?.jobTitle)
+          
       setEditData((prevData: any) => ({
         ...prevData,
         [field]: value,
         idPerA: dataDetail?.id ? dataDetail?.id : "",
-        jobTitle: dataDetail?.jobTitle ? dataDetail?.jobTitle : "",
+        jobTitle: findJobTitle ? findJobTitle?.jobTitle : "",
         phoneNumberRenter: dataDetail?.phoneNumber
           ? dataDetail?.phoneNumber
           : "",
@@ -334,7 +340,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
         bank_a: dataDetail?.bankName ? dataDetail?.bankName : "",
         ...dataDetail,
       }));
-      refJobTitleA.current.value = selectedStaff?.jobTitle;
+      refJobTitleA.current.value = findJobTitle ? findJobTitle?.jobTitle : "";
       refphoneNumberA.current.value = dataDetail?.phoneNumber
         ? dataDetail?.phoneNumber
         : "";
@@ -347,6 +353,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
     } else if (field === "per_b") {
       const selectedStaff = listStaff.find((staff) => staff.username === value);
       const dataDetail = await getStaff(selectedStaff?.id);
+      const findJobTitle = jobTitleData.find(j => j.code === dataDetail?.jobTitle)
       setEditData((prevData: any) => ({
         ...prevData,
         [field]: value,
@@ -354,7 +361,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
         identityCode: dataDetail.identityCode ? dataDetail.identityCode : "",
         identityDate: dataDetail?.identityDate ? dataDetail.identityDate : "",
         identityPlace: dataDetail.identityPlace ? dataDetail.identityPlace : "",
-        jobTitleRenter: dataDetail.jobTitle ? dataDetail.jobTitle : "",
+        jobTitleRenter: findJobTitle ? findJobTitle?.jobTitle : "",
         ratio: dataDetail.ratio ? dataDetail.ratio : "",
         phoneNumber: dataDetail?.phoneNumber ? dataDetail?.phoneNumber : "",
         bank_b_account: dataDetail?.bankAccount ? dataDetail?.bankAccount : "",
@@ -362,9 +369,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
         bank_b: dataDetail.bankName ? dataDetail.bankName : "",
         ...dataDetail,
       }));
-      refJobTitleB.current.value = dataDetail.jobTitle
-        ? dataDetail.jobTitle
-        : "";
+      refJobTitleB.current.value = findJobTitle ? findJobTitle?.jobTitle : "";
       refIdentityCodeB.current.value = dataDetail.identityCode
         ? dataDetail.identityCode
         : "";
