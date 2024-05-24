@@ -20,8 +20,7 @@ export const Assess: FC<Props> = ({ data, schoolYear }) => {
   const [filteredData1, setFilteredData1] = useState<StaffExamCourse[]>([]);
   const [filteredData2, setFilteredData2] = useState<StaffExamCourse[]>([]);
 
-  const middle = data.filter((item) => item.examName === STAFF_EXAM.MIDDLE);
-  const end = data.filter((item) => item.examName === STAFF_EXAM.END);
+  
 
   const columns1 = [
     {
@@ -132,12 +131,6 @@ export const Assess: FC<Props> = ({ data, schoolYear }) => {
       type: "singleSelect",
       valueOptions: ["Ra đề", "Coi thi", "Chấm thi"],
     },
-    // {
-    //   field: "courseName",
-    //   headerName: "Lớp học phần",
-    //   width: 150,
-    //   editable: true,
-    // },
     {
       field: "numberOfStudent",
       headerName: "Số sinh viên của lớp",
@@ -198,12 +191,13 @@ export const Assess: FC<Props> = ({ data, schoolYear }) => {
   }, [id]);
 
   useEffect(() => {
+    const middle = data.filter((item) => item.examName === STAFF_EXAM.MIDDLE);
+    const end = data.filter((item) => item.examName === STAFF_EXAM.END);
     const filtered1 = middle.filter(item => item.schoolYear === schoolYear);
     setFilteredData1(filtered1);
     const filtered2 = end.filter(item => item.schoolYear === schoolYear);
     setFilteredData2(filtered2);
-  }, [middle, end, schoolYear]);
-  console.log(setFilteredData1);
+  }, [schoolYear, data]);
 
   return (
     <div>

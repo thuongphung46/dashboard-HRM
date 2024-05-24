@@ -28,14 +28,14 @@ export const Analytic = ({ data, action }: Props) => {
 
   return (
     <div>
-      <FormControl variant="outlined" style={{ minWidth: 200, marginBottom: 20 }}>
+      <FormControl size="small" variant="outlined" style={{ minWidth: 200, marginBottom: 2 }}>
         <InputLabel id="school-year-label">Năm học</InputLabel>
         <Select
           labelId="school-year-label"
           id="school-year"
           value={schoolYear}
           onChange={handleSchoolYearChange}
-          label="Chọn năm học"
+          label="Năm học"
         >
           <MenuItem value={"2023-2024"}>2023-2024</MenuItem>
           <MenuItem value={"2022-2023"}>2022-2023</MenuItem>
@@ -89,7 +89,7 @@ function TabPanel(props: TabPanelProps) {
       id={`tabpanel-${index}`}
       aria-labelledby={`tab-${index}`}
       {...other}>
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      {value === index && <Box sx={{ p: 3, height:"calc(100vh - 344px)", overflow:"auto" }}>{children}</Box>}
     </div>
   );
 }
