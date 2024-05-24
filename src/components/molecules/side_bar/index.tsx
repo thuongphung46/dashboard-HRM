@@ -156,7 +156,7 @@ export const Playground: React.FC<SidebarProps> = ({
             <Menu menuItemStyles={menuItemStyles}>
               <SubMenu label="Mô-đun" icon={<Diamond />}>
                 <MenuItem
-                  active={location.pathname.toString() === "/model"}
+                  active={location.pathname.startsWith("/model")}
                   component={<Link to={"/model"}></Link>}
                 >
                   Mô hình cấp quản lý
@@ -169,20 +169,26 @@ export const Playground: React.FC<SidebarProps> = ({
                   Danh sách nhân viên
                 </MenuItem>
                 <MenuItem
-                  active={location.pathname === "/import"}
+                  active={location.pathname.startsWith("/import")}
                   component={<Link to={"/import"}></Link>}
                 >
                   Nhập dữ liệu
                 </MenuItem>
                 <MenuItem
-                  active={location.pathname.includes("/general")}
+                  active={location.pathname.startsWith("/general")}
                   component={<Link to={"/general"}></Link>}
                 >
                   Thông tin chung
                 </MenuItem>
                 <MenuItem
-                  active={location.pathname === "/statistic"}
+                  active={location.pathname.startsWith("/statistic")}
                   component={<Link to={"/statistic"}></Link>}
+                >
+                  Thống kê
+                </MenuItem>
+                <MenuItem
+                  active={location.pathname.startsWith("/active_page")}
+                  component={<Link to={"/active_page"}></Link>}
                 >
                   Thống kê
                 </MenuItem>
