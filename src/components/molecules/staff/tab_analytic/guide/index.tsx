@@ -8,15 +8,15 @@ import { useParams } from "react-router-dom";
 import { toastMessage } from "components/molecules/toast_message";
 import { StaffService } from "services/staff_service";
 
-interface Row {
-  id: number;
-  student_name: string;
-  training: string;
-  num_decision: string;
-  num_instructors: string;
-  main_instructors: boolean;
-  num_lesion: string;
-}
+// interface Row {
+//   id: number;
+//   student_name: string;
+//   training: string;
+//   num_decision: string;
+//   num_instructors: string;
+//   main_instructors: boolean;
+//   num_lesion: string;
+// }
 
 interface Props {
   data: StaffInstructProject[];
@@ -84,7 +84,6 @@ export const Guide: FC<Props> = ({ data, schoolYear }) => {
 
 
   const handleAddNewORUpdate = useCallback((data: any) => {
-    // console.log(data);
     const requestData = { ...data, schoolYear };
     if (data?.isNew && id) {
       StaffService.AddInstructProject(requestData, id).then((res) => {
