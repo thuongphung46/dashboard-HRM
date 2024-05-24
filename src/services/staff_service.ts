@@ -1,7 +1,10 @@
+import Add from "@mui/icons-material/Add";
 import { API_URL, NetWork } from "./api";
 import { RESPONSE_CODE } from "./api/config";
 import { getRequestUrl } from "./api/utils";
 import { Request } from "./request";
+import Delete from "@mui/icons-material/Delete";
+import { Update } from "@mui/icons-material";
 
 interface IParam {
   query: string;
@@ -25,26 +28,44 @@ const StaffService = {
   GetMyProfile: async () => {
     return await Request(controller).getAsync("me");
   },
-  updateStaffWorkingHistory: async (id: number, data: any) => {
-    try {
-      const response = await NetWork.patch(
-        getRequestUrl(API_URL.STAFFS, {
-          parentId: id,
-          partial: API_URL.WORKING_HISTORIES,
-        }),
-        {
-          data,
-        }
-      );
-      if (response.status === RESPONSE_CODE.SUCCESS) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (error) {
-      console.log(error);
-      return false;
-    }
+  // updateStaffWorkingHistory: async (id: number, data: any) => {
+  //   try {
+  //     const response = await NetWork.patch(
+  //       getRequestUrl(API_URL.STAFFS, {
+  //         parentId: id,
+  //         partial: API_URL.WORKING_HISTORIES,
+  //       }),
+  //       {
+  //         data,
+  //       }
+  //     );
+  //     if (response.status === RESPONSE_CODE.SUCCESS) {
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     return false;
+  //   }
+  // },
+  AddWorkingHistory: async (param: any, id: string) => {
+    return Request(controller).postAsync(`${id}/working-histories`, param);
+  },
+  UpdateWorkingHistory: async (param: any, id: string, idWorkingHistory: string) => {
+    return Request(controller).patchAsync(`${id}/working-histories/${idWorkingHistory}`, param);
+  },
+  DeleteWorkingHistory: async (id: string, idWorkingHistory: string) => {
+    return Request(controller).deleteAsync(`${id}/working-histories/${idWorkingHistory}`);
+  },
+  AddTrainingSummary: async (param: any, id: string) => {
+    return Request(controller).postAsync(`${id}/training-summary`, param);
+  },
+  UpdateTrainingSummary: async (param: any, id: string, idTraining: string) => {
+    return Request(controller).patchAsync(`${id}/training-summary/${idTraining}`, param);
+  },
+  DeleteTrainingSummary: async (id: string, idTraining: string) => {
+    return Request(controller).deleteAsync(`${id}/training-summary/${idTraining}`);
   },
   AddContracts: async (param: any, id: string) => {
     return Request(controller).postAsync(`${id}/contracts`, param);

@@ -1,9 +1,13 @@
-import { FC, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import { GridColDef, GridRowId } from "@mui/x-data-grid";
 import { BaseGrid } from "components/atoms/datagrid";
 import { Grid } from "@mui/material";
 import { StaffDetail } from "types/ApplicationType";
 import { Action } from "types/action";
+import { useParams } from "react-router-dom";
+import { StaffService } from "services/staff_service";
+import { toastMessage } from "components/molecules/toast_message";
+import moment from "moment";
 
 interface Props extends Action {
   data: StaffDetail;
@@ -22,10 +26,11 @@ export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
   dataSelectRow,
   handleRowSelect,
 }) => {
+  const { id } = useParams();
   const columns: GridColDef[] = [
     {
-      field: "fromDate",
-      headerName: "Từ ngày",
+      field: "date",
+      headerName: "Ngày",
       width: 150,
       editable: true,
       type: "date",
@@ -36,19 +41,19 @@ export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
         return params.value ? new Date(params.value).toLocaleDateString() : "";
       },
     },
-    {
-      field: "toDate",
-      headerName: "Đến ngày",
-      width: 150,
-      editable: true,
-      type: "date",
-      valueGetter: (params) => {
-        return params.value ? new Date(params.value) : null;
-      },
-      renderCell: (params) => {
-        return params.value ? new Date(params.value).toLocaleDateString() : "";
-      },
-    },
+    // {
+    //   field: "toDate",
+    //   headerName: "Đến ngày",
+    //   width: 150,
+    //   editable: true,
+    //   type: "date",
+    //   valueGetter: (params) => {
+    //     return params.value ? new Date(params.value) : null;
+    //   },
+    //   renderCell: (params) => {
+    //     return params.value ? new Date(params.value).toLocaleDateString() : "";
+    //   },
+    // },
     {
       field: "jobTitle",
       headerName: "Chức vụ",
@@ -65,6 +70,45 @@ export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
     },
   ];
 
+  const handleAddNewORUpdate = useCallback((data: any, type: string) => {
+    const dataWorkingHistory = { ...data, type };
+    if (dataWorkingHistory.date) {
+      dataWorkingHistory.date = moment(dataWorkingHistory.date).format('YYYY-MM-DD HH:mm:ss');
+    }
+    if (data?.isNew && id) {
+      StaffService.AddWorkingHistory(dataWorkingHistory, id).then((res) => {
+        // if (res.msg_code === 200) {
+          toastMessage("Thêm mới thành công", "success");
+        // } else {
+        //   toastMessage("Thêm mới thất bại", "error");
+        // }
+      })
+    }
+    else if (id) {
+      StaffService.UpdateWorkingHistory(dataWorkingHistory, id, data.id).then((res) => {
+        // if (res.msg_code === 200) {
+          toastMessage("Cập nhật thành công", "success");
+        // } else {
+        //   toastMessage("Cập nhật thất bại", "error");
+        // }
+      })
+    } else {
+      toastMessage("Cập nhật thất bại", "error");
+    }
+  }, [id])
+
+  const handleDelete = useCallback((idRow:any) => {
+    if (id) {
+      StaffService.DeleteWorkingHistory(id, idRow).then((res) => {
+        // if (res.msg_code === 200) {
+          toastMessage("Xóa thành công", "success");
+        // } else {
+        //   toastMessage("Xóa thất bại", "error");
+        // }
+      })
+    }
+  }, [id]);
+
   return (
     <>
       <BaseGrid
@@ -75,7 +119,8 @@ export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
         checkboxSelection
         disableRowSelectionOnClick
         selectedRows={dataSelectRow}
-        onSave={handleSave}
+        onSave={(data: any) => handleAddNewORUpdate(data, "IN_ACADEMY")}
+        onDel={handleDelete}
       ></BaseGrid>
     </>
   );

@@ -13,3 +13,8 @@ export enum STAFF_EXAM {
   MIDDLE = "MIDDLE_EXAM",
   END = "END_EXAM",
 }
+
+export enum STAFF_WORKING_TYPE{
+  IN = "IN_ACADEMY",
+  OUT = "OUT_ACADEMY",
+}
