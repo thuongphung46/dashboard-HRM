@@ -9,19 +9,40 @@ import { Guide } from "./guide";
 import { ScientificResearch } from "./scientific_research";
 import { StaffDetail } from "types/ApplicationType";
 import { Action } from "types/action";
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 interface Props extends Action {
   data: StaffDetail;
 }
 
 export const Analytic = ({ data, action }: Props) => {
   const [value, setValue] = useState(0);
+  const [schoolYear, setSchoolYear] = useState('');
 
   const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
 
+  const handleSchoolYearChange = (event: SelectChangeEvent<string>) => {
+    setSchoolYear(event.target.value);
+  };
+
   return (
     <div>
+      <FormControl variant="outlined" style={{ minWidth: 200, marginBottom: 20 }}>
+        <InputLabel id="school-year-label">Năm học</InputLabel>
+        <Select
+          labelId="school-year-label"
+          id="school-year"
+          value={schoolYear}
+          onChange={handleSchoolYearChange}
+          label="Chọn năm học"
+        >
+          <MenuItem value={"2023-2024"}>2023-2024</MenuItem>
+          <MenuItem value={"2022-2023"}>2022-2023</MenuItem>
+          <MenuItem value={"2021-2022"}>2021-2022</MenuItem>
+          {/* Add more school years as needed */}
+        </Select>
+      </FormControl>
       <Tabs
         value={value}
         onChange={handleChange}
@@ -34,19 +55,19 @@ export const Analytic = ({ data, action }: Props) => {
         <Tab label="NCKH" />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <Overview data={data.summary} all_data={data} />
+        <Overview data={data.summary} all_data={data} schoolYear={schoolYear}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Teaching data={data.teaching} />
+        <Teaching data={data.teaching} schoolYear={schoolYear}/>
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <Assess data={data.examCourses} />
+        <Assess data={data.examCourses} schoolYear={schoolYear}/>
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <Guide data={data.instructProject} />
+        <Guide data={data.instructProject} schoolYear={schoolYear}/>
       </TabPanel>
       <TabPanel value={value} index={4}>
-        <ScientificResearch data={data} />
+        <ScientificResearch data={data} schoolYear={schoolYear}/>
       </TabPanel>
     </div>
   );

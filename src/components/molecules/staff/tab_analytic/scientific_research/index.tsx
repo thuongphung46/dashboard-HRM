@@ -9,9 +9,10 @@ import { StaffService } from "services/staff_service";
 
 interface Props {
   data: StaffDetail;
+  schoolYear: string;
 }
 
-export const ScientificResearch: FC<Props> = ({ data }) => {
+export const ScientificResearch: FC<Props> = ({ data, schoolYear }) => {
   const { id } = useParams();
   const [selectedRows1, setSelectedRows1] = useState<GridRowId[]>([]);
   const [selectedRows2, setSelectedRows2] = useState<GridRowId[]>([]);
@@ -77,8 +78,9 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
   ];
 
   const handleAddNewORUpdateProject = useCallback((data: any) => {
+    const requestData = { ...data, schoolYear };
     if (data?.isNew && id) {
-      StaffService.AddProject(data, id).then((res) => {
+      StaffService.AddProject(requestData, id).then((res) => {
         if (res.msg_code === 200) {
           toastMessage("Thêm mới thành công", "success");
         } else {
@@ -87,7 +89,7 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
       })
     }
     else if (id) {
-      StaffService.UpdateProject(data, id, data.id).then((res) => {
+      StaffService.UpdateProject(requestData, id, data.id).then((res) => {
         if (res.msg_code === 200) {
           toastMessage("Cập nhật thành công", "success");
         } else {
@@ -97,7 +99,7 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
     } else {
       toastMessage("Cập nhật thất bại", "error");
     }
-}, [id])
+}, [id, schoolYear])
 
 const handleDeleteProject = useCallback((idRow:any) => {
   if (id) {
@@ -159,8 +161,9 @@ const handleDeleteProject = useCallback((idRow:any) => {
   ];
 
   const handleAddNewORUpdateMagazine = useCallback((data: any) => {
+    const requestData = { ...data, schoolYear };
     if (data?.isNew && id) {
-      StaffService.AddMagazine(data, id).then((res) => {
+      StaffService.AddMagazine(requestData, id).then((res) => {
         if (res.msg_code === 200) {
           toastMessage("Thêm mới thành công", "success");
         } else {
@@ -169,7 +172,7 @@ const handleDeleteProject = useCallback((idRow:any) => {
       })
     }
     else if (id) {
-      StaffService.UpdateMagazine(data, id, data.id).then((res) => {
+      StaffService.UpdateMagazine(requestData, id, data.id).then((res) => {
         if (res.msg_code === 200) {
           toastMessage("Cập nhật thành công", "success");
         } else {
@@ -179,7 +182,7 @@ const handleDeleteProject = useCallback((idRow:any) => {
     } else {
       toastMessage("Cập nhật thất bại", "error");
     }
-}, [id])
+}, [id, schoolYear])
 
 const handleDeleteMagazine = useCallback((idRow:any) => {
   if (id) {
@@ -241,8 +244,9 @@ const handleDeleteMagazine = useCallback((idRow:any) => {
   ];
 
   const handleAddNewORUpdateInvention = useCallback((data: any) => {
+    const requestData = { ...data, schoolYear };
     if (data?.isNew && id) {
-      StaffService.AddInvention(data, id).then((res) => {
+      StaffService.AddInvention(requestData, id).then((res) => {
         if (res.msg_code === 200) {
           toastMessage("Thêm mới thành công", "success");
         } else {
@@ -251,7 +255,7 @@ const handleDeleteMagazine = useCallback((idRow:any) => {
       })
     }
     else if (id) {
-      StaffService.UpdateInvention(data, id, data.id).then((res) => {
+      StaffService.UpdateInvention(requestData, id, data.id).then((res) => {
         if (res.msg_code === 200) {
           toastMessage("Cập nhật thành công", "success");
         } else {
@@ -261,7 +265,7 @@ const handleDeleteMagazine = useCallback((idRow:any) => {
     } else {
       toastMessage("Cập nhật thất bại", "error");
     }
-}, [id])
+}, [id, schoolYear])
 
 const handleDeleteInvention = useCallback((idRow:any) => {
   if (id) {
@@ -322,8 +326,9 @@ const handleDeleteInvention = useCallback((idRow:any) => {
     },
   ];
   const handleAddNewORUpdateBook = useCallback((data: any) => {
+    const requestData = { ...data, schoolYear };
     if (data?.isNew && id) {
-      StaffService.AddBook(data, id).then((res) => {
+      StaffService.AddBook(requestData, id).then((res) => {
         if (res.msg_code === 200) {
           toastMessage("Thêm mới thành công", "success");
         } else {
@@ -332,7 +337,7 @@ const handleDeleteInvention = useCallback((idRow:any) => {
       })
     }
     else if (id) {
-      StaffService.UpdateBook(data, id, data.id).then((res) => {
+      StaffService.UpdateBook(requestData, id, data.id).then((res) => {
         if (res.msg_code === 200) {
           toastMessage("Cập nhật thành công", "success");
         } else {
@@ -342,7 +347,7 @@ const handleDeleteInvention = useCallback((idRow:any) => {
     } else {
       toastMessage("Cập nhật thất bại", "error");
     }
-}, [id])
+}, [id, schoolYear])
 
 const handleDeleteBook = useCallback((idRow:any) => {
   if (id) {
@@ -406,8 +411,9 @@ const handleDeleteBook = useCallback((idRow:any) => {
   ];
 
   const handleAddNewORUpdateTraining = useCallback((data: any) => {
+    const requestData = { ...data, schoolYear };
     if (data?.isNew && id) {
-      StaffService.AddTraining(data, id).then((res) => {
+      StaffService.AddTraining(requestData, id).then((res) => {
         if (res.msg_code === 200) {
           toastMessage("Thêm mới thành công", "success");
         } else {
@@ -416,7 +422,7 @@ const handleDeleteBook = useCallback((idRow:any) => {
       })
     }
     else if (id) {
-      StaffService.UpdateTraining(data, id, data.id).then((res) => {
+      StaffService.UpdateTraining(requestData, id, data.id).then((res) => {
         if (res.msg_code === 200) {
           toastMessage("Cập nhật thành công", "success");
         } else {
@@ -426,7 +432,7 @@ const handleDeleteBook = useCallback((idRow:any) => {
     } else {
       toastMessage("Cập nhật thất bại", "error");
     }
-}, [id])
+}, [id, schoolYear])
 
 const handleDeleteTraining = useCallback((idRow:any) => {
   if (id) {
@@ -488,8 +494,9 @@ const handleDeleteTraining = useCallback((idRow:any) => {
   ];
 
   const handleAddNewORUpdateBuildingProgram = useCallback((data: any) => {
+    const requestData = { ...data, schoolYear };
     if (data?.isNew && id) {
-      StaffService.AddBuildingProgram(data, id).then((res) => {
+      StaffService.AddBuildingProgram(requestData, id).then((res) => {
         if (res.msg_code === 200) {
           toastMessage("Thêm mới thành công", "success");
         } else {
@@ -498,7 +505,7 @@ const handleDeleteTraining = useCallback((idRow:any) => {
       })
     }
     else if (id) {
-      StaffService.UpdateBuildingProgram(data, id, data.id).then((res) => {
+      StaffService.UpdateBuildingProgram(requestData, id, data.id).then((res) => {
         if (res.msg_code === 200) {
           toastMessage("Cập nhật thành công", "success");
         } else {
@@ -508,7 +515,7 @@ const handleDeleteTraining = useCallback((idRow:any) => {
     } else {
       toastMessage("Cập nhật thất bại", "error");
     }
-}, [id])
+}, [id, schoolYear])
 
 const handleDeleteBuildingProgram = useCallback((idRow:any) => {
   if (id) {
@@ -576,8 +583,9 @@ const handleDeleteBuildingProgram = useCallback((idRow:any) => {
     },
   ];
   const handleAddNewORUpdateEditorProgram= useCallback((data: any) => {
+    const requestData = { ...data, schoolYear };
     if (data?.isNew && id) {
-      StaffService.AddEditorProgram(data, id).then((res) => {
+      StaffService.AddEditorProgram(requestData, id).then((res) => {
         if (res.msg_code === 200) {
           toastMessage("Thêm mới thành công", "success");
         } else {
@@ -586,7 +594,7 @@ const handleDeleteBuildingProgram = useCallback((idRow:any) => {
       })
     }
     else if (id) {
-      StaffService.UpdateEditorProgram(data, id, data.id).then((res) => {
+      StaffService.UpdateEditorProgram(requestData, id, data.id).then((res) => {
         if (res.msg_code === 200) {
           toastMessage("Cập nhật thành công", "success");
         } else {
@@ -596,7 +604,7 @@ const handleDeleteBuildingProgram = useCallback((idRow:any) => {
     } else {
       toastMessage("Cập nhật thất bại", "error");
     }
-}, [id])
+}, [id, schoolYear])
 
 const handleDeleteEditorProgram = useCallback((idRow:any) => {
   if (id) {

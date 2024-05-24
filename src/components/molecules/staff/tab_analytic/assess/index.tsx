@@ -10,9 +10,10 @@ import { useParams } from "react-router-dom";
 
 interface Props {
   data: StaffExamCourse[];
+  schoolYear: string;
 }
 
-export const Assess: FC<Props> = ({ data }) => {
+export const Assess: FC<Props> = ({ data, schoolYear }) => {
   const { id } = useParams();
   const [selectedRows1, setSelectedRows1] = useState<GridRowId[]>([]);
   const [selectedRows2, setSelectedRows2] = useState<GridRowId[]>([]);
@@ -159,7 +160,7 @@ export const Assess: FC<Props> = ({ data }) => {
   ];
 
   const handleAddNewORUpdate = useCallback((data: any, examName: string) => {
-    const dataWithExamName = { ...data, examName };
+    const dataWithExamName = { ...data, examName, schoolYear };
     if (data?.isNew && id) {
       StaffService.AddExamCourse(dataWithExamName, id).then((res) => {
         if (res.msg_code === 200) {
@@ -180,7 +181,7 @@ export const Assess: FC<Props> = ({ data }) => {
     } else {
       toastMessage("Cập nhật thất bại", "error");
     }
-  }, [id])
+  }, [id, schoolYear])
 
   const handleDelete = useCallback((idRow:any) => {
     if (id) {

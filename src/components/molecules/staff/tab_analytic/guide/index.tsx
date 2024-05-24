@@ -20,8 +20,9 @@ interface Row {
 
 interface Props {
   data: StaffInstructProject[];
+  schoolYear: string;
 }
-export const Guide: FC<Props> = ({ data }) => {
+export const Guide: FC<Props> = ({ data, schoolYear }) => {
   const { id } = useParams();
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
 
@@ -80,9 +81,12 @@ export const Guide: FC<Props> = ({ data }) => {
     },
   ];
 
+
   const handleAddNewORUpdate = useCallback((data: any) => {
+    // console.log(data);
+    const requestData = { ...data, schoolYear };
     if (data?.isNew && id) {
-      StaffService.AddInstructProject(data, id).then((res) => {
+      StaffService.AddInstructProject(requestData, id).then((res) => {
         if (res.msg_code === 200) {
           toastMessage("Thêm mới thành công", "success");
         } else {
@@ -91,7 +95,7 @@ export const Guide: FC<Props> = ({ data }) => {
       })
     }
     else if (id) {
-      StaffService.UpdateInstructProject(data, id, data.id).then((res) => {
+      StaffService.UpdateInstructProject(requestData, id, data.id).then((res) => {
         if (res.msg_code === 200) {
           toastMessage("Cập nhật thành công", "success");
         } else {
@@ -101,7 +105,7 @@ export const Guide: FC<Props> = ({ data }) => {
     } else {
       toastMessage("Cập nhật thất bại", "error");
     }
-  }, [id])
+  }, [id, schoolYear])
 
   const handleDelete = useCallback((idRow:any) => {
     if (id) {

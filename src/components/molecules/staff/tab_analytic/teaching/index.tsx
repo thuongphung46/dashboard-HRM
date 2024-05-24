@@ -9,9 +9,10 @@ import { toastMessage } from "components/molecules/toast_message";
 
 interface Props {
   data: StaffTeaching[];
+  schoolYear: string;
 }
 
-export const Teaching: FC<Props> = ({ data }) => {
+export const Teaching: FC<Props> = ({ data, schoolYear }) => {
   const { id } = useParams();
   const [selectedRows1, setSelectedRows1] = useState<GridRowId[]>([]);
 
@@ -95,8 +96,9 @@ export const Teaching: FC<Props> = ({ data }) => {
 
 
   const handleAddNewORUpdate = useCallback((data: any) => {
+    const requestData = { ...data, schoolYear };
     if (data?.isNew && id) {
-      StaffService.AddTeaching(data, id).then((res) => {
+      StaffService.AddTeaching(requestData, id).then((res) => {
         if (res.msg_code === 200) {
           toastMessage("Thêm mới thành công", "success");
         } else {
@@ -105,7 +107,7 @@ export const Teaching: FC<Props> = ({ data }) => {
       })
     }
     else if (id) {
-      StaffService.UpdateTeaching(data, id, data.id).then((res) => {
+      StaffService.UpdateTeaching(requestData, id, data.id).then((res) => {
         if (res.msg_code === 200) {
           toastMessage("Cập nhật thành công", "success");
         } else {
@@ -115,7 +117,7 @@ export const Teaching: FC<Props> = ({ data }) => {
     } else {
       toastMessage("Cập nhật thất bại", "error");
     }
-  }, [id])
+  }, [id, schoolYear])
 
   const handleDelete = useCallback((idRow:any) => {
     if (id) {

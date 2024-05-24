@@ -8,6 +8,7 @@ import { StaffDetail, StaffSummary } from "types/ApplicationType";
 interface Props {
   data: StaffSummary[];
   all_data: StaffDetail;
+  schoolYear: string;
 }
 export const Overview: React.FC<Props> = ({ data, all_data }) => {
   const [sum, setSum] = useState({
