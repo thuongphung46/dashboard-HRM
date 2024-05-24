@@ -11,6 +11,7 @@ import { AddNewContract } from "components/molecules/staff/tab_teaching_contract
 import { SignIn } from "components/pages/login";
 import { TabDetailStaff } from "components/molecules/staff/tab_detail";
 import { StatisticPage } from "components/pages/statistic";
+import { ActivePage } from "components/pages/active_page";
 import { FC } from "react";
 import { Navigate } from "react-router-dom";
 import HRMStorage from "common/function";
@@ -114,6 +115,10 @@ const router = createBrowserRouter([
       {
         path: "/statistic",
         element: <StatisticPage />,
+      },
+      {
+        path: "/active_page",
+        element: <ActivePage />,
       },
     ],
   },

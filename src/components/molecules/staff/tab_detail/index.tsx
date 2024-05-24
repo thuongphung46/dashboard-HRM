@@ -77,6 +77,21 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
           console.log(err);
         });
     }
+    else if (action === "me") {
+      let id = HRMStorage.get(KeyValue.id);
+      StaffService.UpdateInfoStaff(formData, id)
+        .then((res) => {
+          if (res.msg_code === MessageCode.Success) {
+            toastMessage("Thành công", "success");
+          } else {
+            toastMessage(res.message, "error");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+    }
   }, [action, formData, id]);
 
   return (
