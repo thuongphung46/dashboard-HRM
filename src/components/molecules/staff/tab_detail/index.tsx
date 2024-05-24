@@ -22,14 +22,16 @@ import { initStaffInfo } from "services/mock_data/staff_info";
 import HRMStorage from "common/function";
 import { KeyValue } from "constants/GlobalConstant";
 import { TeachingContract } from "../tab_teaching_contract";
+import { PropupConfirm } from "components/atoms/popup_comfirm";
 
-interface Props extends Action {}
+interface Props extends Action { }
 
 export const TabDetailStaff: FC<Props> = ({ action }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [value, setValue] = useState(0);
   const [formData, setFormData] = useState<any>({});
+  const [open, setOpen] = useState<boolean>(false);
   const [dataDetailMe, setDataDetailMe] = useState<any>(initStaffInfo);
   const { data, loading } = useGetStaff(id);
   const level = HRMStorage.get(KeyValue.Level);
@@ -94,13 +96,29 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
     }
   }, [action, formData, id]);
 
+  const handleExit = useCallback(() => {
+    if (formData) {
+      setOpen(true);
+    }
+    else {
+      navigate(-1);
+    }
+  }, [formData, navigate]);
+
+  const handleConfirm = useCallback(() => {
+    setOpen(false);
+    navigate(-1);
+  }, [navigate]);
+
   return (
     <div
       style={{
         padding: "8px",
       }}
     >
-      <Button size="small" variant="outlined" onClick={() => navigate(-1)}>
+      <Button size="small" variant="outlined"
+        onClick={handleExit}
+      >
         Thoát
       </Button>
       {value === 0 && (
@@ -166,6 +184,12 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
           </>
         ) : null}
       </TabPanel>
+      <PropupConfirm
+        onClose={() => setOpen(false)}
+        open={open}
+        onConfirm={handleConfirm}
+        title="Xác nhận"
+        message="Bạn chắc chắn muốn thoát?" />
     </div>
   );
 };
@@ -192,6 +216,7 @@ function TabPanel(props: TabPanelProps) {
           {children}
         </Box>
       )}
+
     </div>
   );
 }

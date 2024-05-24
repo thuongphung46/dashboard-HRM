@@ -15,7 +15,6 @@ interface Props {
 interface GeneralEdit {
   teaching: string;
   base_salary: string;
-  // time_worked: string;
 }
 
 interface GeneralField {
@@ -30,9 +29,7 @@ export const MultipleTablesPage: FC<Props> = ({ GenneralData }) => {
   const [GeneralEdit, setGeneralEdit] = useState<GeneralEdit>({
     teaching: "",
     base_salary: "",
-    // time_worked: "",
   });
-  // const [edited, setEdited] = useState<boolean>(false);
   const [disable, setDisable] = useState<boolean>(false);
 
   useEffect(() => {
@@ -57,20 +54,12 @@ export const MultipleTablesPage: FC<Props> = ({ GenneralData }) => {
             GenneralData.find((item) => item.name === "base_salary")?.value ||
             "",
         },
-        // {
-        //   name: "time_worked",
-        //   label: "Thời gian công tác để đề xuất tăng hệ số lương",
-        //   value:
-        //     GenneralData.find((item) => item.name === "time_worked")?.value ||
-        //     "",
-        // },
       ];
       setGeneralField(initialFieldData);
 
       setGeneralEdit({
         teaching: initialFieldData[0].value.toString(),
         base_salary: initialFieldData[1].value.toString(),
-        // time_worked: initialFieldData[2].value.toString(),
       });
     }
   }, [GenneralData]);
@@ -87,9 +76,6 @@ export const MultipleTablesPage: FC<Props> = ({ GenneralData }) => {
     []
   );
 
-  // const handleUpdate = useCallback(() => {
-  //   console.log("Updated data:", GeneralEdit);
-  // }, [GeneralEdit]);
 
   const renderGeneralFields = useMemo(() => {
     return (
@@ -123,9 +109,6 @@ export const MultipleTablesPage: FC<Props> = ({ GenneralData }) => {
         padding: "1rem",
       }}
     >
-      {/* <Button disabled={!edited && disable} onClick={handleUpdate}>
-        Lưu
-      </Button> */}
       {renderGeneralFields}
       <GeneralResion disable={disable} />
       <GeneralPosition disable={disable} />
