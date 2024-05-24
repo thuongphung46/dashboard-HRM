@@ -117,21 +117,18 @@ export const Teaching: FC<Props> = ({ data }) => {
     }
   }, [id])
 
-  const handleDelete = useCallback((data:any) => {
-    // if (id) {
-    //   selectedRows1.forEach((row) => {
-    //     StaffService.DeleteTeaching(id, row).then((res) => {
-    //       if (res.msg_code === 200) {
-    //         toastMessage("Xóa thành công", "success");
-    //       } else {
-    //         toastMessage("Xóa thất bại", "error");
-    //       }
-    //     })
-    //   })
-    // } else {
-    //   toastMessage("Xóa thất bại", "error");
-    // }
-  }, []);
+  const handleDelete = useCallback((idRow:any) => {
+    if (id) {
+      StaffService.DeleteTeaching(id, idRow).then((res) => {
+        if (res.msg_code === 200) {
+          toastMessage("Xóa thành công", "success");
+        } else {
+          toastMessage("Xóa thất bại", "error");
+        }
+      })
+    }
+  }, [id]);
+
   return (
     <div>
       <Box>

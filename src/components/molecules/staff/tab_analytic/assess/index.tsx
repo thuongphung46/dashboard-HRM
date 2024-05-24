@@ -182,9 +182,17 @@ export const Assess: FC<Props> = ({ data }) => {
     }
   }, [id])
 
-  const handleDelete = useCallback((data:any) => {
-    //
-  }, []);
+  const handleDelete = useCallback((idRow:any) => {
+    if (id) {
+      StaffService.DeleteExamCourse(id, idRow).then((res) => {
+        if (res.msg_code === 200) {
+          toastMessage("Xóa thành công", "success");
+        } else {
+          toastMessage("Xóa thất bại", "error");
+        }
+      })
+    }
+  }, [id]);
 
   return (
     <div>
