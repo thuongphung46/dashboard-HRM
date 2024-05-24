@@ -20,8 +20,6 @@ export const Assess: FC<Props> = ({ data, schoolYear }) => {
   const [filteredData1, setFilteredData1] = useState<StaffExamCourse[]>([]);
   const [filteredData2, setFilteredData2] = useState<StaffExamCourse[]>([]);
 
-  
-
   const columns1 = [
     {
       field: "term",
