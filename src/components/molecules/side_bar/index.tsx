@@ -56,7 +56,7 @@ export const Playground: React.FC<SidebarProps> = ({
   const level = HRMStorage.get(KeyValue.Level);
 
   useEffect(() => {
-    if (level !== "LEVEL_1" && level !== "LEVEL_4") {
+    if (level !== "LEVEL_4") {
       setDissable(true);
     } else {
       setDissable(false);
@@ -86,9 +86,9 @@ export const Playground: React.FC<SidebarProps> = ({
       backgroundColor:
         level === 0
           ? hexToRgba(
-              themes[theme].menu.menuContent,
-              hasImage && !collapsed ? 0.4 : 1
-            )
+            themes[theme].menu.menuContent,
+            hasImage && !collapsed ? 0.4 : 1
+          )
           : "transparent",
     }),
 
@@ -186,12 +186,15 @@ export const Playground: React.FC<SidebarProps> = ({
                 >
                   Thống kê
                 </MenuItem>
-                <MenuItem
-                  active={location.pathname.startsWith("/active_page")}
-                  component={<Link to={"/active_page"}></Link>}
-                >
-                  Thống kê
-                </MenuItem>
+                {!dissable && (
+                    <MenuItem
+                    active={location.pathname.startsWith("/active_page")}
+                    component={<Link to={"/active_page"}></Link>}
+                  >
+                    Duyệt nhân viên
+                  </MenuItem>
+                )
+                }
               </SubMenu>
             </Menu>
 

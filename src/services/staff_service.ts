@@ -172,13 +172,13 @@ const StaffService = {
   //lấy list đangg chờ duyệt /staffs/pending?status=1
   GetListStaffPending: async (status:0|1) => {
     return await Request(controller).getAsync(
-      `/pending?query=${status}`
+      `/pending?status=${status}`
     );
   },
   //duyệt nhân viên sửa /staffs/9/confirm
   ConfirmStaff: async (id: string) => {
     return await Request(controller).patchAsync(
-      `/${id}/confirm`
+      `${id}/confirm`
     );
   },
 

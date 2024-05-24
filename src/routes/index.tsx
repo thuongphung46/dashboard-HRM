@@ -1,4 +1,4 @@
-import { createBrowserRouter, useLocation } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import { ErrorPage } from "components/pages/error";
 import { HomePage } from "components/pages/home";
 import { GeneralPage } from "components/pages/general";
@@ -27,22 +27,19 @@ interface PropType {
   component: any;
   action?: FORM_STATE;
 }
-
 const PrivateRoute: FC<PropType> = ({ component: Component, action }) => {
-  const location = useLocation();
   const level = HRMStorage.get(KeyValue.Level);
 
   if (level === "LEVEL_1" || level === "LEVEL_4")
     return <Component action={action} />;
-  return <Navigate to={location.pathname} />;
+  return <Navigate to={"/error"} />;
 };
 
 const PrivateRouteAdmin: FC<PropType> = ({ component: Component, action }) => {
-  const location = useLocation();
   const level = HRMStorage.get(KeyValue.Level);
 
   if (level === "LEVEL_4") return <Component action={action} />;
-  return <Navigate to={location.pathname} />;
+  return <Navigate to={"/error"} />;
 };
 
 const router = createBrowserRouter([
@@ -118,7 +115,12 @@ const router = createBrowserRouter([
       },
       {
         path: "/active_page",
-        element: <ActivePage />,
+        element: (
+          <PrivateRouteAdmin
+            action={FORM_STATE.ADD}
+            component={ActivePage}
+          />
+        ),
       },
     ],
   },
@@ -127,6 +129,10 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [{ path: "/login", element: <SignIn /> }],
   },
+  {
+    path: "/error",
+    element: <ErrorPage />,
+  }
 ]);
 
 export { router };
