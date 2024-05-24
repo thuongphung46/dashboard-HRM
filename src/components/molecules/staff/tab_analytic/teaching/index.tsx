@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import { GridColDef, GridRowId } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 import { BaseGrid } from "components/atoms/datagrid";
@@ -9,11 +9,13 @@ import { toastMessage } from "components/molecules/toast_message";
 
 interface Props {
   data: StaffTeaching[];
+  schoolYear: string;
 }
 
-export const Teaching: FC<Props> = ({ data }) => {
+export const Teaching: FC<Props> = ({ data, schoolYear }) => {
   const { id } = useParams();
   const [selectedRows1, setSelectedRows1] = useState<GridRowId[]>([]);
+  const [filteredData, setFilteredData] = useState<StaffTeaching[]>([]);
 
   // Các cột cho lưới dữ liệu 1
   const columns1:  GridColDef[] = [
@@ -95,8 +97,9 @@ export const Teaching: FC<Props> = ({ data }) => {
 
 
   const handleAddNewORUpdate = useCallback((data: any) => {
+    const requestData = { ...data, schoolYear };
     if (data?.isNew && id) {
-      StaffService.AddTeaching(data, id).then((res) => {
+      StaffService.AddTeaching(requestData, id).then((res) => {
         if (res.msg_code === 200) {
           toastMessage("Thêm mới thành công", "success");
         } else {
@@ -105,7 +108,7 @@ export const Teaching: FC<Props> = ({ data }) => {
       })
     }
     else if (id) {
-      StaffService.UpdateTeaching(data, id, data.id).then((res) => {
+      StaffService.UpdateTeaching(requestData, id, data.id).then((res) => {
         if (res.msg_code === 200) {
           toastMessage("Cập nhật thành công", "success");
         } else {
@@ -115,7 +118,7 @@ export const Teaching: FC<Props> = ({ data }) => {
     } else {
       toastMessage("Cập nhật thất bại", "error");
     }
-  }, [id])
+  }, [id, schoolYear])
 
   const handleDelete = useCallback((idRow:any) => {
     if (id) {
@@ -129,12 +132,18 @@ export const Teaching: FC<Props> = ({ data }) => {
     }
   }, [id]);
 
+  useEffect(() => {
+    const filtered = data.filter(item => item.schoolYear === schoolYear);
+    setFilteredData(filtered);
+  }, [data, schoolYear]);
+  console.log(filteredData);
+
   return (
     <div>
       <Box>
         <BaseGrid
           columns={columns1}
-          rows={data}
+          rows={filteredData}
           title=""
           onSave={handleAddNewORUpdate}
           onRowSelectionChange={setSelectedRows1}

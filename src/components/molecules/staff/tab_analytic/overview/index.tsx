@@ -8,6 +8,7 @@ import { StaffDetail, StaffSummary } from "types/ApplicationType";
 interface Props {
   data: StaffSummary[];
   all_data: StaffDetail;
+  schoolYear: string;
 }
 export const Overview: React.FC<Props> = ({ data, all_data }) => {
   const [sum, setSum] = useState({
@@ -27,7 +28,7 @@ export const Overview: React.FC<Props> = ({ data, all_data }) => {
   }, []);
 
   const columns: GridColDef[] = [
-    { field: "schoolYear", headerName: "Năm học", width: 150 },
+    // { field: "schoolYear", headerName: "Năm học", width: 150 },
     { field: "contentWork", headerName: "Nội dung công việc", width: 400 },
     { field: "numberOfLesson", headerName: "Số tiết dạy", width: 150 },
     {

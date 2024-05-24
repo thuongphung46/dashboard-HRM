@@ -63,14 +63,14 @@ export interface StaffAdmissionResponse {
   place: string;
 }
 
-interface StaffRankHistoryResponse {
+export interface StaffRankHistoryResponse {
   id?: number;
   rankId?: number;
   rankName: string;
   date: string;
 }
 
-interface StaffWorkingHistoryResponse {
+export interface StaffWorkingHistoryResponse {
   id?: number;
   jobTitle: string;
   date: string;
@@ -110,7 +110,7 @@ export interface StaffInstructProject {
   numberOfLesson: number;
 }
 
-interface StaffProject {
+export interface StaffProject {
   id: number;
   staffId: number;
   schoolYear: string;
@@ -122,7 +122,7 @@ interface StaffProject {
   numberOfHours: number;
 }
 
-interface StaffMagazine {
+export interface StaffMagazine {
   id: number;
   staffId: number;
   schoolYear: string;
@@ -134,7 +134,7 @@ interface StaffMagazine {
   numberOfHour: number;
 }
 
-interface StaffInvention {
+export interface StaffInvention {
   id: number;
   staffId: number;
   schoolYear: string;
@@ -146,7 +146,7 @@ interface StaffInvention {
   numberOfHour: number;
 }
 
-interface StaffBook {
+export interface StaffBook {
   id: number;
   staffId: number;
   bookName: string;
@@ -158,7 +158,7 @@ interface StaffBook {
   numberOfHour: number;
 }
 
-interface StaffTraining {
+export interface StaffTraining {
   id: number;
   staffId: number;
   schoolYear: string;
@@ -170,7 +170,7 @@ interface StaffTraining {
   numberOfHour: number;
 }
 
-interface StaffEditorProgram {
+export interface StaffEditorProgram {
   id: number;
   staffId: number;
   schoolYear: string;
@@ -182,7 +182,7 @@ interface StaffEditorProgram {
   numberOfHour: number;
 }
 
-interface StaffBuildingProgram {
+export interface StaffBuildingProgram {
   id: number;
   staffId: number;
   schoolYear: string;
@@ -204,7 +204,7 @@ export interface ContentWork {
   numberOfLesson: number;
 }
 
-interface StaffExcessLesson {
+export interface StaffExcessLesson {
   id: number;
   staffId: number;
   schoolYear: string;
@@ -216,7 +216,7 @@ interface StaffExcessLesson {
   lao?: number;
 }
 
-interface StaffResearch {
+export interface StaffResearch {
   id: number;
   staffId: number;
   schoolYear: string;
@@ -239,7 +239,7 @@ export interface StaffTeaching {
   numberOfCredit: number;
 }
 
-interface StaffTrainingSummaryResponse {
+export interface StaffTrainingSummaryResponse {
   id: number;
   fromDate: string;
   toDate: string;

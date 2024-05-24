@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import { BaseGrid } from "components/atoms/datagrid";
 import { GridRowId } from "@mui/x-data-grid";
@@ -10,12 +10,15 @@ import { useParams } from "react-router-dom";
 
 interface Props {
   data: StaffExamCourse[];
+  schoolYear: string;
 }
 
-export const Assess: FC<Props> = ({ data }) => {
+export const Assess: FC<Props> = ({ data, schoolYear }) => {
   const { id } = useParams();
   const [selectedRows1, setSelectedRows1] = useState<GridRowId[]>([]);
   const [selectedRows2, setSelectedRows2] = useState<GridRowId[]>([]);
+  const [filteredData1, setFilteredData1] = useState<StaffExamCourse[]>([]);
+  const [filteredData2, setFilteredData2] = useState<StaffExamCourse[]>([]);
 
   const middle = data.filter((item) => item.examName === STAFF_EXAM.MIDDLE);
   const end = data.filter((item) => item.examName === STAFF_EXAM.END);
@@ -159,7 +162,7 @@ export const Assess: FC<Props> = ({ data }) => {
   ];
 
   const handleAddNewORUpdate = useCallback((data: any, examName: string) => {
-    const dataWithExamName = { ...data, examName };
+    const dataWithExamName = { ...data, examName, schoolYear };
     if (data?.isNew && id) {
       StaffService.AddExamCourse(dataWithExamName, id).then((res) => {
         if (res.msg_code === 200) {
@@ -180,7 +183,7 @@ export const Assess: FC<Props> = ({ data }) => {
     } else {
       toastMessage("Cập nhật thất bại", "error");
     }
-  }, [id])
+  }, [id, schoolYear])
 
   const handleDelete = useCallback((idRow:any) => {
     if (id) {
@@ -194,12 +197,20 @@ export const Assess: FC<Props> = ({ data }) => {
     }
   }, [id]);
 
+  useEffect(() => {
+    const filtered1 = middle.filter(item => item.schoolYear === schoolYear);
+    setFilteredData1(filtered1);
+    const filtered2 = end.filter(item => item.schoolYear === schoolYear);
+    setFilteredData2(filtered2);
+  }, [middle, end, schoolYear]);
+  console.log(setFilteredData1);
+
   return (
     <div>
       <Box>
         <BaseGrid
           columns={columns1}
-          rows={middle}
+          rows={filteredData1}
           title="Đánh giá giữa học phần"
           onSave={(data: any) => handleAddNewORUpdate(data, "MIDDLE_EXAM")}
           onDel={handleDelete}
@@ -210,7 +221,7 @@ export const Assess: FC<Props> = ({ data }) => {
       <Box>
         <BaseGrid
           columns={columns2}
-          rows={end}
+          rows={filteredData2}
           title="Đánh giá hết học phần"
           onSave={(data: any) => handleAddNewORUpdate(data, "END_EXAM")}
           onDel={handleDelete}

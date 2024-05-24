@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { GridRenderCellParams, GridRowId } from "@mui/x-data-grid";
 import { BaseGrid } from "components/atoms/datagrid";
 import { Checkbox } from "@mui/material";
@@ -20,10 +20,12 @@ interface Row {
 
 interface Props {
   data: StaffInstructProject[];
+  schoolYear: string;
 }
-export const Guide: FC<Props> = ({ data }) => {
+export const Guide: FC<Props> = ({ data, schoolYear }) => {
   const { id } = useParams();
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
+  const [filteredData, setFilteredData] = useState<StaffInstructProject[]>([]);
 
   const columns = [
     {
@@ -80,9 +82,12 @@ export const Guide: FC<Props> = ({ data }) => {
     },
   ];
 
+
   const handleAddNewORUpdate = useCallback((data: any) => {
+    // console.log(data);
+    const requestData = { ...data, schoolYear };
     if (data?.isNew && id) {
-      StaffService.AddInstructProject(data, id).then((res) => {
+      StaffService.AddInstructProject(requestData, id).then((res) => {
         if (res.msg_code === 200) {
           toastMessage("Thêm mới thành công", "success");
         } else {
@@ -91,7 +96,7 @@ export const Guide: FC<Props> = ({ data }) => {
       })
     }
     else if (id) {
-      StaffService.UpdateInstructProject(data, id, data.id).then((res) => {
+      StaffService.UpdateInstructProject(requestData, id, data.id).then((res) => {
         if (res.msg_code === 200) {
           toastMessage("Cập nhật thành công", "success");
         } else {
@@ -101,7 +106,7 @@ export const Guide: FC<Props> = ({ data }) => {
     } else {
       toastMessage("Cập nhật thất bại", "error");
     }
-  }, [id])
+  }, [id, schoolYear])
 
   const handleDelete = useCallback((idRow:any) => {
     if (id) {
@@ -115,11 +120,16 @@ export const Guide: FC<Props> = ({ data }) => {
     }
   }, [id]);
 
+  useEffect(() => {
+    const filtered = data.filter(item => item.schoolYear === schoolYear);
+    setFilteredData(filtered);
+  }, [data, schoolYear]);
+
   return (
     <Box>
       <BaseGrid
         columns={columns}
-        rows={data}
+        rows={filteredData}
         title=""
         onSave={handleAddNewORUpdate}
         onDel={handleDelete}
