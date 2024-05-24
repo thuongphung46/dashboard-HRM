@@ -136,7 +136,6 @@ export const Teaching: FC<Props> = ({ data, schoolYear }) => {
     const filtered = data.filter(item => item.schoolYear === schoolYear);
     setFilteredData(filtered);
   }, [data, schoolYear]);
-  console.log(filteredData);
 
   return (
     <div>
