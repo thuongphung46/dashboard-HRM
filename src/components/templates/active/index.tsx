@@ -77,7 +77,7 @@ export const ActiveTemplates = () => {
             padding: "8px",
         }}>
             <><DataGrid
-            
+                sx={{ height: "calc(100vh - 90px)", width: '100%' }}
                 rows={data}
                 columns={Columns}
             ></DataGrid></>
