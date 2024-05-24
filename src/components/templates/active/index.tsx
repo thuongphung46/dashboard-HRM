@@ -56,6 +56,11 @@ export const ActiveTemplates = () => {
             ]
         },
         {
+            field: "metaData",
+            headerName: "Dữ liệu",
+            minWidth: 200,
+        },
+        {
             field: "action",
             headerName: "",
             renderCell: (params) => {
@@ -72,6 +77,7 @@ export const ActiveTemplates = () => {
             padding: "8px",
         }}>
             <><DataGrid
+            
                 rows={data}
                 columns={Columns}
             ></DataGrid></>
