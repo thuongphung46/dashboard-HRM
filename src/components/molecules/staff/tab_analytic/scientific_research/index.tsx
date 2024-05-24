@@ -75,6 +75,42 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
       type: "number",
     },
   ];
+
+  const handleAddNewORUpdateProject = useCallback((data: any) => {
+    if (data?.isNew && id) {
+      StaffService.AddProject(data, id).then((res) => {
+        if (res.msg_code === 200) {
+          toastMessage("Thêm mới thành công", "success");
+        } else {
+          toastMessage("Thêm mới thất bại", "error");
+        }
+      })
+    }
+    else if (id) {
+      StaffService.UpdateProject(data, id, data.id).then((res) => {
+        if (res.msg_code === 200) {
+          toastMessage("Cập nhật thành công", "success");
+        } else {
+          toastMessage("Cập nhật thất bại", "error");
+        }
+      })
+    } else {
+      toastMessage("Cập nhật thất bại", "error");
+    }
+}, [id])
+
+const handleDeleteProject = useCallback((idRow:any) => {
+  if (id) {
+    StaffService.DeleteProject(id, idRow).then((res) => {
+      if (res.msg_code === 200) {
+        toastMessage("Xóa thành công", "success");
+      } else {
+        toastMessage("Xóa thất bại", "error");
+      }
+    })
+  }
+}, [id]);
+
   // bài báo khoa học
   const columns2 = [
     {
@@ -121,6 +157,41 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
       type: "number",
     },
   ];
+
+  const handleAddNewORUpdateMagazine = useCallback((data: any) => {
+    if (data?.isNew && id) {
+      StaffService.AddMagazine(data, id).then((res) => {
+        if (res.msg_code === 200) {
+          toastMessage("Thêm mới thành công", "success");
+        } else {
+          toastMessage("Thêm mới thất bại", "error");
+        }
+      })
+    }
+    else if (id) {
+      StaffService.UpdateMagazine(data, id, data.id).then((res) => {
+        if (res.msg_code === 200) {
+          toastMessage("Cập nhật thành công", "success");
+        } else {
+          toastMessage("Cập nhật thất bại", "error");
+        }
+      })
+    } else {
+      toastMessage("Cập nhật thất bại", "error");
+    }
+}, [id])
+
+const handleDeleteMagazine = useCallback((idRow:any) => {
+  if (id) {
+    StaffService.DeleteMagazine(id, idRow).then((res) => {
+      if (res.msg_code === 200) {
+        toastMessage("Xóa thành công", "success");
+      } else {
+        toastMessage("Xóa thất bại", "error");
+      }
+    })
+  }
+}, [id]);
   // Bằng sáng chế, giải thưởng
   const columns3 = [
     {
@@ -168,6 +239,41 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
       type: "number",
     },
   ];
+
+  const handleAddNewORUpdateInvention = useCallback((data: any) => {
+    if (data?.isNew && id) {
+      StaffService.AddInvention(data, id).then((res) => {
+        if (res.msg_code === 200) {
+          toastMessage("Thêm mới thành công", "success");
+        } else {
+          toastMessage("Thêm mới thất bại", "error");
+        }
+      })
+    }
+    else if (id) {
+      StaffService.UpdateInvention(data, id, data.id).then((res) => {
+        if (res.msg_code === 200) {
+          toastMessage("Cập nhật thành công", "success");
+        } else {
+          toastMessage("Cập nhật thất bại", "error");
+        }
+      })
+    } else {
+      toastMessage("Cập nhật thất bại", "error");
+    }
+}, [id])
+
+const handleDeleteInvention = useCallback((idRow:any) => {
+  if (id) {
+    StaffService.DeleteInvention(id, idRow).then((res) => {
+      if (res.msg_code === 200) {
+        toastMessage("Xóa thành công", "success");
+      } else {
+        toastMessage("Xóa thất bại", "error");
+      }
+    })
+  }
+}, [id]);
   // Sách, giáo trình
   const columns4 = [
     {
@@ -215,6 +321,41 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
       type: "number",
     },
   ];
+  const handleAddNewORUpdateBook = useCallback((data: any) => {
+    if (data?.isNew && id) {
+      StaffService.AddBook(data, id).then((res) => {
+        if (res.msg_code === 200) {
+          toastMessage("Thêm mới thành công", "success");
+        } else {
+          toastMessage("Thêm mới thất bại", "error");
+        }
+      })
+    }
+    else if (id) {
+      StaffService.UpdateBook(data, id, data.id).then((res) => {
+        if (res.msg_code === 200) {
+          toastMessage("Cập nhật thành công", "success");
+        } else {
+          toastMessage("Cập nhật thất bại", "error");
+        }
+      })
+    } else {
+      toastMessage("Cập nhật thất bại", "error");
+    }
+}, [id])
+
+const handleDeleteBook = useCallback((idRow:any) => {
+  if (id) {
+    StaffService.DeleteBook(id, idRow).then((res) => {
+      if (res.msg_code === 200) {
+        toastMessage("Xóa thành công", "success");
+      } else {
+        toastMessage("Xóa thất bại", "error");
+      }
+    })
+  }
+}, [id]);
+
   // Hướng dẫn sinh viên NCKH
   const columns5 = [
     {
@@ -263,6 +404,42 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
       type: "number",
     },
   ];
+
+  const handleAddNewORUpdateTraining = useCallback((data: any) => {
+    if (data?.isNew && id) {
+      StaffService.AddTraining(data, id).then((res) => {
+        if (res.msg_code === 200) {
+          toastMessage("Thêm mới thành công", "success");
+        } else {
+          toastMessage("Thêm mới thất bại", "error");
+        }
+      })
+    }
+    else if (id) {
+      StaffService.UpdateTraining(data, id, data.id).then((res) => {
+        if (res.msg_code === 200) {
+          toastMessage("Cập nhật thành công", "success");
+        } else {
+          toastMessage("Cập nhật thất bại", "error");
+        }
+      })
+    } else {
+      toastMessage("Cập nhật thất bại", "error");
+    }
+}, [id])
+
+const handleDeleteTraining = useCallback((idRow:any) => {
+  if (id) {
+    StaffService.DeleteTraining(id, idRow).then((res) => {
+      if (res.msg_code === 200) {
+        toastMessage("Xóa thành công", "success");
+      } else {
+        toastMessage("Xóa thất bại", "error");
+      }
+    })
+  }
+}, [id]);
+
   // Xây dựng chương trình đào tạo
   const columns6 = [
     {
@@ -309,6 +486,42 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
       editable: true,
     },
   ];
+
+  const handleAddNewORUpdateBuildingProgram = useCallback((data: any) => {
+    if (data?.isNew && id) {
+      StaffService.AddBuildingProgram(data, id).then((res) => {
+        if (res.msg_code === 200) {
+          toastMessage("Thêm mới thành công", "success");
+        } else {
+          toastMessage("Thêm mới thất bại", "error");
+        }
+      })
+    }
+    else if (id) {
+      StaffService.UpdateBuildingProgram(data, id, data.id).then((res) => {
+        if (res.msg_code === 200) {
+          toastMessage("Cập nhật thành công", "success");
+        } else {
+          toastMessage("Cập nhật thất bại", "error");
+        }
+      })
+    } else {
+      toastMessage("Cập nhật thất bại", "error");
+    }
+}, [id])
+
+const handleDeleteBuildingProgram = useCallback((idRow:any) => {
+  if (id) {
+    StaffService.DeleteBuildingProgram(id, idRow).then((res) => {
+      if (res.msg_code === 200) {
+        toastMessage("Xóa thành công", "success");
+      } else {
+        toastMessage("Xóa thất bại", "error");
+      }
+    })
+  }
+}, [id]);
+
   // Biên soạn giáo trình, bài giảng
   const columns7 = [
     {
@@ -362,6 +575,41 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
       editable: true,
     },
   ];
+  const handleAddNewORUpdateEditorProgram= useCallback((data: any) => {
+    if (data?.isNew && id) {
+      StaffService.AddEditorProgram(data, id).then((res) => {
+        if (res.msg_code === 200) {
+          toastMessage("Thêm mới thành công", "success");
+        } else {
+          toastMessage("Thêm mới thất bại", "error");
+        }
+      })
+    }
+    else if (id) {
+      StaffService.UpdateEditorProgram(data, id, data.id).then((res) => {
+        if (res.msg_code === 200) {
+          toastMessage("Cập nhật thành công", "success");
+        } else {
+          toastMessage("Cập nhật thất bại", "error");
+        }
+      })
+    } else {
+      toastMessage("Cập nhật thất bại", "error");
+    }
+}, [id])
+
+const handleDeleteEditorProgram = useCallback((idRow:any) => {
+  if (id) {
+    StaffService.DeleteEditorProgram(id, idRow).then((res) => {
+      if (res.msg_code === 200) {
+        toastMessage("Xóa thành công", "success");
+      } else {
+        toastMessage("Xóa thất bại", "error");
+      }
+    })
+  }
+}, [id]);
+
   const rows7 = [
     {
       id: 1,
@@ -375,46 +623,6 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
     },
   ];
 
-  const handleAddNewORUpdate = useCallback((data: any) => {
-      if (data?.isNew && id) {
-        StaffService.AddProject(data, id).then((res) => {
-          if (res.msg_code === 200) {
-            toastMessage("Thêm mới thành công", "success");
-          } else {
-            toastMessage("Thêm mới thất bại", "error");
-          }
-        })
-      }
-      else if (id) {
-        StaffService.UpdateProject(data, id, data.id).then((res) => {
-          if (res.msg_code === 200) {
-            toastMessage("Cập nhật thành công", "success");
-          } else {
-            toastMessage("Cập nhật thất bại", "error");
-          }
-        })
-      } else {
-        toastMessage("Cập nhật thất bại", "error");
-      }
-    
-  }, [id])
-
-  const handleDelete = useCallback((data:any) => {
-    // if (id) {
-    //   selectedRows1.forEach((row) => {
-    //     StaffService.DeleteTeaching(id, row).then((res) => {
-    //       if (res.msg_code === 200) {
-    //         toastMessage("Xóa thành công", "success");
-    //       } else {
-    //         toastMessage("Xóa thất bại", "error");
-    //       }
-    //     })
-    //   })
-    // } else {
-    //   toastMessage("Xóa thất bại", "error");
-    // }
-  }, []);
-
   return (
     <div>
       <Box>
@@ -422,8 +630,8 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
           columns={columns1}
           rows={project}
           title="C.1 Đề tài, dự án (Phụ lục II.1 Quyết định số 1409/QĐ-HVM)"
-          onSave={handleAddNewORUpdate}
-          onDel={handleDelete}
+          onSave={handleAddNewORUpdateProject}
+          onDel={handleDeleteProject}
           onRowSelectionChange={setSelectedRows1}
           selectedRows={selectedRows1}
         />
@@ -433,9 +641,8 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
           columns={columns2}
           rows={magazine}
           title="C.2 Bài báo khoa học(Phụ lục II.3 Quyết định số 1409/QĐ-HVM)"
-          onSave={() => {
-            /* Logic lưu cho lưới dữ liệu 1 */
-          }}
+          onSave={handleAddNewORUpdateMagazine}
+          onDel={handleDeleteMagazine}
           onRowSelectionChange={setSelectedRows2}
           selectedRows={selectedRows2}
         />
@@ -445,9 +652,8 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
           columns={columns3}
           rows={invention}
           title="C.3 Bằng sáng chế, giải thưởng khoa học trong năm (Phụ lục II.4 Quyết định số 1409/QĐ-HVM)"
-          onSave={() => {
-            /* Logic lưu cho lưới dữ liệu 3 */
-          }}
+          onSave={handleAddNewORUpdateInvention}
+          onDel={handleDeleteInvention}
           onRowSelectionChange={setSelectedRows3}
           selectedRows={selectedRows3}
         />
@@ -457,9 +663,8 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
           columns={columns4}
           rows={book}
           title="C.4 Sách, giáo trình xuất bản trong nước được Hội đồng GSNN tính điểm (Phụ lục II.5 Quyết định số 1409/QĐ-HVM)"
-          onSave={() => {
-            /* Logic lưu cho lưới dữ liệu 4 */
-          }}
+          onSave={handleAddNewORUpdateBook}
+          onDel={handleDeleteBook}
           onRowSelectionChange={setSelectedRows4}
           selectedRows={selectedRows4}
         />
@@ -469,9 +674,8 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
           columns={columns5}
           rows={training}
           title="C.5 Hướng dẫn sinh viên NCKH, huấn luyện đội tuyển (Phụ lục II.6 Quyết định số 1409/QĐ-HVM)"
-          onSave={() => {
-            /* Logic lưu cho lưới dữ liệu 5 */
-          }}
+          onSave={handleAddNewORUpdateTraining}
+          onDel={handleDeleteTraining}
           onRowSelectionChange={setSelectedRows5}
           selectedRows={selectedRows5}
         />
@@ -481,9 +685,8 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
           columns={columns6}
           rows={building}
           title="C.6 Xây dựng chương trình đào tạo (Phụ lục II.8 Quyết định số 1409/QĐ-HVM)"
-          onSave={() => {
-            /* Logic lưu cho lưới dữ liệu 6 */
-          }}
+          onSave={handleAddNewORUpdateBuildingProgram}
+          onDel={handleDeleteBuildingProgram}
           onRowSelectionChange={setSelectedRows6}
           selectedRows={selectedRows6}
         />
@@ -493,9 +696,8 @@ export const ScientificResearch: FC<Props> = ({ data }) => {
           columns={columns7}
           rows={rows7}
           title="C.7 Biên soạn giáo trình, bài giảng (Phụ lục II.9 Quyết định số 1409/QĐ-HVM)"
-          onSave={() => {
-            /* Logic lưu cho lưới dữ liệu 7 */
-          }}
+          onSave={handleAddNewORUpdateEditorProgram}
+          onDel={handleDeleteEditorProgram}
           onRowSelectionChange={setSelectedRows7}
           selectedRows={selectedRows7}
         />
