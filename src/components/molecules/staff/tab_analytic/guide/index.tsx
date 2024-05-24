@@ -62,13 +62,13 @@ export const Guide: FC<Props> = ({ data, schoolYear }) => {
         <Checkbox
           checked={params.value}
           onChange={(event) => {
-            const checked = event.target.checked;
-            const updatedRows = data.map((row) => {
-              if (row.id === params.row.id) {
-                return { ...row, main_instructors: checked };
-              }
-              return row;
-            });
+            // const checked = event.target.checked;
+            // const updatedRows = data.map((row) => {
+            //   if (row.id === params.row.id) {
+            //     return { ...row, main_instructors: checked };
+            //   }
+            //   return row;
+            // });
           }}
         />
       ),

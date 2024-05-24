@@ -108,7 +108,7 @@ export const ListStaff: FC<Props> = () => {
       <Box>
         <Box
           sx={{
-            maxWidth: "500px",
+            maxWidth: "550px",
             display: "flex",
             justifyContent: "space-between",
           }}
@@ -140,11 +140,10 @@ export const ListStaff: FC<Props> = () => {
           <Button
             size="small"
             variant="outlined"
-            sx={{ width: "80px" }}
             onClick={handleAddNew}
             disabled={disable}
           >
-            Thêm
+            Thêm nhân viên
           </Button>
         </Box>
         {loading ? (
