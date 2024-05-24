@@ -24,6 +24,7 @@ import { MessageCode } from "types/enum/message_code";
 import { toastMessage } from "components/molecules/toast_message";
 import moment from "moment";
 import { useGetListJobTitle } from "services/hooks/useGetListJobTitle";
+import { PropupConfirm } from "components/atoms/popup_comfirm";
 
 interface Props {
   data: StaffDetail;
@@ -56,6 +57,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
   const [staffData, setStaffData] = useState<IStaff>();
   const [renterData, setRenterData] = useState<IRenter>();
   const [editData, setEditData] = useState<any>({});
+  const [open, setOpen] = useState<boolean>(false);
 
   const { getStaff } = useGetStaffSelected();
   const { data: contractDetail } = useGetDetailContract(
@@ -484,13 +486,28 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
     formData?.contractName,
   ]);
 
+  const handleExit = useCallback(() => {
+    if (editData) {
+      setOpen(true);
+    }
+    else {
+      navigate(-1);
+    }
+  }, [editData, navigate]);
+
+  const handleConfirm = useCallback(() => {
+    setOpen(false);
+    navigate(-1);
+  }, [navigate]);
+
+
   return (
     <div
       style={{
         padding: "8px",
       }}
     >
-      <Button variant="outlined" onClick={() => navigate(-1)}>
+      <Button variant="outlined" onClick={handleExit}>
         Thoát
       </Button>
       <Button sx={{ margin: "4px" }} variant="outlined" onClick={handleSave}>
@@ -728,6 +745,13 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
           <>loading</>
         )}
       </Box>
+
+      <PropupConfirm
+        onClose={() => setOpen(false)}
+        open={open}
+        onConfirm={handleConfirm}
+        title="Xác nhận"
+        message="Bạn chắc chắn muốn thoát?" />
     </div>
   );
 };
