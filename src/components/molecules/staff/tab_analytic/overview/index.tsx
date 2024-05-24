@@ -28,7 +28,7 @@ export const Overview: React.FC<Props> = ({ data, all_data }) => {
   }, []);
 
   const columns: GridColDef[] = [
-    { field: "schoolYear", headerName: "Năm học", width: 150 },
+    // { field: "schoolYear", headerName: "Năm học", width: 150 },
     { field: "contentWork", headerName: "Nội dung công việc", width: 400 },
     { field: "numberOfLesson", headerName: "Số tiết dạy", width: 150 },
     {

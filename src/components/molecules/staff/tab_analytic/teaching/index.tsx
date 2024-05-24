@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import { GridColDef, GridRowId } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 import { BaseGrid } from "components/atoms/datagrid";
@@ -15,6 +15,7 @@ interface Props {
 export const Teaching: FC<Props> = ({ data, schoolYear }) => {
   const { id } = useParams();
   const [selectedRows1, setSelectedRows1] = useState<GridRowId[]>([]);
+  const [filteredData, setFilteredData] = useState<StaffTeaching[]>([]);
 
   // Các cột cho lưới dữ liệu 1
   const columns1:  GridColDef[] = [
@@ -131,12 +132,18 @@ export const Teaching: FC<Props> = ({ data, schoolYear }) => {
     }
   }, [id]);
 
+  useEffect(() => {
+    const filtered = data.filter(item => item.schoolYear === schoolYear);
+    setFilteredData(filtered);
+  }, [data, schoolYear]);
+  console.log(filteredData);
+
   return (
     <div>
       <Box>
         <BaseGrid
           columns={columns1}
-          rows={data}
+          rows={filteredData}
           title=""
           onSave={handleAddNewORUpdate}
           onRowSelectionChange={setSelectedRows1}

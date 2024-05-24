@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { GridRenderCellParams, GridRowId } from "@mui/x-data-grid";
 import { BaseGrid } from "components/atoms/datagrid";
 import { Checkbox } from "@mui/material";
@@ -25,6 +25,7 @@ interface Props {
 export const Guide: FC<Props> = ({ data, schoolYear }) => {
   const { id } = useParams();
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
+  const [filteredData, setFilteredData] = useState<StaffInstructProject[]>([]);
 
   const columns = [
     {
@@ -119,11 +120,16 @@ export const Guide: FC<Props> = ({ data, schoolYear }) => {
     }
   }, [id]);
 
+  useEffect(() => {
+    const filtered = data.filter(item => item.schoolYear === schoolYear);
+    setFilteredData(filtered);
+  }, [data, schoolYear]);
+
   return (
     <Box>
       <BaseGrid
         columns={columns}
-        rows={data}
+        rows={filteredData}
         title=""
         onSave={handleAddNewORUpdate}
         onDel={handleDelete}

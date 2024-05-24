@@ -1,8 +1,8 @@
-import React, { FC, useCallback, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import { GridRowId } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 import { BaseGrid } from "components/atoms/datagrid";
-import { StaffDetail } from "types/ApplicationType";
+import { StaffBook, StaffBuildingProgram, StaffDetail, StaffEditorProgram, StaffInvention, StaffMagazine, StaffProject, StaffTraining } from "types/ApplicationType";
 import { useParams } from "react-router-dom";
 import { toastMessage } from "components/molecules/toast_message";
 import { StaffService } from "services/staff_service";
@@ -22,12 +22,21 @@ export const ScientificResearch: FC<Props> = ({ data, schoolYear }) => {
   const [selectedRows6, setSelectedRows6] = useState<GridRowId[]>([]);
   const [selectedRows7, setSelectedRows7] = useState<GridRowId[]>([]);
 
+  const [filteredData1, setFilteredData1] = useState<StaffProject[]>([]);
+  const [filteredData2, setFilteredData2] = useState<StaffMagazine[]>([]);
+  const [filteredData3, setFilteredData3] = useState<StaffInvention[]>([]);
+  const [filteredData4, setFilteredData4] = useState<StaffBook[]>([]);
+  const [filteredData5, setFilteredData5] = useState<StaffTraining[]>([]);
+  const [filteredData6, setFilteredData6] = useState<StaffBuildingProgram[]>([]);
+  const [filteredData7, setFilteredData7] = useState<StaffEditorProgram[]>([]);
+
   const project = data.project;
   const magazine = data.magazine;
   const invention = data.invention;
   const book = data.book;
   const training = data.training;
   const building = data.buildingProgram;
+  const editor = data.editorProgram;
   // Đề tài dự án
   const columns1 = [
     {
@@ -618,25 +627,35 @@ const handleDeleteEditorProgram = useCallback((idRow:any) => {
   }
 }, [id]);
 
-  const rows7 = [
-    {
-      id: 1,
-      topic_name: "",
-      num_decision: "",
-      date_decition: "",
-      num_credits: "",
-      num_people: "",
-      role: "",
-      hours: "",
-    },
-  ];
+useEffect(() => {
+  const filtered1 = project.filter(item => item.schoolYear === schoolYear);
+  setFilteredData1(filtered1);
+
+  const filtered2 = magazine.filter(item => item.schoolYear === schoolYear);
+  setFilteredData2(filtered2);
+
+  const filtered3 = invention.filter(item => item.schoolYear === schoolYear);
+  setFilteredData3(filtered3);
+
+  const filtered4 = book.filter(item => item.schoolYear === schoolYear);
+  setFilteredData4(filtered4);
+
+  const filtered5 = training.filter(item => item.schoolYear === schoolYear);
+  setFilteredData5(filtered5);
+
+  const filtered6 = building.filter(item => item.schoolYear === schoolYear);
+  setFilteredData6(filtered6);
+
+  const filtered7 = editor.filter(item => item.schoolYear === schoolYear);
+  setFilteredData7(filtered7);
+}, [project, magazine, invention, book, training, building, editor, schoolYear]);
 
   return (
     <div>
       <Box>
         <BaseGrid
           columns={columns1}
-          rows={project}
+          rows={filteredData1}
           title="C.1 Đề tài, dự án (Phụ lục II.1 Quyết định số 1409/QĐ-HVM)"
           onSave={handleAddNewORUpdateProject}
           onDel={handleDeleteProject}
@@ -647,7 +666,7 @@ const handleDeleteEditorProgram = useCallback((idRow:any) => {
       <Box>
         <BaseGrid
           columns={columns2}
-          rows={magazine}
+          rows={filteredData2}
           title="C.2 Bài báo khoa học(Phụ lục II.3 Quyết định số 1409/QĐ-HVM)"
           onSave={handleAddNewORUpdateMagazine}
           onDel={handleDeleteMagazine}
@@ -658,7 +677,7 @@ const handleDeleteEditorProgram = useCallback((idRow:any) => {
       <Box>
         <BaseGrid
           columns={columns3}
-          rows={invention}
+          rows={filteredData3}
           title="C.3 Bằng sáng chế, giải thưởng khoa học trong năm (Phụ lục II.4 Quyết định số 1409/QĐ-HVM)"
           onSave={handleAddNewORUpdateInvention}
           onDel={handleDeleteInvention}
@@ -669,7 +688,7 @@ const handleDeleteEditorProgram = useCallback((idRow:any) => {
       <Box>
         <BaseGrid
           columns={columns4}
-          rows={book}
+          rows={filteredData4}
           title="C.4 Sách, giáo trình xuất bản trong nước được Hội đồng GSNN tính điểm (Phụ lục II.5 Quyết định số 1409/QĐ-HVM)"
           onSave={handleAddNewORUpdateBook}
           onDel={handleDeleteBook}
@@ -680,7 +699,7 @@ const handleDeleteEditorProgram = useCallback((idRow:any) => {
       <Box>
         <BaseGrid
           columns={columns5}
-          rows={training}
+          rows={filteredData5}
           title="C.5 Hướng dẫn sinh viên NCKH, huấn luyện đội tuyển (Phụ lục II.6 Quyết định số 1409/QĐ-HVM)"
           onSave={handleAddNewORUpdateTraining}
           onDel={handleDeleteTraining}
@@ -691,7 +710,7 @@ const handleDeleteEditorProgram = useCallback((idRow:any) => {
       <Box>
         <BaseGrid
           columns={columns6}
-          rows={building}
+          rows={filteredData6}
           title="C.6 Xây dựng chương trình đào tạo (Phụ lục II.8 Quyết định số 1409/QĐ-HVM)"
           onSave={handleAddNewORUpdateBuildingProgram}
           onDel={handleDeleteBuildingProgram}
@@ -702,7 +721,7 @@ const handleDeleteEditorProgram = useCallback((idRow:any) => {
       <Box>
         <BaseGrid
           columns={columns7}
-          rows={rows7}
+          rows={filteredData7}
           title="C.7 Biên soạn giáo trình, bài giảng (Phụ lục II.9 Quyết định số 1409/QĐ-HVM)"
           onSave={handleAddNewORUpdateEditorProgram}
           onDel={handleDeleteEditorProgram}
