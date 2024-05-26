@@ -18,7 +18,6 @@ export const GridTraining: FC<IGridTraining> = ({
   dataSelectRow,
   handleRowSelect,
 }) => {
-  console.log("dataSource", dataSource);
   const { id } = useParams();
   const columns: GridColDef[] = [
     {
@@ -63,7 +62,6 @@ export const GridTraining: FC<IGridTraining> = ({
     }
     if (data?.isNew && id) {
       StaffService.AddWorkingHistory(dataWorkingHistory, id).then((res) => {
-        console.log("res", res);
         // if (res.msg_code === 200) {
         toastMessage("Thêm mới thành công", "success");
         // } else {

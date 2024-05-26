@@ -130,7 +130,6 @@ export const WorkingHistory = ({ data, id, action }: Props) => {
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
 
   const handleSave = async (data: any) => {
-    console.log("data", data);
     // const res = await StaffService.updateStaffWorkingHistory(id, {
     //   jobTitle: data?.jobTitle,
     //   date: data?.date,

@@ -22,44 +22,37 @@ const StaffService = {
   GetMyProfile: async () => {
     return await Request(controller).getAsync("me");
   },
-  // updateStaffWorkingHistory: async (id: number, data: any) => {
-  //   try {
-  //     const response = await NetWork.patch(
-  //       getRequestUrl(API_URL.STAFFS, {
-  //         parentId: id,
-  //         partial: API_URL.WORKING_HISTORIES,
-  //       }),
-  //       {
-  //         data,
-  //       }
-  //     );
-  //     if (response.status === RESPONSE_CODE.SUCCESS) {
-  //       return true;
-  //     } else {
-  //       return false;
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //     return false;
-  //   }
-  // },
   AddWorkingHistory: async (param: any, id: string) => {
     return Request(controller).postAsync(`${id}/working-histories`, param);
   },
-  UpdateWorkingHistory: async (param: any, id: string, idWorkingHistory: string) => {
-    return Request(controller).patchAsync(`${id}/working-histories/${idWorkingHistory}`, param);
+  UpdateWorkingHistory: async (
+    param: any,
+    id: string,
+    idWorkingHistory: string
+  ) => {
+    return Request(controller).patchAsync(
+      `${id}/working-histories/${idWorkingHistory}`,
+      param
+    );
   },
   DeleteWorkingHistory: async (id: string, idWorkingHistory: string) => {
-    return Request(controller).deleteAsync(`${id}/working-histories/${idWorkingHistory}`);
+    return Request(controller).deleteAsync(
+      `${id}/working-histories/${idWorkingHistory}`
+    );
   },
   AddTrainingSummary: async (param: any, id: string) => {
     return Request(controller).postAsync(`${id}/training-summary`, param);
   },
   UpdateTrainingSummary: async (param: any, id: string, idTraining: string) => {
-    return Request(controller).patchAsync(`${id}/training-summary/${idTraining}`, param);
+    return Request(controller).patchAsync(
+      `${id}/training-summary/${idTraining}`,
+      param
+    );
   },
   DeleteTrainingSummary: async (id: string, idTraining: string) => {
-    return Request(controller).deleteAsync(`${id}/training-summary/${idTraining}`);
+    return Request(controller).deleteAsync(
+      `${id}/training-summary/${idTraining}`
+    );
   },
   AddContracts: async (param: any, id: string) => {
     return Request(controller).postAsync(`${id}/contracts`, param);
@@ -73,14 +66,17 @@ const StaffService = {
   UpdateInfoStaff: async (param: any, id: string) => {
     return Request(controller).patchAsync(`${id}`, param);
   },
-  //thống kê - tạo mới, sửa giảng dạy 
+  //thống kê - tạo mới, sửa giảng dạy
   AddTeaching: async (param: any, idStaff: string) => {
     return Request(controller).postAsync(`${idStaff}/teaching`, param);
   },
-  UpdateTeaching: async (param: any, idStaff: string, idTeaching:string) => {
-    return Request(controller).patchAsync(`${idStaff}/teaching/${idTeaching}`, param);
+  UpdateTeaching: async (param: any, idStaff: string, idTeaching: string) => {
+    return Request(controller).patchAsync(
+      `${idStaff}/teaching/${idTeaching}`,
+      param
+    );
   },
-  DeleteTeaching: async (idStaff: string, idTeaching:string) => {
+  DeleteTeaching: async (idStaff: string, idTeaching: string) => {
     return Request(controller).deleteAsync(`${idStaff}/teaching/${idTeaching}`);
   },
 
@@ -88,32 +84,53 @@ const StaffService = {
   AddExamCourse: async (param: any, idStaff: string) => {
     return Request(controller).postAsync(`${idStaff}/exam-course`, param);
   },
-  UpdateExamCourse: async (param: any, idStaff: string, idExamCourse:string) => {
-    return Request(controller).patchAsync(`${idStaff}/exam-course/${idExamCourse}`, param);
+  UpdateExamCourse: async (
+    param: any,
+    idStaff: string,
+    idExamCourse: string
+  ) => {
+    return Request(controller).patchAsync(
+      `${idStaff}/exam-course/${idExamCourse}`,
+      param
+    );
   },
-  DeleteExamCourse: async (idStaff: string, idExamCourse:string) => {
-    return Request(controller).deleteAsync(`${idStaff}/exam-course/${idExamCourse}`);
+  DeleteExamCourse: async (idStaff: string, idExamCourse: string) => {
+    return Request(controller).deleteAsync(
+      `${idStaff}/exam-course/${idExamCourse}`
+    );
   },
 
   // thống kê - tạo mới, sửa thông tin hướng dẫn đồ án
   AddInstructProject: async (param: any, idStaff: string) => {
     return Request(controller).postAsync(`${idStaff}/instruct-project`, param);
   },
-  UpdateInstructProject: async (param: any, idStaff: string, idInstructProject:string) => {
-    return Request(controller).patchAsync(`${idStaff}/instruct-project/${idInstructProject}`, param);
+  UpdateInstructProject: async (
+    param: any,
+    idStaff: string,
+    idInstructProject: string
+  ) => {
+    return Request(controller).patchAsync(
+      `${idStaff}/instruct-project/${idInstructProject}`,
+      param
+    );
   },
-  DeleteInstructProject: async (idStaff: string, idInstructProject:string) => {
-    return Request(controller).deleteAsync(`${idStaff}/instruct-project/${idInstructProject}`);
+  DeleteInstructProject: async (idStaff: string, idInstructProject: string) => {
+    return Request(controller).deleteAsync(
+      `${idStaff}/instruct-project/${idInstructProject}`
+    );
   },
 
   // thống kê - tạo mới, sửa thông tin đề tài dự án
   AddProject: async (param: any, idStaff: string) => {
     return Request(controller).postAsync(`${idStaff}/project`, param);
   },
-  UpdateProject: async (param: any, idStaff: string, idProject:string) => {
-    return Request(controller).patchAsync(`${idStaff}/project/${idProject}`, param);
+  UpdateProject: async (param: any, idStaff: string, idProject: string) => {
+    return Request(controller).patchAsync(
+      `${idStaff}/project/${idProject}`,
+      param
+    );
   },
-  DeleteProject: async (idStaff: string, idProject:string) => {
+  DeleteProject: async (idStaff: string, idProject: string) => {
     return Request(controller).deleteAsync(`${idStaff}/project/${idProject}`);
   },
 
@@ -121,10 +138,13 @@ const StaffService = {
   AddMagazine: async (param: any, idStaff: string) => {
     return Request(controller).postAsync(`${idStaff}/magazine`, param);
   },
-  UpdateMagazine: async (param: any, idStaff: string, idMagazine:string) => {
-    return Request(controller).patchAsync(`${idStaff}/magazine/${idMagazine}`, param);
+  UpdateMagazine: async (param: any, idStaff: string, idMagazine: string) => {
+    return Request(controller).patchAsync(
+      `${idStaff}/magazine/${idMagazine}`,
+      param
+    );
   },
-  DeleteMagazine: async (idStaff: string, idMagazine:string) => {
+  DeleteMagazine: async (idStaff: string, idMagazine: string) => {
     return Request(controller).deleteAsync(`${idStaff}/magazine/${idMagazine}`);
   },
 
@@ -132,32 +152,40 @@ const StaffService = {
   AddInvention: async (param: any, idStaff: string) => {
     return Request(controller).postAsync(`${idStaff}/invention`, param);
   },
-  UpdateInvention: async (param: any, idStaff: string, idInvention:string) => {
-    return Request(controller).patchAsync(`${idStaff}/invention/${idInvention}`, param);
+  UpdateInvention: async (param: any, idStaff: string, idInvention: string) => {
+    return Request(controller).patchAsync(
+      `${idStaff}/invention/${idInvention}`,
+      param
+    );
   },
-  DeleteInvention: async (idStaff: string, idInvention:string) => {
-    return Request(controller).deleteAsync(`${idStaff}/invention/${idInvention}`);
+  DeleteInvention: async (idStaff: string, idInvention: string) => {
+    return Request(controller).deleteAsync(
+      `${idStaff}/invention/${idInvention}`
+    );
   },
 
   //thống kê - tạo mới, sửa thông tin sách
   AddBook: async (param: any, idStaff: string) => {
     return Request(controller).postAsync(`${idStaff}/book`, param);
   },
-  UpdateBook: async (param: any, idStaff: string, idBook:string) => {
+  UpdateBook: async (param: any, idStaff: string, idBook: string) => {
     return Request(controller).patchAsync(`${idStaff}/book/${idBook}`, param);
   },
-  DeleteBook: async (idStaff: string, idBook:string) => {
+  DeleteBook: async (idStaff: string, idBook: string) => {
     return Request(controller).deleteAsync(`${idStaff}/book/${idBook}`);
   },
-  
+
   //thống kê - tạo mới, sửa thông tin hướng dẫn sv NCKH
   AddTraining: async (param: any, idStaff: string) => {
     return Request(controller).postAsync(`${idStaff}/training`, param);
   },
-  UpdateTraining: async (param: any, idStaff: string, idTraining:string) => {
-    return Request(controller).patchAsync(`${idStaff}/training/${idTraining}`, param);
+  UpdateTraining: async (param: any, idStaff: string, idTraining: string) => {
+    return Request(controller).patchAsync(
+      `${idStaff}/training/${idTraining}`,
+      param
+    );
   },
-  DeleteTraining: async (idStaff: string, idTraining:string) => {
+  DeleteTraining: async (idStaff: string, idTraining: string) => {
     return Request(controller).deleteAsync(`${idStaff}/training/${idTraining}`);
   },
 
@@ -165,38 +193,50 @@ const StaffService = {
   AddBuildingProgram: async (param: any, idStaff: string) => {
     return Request(controller).postAsync(`${idStaff}/building-program`, param);
   },
-  UpdateBuildingProgram: async (param: any, idStaff: string, idBuildingProgram:string) => {
-    return Request(controller).patchAsync(`${idStaff}/building-program/${idBuildingProgram}`, param);
+  UpdateBuildingProgram: async (
+    param: any,
+    idStaff: string,
+    idBuildingProgram: string
+  ) => {
+    return Request(controller).patchAsync(
+      `${idStaff}/building-program/${idBuildingProgram}`,
+      param
+    );
   },
-  DeleteBuildingProgram: async (idStaff: string, idBuildingProgram:string) => {
-    return Request(controller).deleteAsync(`${idStaff}/building-program/${idBuildingProgram}`);
+  DeleteBuildingProgram: async (idStaff: string, idBuildingProgram: string) => {
+    return Request(controller).deleteAsync(
+      `${idStaff}/building-program/${idBuildingProgram}`
+    );
   },
 
   //thống kê - tạo mới, sửa thông tin chương trình biên soạn
   AddEditorProgram: async (param: any, idStaff: string) => {
     return Request(controller).postAsync(`${idStaff}/editor-program`, param);
   },
-  UpdateEditorProgram: async (param: any, idStaff: string, idEditorProgram:string) => {
-    return Request(controller).patchAsync(`${idStaff}/editor-program/${idEditorProgram}`, param);
+  UpdateEditorProgram: async (
+    param: any,
+    idStaff: string,
+    idEditorProgram: string
+  ) => {
+    return Request(controller).patchAsync(
+      `${idStaff}/editor-program/${idEditorProgram}`,
+      param
+    );
   },
-  DeleteEditorProgram: async (idStaff: string, idEditorProgram:string) => {
-    return Request(controller).deleteAsync(`${idStaff}/editor-program/${idEditorProgram}`);
+  DeleteEditorProgram: async (idStaff: string, idEditorProgram: string) => {
+    return Request(controller).deleteAsync(
+      `${idStaff}/editor-program/${idEditorProgram}`
+    );
   },
-
 
   //lấy list đangg chờ duyệt /staffs/pending?status=1
-  GetListStaffPending: async (status:0|1) => {
-    return await Request(controller).getAsync(
-      `/pending?status=${status}`
-    );
+  GetListStaffPending: async (status: 0 | 1) => {
+    return await Request(controller).getAsync(`/pending?status=${status}`);
   },
   //duyệt nhân viên sửa /staffs/9/confirm
   ConfirmStaff: async (id: string) => {
-    return await Request(controller).patchAsync(
-      `${id}/confirm`
-    );
+    return await Request(controller).patchAsync(`${id}/confirm`);
   },
-
 };
 
 export { StaffService };
