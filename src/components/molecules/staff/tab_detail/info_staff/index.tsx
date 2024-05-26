@@ -49,8 +49,8 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
   const [jobTitleList, setJobTitleList] = useState<any[]>([]);
   const { loading: loadingJobTitle, data: jobTitleData } = useGetListJobTitle();
 
-  const handleSaveTrainingSummary = useCallback((data: any) => {}, []);
-  const handleSaveTraining = useCallback((data: any) => {}, []);
+  const handleSaveTrainingSummary = useCallback((data: any) => { }, []);
+  const handleSaveTraining = useCallback((data: any) => { }, []);
 
   const handleRowSelectionChange = (selection: GridRowId[]) => {
     setSelectedRows(selection);
@@ -87,7 +87,6 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
       setJobTitleList(jobTitleData);
     }
   }, [loadingJobTitle, jobTitleData]);
-  // console.log("data", data);
 
   const doanTncs = data?.staffAdmissions?.find(
     (ele: StaffAdmissionResponse) => ele.type === "doan_tncs_hcm"
@@ -202,8 +201,8 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
             <Grid sx={{ marginTop: "24px" }} width={"100%"} minWidth={500}>
               <GridTrainingSummary
                 dataSource={
-                  action === "edit" || action === "me"
-                    ? data.trainingSummary
+                  (action === "edit" || action === "me") && data.trainingSummary
+                    ? data?.trainingSummary
                     : []
                 }
                 dataSelectRow={selectedRows}
@@ -214,11 +213,11 @@ export const InfoStaff = ({ data, action, formData, setFormData }: Props) => {
             <Grid sx={{ marginTop: "24px" }} width={"100%"}>
               <GridTraining
                 dataSource={
-                  action === "edit" || action === "me"
+                  (action === "edit" || action === "me") && data.staffWorkingHistoriesOutAcademy
                     ? data.staffWorkingHistoriesOutAcademy
                     : []
                 }
-                dataSelectRow={selectedRows}
+                dataSelectRow={[]}
                 handleSave={handleSaveTraining}
                 handleRowSelect={handleRowSelectionChange}
               />

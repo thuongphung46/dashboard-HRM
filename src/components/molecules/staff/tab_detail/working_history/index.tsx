@@ -78,7 +78,7 @@ export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
     if (data?.isNew && id) {
       StaffService.AddWorkingHistory(dataWorkingHistory, id).then((res) => {
         // if (res.msg_code === 200) {
-          toastMessage("Thêm mới thành công", "success");
+        toastMessage("Thêm mới thành công", "success");
         // } else {
         //   toastMessage("Thêm mới thất bại", "error");
         // }
@@ -87,7 +87,7 @@ export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
     else if (id) {
       StaffService.UpdateWorkingHistory(dataWorkingHistory, id, data.id).then((res) => {
         // if (res.msg_code === 200) {
-          toastMessage("Cập nhật thành công", "success");
+        toastMessage("Cập nhật thành công", "success");
         // } else {
         //   toastMessage("Cập nhật thất bại", "error");
         // }
@@ -97,11 +97,11 @@ export const GridWorkingHistory: FC<IGridWorkingHistory> = ({
     }
   }, [id])
 
-  const handleDelete = useCallback((idRow:any) => {
+  const handleDelete = useCallback((idRow: any) => {
     if (id) {
       StaffService.DeleteWorkingHistory(id, idRow).then((res) => {
         // if (res.msg_code === 200) {
-          toastMessage("Xóa thành công", "success");
+        toastMessage("Xóa thành công", "success");
         // } else {
         //   toastMessage("Xóa thất bại", "error");
         // }
@@ -155,7 +155,7 @@ export const WorkingHistory = ({ data, id, action }: Props) => {
           <GridWorkingHistory
             dataSelectRow={selectedRows}
             dataSource={
-              action === "edit" ? data.staffWorkingHistoriesInAcademy : []
+              action === "edit" && data.staffWorkingHistoriesInAcademy ? data.staffWorkingHistoriesInAcademy : []
             }
             handleRowSelect={handleRowSelectionChange}
             handleSave={handleSave}
