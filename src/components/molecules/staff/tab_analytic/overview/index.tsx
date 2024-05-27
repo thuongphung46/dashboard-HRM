@@ -41,10 +41,20 @@ export const Overview: React.FC<Props> = ({ all_data, schoolYear }) => {
           return (
             <Box sx={{ width: "500px" }}>
               <FormControl fullWidth>
-                <Select name="reason" label="Lý do giảm trừ" onChange={handleChangeRearon}>
+                <Select
+                  name="reason"
+                  label="Lý do giảm trừ"
+                  onChange={handleChangeRearon}
+                >
                   {ListReason?.map((item, index) => (
                     <MenuItem key={index} value={item.ratio}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
                         {item.name} <span>{item.ratio}%</span>
                       </div>
                     </MenuItem>
@@ -59,16 +69,62 @@ export const Overview: React.FC<Props> = ({ all_data, schoolYear }) => {
   ];
 
   useEffect(() => {
-    const calculateSum = (key: keyof StaffDetail, condition: (item: any) => boolean) =>
-      all_data[key].reduce((acc: any, item: { roundStandard: any; estimatedLesson: any; numberOfLesson: any; numberOfHours: any; numberOfHour: any; }) => acc + (condition(item) ? item.roundStandard || item.estimatedLesson || item.numberOfLesson || item.numberOfHours || item.numberOfHour : 0), 0);
+    const calculateSum = (
+      key: keyof StaffDetail,
+      condition: (item: any) => boolean
+    ) =>
+      all_data[key].reduce(
+        (
+          acc: any,
+          item: {
+            roundStandard: any;
+            estimatedLesson: any;
+            numberOfLesson: any;
+            numberOfHours: any;
+            numberOfHour: any;
+          }
+        ) =>
+          acc +
+          (condition(item)
+            ? item.roundStandard ||
+              item.estimatedLesson ||
+              item.numberOfLesson ||
+              item.numberOfHours ||
+              item.numberOfHour
+            : 0),
+        0
+      );
 
-    const teachSum = calculateSum('teaching', item => item.schoolYear === schoolYear);
-    const examCoursesSum = calculateSum('examCourses', item => item.schoolYear === schoolYear);
-    const instructProjectSum = calculateSum('instructProject', item => item.schoolYear === schoolYear);
-    const numOfUnfinishedPeriodsSum = ['project', 'magazine', 'invention', 'book', 'training', 'buildingProgram']
-      .reduce((acc, key) => acc + calculateSum(key as keyof StaffDetail, item => item.schoolYear === schoolYear), 0);
+    const teachSum = calculateSum(
+      "teaching",
+      (item) => item.schoolYear === schoolYear
+    );
+    const examCoursesSum = calculateSum(
+      "examCourses",
+      (item) => item.schoolYear === schoolYear
+    );
+    const instructProjectSum = calculateSum(
+      "instructProject",
+      (item) => item.schoolYear === schoolYear
+    );
+    const numOfUnfinishedPeriodsSum = [
+      "project",
+      "magazine",
+      "invention",
+      "book",
+      "training",
+      "buildingProgram",
+    ].reduce(
+      (acc, key) =>
+        acc +
+        calculateSum(
+          key as keyof StaffDetail,
+          (item) => item.schoolYear === schoolYear
+        ),
+      0
+    );
 
-    setSum(prevSum => ({
+    setSum((prevSum) => ({
       ...prevSum,
       Teaching: teachSum,
       examCourses: examCoursesSum,
@@ -86,14 +142,18 @@ export const Overview: React.FC<Props> = ({ all_data, schoolYear }) => {
     "Tổng số tiết vượt giờ đề nghị thanh toán (I - II - III + IV)",
   ];
 
-  const numOfImplementationPeriods = sum.Teaching + sum.examCourses + sum.instructProject;
+  const numOfImplementationPeriods =
+    sum.Teaching + sum.examCourses + sum.instructProject;
 
   const numberOfLesson = [
     numOfImplementationPeriods,
     sum.numOfclassesTaught,
     Math.max(sum.numOfUnfinishedPeriods - 300, 0),
     sum.numOfPeriodsReduced,
-    numOfImplementationPeriods - sum.numOfclassesTaught - sum.numOfUnfinishedPeriods + sum.numOfPeriodsReduced,
+    numOfImplementationPeriods -
+      sum.numOfclassesTaught -
+      sum.numOfUnfinishedPeriods +
+      sum.numOfPeriodsReduced,
   ];
 
   const rows = contentStt.map((id, index) => ({
@@ -105,7 +165,7 @@ export const Overview: React.FC<Props> = ({ all_data, schoolYear }) => {
   }));
 
   return (
-    <Box sx={{ height: 400, width: "100%" }}>
+    <Box sx={{ marginTop: 2, height: 400, width: "100%" }}>
       <DataGrid
         rows={rows}
         columns={columns}

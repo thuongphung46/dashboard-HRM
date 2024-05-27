@@ -134,7 +134,7 @@ export const ListDepartment: FC<Props> = ({
           }}
         >
           <h4>Thêm cấp quản lý</h4>
-          <Button variant="outlined" onClick={handleSave}>
+          <Button size="small" variant="outlined" onClick={handleSave}>
             Lưu
           </Button>
           {fieldData.map((field) => (
@@ -260,7 +260,7 @@ export const ListDepartment: FC<Props> = ({
               boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
             }}
           >
-            <Button onClick={handleEdit} variant="outlined">
+            <Button size="small" onClick={handleEdit} variant="outlined">
               Lưu
             </Button>
             {fieldPopupEdit.map((field) => (
@@ -285,6 +285,7 @@ export const ListDepartment: FC<Props> = ({
     >
       <Button
         disabled={disable}
+        size="small"
         variant="outlined"
         onClick={handleShowPopupAdd}
       >

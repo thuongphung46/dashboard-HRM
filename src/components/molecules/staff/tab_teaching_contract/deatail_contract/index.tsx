@@ -34,8 +34,7 @@ interface Props {
 }
 
 export const AddNewContract: FC<Props> = ({ data, action }) => {
-  const {data: jobTitleData } = useGetListJobTitle();
-      
+  const { data: jobTitleData } = useGetListJobTitle();
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -328,8 +327,10 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
     if (field === "fullName") {
       const selectedStaff = listStaff.find((staff) => staff.username === value);
       const dataDetail = await getStaff(selectedStaff?.id);
-      const findJobTitle = jobTitleData.find(j => j.code === dataDetail?.jobTitle)
-          
+      const findJobTitle = jobTitleData.find(
+        (j) => j.code === dataDetail?.jobTitle
+      );
+
       setEditData((prevData: any) => ({
         ...prevData,
         [field]: value,
@@ -355,7 +356,9 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
     } else if (field === "per_b") {
       const selectedStaff = listStaff.find((staff) => staff.username === value);
       const dataDetail = await getStaff(selectedStaff?.id);
-      const findJobTitle = jobTitleData.find(j => j.code === dataDetail?.jobTitle)
+      const findJobTitle = jobTitleData.find(
+        (j) => j.code === dataDetail?.jobTitle
+      );
       setEditData((prevData: any) => ({
         ...prevData,
         [field]: value,
@@ -489,8 +492,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
   const handleExit = useCallback(() => {
     if (editData) {
       setOpen(true);
-    }
-    else {
+    } else {
       navigate(-1);
     }
   }, [editData, navigate]);
@@ -500,17 +502,21 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
     navigate(-1);
   }, [navigate]);
 
-
   return (
     <div
       style={{
         padding: "8px",
       }}
     >
-      <Button variant="outlined" onClick={handleExit}>
+      <Button size="small" variant="outlined" onClick={handleExit}>
         Thoát
       </Button>
-      <Button sx={{ margin: "4px" }} variant="outlined" onClick={handleSave}>
+      <Button
+        sx={{ margin: "4px" }}
+        size="small"
+        variant="outlined"
+        onClick={handleSave}
+      >
         Lưu
       </Button>
       <Box
@@ -751,7 +757,8 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
         open={open}
         onConfirm={handleConfirm}
         title="Xác nhận"
-        message="Bạn chắc chắn muốn thoát?" />
+        message="Bạn chắc chắn muốn thoát?"
+      />
     </div>
   );
 };

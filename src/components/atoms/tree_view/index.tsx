@@ -190,7 +190,7 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData, disable }) => {
               marginTop: "10px",
             }}
           >
-            <Button variant="outlined" onClick={handleSave}>
+            <Button size="small" variant="outlined" onClick={handleSave}>
               Lưu
             </Button>
           </Box>
@@ -224,11 +224,18 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData, disable }) => {
           <Grid item>
             <Button
               disabled={disable}
+              size="small"
+              variant="outlined"
               onClick={() => handleShowPopupEdit(item)}
             >
               <EditIcon />
             </Button>
-            <Button disabled={disable} onClick={() => handleDel(item)}>
+            <Button
+              disabled={disable}
+              size="small"
+              variant="outlined"
+              onClick={() => handleDel(item)}
+            >
               <DeleteIcon />
             </Button>
           </Grid>
