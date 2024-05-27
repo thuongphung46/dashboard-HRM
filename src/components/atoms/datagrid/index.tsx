@@ -230,6 +230,8 @@ function EditToolbar(props: EditToolbarProps) {
       <Button
         disabled={disable}
         color="primary"
+        variant="outlined"
+        size="small"
         startIcon={<AddIcon />}
         onClick={handleClick}
       >

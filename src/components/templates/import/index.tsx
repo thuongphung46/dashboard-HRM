@@ -96,9 +96,8 @@ export const ImportTemplate = () => {
           <MenuItem value="" disabled>
             Chọn loại file
           </MenuItem>
-          if (level === "LEVEL_4") {
-            <MenuItem value="Import TKB">Import TKB</MenuItem>
-          }
+          if (level === "LEVEL_4"){" "}
+          {<MenuItem value="Import TKB">Import TKB</MenuItem>}
           <MenuItem value="Import Kê khai">Import Kê khai</MenuItem>
         </Select>
         <input
@@ -110,7 +109,7 @@ export const ImportTemplate = () => {
           onChange={handleFileSelect}
         />
         <label htmlFor="raised-button-file">
-          <Button variant="contained" component="span">
+          <Button size="small" variant="outlined" component="span">
             Choose file
           </Button>
         </label>
@@ -157,7 +156,8 @@ export const ImportTemplate = () => {
       )}
       <div style={{ marginTop: "10px" }}>
         <Button
-          variant="contained"
+          variant="outlined"
+          size="small"
           onClick={handleImport}
           disabled={isDisableBtn()}
         >

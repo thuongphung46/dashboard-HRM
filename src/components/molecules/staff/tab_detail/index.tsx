@@ -24,7 +24,7 @@ import { KeyValue } from "constants/GlobalConstant";
 import { TeachingContract } from "../tab_teaching_contract";
 import { PropupConfirm } from "components/atoms/popup_comfirm";
 
-interface Props extends Action { }
+interface Props extends Action {}
 
 export const TabDetailStaff: FC<Props> = ({ action }) => {
   const { id } = useParams();
@@ -78,8 +78,7 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
         .catch((err) => {
           console.log(err);
         });
-    }
-    else if (action === "me") {
+    } else if (action === "me") {
       let id = HRMStorage.get(KeyValue.id);
       StaffService.UpdateInfoStaff(formData, id)
         .then((res) => {
@@ -92,15 +91,13 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
         .catch((err) => {
           console.log(err);
         });
-
     }
   }, [action, formData, id]);
 
   const handleExit = useCallback(() => {
     if (formData) {
       setOpen(true);
-    }
-    else {
+    } else {
       navigate(-1);
     }
   }, [formData, navigate]);
@@ -116,9 +113,7 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
         padding: "8px",
       }}
     >
-      <Button size="small" variant="outlined"
-        onClick={handleExit}
-      >
+      <Button size="small" variant="outlined" onClick={handleExit}>
         Thoát
       </Button>
       {value === 0 && (
@@ -189,7 +184,8 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
         open={open}
         onConfirm={handleConfirm}
         title="Xác nhận"
-        message="Bạn chắc chắn muốn thoát?" />
+        message="Bạn chắc chắn muốn thoát?"
+      />
     </div>
   );
 };
@@ -212,11 +208,10 @@ function TabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3, height: "calc(100vh - 180px)", overflow: "auto" }}>
+        <Box sx={{ p: 1, height: "calc(100vh - 180px)", overflow: "auto" }}>
           {children}
         </Box>
       )}
-
     </div>
   );
 }
