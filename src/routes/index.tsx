@@ -16,6 +16,7 @@ import { FC } from "react";
 import { Navigate } from "react-router-dom";
 import HRMStorage from "common/function";
 import { KeyValue } from "constants/GlobalConstant";
+import FormContainer from "components/pages/page_test_any";
 
 enum FORM_STATE {
   EDIT = "edit",
@@ -121,7 +122,10 @@ const router = createBrowserRouter([
             component={ActivePage}
           />
         ),
-      },
+      }, {
+        path: "/test",
+        element: <FormContainer />,
+      }
     ],
   },
   {
