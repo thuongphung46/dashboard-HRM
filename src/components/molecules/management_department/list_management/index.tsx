@@ -332,16 +332,28 @@ export const ListDepartment: FC<Props> = ({
               <ListItemButton
                 disabled={disable}
                 onClick={() => handleOpenEdit(item)}
-                sx={{ height: "100%", width: "14%" }}
+                sx={{ height: "100%", width: "14%", color: "#1976d2" }}
               >
-                <EditIcon />
+                <EditIcon
+                  sx={{
+                    fontSize: "22px",
+                  }}
+                />
               </ListItemButton>
               <ListItemButton
                 disabled={disable}
                 onClick={() => handleDel(item)}
-                sx={{ height: "100%", width: "14%" }}
+                sx={{
+                  height: "100%",
+                  width: "14%",
+                  color: "#1976d2",
+                }}
               >
-                <DeleteIcon />
+                <DeleteIcon
+                  sx={{
+                    fontSize: "22px",
+                  }}
+                />
               </ListItemButton>
             </ListItem>
           );

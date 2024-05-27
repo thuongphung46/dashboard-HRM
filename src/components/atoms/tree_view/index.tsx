@@ -225,7 +225,6 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData, disable }) => {
             <Button
               disabled={disable}
               size="small"
-              variant="outlined"
               onClick={() => handleShowPopupEdit(item)}
             >
               <EditIcon />
@@ -233,7 +232,6 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData, disable }) => {
             <Button
               disabled={disable}
               size="small"
-              variant="outlined"
               onClick={() => handleDel(item)}
             >
               <DeleteIcon />
