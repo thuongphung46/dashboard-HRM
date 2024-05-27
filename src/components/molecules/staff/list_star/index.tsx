@@ -102,6 +102,7 @@ export const ListStaff: FC<Props> = () => {
           : staff.rankName,
     }));
   }, [staffList, jobTitleMap, rankMap]);
+  console.log("transformedStaffList: ", transformedStaffList);
 
   return (
     <div>
