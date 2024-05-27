@@ -142,9 +142,10 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
         {(action === "edit" || action === "me") && level !== "LEVEL_1" && (
           <Tab value={2} label="Thống kê" />
         )}
-        {(action === "edit" || action === "me") && (
-          <Tab value={3} label={"Hợp đồng giảng dạy"} />
-        )}
+        {(action === "edit" || action === "me") &&
+          (level === "LEVEL_4" || level === "LEVEL_1") && (
+            <Tab value={3} label={"Hợp đồng giảng dạy"} />
+          )}
       </Tabs>
       <TabPanel value={value} index={0}>
         {loading ? (
