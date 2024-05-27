@@ -1,8 +1,17 @@
 import React, { FC, useCallback, useEffect, useState } from "react";
-import { GridRowId } from "@mui/x-data-grid";
+import { GridColDef, GridRowId } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 import { BaseGrid } from "components/atoms/datagrid";
-import { StaffBook, StaffBuildingProgram, StaffDetail, StaffEditorProgram, StaffInvention, StaffMagazine, StaffProject, StaffTraining } from "types/ApplicationType";
+import {
+  StaffBook,
+  StaffBuildingProgram,
+  StaffDetail,
+  StaffEditorProgram,
+  StaffInvention,
+  StaffMagazine,
+  StaffProject,
+  StaffTraining,
+} from "types/ApplicationType";
 import { useParams } from "react-router-dom";
 import { toastMessage } from "components/molecules/toast_message";
 import { StaffService } from "services/staff_service";
@@ -27,7 +36,9 @@ export const ScientificResearch: FC<Props> = ({ data, schoolYear }) => {
   const [filteredData3, setFilteredData3] = useState<StaffInvention[]>([]);
   const [filteredData4, setFilteredData4] = useState<StaffBook[]>([]);
   const [filteredData5, setFilteredData5] = useState<StaffTraining[]>([]);
-  const [filteredData6, setFilteredData6] = useState<StaffBuildingProgram[]>([]);
+  const [filteredData6, setFilteredData6] = useState<StaffBuildingProgram[]>(
+    []
+  );
   const [filteredData7, setFilteredData7] = useState<StaffEditorProgram[]>([]);
 
   const project = data.project;
@@ -38,7 +49,7 @@ export const ScientificResearch: FC<Props> = ({ data, schoolYear }) => {
   const building = data.buildingProgram;
   const editor = data.editorProgram;
   // Đề tài dự án
-  const columns1 = [
+  const columns1: GridColDef[] = [
     {
       field: "projectName",
       headerName: "Tên đề tài",
@@ -69,7 +80,10 @@ export const ScientificResearch: FC<Props> = ({ data, schoolYear }) => {
       headerName: "Ngày nghiệm thu",
       width: 150,
       editable: true,
-      // type: "date",
+      type: "date",
+      valueFormatter: (params) => {
+        return params.value ? new Date(params.value).toLocaleDateString() : "";
+      },
     },
     {
       field: "result",
@@ -86,41 +100,46 @@ export const ScientificResearch: FC<Props> = ({ data, schoolYear }) => {
     },
   ];
 
-  const handleAddNewORUpdateProject = useCallback((data: any) => {
-    const requestData = { ...data, schoolYear };
-    if (data?.isNew && id) {
-      StaffService.AddProject(requestData, id).then((res) => {
-        if (res.msg_code === 200) {
-          toastMessage("Thêm mới thành công", "success");
-        } else {
-          toastMessage("Thêm mới thất bại", "error");
-        }
-      })
-    }
-    else if (id) {
-      StaffService.UpdateProject(requestData, id, data.id).then((res) => {
-        if (res.msg_code === 200) {
-          toastMessage("Cập nhật thành công", "success");
-        } else {
-          toastMessage("Cập nhật thất bại", "error");
-        }
-      })
-    } else {
-      toastMessage("Cập nhật thất bại", "error");
-    }
-}, [id, schoolYear])
-
-const handleDeleteProject = useCallback((idRow:any) => {
-  if (id) {
-    StaffService.DeleteProject(id, idRow).then((res) => {
-      if (res.msg_code === 200) {
-        toastMessage("Xóa thành công", "success");
+  const handleAddNewORUpdateProject = useCallback(
+    (data: any) => {
+      const requestData = { ...data, schoolYear };
+      if (data?.isNew && id) {
+        StaffService.AddProject(requestData, id).then((res) => {
+          if (res.msg_code === 200) {
+            toastMessage("Thêm mới thành công", "success");
+          } else {
+            toastMessage("Thêm mới thất bại", "error");
+          }
+        });
+      } else if (id) {
+        StaffService.UpdateProject(requestData, id, data.id).then((res) => {
+          if (res.msg_code === 200) {
+            toastMessage("Cập nhật thành công", "success");
+          } else {
+            toastMessage("Cập nhật thất bại", "error");
+          }
+        });
       } else {
-        toastMessage("Xóa thất bại", "error");
+        toastMessage("Cập nhật thất bại", "error");
       }
-    })
-  }
-}, [id]);
+    },
+    [id, schoolYear]
+  );
+
+  const handleDeleteProject = useCallback(
+    (idRow: any) => {
+      if (id) {
+        StaffService.DeleteProject(id, idRow).then((res) => {
+          if (res.msg_code === 200) {
+            toastMessage("Xóa thành công", "success");
+          } else {
+            toastMessage("Xóa thất bại", "error");
+          }
+        });
+      }
+    },
+    [id]
+  );
 
   // bài báo khoa học
   const columns2 = [
@@ -169,41 +188,46 @@ const handleDeleteProject = useCallback((idRow:any) => {
     },
   ];
 
-  const handleAddNewORUpdateMagazine = useCallback((data: any) => {
-    const requestData = { ...data, schoolYear };
-    if (data?.isNew && id) {
-      StaffService.AddMagazine(requestData, id).then((res) => {
-        if (res.msg_code === 200) {
-          toastMessage("Thêm mới thành công", "success");
-        } else {
-          toastMessage("Thêm mới thất bại", "error");
-        }
-      })
-    }
-    else if (id) {
-      StaffService.UpdateMagazine(requestData, id, data.id).then((res) => {
-        if (res.msg_code === 200) {
-          toastMessage("Cập nhật thành công", "success");
-        } else {
-          toastMessage("Cập nhật thất bại", "error");
-        }
-      })
-    } else {
-      toastMessage("Cập nhật thất bại", "error");
-    }
-}, [id, schoolYear])
-
-const handleDeleteMagazine = useCallback((idRow:any) => {
-  if (id) {
-    StaffService.DeleteMagazine(id, idRow).then((res) => {
-      if (res.msg_code === 200) {
-        toastMessage("Xóa thành công", "success");
+  const handleAddNewORUpdateMagazine = useCallback(
+    (data: any) => {
+      const requestData = { ...data, schoolYear };
+      if (data?.isNew && id) {
+        StaffService.AddMagazine(requestData, id).then((res) => {
+          if (res.msg_code === 200) {
+            toastMessage("Thêm mới thành công", "success");
+          } else {
+            toastMessage("Thêm mới thất bại", "error");
+          }
+        });
+      } else if (id) {
+        StaffService.UpdateMagazine(requestData, id, data.id).then((res) => {
+          if (res.msg_code === 200) {
+            toastMessage("Cập nhật thành công", "success");
+          } else {
+            toastMessage("Cập nhật thất bại", "error");
+          }
+        });
       } else {
-        toastMessage("Xóa thất bại", "error");
+        toastMessage("Cập nhật thất bại", "error");
       }
-    })
-  }
-}, [id]);
+    },
+    [id, schoolYear]
+  );
+
+  const handleDeleteMagazine = useCallback(
+    (idRow: any) => {
+      if (id) {
+        StaffService.DeleteMagazine(id, idRow).then((res) => {
+          if (res.msg_code === 200) {
+            toastMessage("Xóa thành công", "success");
+          } else {
+            toastMessage("Xóa thất bại", "error");
+          }
+        });
+      }
+    },
+    [id]
+  );
   // Bằng sáng chế, giải thưởng
   const columns3 = [
     {
@@ -252,41 +276,46 @@ const handleDeleteMagazine = useCallback((idRow:any) => {
     },
   ];
 
-  const handleAddNewORUpdateInvention = useCallback((data: any) => {
-    const requestData = { ...data, schoolYear };
-    if (data?.isNew && id) {
-      StaffService.AddInvention(requestData, id).then((res) => {
-        if (res.msg_code === 200) {
-          toastMessage("Thêm mới thành công", "success");
-        } else {
-          toastMessage("Thêm mới thất bại", "error");
-        }
-      })
-    }
-    else if (id) {
-      StaffService.UpdateInvention(requestData, id, data.id).then((res) => {
-        if (res.msg_code === 200) {
-          toastMessage("Cập nhật thành công", "success");
-        } else {
-          toastMessage("Cập nhật thất bại", "error");
-        }
-      })
-    } else {
-      toastMessage("Cập nhật thất bại", "error");
-    }
-}, [id, schoolYear])
-
-const handleDeleteInvention = useCallback((idRow:any) => {
-  if (id) {
-    StaffService.DeleteInvention(id, idRow).then((res) => {
-      if (res.msg_code === 200) {
-        toastMessage("Xóa thành công", "success");
+  const handleAddNewORUpdateInvention = useCallback(
+    (data: any) => {
+      const requestData = { ...data, schoolYear };
+      if (data?.isNew && id) {
+        StaffService.AddInvention(requestData, id).then((res) => {
+          if (res.msg_code === 200) {
+            toastMessage("Thêm mới thành công", "success");
+          } else {
+            toastMessage("Thêm mới thất bại", "error");
+          }
+        });
+      } else if (id) {
+        StaffService.UpdateInvention(requestData, id, data.id).then((res) => {
+          if (res.msg_code === 200) {
+            toastMessage("Cập nhật thành công", "success");
+          } else {
+            toastMessage("Cập nhật thất bại", "error");
+          }
+        });
       } else {
-        toastMessage("Xóa thất bại", "error");
+        toastMessage("Cập nhật thất bại", "error");
       }
-    })
-  }
-}, [id]);
+    },
+    [id, schoolYear]
+  );
+
+  const handleDeleteInvention = useCallback(
+    (idRow: any) => {
+      if (id) {
+        StaffService.DeleteInvention(id, idRow).then((res) => {
+          if (res.msg_code === 200) {
+            toastMessage("Xóa thành công", "success");
+          } else {
+            toastMessage("Xóa thất bại", "error");
+          }
+        });
+      }
+    },
+    [id]
+  );
   // Sách, giáo trình
   const columns4 = [
     {
@@ -334,41 +363,46 @@ const handleDeleteInvention = useCallback((idRow:any) => {
       type: "number",
     },
   ];
-  const handleAddNewORUpdateBook = useCallback((data: any) => {
-    const requestData = { ...data, schoolYear };
-    if (data?.isNew && id) {
-      StaffService.AddBook(requestData, id).then((res) => {
-        if (res.msg_code === 200) {
-          toastMessage("Thêm mới thành công", "success");
-        } else {
-          toastMessage("Thêm mới thất bại", "error");
-        }
-      })
-    }
-    else if (id) {
-      StaffService.UpdateBook(requestData, id, data.id).then((res) => {
-        if (res.msg_code === 200) {
-          toastMessage("Cập nhật thành công", "success");
-        } else {
-          toastMessage("Cập nhật thất bại", "error");
-        }
-      })
-    } else {
-      toastMessage("Cập nhật thất bại", "error");
-    }
-}, [id, schoolYear])
-
-const handleDeleteBook = useCallback((idRow:any) => {
-  if (id) {
-    StaffService.DeleteBook(id, idRow).then((res) => {
-      if (res.msg_code === 200) {
-        toastMessage("Xóa thành công", "success");
+  const handleAddNewORUpdateBook = useCallback(
+    (data: any) => {
+      const requestData = { ...data, schoolYear };
+      if (data?.isNew && id) {
+        StaffService.AddBook(requestData, id).then((res) => {
+          if (res.msg_code === 200) {
+            toastMessage("Thêm mới thành công", "success");
+          } else {
+            toastMessage("Thêm mới thất bại", "error");
+          }
+        });
+      } else if (id) {
+        StaffService.UpdateBook(requestData, id, data.id).then((res) => {
+          if (res.msg_code === 200) {
+            toastMessage("Cập nhật thành công", "success");
+          } else {
+            toastMessage("Cập nhật thất bại", "error");
+          }
+        });
       } else {
-        toastMessage("Xóa thất bại", "error");
+        toastMessage("Cập nhật thất bại", "error");
       }
-    })
-  }
-}, [id]);
+    },
+    [id, schoolYear]
+  );
+
+  const handleDeleteBook = useCallback(
+    (idRow: any) => {
+      if (id) {
+        StaffService.DeleteBook(id, idRow).then((res) => {
+          if (res.msg_code === 200) {
+            toastMessage("Xóa thành công", "success");
+          } else {
+            toastMessage("Xóa thất bại", "error");
+          }
+        });
+      }
+    },
+    [id]
+  );
 
   // Hướng dẫn sinh viên NCKH
   const columns5 = [
@@ -419,41 +453,46 @@ const handleDeleteBook = useCallback((idRow:any) => {
     },
   ];
 
-  const handleAddNewORUpdateTraining = useCallback((data: any) => {
-    const requestData = { ...data, schoolYear };
-    if (data?.isNew && id) {
-      StaffService.AddTraining(requestData, id).then((res) => {
-        if (res.msg_code === 200) {
-          toastMessage("Thêm mới thành công", "success");
-        } else {
-          toastMessage("Thêm mới thất bại", "error");
-        }
-      })
-    }
-    else if (id) {
-      StaffService.UpdateTraining(requestData, id, data.id).then((res) => {
-        if (res.msg_code === 200) {
-          toastMessage("Cập nhật thành công", "success");
-        } else {
-          toastMessage("Cập nhật thất bại", "error");
-        }
-      })
-    } else {
-      toastMessage("Cập nhật thất bại", "error");
-    }
-}, [id, schoolYear])
-
-const handleDeleteTraining = useCallback((idRow:any) => {
-  if (id) {
-    StaffService.DeleteTraining(id, idRow).then((res) => {
-      if (res.msg_code === 200) {
-        toastMessage("Xóa thành công", "success");
+  const handleAddNewORUpdateTraining = useCallback(
+    (data: any) => {
+      const requestData = { ...data, schoolYear };
+      if (data?.isNew && id) {
+        StaffService.AddTraining(requestData, id).then((res) => {
+          if (res.msg_code === 200) {
+            toastMessage("Thêm mới thành công", "success");
+          } else {
+            toastMessage("Thêm mới thất bại", "error");
+          }
+        });
+      } else if (id) {
+        StaffService.UpdateTraining(requestData, id, data.id).then((res) => {
+          if (res.msg_code === 200) {
+            toastMessage("Cập nhật thành công", "success");
+          } else {
+            toastMessage("Cập nhật thất bại", "error");
+          }
+        });
       } else {
-        toastMessage("Xóa thất bại", "error");
+        toastMessage("Cập nhật thất bại", "error");
       }
-    })
-  }
-}, [id]);
+    },
+    [id, schoolYear]
+  );
+
+  const handleDeleteTraining = useCallback(
+    (idRow: any) => {
+      if (id) {
+        StaffService.DeleteTraining(id, idRow).then((res) => {
+          if (res.msg_code === 200) {
+            toastMessage("Xóa thành công", "success");
+          } else {
+            toastMessage("Xóa thất bại", "error");
+          }
+        });
+      }
+    },
+    [id]
+  );
 
   // Xây dựng chương trình đào tạo
   const columns6 = [
@@ -502,41 +541,48 @@ const handleDeleteTraining = useCallback((idRow:any) => {
     },
   ];
 
-  const handleAddNewORUpdateBuildingProgram = useCallback((data: any) => {
-    const requestData = { ...data, schoolYear };
-    if (data?.isNew && id) {
-      StaffService.AddBuildingProgram(requestData, id).then((res) => {
-        if (res.msg_code === 200) {
-          toastMessage("Thêm mới thành công", "success");
-        } else {
-          toastMessage("Thêm mới thất bại", "error");
-        }
-      })
-    }
-    else if (id) {
-      StaffService.UpdateBuildingProgram(requestData, id, data.id).then((res) => {
-        if (res.msg_code === 200) {
-          toastMessage("Cập nhật thành công", "success");
-        } else {
-          toastMessage("Cập nhật thất bại", "error");
-        }
-      })
-    } else {
-      toastMessage("Cập nhật thất bại", "error");
-    }
-}, [id, schoolYear])
-
-const handleDeleteBuildingProgram = useCallback((idRow:any) => {
-  if (id) {
-    StaffService.DeleteBuildingProgram(id, idRow).then((res) => {
-      if (res.msg_code === 200) {
-        toastMessage("Xóa thành công", "success");
+  const handleAddNewORUpdateBuildingProgram = useCallback(
+    (data: any) => {
+      const requestData = { ...data, schoolYear };
+      if (data?.isNew && id) {
+        StaffService.AddBuildingProgram(requestData, id).then((res) => {
+          if (res.msg_code === 200) {
+            toastMessage("Thêm mới thành công", "success");
+          } else {
+            toastMessage("Thêm mới thất bại", "error");
+          }
+        });
+      } else if (id) {
+        StaffService.UpdateBuildingProgram(requestData, id, data.id).then(
+          (res) => {
+            if (res.msg_code === 200) {
+              toastMessage("Cập nhật thành công", "success");
+            } else {
+              toastMessage("Cập nhật thất bại", "error");
+            }
+          }
+        );
       } else {
-        toastMessage("Xóa thất bại", "error");
+        toastMessage("Cập nhật thất bại", "error");
       }
-    })
-  }
-}, [id]);
+    },
+    [id, schoolYear]
+  );
+
+  const handleDeleteBuildingProgram = useCallback(
+    (idRow: any) => {
+      if (id) {
+        StaffService.DeleteBuildingProgram(id, idRow).then((res) => {
+          if (res.msg_code === 200) {
+            toastMessage("Xóa thành công", "success");
+          } else {
+            toastMessage("Xóa thất bại", "error");
+          }
+        });
+      }
+    },
+    [id]
+  );
 
   // Biên soạn giáo trình, bài giảng
   const columns7 = [
@@ -591,64 +637,82 @@ const handleDeleteBuildingProgram = useCallback((idRow:any) => {
       editable: true,
     },
   ];
-  const handleAddNewORUpdateEditorProgram= useCallback((data: any) => {
-    const requestData = { ...data, schoolYear };
-    if (data?.isNew && id) {
-      StaffService.AddEditorProgram(requestData, id).then((res) => {
-        if (res.msg_code === 200) {
-          toastMessage("Thêm mới thành công", "success");
-        } else {
-          toastMessage("Thêm mới thất bại", "error");
-        }
-      })
-    }
-    else if (id) {
-      StaffService.UpdateEditorProgram(requestData, id, data.id).then((res) => {
-        if (res.msg_code === 200) {
-          toastMessage("Cập nhật thành công", "success");
-        } else {
-          toastMessage("Cập nhật thất bại", "error");
-        }
-      })
-    } else {
-      toastMessage("Cập nhật thất bại", "error");
-    }
-}, [id, schoolYear])
-
-const handleDeleteEditorProgram = useCallback((idRow:any) => {
-  if (id) {
-    StaffService.DeleteEditorProgram(id, idRow).then((res) => {
-      if (res.msg_code === 200) {
-        toastMessage("Xóa thành công", "success");
+  const handleAddNewORUpdateEditorProgram = useCallback(
+    (data: any) => {
+      const requestData = { ...data, schoolYear };
+      if (data?.isNew && id) {
+        StaffService.AddEditorProgram(requestData, id).then((res) => {
+          if (res.msg_code === 200) {
+            toastMessage("Thêm mới thành công", "success");
+          } else {
+            toastMessage("Thêm mới thất bại", "error");
+          }
+        });
+      } else if (id) {
+        StaffService.UpdateEditorProgram(requestData, id, data.id).then(
+          (res) => {
+            if (res.msg_code === 200) {
+              toastMessage("Cập nhật thành công", "success");
+            } else {
+              toastMessage("Cập nhật thất bại", "error");
+            }
+          }
+        );
       } else {
-        toastMessage("Xóa thất bại", "error");
+        toastMessage("Cập nhật thất bại", "error");
       }
-    })
-  }
-}, [id]);
+    },
+    [id, schoolYear]
+  );
 
-useEffect(() => {
-  const filtered1 = project.filter(item => item.schoolYear === schoolYear);
-  setFilteredData1(filtered1);
+  const handleDeleteEditorProgram = useCallback(
+    (idRow: any) => {
+      if (id) {
+        StaffService.DeleteEditorProgram(id, idRow).then((res) => {
+          if (res.msg_code === 200) {
+            toastMessage("Xóa thành công", "success");
+          } else {
+            toastMessage("Xóa thất bại", "error");
+          }
+        });
+      }
+    },
+    [id]
+  );
 
-  const filtered2 = magazine.filter(item => item.schoolYear === schoolYear);
-  setFilteredData2(filtered2);
+  useEffect(() => {
+    const filtered1 = project.filter((item) => item.schoolYear === schoolYear);
+    setFilteredData1(filtered1);
 
-  const filtered3 = invention.filter(item => item.schoolYear === schoolYear);
-  setFilteredData3(filtered3);
+    const filtered2 = magazine.filter((item) => item.schoolYear === schoolYear);
+    setFilteredData2(filtered2);
 
-  const filtered4 = book.filter(item => item.schoolYear === schoolYear);
-  setFilteredData4(filtered4);
+    const filtered3 = invention.filter(
+      (item) => item.schoolYear === schoolYear
+    );
+    setFilteredData3(filtered3);
 
-  const filtered5 = training.filter(item => item.schoolYear === schoolYear);
-  setFilteredData5(filtered5);
+    const filtered4 = book.filter((item) => item.schoolYear === schoolYear);
+    setFilteredData4(filtered4);
 
-  const filtered6 = building.filter(item => item.schoolYear === schoolYear);
-  setFilteredData6(filtered6);
+    const filtered5 = training.filter((item) => item.schoolYear === schoolYear);
+    setFilteredData5(filtered5);
 
-  const filtered7 = editor.filter(item => item.schoolYear === schoolYear);
-  setFilteredData7(filtered7);
-}, [project, magazine, invention, book, training, building, editor, schoolYear]);
+    const filtered6 = building.filter((item) => item.schoolYear === schoolYear);
+    setFilteredData6(filtered6);
+
+    const filtered7 = editor.filter((item) => item.schoolYear === schoolYear);
+    setFilteredData7(filtered7);
+  }, [
+    project,
+    magazine,
+    invention,
+    book,
+    training,
+    building,
+    editor,
+    schoolYear,
+  ]);
 
   return (
     <div>

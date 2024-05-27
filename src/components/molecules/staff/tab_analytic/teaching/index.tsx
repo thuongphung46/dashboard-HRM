@@ -18,7 +18,7 @@ export const Teaching: FC<Props> = ({ data, schoolYear }) => {
   const [filteredData, setFilteredData] = useState<StaffTeaching[]>([]);
 
   // Các cột cho lưới dữ liệu 1
-  const columns1:  GridColDef[] = [
+  const columns1: GridColDef[] = [
     {
       field: "term",
       headerName: "Học kỳ",
@@ -49,7 +49,6 @@ export const Teaching: FC<Props> = ({ data, schoolYear }) => {
       renderCell: (params: any) => (
         <div style={{ whiteSpace: "pre-wrap" }}>{params.value}</div>
       ),
-    
     },
     {
       field: "numberOfCredit",
@@ -77,7 +76,6 @@ export const Teaching: FC<Props> = ({ data, schoolYear }) => {
       valueFormatter: (params) => {
         return params.value ? new Date(params.value).toLocaleDateString() : "";
       },
-  
     },
     {
       field: "numberOfStudent",
@@ -95,45 +93,49 @@ export const Teaching: FC<Props> = ({ data, schoolYear }) => {
     },
   ];
 
+  const handleAddNewORUpdate = useCallback(
+    (data: any) => {
+      const requestData = { ...data, schoolYear };
+      if (data?.isNew && id) {
+        StaffService.AddTeaching(requestData, id).then((res) => {
+          if (res.msg_code === 200) {
+            toastMessage("Thêm mới thành công", "success");
+          } else {
+            toastMessage("Thêm mới thất bại", "error");
+          }
+        });
+      } else if (id) {
+        StaffService.UpdateTeaching(requestData, id, data.id).then((res) => {
+          if (res.msg_code === 200) {
+            toastMessage("Cập nhật thành công", "success");
+          } else {
+            toastMessage("Cập nhật thất bại", "error");
+          }
+        });
+      } else {
+        toastMessage("Cập nhật thất bại", "error");
+      }
+    },
+    [id, schoolYear]
+  );
 
-  const handleAddNewORUpdate = useCallback((data: any) => {
-    const requestData = { ...data, schoolYear };
-    if (data?.isNew && id) {
-      StaffService.AddTeaching(requestData, id).then((res) => {
-        if (res.msg_code === 200) {
-          toastMessage("Thêm mới thành công", "success");
-        } else {
-          toastMessage("Thêm mới thất bại", "error");
-        }
-      })
-    }
-    else if (id) {
-      StaffService.UpdateTeaching(requestData, id, data.id).then((res) => {
-        if (res.msg_code === 200) {
-          toastMessage("Cập nhật thành công", "success");
-        } else {
-          toastMessage("Cập nhật thất bại", "error");
-        }
-      })
-    } else {
-      toastMessage("Cập nhật thất bại", "error");
-    }
-  }, [id, schoolYear])
-
-  const handleDelete = useCallback((idRow:any) => {
-    if (id) {
-      StaffService.DeleteTeaching(id, idRow).then((res) => {
-        if (res.msg_code === 200) {
-          toastMessage("Xóa thành công", "success");
-        } else {
-          toastMessage("Xóa thất bại", "error");
-        }
-      })
-    }
-  }, [id]);
+  const handleDelete = useCallback(
+    (idRow: any) => {
+      if (id) {
+        StaffService.DeleteTeaching(id, idRow).then((res) => {
+          if (res.msg_code === 200) {
+            toastMessage("Xóa thành công", "success");
+          } else {
+            toastMessage("Xóa thất bại", "error");
+          }
+        });
+      }
+    },
+    [id]
+  );
 
   useEffect(() => {
-    const filtered = data.filter(item => item.schoolYear === schoolYear);
+    const filtered = data.filter((item) => item.schoolYear === schoolYear);
     setFilteredData(filtered);
   }, [data, schoolYear]);
 
