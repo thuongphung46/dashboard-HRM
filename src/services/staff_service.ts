@@ -234,8 +234,10 @@ const StaffService = {
     return await Request(controller).getAsync(`/pending?status=${status}`);
   },
   //duyệt nhân viên sửa /staffs/9/confirm
-  ConfirmStaff: async (id: string) => {
-    return await Request(controller).patchAsync(`${id}/confirm`);
+  ConfirmStaff: async (id: string, status: number) => {
+    return await Request(controller).patchAsync(`${id}/confirm`, {
+      status: status,
+    });
   },
 };
 
