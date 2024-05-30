@@ -67,15 +67,12 @@ const FormContainer: FC = () => {
 
   const renderField = useMemo(() => {
     return (
-      <>
-        {formFields.map((field) => (
-          <FormField
-            key={field.id}
-            field={field}
-            hanldeOnChangefield={handleOnChangeField}
-            formData={formData}
-          />
-        ))}
+      <><FormField
+        fields={formFields}
+        handleOnChangeField={handleOnChangeField}
+        formData={formData}
+      />
+
       </>
     );
   }, [formData, handleOnChangeField]);

@@ -1,6 +1,6 @@
-import { IFormData } from "components/atoms/field";
+import { IFormField } from "components/atoms/form_value";
 
-export const fieldsData: IFormData[] = [
+export const fieldsData: IFormField[] = [
   { id: "username", label: "Mã nhân viên", type: "text", isRequire: true },
   { id: "fullName", label: "Họ và tên", type: "text", isRequire: true },
   { id: "password", label: "Mật khẩu", type: "password", isRequire: true },

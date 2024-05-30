@@ -1,4 +1,4 @@
-import { FC, useMemo } from "react";
+import { FC, useCallback, useMemo } from "react";
 import Grid from "@mui/material/Grid";
 import InputLabel from "@mui/material/InputLabel";
 import TextField from "@mui/material/TextField";
@@ -11,43 +11,52 @@ export interface IFormField {
     isRequire?: boolean;
     ref?: any;
     options?: {
-        value: string | number | undefined;
+        value: string | number;
         label: string;
     }[];
     defaultValue?: string | number;
 }
 interface Props {
-    field: IFormField;
-    hanldeOnChangefield: (data: any) => void;
+    fields: IFormField[];
+    handleOnChangeField: (data: any) => void;
     formData: any;
 }
 
-const FormField: FC<Props> = ({ field, hanldeOnChangefield, formData }) => {
-    const renderField = useMemo(() => {
+const FormField: FC<Props> = ({ fields, handleOnChangeField, formData }) => {
+    const renderField = useCallback((field: IFormField) => {
         switch (field.type) {
             case "select":
                 return (
-                    <>
-                        <Autocomplete
-                            disablePortal
-                            size="small"
-                            ref={field.ref}
-                            id={field.id}
-                            defaultValue={formData ? formData[field.id] : ""}
-                            onChange={(e, newValue: any) => {
-                                hanldeOnChangefield({
-                                    target: {
-                                        name: field.id,
-                                        value: newValue ? newValue.value : ""
-                                    }
-                                })
-                            }}
-                            options={field.options ? field.options : []}
-                            getOptionKey={(option) => option.value}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField  {...params} required={field.isRequire} name={field.id} placeholder={field.label} />}
-                        />
-                    </>
+                    <Autocomplete
+                        disablePortal
+                        size="small"
+                        ref={field.ref}
+                        id={field.id}
+                        defaultValue={field.options?.find(option => option.value === formData[field.id])}
+                        onChange={(e, newValue: any) => {
+                            handleOnChangeField({
+                                target: {
+                                    name: field.id,
+                                    value: newValue ? newValue.value : ""
+                                }
+                            });
+                        }}
+                        // inputValue={
+                        //     field.options?.find(option => option.value === formData[field.id])?.label || ""
+                        // }
+                        options={field.options ? field.options : []}
+                        getOptionKey={(option) => option.value.toString()}
+                        getOptionLabel={(option) => option.label}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                size="small"
+                                required={field.isRequire}
+                                label={field.label}
+                                variant="outlined"
+                            />
+                        )}
+                    />
                 );
             default:
                 return (
@@ -59,30 +68,38 @@ const FormField: FC<Props> = ({ field, hanldeOnChangefield, formData }) => {
                         id={field.id}
                         name={field.id}
                         type={field.type}
-                        defaultValue={formData ? formData[field.id] : ""}
-                        onChange={hanldeOnChangefield}
+                        defaultValue={formData[field.id] || ""}
+                        onChange={(e) => handleOnChangeField(e)}
                     />
                 );
         }
-    }, [field.id, field.isRequire, field.label, field.options, field.ref, field.type, formData, hanldeOnChangefield]);
+    }, [formData, handleOnChangeField]);
+
+    const renderFields = useMemo(() => {
+        return fields.map((field) => (
+            <Grid item xs={6} key={field.id}>
+                <Grid container alignItems="center">
+                    <Grid item xs={5}>
+                        <InputLabel required={field.isRequire} htmlFor={field.id}>
+                            {field.label}
+                        </InputLabel>
+                    </Grid>
+                    <Grid item xs={6}>
+                        {renderField(field)}
+                    </Grid>
+                </Grid>
+            </Grid>
+        )
+        )
+    }, [fields, renderField]);
 
     return (
-        <Grid item xs={6} key={field.id}>
-            <Grid container alignItems="center">
-
-                <Grid item xs={5}>
-                    <InputLabel required={
-                        field.isRequire
-                    } htmlFor={field.id}>{field.label}</InputLabel>
-                </Grid>
-                <Grid item xs={6}>
-                    {renderField}
-                </Grid>
-
-            </Grid>
-
-        </Grid>
+        <>
+            {renderFields}
+        </>
     );
+
 };
+
 
 export default FormField;
