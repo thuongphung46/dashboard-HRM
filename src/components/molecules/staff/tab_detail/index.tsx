@@ -24,7 +24,7 @@ import { KeyValue } from "constants/GlobalConstant";
 import { TeachingContract } from "../tab_teaching_contract";
 import { PropupConfirm } from "components/atoms/popup_comfirm";
 
-interface Props extends Action {}
+interface Props extends Action { }
 
 export const TabDetailStaff: FC<Props> = ({ action }) => {
   const { id } = useParams();
@@ -53,7 +53,8 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
   const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
-  const handleOnClickSave = useCallback(() => {
+  const handleOnClickSave = useCallback((event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
     if (action === "add") {
       StaffService.createStaff(formData)
         .then((res) => {
@@ -116,7 +117,7 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
       <Button size="small" variant="outlined" onClick={handleExit}>
         Thoát
       </Button>
-      {value === 0 && (
+      {/* {value === 0 && (
         <Button
           variant="outlined"
           size="small"
@@ -125,7 +126,7 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
         >
           Lưu
         </Button>
-      )}
+      )} */}
       <Button size="small" variant="outlined" sx={{ marginLeft: "4px" }}>
         Scan
       </Button>
@@ -156,6 +157,7 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
             setFormData={setFormData}
             action={action}
             data={action === "me" ? dataDetailMe : data}
+            handleSave={handleOnClickSave}
           />
         )}
       </TabPanel>
