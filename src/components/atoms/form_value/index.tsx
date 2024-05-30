@@ -27,36 +27,37 @@ const FormField: FC<Props> = ({ fields, handleOnChangeField, formData }) => {
         switch (field.type) {
             case "select":
                 return (
-                    <Autocomplete
-                        disablePortal
-                        size="small"
-                        ref={field.ref}
-                        id={field.id}
-                        defaultValue={field.options?.find(option => option.value === formData[field.id])}
-                        onChange={(e, newValue: any) => {
-                            handleOnChangeField({
-                                target: {
-                                    name: field.id,
-                                    value: newValue ? newValue.value : ""
-                                }
-                            });
-                        }}
-                        // inputValue={
-                        //     field.options?.find(option => option.value === formData[field.id])?.label || ""
-                        // }
-                        options={field.options ? field.options : []}
-                        getOptionKey={(option) => option.value.toString()}
-                        getOptionLabel={(option) => option.label}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
+                    <>{
+                        (
+                            <Autocomplete
+                                disablePortal
                                 size="small"
-                                required={field.isRequire}
-                                label={field.label}
-                                variant="outlined"
+                                ref={field.ref}
+                                id={field.id}
+                                defaultValue={field.options && field.options.length > 0 ? field.options.find(option => option.value === formData[field.id]) : ""}
+                                onChange={(e, newValue: any) => {
+                                    handleOnChangeField({
+                                        target: {
+                                            name: field.id,
+                                            value: newValue ? newValue.value : ""
+                                        }
+                                    });
+                                }}
+                                options={field.options ? field.options : []}
+                                getOptionKey={(option) => option.value.toString()}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        size="small"
+                                        required={field.isRequire}
+                                        label={field.label}
+                                        variant="outlined"
+                                    />
+                                )}
                             />
-                        )}
-                    />
+                        )
+                    }</>
                 );
             default:
                 return (
@@ -89,8 +90,7 @@ const FormField: FC<Props> = ({ fields, handleOnChangeField, formData }) => {
                     </Grid>
                 </Grid>
             </Grid>
-        )
-        )
+        ))
     }, [fields, renderField]);
 
     return (
@@ -100,6 +100,5 @@ const FormField: FC<Props> = ({ fields, handleOnChangeField, formData }) => {
     );
 
 };
-
 
 export default FormField;

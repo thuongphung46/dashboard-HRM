@@ -5,7 +5,7 @@ import { GridRowId } from "@mui/x-data-grid";
 import { GridTrainingSummary } from "../grid_training_summary";
 import { GridTraining } from "../grid_training";
 import { fieldsData } from "./fields";
-import { StaffAdmissionResponse, StaffDetail } from "types/ApplicationType";
+import { StaffDetail } from "types/ApplicationType";
 import { Action } from "types/action";
 import { useDebouncedCallback } from "use-debounce";
 import { useGetListDepartment } from "services/hooks/useGetListDepartment";
@@ -15,7 +15,6 @@ import { FlatGroup } from "common/function";
 import FormField from "components/atoms/form_value";
 import { Button } from "@mui/material";
 import { IFormField } from "components/atoms/form_value";
-
 
 interface Props extends Action {
   data: StaffDetail;
@@ -38,13 +37,9 @@ export const MenuProps = {
 export const InfoStaff = ({ data, action, formData, setFormData, handleSave }: Props) => {
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
   const [departmentList, setDepartmentList] = useState<FlatGroup[]>([]);
-  const [departmentListChild, setDepartmentListChild] = useState<FlatGroup[]>(
-    []
-  );
+  const [departmentListChild, setDepartmentListChild] = useState<FlatGroup[]>([]);
   const [fields, setFields] = useState<IFormField[]>([]);
-  const { loading: loadingDepartment, data: departmentData } =
-    useGetListDepartment();
-
+  const { loading: loadingDepartment, data: departmentData } = useGetListDepartment();
   const [rankList, setRankList] = useState<any[]>([]);
   const { loading: loadingRank, data: rankData } = useGetListRank();
   const [jobTitleList, setJobTitleList] = useState<any[]>([]);
@@ -52,7 +47,6 @@ export const InfoStaff = ({ data, action, formData, setFormData, handleSave }: P
 
   const handleSaveTrainingSummary = useCallback((data: any) => { }, []);
   const handleSaveTraining = useCallback((data: any) => { }, []);
-
   const handleRowSelectionChange = (selection: GridRowId[]) => {
     setSelectedRows(selection);
   };
@@ -62,9 +56,7 @@ export const InfoStaff = ({ data, action, formData, setFormData, handleSave }: P
     let value = e.target.value;
     let field = e.target.name;
     if (field === "departmentId") {
-      let department = departmentList.find(
-        (department) => department.id === value
-      );
+      let department = departmentList.find(department => department.id === value);
       if (department) {
         setDepartmentListChild(department.groups);
       }
@@ -89,87 +81,72 @@ export const InfoStaff = ({ data, action, formData, setFormData, handleSave }: P
       setJobTitleList(jobTitleData);
     }
   }, [loadingJobTitle, jobTitleData]);
+
   //#region sử lý dữ liệu option trước khi hiển thị
   useEffect(() => {
     let convertFields: IFormField[] = [];
     fieldsData.forEach((field) => {
-      if (
-        field.id === "departmentId" &&
-        departmentList.length > 0
-      ) {
-        field.options = departmentList.map((department) => ({
+      if (field.id === "departmentId" && departmentList.length > 0) {
+        field.options = departmentList.map(department => ({
           value: department.id,
           label: department.name,
         }));
-      } else if (
-        field.id === "rankName" &&
-        rankList.length > 0
-      ) {
-        field.options = rankList.map((rank) => ({
+      } else if (field.id === "rankName" && rankList.length > 0) {
+        field.options = rankList.map(rank => ({
           value: rank.id,
           label: rank.rankName,
         }));
-      } else if (
-        field.id === "jobTitle" &&
-        jobTitleList.length > 0
-      ) {
-        field.options = jobTitleList.map((jobTitle) => ({
+      } else if (field.id === "jobTitle" && jobTitleList.length > 0) {
+        field.options = jobTitleList.map(jobTitle => ({
           value: jobTitle.code,
           label: jobTitle.jobTitle,
         }));
       } else if (field.id === "groupId" && departmentListChild.length > 0) {
-        field.options = departmentListChild.map((department) => ({
+        field.options = departmentListChild.map(department => ({
           value: department.id,
           label: department.name,
         }));
       }
-      if (
-        field.id === "password" &&
-        (action === "edit" || action === "me")
-      ) {
+      if (field.id === "password" && (action === "edit" || action === "me")) {
         return;
       }
 
       convertFields.push(field);
     });
 
+    console.log("Converted Fields: ", convertFields); // Add this log
     setFields(convertFields);
   }, [action, departmentList, departmentListChild, jobTitleList, rankList]);
   //#endregion
 
   //#region 
-  const doanTncs = data?.staffAdmissions?.find(
-    (ele: StaffAdmissionResponse) => ele.type === "doan_tncs_hcm"
-  );
 
-  const dangCsvn = data?.staffAdmissions?.find(
-    (ele: StaffAdmissionResponse) => ele.type === "dang_csvn"
-  );
+  useEffect(() => {
+    const doanTncs = data?.staffAdmissions?.find(ele => ele.type === "doan_tncs_hcm");
+    const dangCsvn = data?.staffAdmissions?.find(ele => ele.type === "dang_csvn");
 
-  if (doanTncs) {
-    data.doan_tncs_hcm = doanTncs?.place;
-  }
+    if (doanTncs) data.doan_tncs_hcm = doanTncs.place;
+    if (dangCsvn) data.dang_csvn = dangCsvn.place;
+  }, [data]);
 
-  if (dangCsvn) {
-    data.dang_csvn = dangCsvn?.place;
-  }
   //#endregion
+
 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container>
         <form onSubmit={handleSave} >
           <Grid container spacing={2}>
-            <Grid sx={{ width: "100%" }} item>  <Button variant="outlined" size="small" type="submit"
-            >Lưu</Button></Grid>
-            {
-              (data?.id || action === "add") && fields &&
+            <Grid sx={{ width: "100%" }} item>
+              <Button variant="outlined" size="small" type="submit">Lưu</Button>
+            </Grid>
+            {(data?.id || action === "add") && (
               <FormField
                 fields={fields}
                 formData={data}
                 handleOnChangeField={hanldeOnChangefield}
               />
-            }
+            )}
           </Grid>
         </form>
 
@@ -177,11 +154,7 @@ export const InfoStaff = ({ data, action, formData, setFormData, handleSave }: P
           <>
             <Grid sx={{ marginTop: "24px" }} width={"100%"} minWidth={500}>
               <GridTrainingSummary
-                dataSource={
-                  (action === "edit" || action === "me") && data.trainingSummary
-                    ? data?.trainingSummary
-                    : []
-                }
+                dataSource={(action === "edit" || action === "me") && data.trainingSummary ? data?.trainingSummary : []}
                 dataSelectRow={selectedRows}
                 handleSave={handleSaveTrainingSummary}
                 handleRowSelect={handleRowSelectionChange}
@@ -189,11 +162,7 @@ export const InfoStaff = ({ data, action, formData, setFormData, handleSave }: P
             </Grid>
             <Grid sx={{ marginTop: "24px" }} width={"100%"}>
               <GridTraining
-                dataSource={
-                  (action === "edit" || action === "me") && data.staffWorkingHistoriesOutAcademy
-                    ? data.staffWorkingHistoriesOutAcademy
-                    : []
-                }
+                dataSource={(action === "edit" || action === "me") && data.staffWorkingHistoriesOutAcademy ? data.staffWorkingHistoriesOutAcademy : []}
                 dataSelectRow={[]}
                 handleSave={handleSaveTraining}
                 handleRowSelect={handleRowSelectionChange}
