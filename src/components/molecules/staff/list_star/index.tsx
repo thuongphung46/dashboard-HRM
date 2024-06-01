@@ -22,7 +22,7 @@ import { toastMessage } from "components/molecules/toast_message";
 import { useGetListRank } from "services/hooks/useGetListRank";
 import { useGetListJobTitle } from "services/hooks/useGetListJobTitle";
 
-interface Props {}
+interface Props { }
 
 export const ListStaff: FC<Props> = () => {
   const navigate = useNavigate();
@@ -102,7 +102,6 @@ export const ListStaff: FC<Props> = () => {
           : staff.rankName,
     }));
   }, [staffList, jobTitleMap, rankMap]);
-  console.log("transformedStaffList: ", transformedStaffList);
 
   return (
     <div>

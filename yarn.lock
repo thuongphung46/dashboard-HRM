@@ -7467,10 +7467,10 @@
   dependencies:
     "tmpl" "1.0.5"
 
-"material-ui-confirm@^3.0.11":
-  "integrity" "sha512-Euv4QX2qXxfmCwfyWiJ/Mgb7SwSh0D30SNWZS4lRZR14pUnJ6o5ZjkDXncHmIHi6lpyHdi7IRy3H0WCKkO7kZg=="
-  "resolved" "https://registry.npmjs.org/material-ui-confirm/-/material-ui-confirm-3.0.11.tgz"
-  "version" "3.0.11"
+"material-ui-confirm@^3.0.16":
+  "integrity" "sha512-aJoa/FM/U/86qztoljlk8FWmjSJbAMzDWCdWbDqU5WwB0WzcWPyGrhBvIqihR9uKdHKBf1YrvMjn68uOrfsXAg=="
+  "resolved" "https://registry.npmjs.org/material-ui-confirm/-/material-ui-confirm-3.0.16.tgz"
+  "version" "3.0.16"
 
 "mdn-data@2.0.14":
   "integrity" "sha512-dn6wd0uw5GsdswPFfsgMp5NSB0/aDe6fK94YJV/AJDYXL6HVLWBsxeq7js7Ad+mU2K9LAlwpk6kN2D5mwCPVow=="
