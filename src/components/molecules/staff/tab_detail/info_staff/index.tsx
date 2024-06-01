@@ -54,8 +54,8 @@ export const InfoStaff = ({
   const [jobTitleList, setJobTitleList] = useState<any[]>([]);
   const { loading: loadingJobTitle, data: jobTitleData } = useGetListJobTitle();
 
-  const handleSaveTrainingSummary = useCallback((data: any) => {}, []);
-  const handleSaveTraining = useCallback((data: any) => {}, []);
+  const handleSaveTrainingSummary = useCallback((data: any) => { }, []);
+  const handleSaveTraining = useCallback((data: any) => { }, []);
   const handleRowSelectionChange = (selection: GridRowId[]) => {
     setSelectedRows(selection);
   };
@@ -76,17 +76,16 @@ export const InfoStaff = ({
 
   useEffect(() => {
     if (!loadingDepartment && departmentData) {
-      // let departmentChild = flattenGroups(departmentData);
       setDepartmentList(departmentData);
       if ((action === "edit" || action === "me") && data) {
-        // nếu data.groupId
-        // let department = departmentChild.find((i) => i.id === data.groupId);
-        // console.log("departmentinit: ", department);
-        // console.log("departmen list all: ", departmentChild);
-        // console.log("groupid: ", data.groupId);
-        // if (department) {
-        //   setDepartmentListChild(department.groups);
-        // }
+        if (data.departmentId) {
+          let department = departmentData.find(
+            (i) => i.id === data.departmentId
+          );
+          if (department) {
+            setDepartmentListChild(department.groups);
+          }
+        }
       }
     }
   }, [loadingDepartment, departmentData, action, data]);
@@ -114,15 +113,17 @@ export const InfoStaff = ({
         }));
       } else if (field.id === "rankName" && rankList.length > 0) {
         field.options = rankList.map((rank) => ({
-          value: rank.id,
+          value: rank.id.toString(),
           label: rank.rankName,
         }));
+
       } else if (field.id === "jobTitle" && jobTitleList.length > 0) {
         field.options = jobTitleList.map((jobTitle) => ({
           value: jobTitle.code,
           label: jobTitle.jobTitle,
         }));
-      } else if (field.id === "groupId" && departmentListChild.length > 0) {
+      }
+      if (field.id === "groupId" && departmentListChild.length > 0) {
         field.options = departmentListChild.map((department) => ({
           value: department.id,
           label: department.name,
@@ -135,12 +136,12 @@ export const InfoStaff = ({
       convertFields.push(field);
     });
 
+
     setFields(convertFields);
   }, [action, departmentList, departmentListChild, jobTitleList, rankList]);
   //#endregion
 
-  //#region
-
+  //#region xử lý dữ liệu trước khi hiển thị
   useEffect(() => {
     const doanTncs = data?.staffAdmissions?.find(
       (ele) => ele.type === "doan_tncs_hcm"
@@ -193,7 +194,7 @@ export const InfoStaff = ({
               <GridTraining
                 dataSource={
                   (action === "edit" || action === "me") &&
-                  data.staffWorkingHistoriesOutAcademy
+                    data.staffWorkingHistoriesOutAcademy
                     ? data.staffWorkingHistoriesOutAcademy
                     : []
                 }
