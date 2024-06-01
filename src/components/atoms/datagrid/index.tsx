@@ -20,6 +20,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
+import { useConfirm } from "material-ui-confirm";
 import React from "react";
 
 interface BaseGridProps extends DataGridProps {
@@ -44,7 +45,9 @@ export const BaseGrid: FC<BaseGridProps> = ({
   disable,
   ...rest
 }) => {
+  const confirm = useConfirm();
   const [data, setData] = React.useState<any[]>([]);
+
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
   );
@@ -72,8 +75,12 @@ export const BaseGrid: FC<BaseGridProps> = ({
   };
 
   const handleDeleteClick = (id: GridRowId) => () => {
-    setData(data.filter((row) => row.id !== id));
-    onDel && onDel(id);
+    confirm({ title: "Xác nhận xóa", description: `Bạn có chắc muốn xóa?`, confirmationText: "Đồng ý", cancellationText: "Hủy" })
+      .then(() => {
+        setData(data.filter((row) => row.id !== id));
+        onDel && onDel(id);
+      })
+      .catch(() => console.log("Deletion cancelled."));
   };
 
   const handleCancelClick = (id: GridRowId) => () => {
