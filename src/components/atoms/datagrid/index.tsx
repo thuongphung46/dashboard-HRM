@@ -22,6 +22,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
 import { useConfirm } from "material-ui-confirm";
 import React from "react";
+import { useGridApiRef } from "@mui/x-data-grid";
 
 interface BaseGridProps extends DataGridProps {
   columns: GridColDef[];
@@ -46,8 +47,8 @@ export const BaseGrid: FC<BaseGridProps> = ({
   ...rest
 }) => {
   const confirm = useConfirm();
+  const apiRef = useGridApiRef();
   const [data, setData] = React.useState<any[]>([]);
-
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
   );
@@ -75,7 +76,12 @@ export const BaseGrid: FC<BaseGridProps> = ({
   };
 
   const handleDeleteClick = (id: GridRowId) => () => {
-    confirm({ title: "Xác nhận xóa", description: `Bạn có chắc muốn xóa?`, confirmationText: "Đồng ý", cancellationText: "Hủy" })
+    confirm({
+      title: "Xác nhận xóa",
+      description: `Bạn có chắc muốn xóa?`,
+      confirmationText: "Đồng ý",
+      cancellationText: "Hủy",
+    })
       .then(() => {
         setData(data.filter((row) => row.id !== id));
         onDel && onDel(id);
@@ -172,6 +178,7 @@ export const BaseGrid: FC<BaseGridProps> = ({
         {title}
       </Typography>
       <DataGrid
+        apiRef={apiRef}
         rows={data}
         columns={Custcolumns}
         editMode="row"
@@ -187,7 +194,14 @@ export const BaseGrid: FC<BaseGridProps> = ({
           toolbar: EditToolbar,
         }}
         slotProps={{
-          toolbar: { data, setData, setRowModesModel, disable },
+          toolbar: {
+            data,
+            setData,
+            setRowModesModel,
+            disable,
+            apiRef,
+            columns,
+          },
         }}
         {...rest}
       />
@@ -202,10 +216,11 @@ interface EditToolbarProps {
     newModel: (oldModel: GridRowModesModel) => GridRowModesModel
   ) => void;
   disable?: boolean;
+  apiRef: React.MutableRefObject<any>;
+  columns: GridColDef[];
 }
-
 function EditToolbar(props: EditToolbarProps) {
-  const { setData, setRowModesModel, data, disable } = props;
+  const { setData, setRowModesModel, data, disable, apiRef, columns } = props;
 
   const handleClick = () => {
     const getRandomUniqueId = (): number => {
@@ -230,6 +245,12 @@ function EditToolbar(props: EditToolbarProps) {
       ...oldModel,
       [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
     }));
+
+    // Set focus to the first cell of the new row after a short delay
+    setTimeout(() => {
+      //focus on the second cell of the new row
+      apiRef.current.setCellFocus(id, columns[0].field);
+    }, 100);
   };
 
   return (
@@ -240,8 +261,7 @@ function EditToolbar(props: EditToolbarProps) {
         variant="outlined"
         size="small"
         startIcon={<AddIcon />}
-        onClick={handleClick}
-      >
+        onClick={handleClick}>
         Add record
       </Button>
     </GridToolbarContainer>
