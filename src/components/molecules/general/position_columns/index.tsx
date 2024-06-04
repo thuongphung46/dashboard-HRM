@@ -71,30 +71,10 @@ export const GeneralPosition: FC<Props> = ({ disable }) => {
         }
       });
     } else {
-      let params: any = {};
-      if (
-        dataAdd.jobTitle === preData.jobTitle &&
-        dataAdd.level === preData.level
-      )
-        return;
-      if (
-        dataAdd.jobTitle === preData.jobTitle &&
-        dataAdd.level !== preData.level
-      ) {
-        params = {
-          level: dataAdd.level,
-        };
-      }
-      if (
-        dataAdd.jobTitle !== preData.jobTitle &&
-        dataAdd.level === preData.level
-      ) {
-        params = {
-          jobTitle: dataAdd.jobTitle,
-        };
-      }
-
-      updateJobTitle(dataAdd.id, params).then((res) => {
+      updateJobTitle(dataAdd.id, {
+        jobTitle: dataAdd.jobTitle,
+        level: dataAdd.level,
+      }).then((res) => {
         if (res.msg_code === MessageCode.Success) {
           const index = dataRows.findIndex((row) => row.id === dataAdd.id);
           dataRows[index] = res.content;
