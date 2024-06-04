@@ -27,7 +27,7 @@ import { useGridApiRef } from "@mui/x-data-grid";
 interface BaseGridProps extends DataGridProps {
   columns: GridColDef[];
   title: string;
-  onSave?: (data: any) => void;
+  onSave?: (data: any, preData?: any) => void;
   onDel?: (id: any) => void;
   onRowSelectionChange: (selection: any) => void;
   selectedRows: GridRowId[];
@@ -103,13 +103,15 @@ export const BaseGrid: FC<BaseGridProps> = ({
 
   const processRowUpdate = (newRow: GridRowModel) => {
     const updatedRow = { ...newRow, isNew: false };
+    const previousRow = data.find((row) => row.id === newRow.id);
     setData(data.map((row) => (row.id === newRow.id ? updatedRow : row)));
 
     if (onSave) {
       if (newRow.isNew) {
         onSave({ ...updatedRow, isNew: true });
       } else {
-        onSave(updatedRow);
+        //update
+        onSave(updatedRow, previousRow);
       }
     }
 

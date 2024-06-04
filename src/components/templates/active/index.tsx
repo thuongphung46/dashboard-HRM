@@ -20,29 +20,32 @@ enum STATUS {
 }
 
 export const ActiveTemplates = () => {
-  const [data, setData] = useState<IData[]>([]);
+  const [dataRows, setDataRows] = useState<IData[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await StaffService.GetListStaffPending(0);
       if (response.msg_code === MessageCode.Success) {
-        setData(response.content);
+        setDataRows(response.content);
       }
     };
     fetchData();
   }, []);
-  const handleActive = useCallback(async (data: any, status: 0 | 1 | 2 | 3) => {
-    let id = data.staffId;
-    if (!id) return;
-    let response = await StaffService.ConfirmStaff(id, status);
-    if (response.msg_code === MessageCode.Success) {
-      let newData = data.filter((item: any) => item.id !== id);
-      setData(newData);
-      toastMessage("Thành công", "success");
-    } else {
-      toastMessage(response.message, "error");
-    }
-  }, []);
+  const handleActive = useCallback(
+    async (dataActive: any, status: 0 | 1 | 2 | 3) => {
+      let id = dataActive.staffId;
+      if (!id) return;
+      let response = await StaffService.ConfirmStaff(id, status);
+      if (response.msg_code === MessageCode.Success) {
+        let newData = dataRows.filter((item) => item.id !== id);
+        setDataRows(newData);
+        toastMessage("Thành công", "success");
+      } else {
+        toastMessage(response.message, "error");
+      }
+    },
+    [dataRows]
+  );
 
   const Columns: GridColDef[] = [
     {
@@ -77,20 +80,17 @@ export const ActiveTemplates = () => {
               display: "flex",
               justifyContent: "space-between",
               width: "100%",
-            }}
-          >
+            }}>
             <Button
               onClick={() => handleActive(params.row, STATUS.APPROVED)}
               variant="outlined"
-              size="small"
-            >
+              size="small">
               Đồng ý
             </Button>
             <Button
               onClick={() => handleActive(params.row, STATUS.REJECTED)}
               variant="outlined"
-              size="small"
-            >
+              size="small">
               Từ chối
             </Button>
           </Box>
@@ -102,14 +102,13 @@ export const ActiveTemplates = () => {
     <div
       style={{
         padding: "8px",
-      }}
-    >
+      }}>
       <>
         <DataGrid
           sx={{ height: "calc(100vh - 90px)", width: "calc(100vw - 270px)" }}
-          rows={data}
+          rows={dataRows}
           columns={Columns}
-        ></DataGrid>
+        />
       </>
     </div>
   );

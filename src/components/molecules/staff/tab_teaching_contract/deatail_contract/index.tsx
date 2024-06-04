@@ -24,7 +24,7 @@ import { MessageCode } from "types/enum/message_code";
 import { toastMessage } from "components/molecules/toast_message";
 import moment from "moment";
 import { useGetListJobTitle } from "services/hooks/useGetListJobTitle";
-import { PropupConfirm } from "components/atoms/popup_comfirm";
+import { useConfirm } from "material-ui-confirm";
 
 interface Props {
   data: StaffDetail;
@@ -34,6 +34,7 @@ interface Props {
 }
 
 export const AddNewContract: FC<Props> = ({ data, action }) => {
+  const confirm = useConfirm();
   const { data: jobTitleData } = useGetListJobTitle();
 
   const { id } = useParams();
@@ -56,7 +57,6 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
   const [staffData, setStaffData] = useState<IStaff>();
   const [renterData, setRenterData] = useState<IRenter>();
   const [editData, setEditData] = useState<any>({});
-  const [open, setOpen] = useState<boolean>(false);
 
   const { getStaff } = useGetStaffSelected();
   const { data: contractDetail } = useGetDetailContract(
@@ -491,23 +491,26 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
 
   const handleExit = useCallback(() => {
     if (editData) {
-      setOpen(true);
+      confirm({
+        title: "Xác nhận",
+        description: "Bạn chắc chắn muốn thoát?",
+        confirmationText: "Thoát",
+        cancellationText: "Hủy",
+      })
+        .then(() => {
+          navigate(-1);
+        })
+        .catch(() => console.log("Thoát không thành công"));
     } else {
       navigate(-1);
     }
-  }, [editData, navigate]);
-
-  const handleConfirm = useCallback(() => {
-    setOpen(false);
-    navigate(-1);
-  }, [navigate]);
+  }, [confirm, editData, navigate]);
 
   return (
     <div
       style={{
         padding: "8px",
-      }}
-    >
+      }}>
       <Button size="small" variant="outlined" onClick={handleExit}>
         Thoát
       </Button>
@@ -515,16 +518,14 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
         sx={{ margin: "4px" }}
         size="small"
         variant="outlined"
-        onClick={handleSave}
-      >
+        onClick={handleSave}>
         Lưu
       </Button>
       <Box
         sx={{
           height: "calc(100vh - 130px)",
           overflow: "auto",
-        }}
-      >
+        }}>
         {(formData && renterData && staffData) || action === "add" ? (
           <>
             <form id="createForm">
@@ -533,15 +534,13 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                   padding: "8px",
                   overflow: "auto",
                 }}
-                container
-              >
+                container>
                 <Grid
                   sx={{
                     marginTop: 2,
                     width: "100%",
                   }}
-                  item
-                >
+                  item>
                   <Typography variant="h5" marginBottom={2}>
                     Bên A: HỌC VIÊN KỸ THUẬT MẬT MÃ
                   </Typography>
@@ -564,8 +563,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                                 size="small"
                                 id={field.id}
                                 onChange={hanldeOnChangefield}
-                                defaultValue={field.defaultValue}
-                              >
+                                defaultValue={field.defaultValue}>
                                 {(() => {
                                   if (field.id === "fullName") {
                                     const data = listStaff.filter(
@@ -574,8 +572,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                                     return data.map((staff, index) => (
                                       <MenuItem
                                         key={staff.id + index}
-                                        value={staff.username}
-                                      >
+                                        value={staff.username}>
                                         {staff.fullName}
                                       </MenuItem>
                                     ));
@@ -584,8 +581,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                                       (option, index) => (
                                         <MenuItem
                                           key={index}
-                                          value={option.value}
-                                        >
+                                          value={option.value}>
                                           {option.label}
                                         </MenuItem>
                                       )
@@ -617,8 +613,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                     marginTop: 2,
                     width: "100%",
                   }}
-                  item
-                >
+                  item>
                   <Typography variant="h5" marginBottom={2}>
                     Bên B
                   </Typography>
@@ -640,8 +635,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                                 size="small"
                                 id={field.id}
                                 onChange={hanldeOnChangefield}
-                                defaultValue={field.defaultValue}
-                              >
+                                defaultValue={field.defaultValue}>
                                 {(() => {
                                   if (field.id === "per_b") {
                                     const data: IListStaff[] = listStaff.filter(
@@ -652,8 +646,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                                     return data.map((staff, index) => (
                                       <MenuItem
                                         key={staff.id + index}
-                                        value={staff.username}
-                                      >
+                                        value={staff.username}>
                                         {staff.fullName}
                                       </MenuItem>
                                     ));
@@ -662,8 +655,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                                       (option, index) => (
                                         <MenuItem
                                           key={index}
-                                          value={option.value}
-                                        >
+                                          value={option.value}>
                                           {option.label}
                                         </MenuItem>
                                       )
@@ -694,8 +686,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                     marginTop: 2,
                     width: "100%",
                   }}
-                  item
-                >
+                  item>
                   <Typography variant="h5" marginBottom={2}>
                     Thông tin hợp đồng
                   </Typography>
@@ -719,8 +710,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                                 defaultValue={
                                   field.defaultValue || field.options[0].value
                                 }
-                                onChange={hanldeOnChangefield}
-                              >
+                                onChange={hanldeOnChangefield}>
                                 {field.options.map((option, index) => (
                                   <MenuItem key={index} value={option.value}>
                                     {option.label}
@@ -751,14 +741,6 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
           <>loading</>
         )}
       </Box>
-
-      <PropupConfirm
-        onClose={() => setOpen(false)}
-        open={open}
-        onConfirm={handleConfirm}
-        title="Xác nhận"
-        message="Bạn chắc chắn muốn thoát?"
-      />
     </div>
   );
 };

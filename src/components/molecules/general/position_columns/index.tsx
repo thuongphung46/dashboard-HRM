@@ -56,7 +56,7 @@ export const GeneralPosition: FC<Props> = ({ disable }) => {
     },
   ];
 
-  const handleSave = async (dataAdd: any) => {
+  const handleSave = async (dataAdd: any, preData: any) => {
     if (dataAdd.isNew) {
       createJobTitle({
         code: dataAdd.code,
@@ -71,10 +71,30 @@ export const GeneralPosition: FC<Props> = ({ disable }) => {
         }
       });
     } else {
-      updateJobTitle(dataAdd.id, {
-        jobTitle: dataAdd.jobTitle,
-        level: dataAdd.level,
-      }).then((res) => {
+      let params: any = {};
+      if (
+        dataAdd.jobTitle === preData.jobTitle &&
+        dataAdd.level === preData.level
+      )
+        return;
+      if (
+        dataAdd.jobTitle === preData.jobTitle &&
+        dataAdd.level !== preData.level
+      ) {
+        params = {
+          level: dataAdd.level,
+        };
+      }
+      if (
+        dataAdd.jobTitle !== preData.jobTitle &&
+        dataAdd.level === preData.level
+      ) {
+        params = {
+          jobTitle: dataAdd.jobTitle,
+        };
+      }
+
+      updateJobTitle(dataAdd.id, params).then((res) => {
         if (res.msg_code === MessageCode.Success) {
           const index = dataRows.findIndex((row) => row.id === dataAdd.id);
           dataRows[index] = res.content;
