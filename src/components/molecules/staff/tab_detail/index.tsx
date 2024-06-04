@@ -72,7 +72,11 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
         StaffService.UpdateInfoStaff(formData, id)
           .then((res) => {
             if (res.msg_code === MessageCode.Success) {
-              toastMessage("Thành công", "success");
+              if (level !== "LEVEL_4") {
+                toastMessage("Đã gửi yêu cầu cập nhật thành công", "success");
+              } else {
+                toastMessage("Thành công", "success");
+              }
             } else {
               toastMessage(res.message, "error");
             }
@@ -95,7 +99,7 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
           });
       }
     },
-    [action, formData, id]
+    [action, formData, id, level]
   );
 
   const handleExit = useCallback(() => {
