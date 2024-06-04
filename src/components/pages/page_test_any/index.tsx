@@ -2,47 +2,48 @@ import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import Grid from "@mui/material/Grid";
 import FormField, { IFormField } from "components/atoms/form_value";
 import { Button } from "@mui/material";
+import OpenAI from "openai";
 
 const formFields: IFormField[] = [
   {
-    id: "firstName",
-    label: "First Name",
+    id: "api_key",
+    label: "API Key",
     type: "text",
     isRequire: true,
   },
   {
-    id: "lastName",
-    label: "Last Name",
+    id: "message",
+    label: "Message",
     type: "text",
-    isRequire: true,
-  },
-  {
-    id: "gender",
-    label: "Gender",
-    type: "select",
-    options: [
-      { value: "male", label: "Male" },
-      { value: "female", label: "Female" },
-      { value: "other", label: "Other" },
-    ],
-    isRequire: true,
-  },
-  {
-    id: "email",
-    label: "Email",
-    type: "email",
-    isRequire: true,
-  },
-  {
-    id: "age",
-    label: "Age",
-    type: "number",
-    isRequire: false,
   },
 ];
 
 const FormContainer: FC = () => {
-  const [formData, setFormData] = useState<any>({});
+  const [formData, setFormData] = useState<any>({
+    api_key: "",
+  });
+  const [message, setMessage] = useState("");
+  const [chatHistory, setChatHistory] = useState<
+    { role: string; content: string | null }[]
+  >([]);
+
+  const sendMessage = useCallback(async () => {
+    const openai = new OpenAI({
+      apiKey: formData.api_key,
+      dangerouslyAllowBrowser: true,
+    });
+
+    const params: OpenAI.Chat.ChatCompletionCreateParams = {
+      model: "gpt-3.5-turbo",
+      messages: [{ role: "user", content: message }],
+    };
+    const chatCompletion = await openai.chat.completions.create(params); // Remove type annotation
+    setChatHistory([
+      ...chatHistory,
+      { role: "ai", content: chatCompletion.choices[0].message.content },
+    ]);
+    setMessage("");
+  }, [chatHistory, formData.api_key, message]);
 
   useEffect(() => {
     setFormData({});
@@ -57,35 +58,27 @@ const FormContainer: FC = () => {
     });
   }, []);
 
-  const handleShow = useCallback(
-    (event: React.FormEvent) => {
-      event.preventDefault();
-      console.log(formData);
-    },
-    [formData]
-  );
-
   const renderField = useMemo(() => {
     return (
-      <><FormField
-        fields={formFields}
-        handleOnChangeField={handleOnChangeField}
-        formData={formData}
-      />
-
+      <>
+        <FormField
+          fields={formFields}
+          handleOnChangeField={handleOnChangeField}
+          formData={formData}
+        />
       </>
     );
   }, [formData, handleOnChangeField]);
 
   return (
-    <form onSubmit={handleShow}>
+    <>
       <Grid container spacing={2}>
         {renderField}
       </Grid>
-      <Button size="small" type="submit">
-        Submit
+      <Button variant="contained" color="primary" onClick={sendMessage}>
+        Send
       </Button>
-    </form>
+    </>
   );
 };
 
