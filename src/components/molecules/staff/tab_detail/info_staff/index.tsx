@@ -54,8 +54,8 @@ export const InfoStaff = ({
   const [jobTitleList, setJobTitleList] = useState<any[]>([]);
   const { loading: loadingJobTitle, data: jobTitleData } = useGetListJobTitle();
 
-  const handleSaveTrainingSummary = useCallback((data: any) => { }, []);
-  const handleSaveTraining = useCallback((data: any) => { }, []);
+  const handleSaveTrainingSummary = useCallback((data: any) => {}, []);
+  const handleSaveTraining = useCallback((data: any) => {}, []);
   const handleRowSelectionChange = (selection: GridRowId[]) => {
     setSelectedRows(selection);
   };
@@ -104,41 +104,50 @@ export const InfoStaff = ({
 
   //#region sử lý dữ liệu option trước khi hiển thị
   useEffect(() => {
-    let convertFields: IFormField[] = [];
-    fieldsData.forEach((field) => {
-      if (field.id === "departmentId" && departmentList.length > 0) {
-        field.options = departmentList.map((department) => ({
-          value: department.id,
-          label: department.name,
-        }));
-      } else if (field.id === "rankName" && rankList.length > 0) {
-        field.options = rankList.map((rank) => ({
-          value: rank.id.toString(),
-          label: rank.rankName,
-        }));
+    const fetch = async () => {
+      let convertFields: IFormField[] = [];
+      fieldsData.forEach((field) => {
+        if (field.id === "departmentId" && departmentList.length > 0) {
+          field.options = departmentList.map((department) => ({
+            value: department.id,
+            label: department.name,
+          }));
+        } else if (field.id === "rankName" && rankList.length > 0) {
+          field.options = rankList.map((rank) => ({
+            value: rank.id.toString(),
+            label: rank.rankName,
+          }));
+        } else if (field.id === "jobTitle" && jobTitleList.length > 0) {
+          field.options = jobTitleList.map((jobTitle) => ({
+            value: jobTitle.code,
+            label: jobTitle.jobTitle,
+          }));
+        }
+        if (field.id === "groupId" && departmentListChild.length > 0) {
+          field.options = departmentListChild.map((department) => ({
+            value: department.id,
+            label: department.name,
+          }));
+        }
+        if (field.id === "password" && (action === "edit" || action === "me")) {
+          return;
+        }
+        if (data.level === "LEVEL_4" && field.id === "groupId") return;
 
-      } else if (field.id === "jobTitle" && jobTitleList.length > 0) {
-        field.options = jobTitleList.map((jobTitle) => ({
-          value: jobTitle.code,
-          label: jobTitle.jobTitle,
-        }));
-      }
-      if (field.id === "groupId" && departmentListChild.length > 0) {
-        field.options = departmentListChild.map((department) => ({
-          value: department.id,
-          label: department.name,
-        }));
-      }
-      if (field.id === "password" && (action === "edit" || action === "me")) {
-        return;
-      }
+        convertFields.push(field);
+      });
 
-      convertFields.push(field);
-    });
-
-
-    setFields(convertFields);
-  }, [action, departmentList, departmentListChild, jobTitleList, rankList]);
+      setFields(convertFields);
+    };
+    fetch();
+  }, [
+    action,
+    data.level,
+    departmentList,
+    departmentListChild,
+    jobTitleList,
+    rankList,
+  ]);
   //#endregion
 
   //#region xử lý dữ liệu trước khi hiển thị
@@ -194,7 +203,7 @@ export const InfoStaff = ({
               <GridTraining
                 dataSource={
                   (action === "edit" || action === "me") &&
-                    data.staffWorkingHistoriesOutAcademy
+                  data.staffWorkingHistoriesOutAcademy
                     ? data.staffWorkingHistoriesOutAcademy
                     : []
                 }
