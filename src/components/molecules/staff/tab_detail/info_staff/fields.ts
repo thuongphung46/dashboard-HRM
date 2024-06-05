@@ -11,6 +11,10 @@ export const fieldsData: IFormField[] = [
     isRequire: true,
     options: [
       {
+        value: "",
+        label: "",
+      },
+      {
         value: "LEVEL_1",
         label: "level1",
       },
@@ -34,6 +38,10 @@ export const fieldsData: IFormField[] = [
     type: "select",
     options: [
       {
+        value: "",
+        label: "",
+      },
+      {
         value: 1,
         label: "Nam",
       },
@@ -51,20 +59,35 @@ export const fieldsData: IFormField[] = [
     id: "departmentId",
     label: "Cấp quản lý",
     type: "select",
-    options: [],
+    options: [
+      {
+        value: "",
+        label: "",
+      },
+    ],
     isRequire: true,
   },
   {
     id: "groupId",
     label: "Bộ môn (nếu có)",
     type: "select",
-    options: [],
+    options: [
+      {
+        value: "",
+        label: "",
+      },
+    ],
   },
   {
     id: "jobTitle",
     label: "Chức vụ",
     type: "select",
-    options: [],
+    options: [
+      {
+        value: "",
+        label: "",
+      },
+    ],
     isRequire: true,
   },
   { id: "rankName", label: "Hàm (Sĩ quan)", type: "select", options: [] },
@@ -73,6 +96,10 @@ export const fieldsData: IFormField[] = [
     label: "Học hàm",
     type: "select",
     options: [
+      {
+        value: "",
+        label: "",
+      },
       {
         value: "Phó giáo sư",
         label: "Phó giáo sư",
@@ -88,6 +115,10 @@ export const fieldsData: IFormField[] = [
     label: "Học vị",
     type: "select",
     options: [
+      {
+        value: "",
+        label: "",
+      },
       {
         value: "Tú tài",
         label: "Tú tài",
@@ -128,6 +159,10 @@ export const fieldsData: IFormField[] = [
     type: "select",
     isRequire: true,
     options: [
+      {
+        value: "",
+        label: "",
+      },
       {
         value: 1,
         label: "Đang làm việc",

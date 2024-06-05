@@ -3,6 +3,7 @@ import Grid from "@mui/material/Grid";
 import InputLabel from "@mui/material/InputLabel";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import { Action } from "types/action";
 
 export interface IFormField {
   id: string;
@@ -17,20 +18,26 @@ export interface IFormField {
   }[];
   defaultValue?: string | number;
 }
-interface Props {
+interface Props extends Action {
   fields: IFormField[];
   handleOnChangeField: (data: any) => void;
   formData: any;
 }
 
-const FormField: FC<Props> = ({ fields, handleOnChangeField, formData }) => {
+const FormField: FC<Props> = ({
+  fields,
+  handleOnChangeField,
+  formData,
+  action,
+}) => {
   const renderField = useCallback(
     (field: IFormField) => {
       switch (field.type) {
         case "select":
           return (
             <>
-              {field.options && field.options.length > 0 && (
+              {((field.options && field.options.length > 0) ||
+                action === "add") && (
                 <Autocomplete
                   disablePortal
                   readOnly={field.readonly}
@@ -38,9 +45,11 @@ const FormField: FC<Props> = ({ fields, handleOnChangeField, formData }) => {
                   ref={field.ref}
                   id={field.id}
                   defaultValue={
-                    field.options && field.options.length > 0
+                    field.options &&
+                    field.options.length > 0 &&
+                    formData[field.id] !== undefined
                       ? field.options.find(
-                          (option) => option.value === formData[field.id]
+                          (option) => option.value === formData[field.id] || ""
                         )
                       : ""
                   }
@@ -52,7 +61,11 @@ const FormField: FC<Props> = ({ fields, handleOnChangeField, formData }) => {
                       },
                     });
                   }}
-                  options={field.options ? field.options : []}
+                  options={
+                    field.options && field.options.length > 0
+                      ? [...field.options, { value: "", label: "" }]
+                      : [{ value: "", label: "" }]
+                  }
                   getOptionKey={(option) => option.value.toString()}
                   getOptionLabel={(option) => option.label}
                   renderInput={(params) => (
@@ -81,13 +94,13 @@ const FormField: FC<Props> = ({ fields, handleOnChangeField, formData }) => {
                 readOnly: field.readonly,
               }}
               type={field.type}
-              defaultValue={formData[field.id] || ""}
+              defaultValue={formData[field.id] ?? ""}
               onChange={(e) => handleOnChangeField(e)}
             />
           );
       }
     },
-    [formData, handleOnChangeField]
+    [action, formData, handleOnChangeField]
   );
 
   const renderFields = useMemo(() => {

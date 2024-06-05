@@ -177,6 +177,7 @@ export const InfoStaff = ({
             </Grid>
             {(data?.id || action === "add") && (
               <FormField
+                action={action}
                 fields={fields}
                 formData={data}
                 handleOnChangeField={hanldeOnChangefield}

@@ -1,3 +1,3 @@
 export interface Action {
-  action: "add" | "edit" | "me";
+  action?: "add" | "edit" | "me";
 }
