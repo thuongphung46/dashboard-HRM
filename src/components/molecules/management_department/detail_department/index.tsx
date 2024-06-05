@@ -97,20 +97,20 @@ export const DetailDepartMent: FC<Props> = ({ dataDetail, disable }) => {
   return (
     <Box sx={{ width: "70%" }}>
       <Grid
-        sx={{ overflow: "auto", height: "calc(100vh - 80px)", padding: 2 }}
+        sx={{ overflow: "auto", padding: 2 }}
         container
       >
         <Grid sx={{ width: "100%" }} item>
           <DataGrid
             sx={{
-              height: "400px",
+              height: "280px",
             }}
             rows={transformedGridMember}
             columns={columnsGridMember}
           />
         </Grid>
 
-        <Grid sx={{ marginTop: "20px", width: "100%" }} item>
+        <Grid sx={{  width: "100%", paddingTop: 2 }} item>
           <TreeView
             data={transformedGridGroup}
             setData={(data: TreeItemData[]) => {
