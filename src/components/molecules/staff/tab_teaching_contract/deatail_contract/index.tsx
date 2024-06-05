@@ -34,11 +34,10 @@ interface Props {
 }
 
 export const AddNewContract: FC<Props> = ({ data, action }) => {
-  const confirm = useConfirm();
-  const { data: jobTitleData } = useGetListJobTitle();
-
   const { id } = useParams();
+  const confirm = useConfirm();
   const navigate = useNavigate();
+  //#region ref
   const refJobTitleA = useRef<any>(null);
   const refphoneNumberA = useRef<any>(null);
   const refBankAccountA = useRef<any>(null);
@@ -53,12 +52,14 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
   const refBankAccountB = useRef<any>(null);
   const refBankNameB = useRef<any>(null);
 
+  //#endregion
   const [formData, setFormData] = useState<IContent>();
   const [staffData, setStaffData] = useState<IStaff>();
   const [renterData, setRenterData] = useState<IRenter>();
   const [editData, setEditData] = useState<any>({});
 
   const { getStaff } = useGetStaffSelected();
+  const { data: jobTitleData } = useGetListJobTitle();
   const { data: contractDetail } = useGetDetailContract(
     action === "edit" ? id : ""
   );

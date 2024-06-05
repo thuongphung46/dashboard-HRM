@@ -2,9 +2,12 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { toastMessage } from "components/molecules/toast_message";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { StaffService } from "services/staff_service";
 import { MessageCode } from "types/enum/message_code";
+import FormField, { IFormField } from "components/atoms/form_value";
+import Modal from "@mui/material/Modal";
+import Grid from "@mui/material/Grid";
 
 interface IData {
   id: number;
@@ -21,6 +24,9 @@ enum STATUS {
 
 export const ActiveTemplates = () => {
   const [dataRows, setDataRows] = useState<IData[]>([]);
+  const [formFields, setFormFields] = useState<IFormField[]>([]);
+  const [dataDetail, setDataDetail] = useState<any>({});
+  const [open, setOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,7 +43,7 @@ export const ActiveTemplates = () => {
       if (!id) return;
       let response = await StaffService.ConfirmStaff(id, status);
       if (response.msg_code === MessageCode.Success) {
-        let newData = dataRows.filter((item) => item.id !== id);
+        let newData = dataRows.filter((item) => item.staffId !== id);
         setDataRows(newData);
         toastMessage("Thành công", "success");
       } else {
@@ -46,6 +52,64 @@ export const ActiveTemplates = () => {
     },
     [dataRows]
   );
+  const handleOpen = useCallback((dataRow: any) => {
+    let dataDetail = dataRow.metaData;
+    setDataDetail(JSON.parse(dataDetail));
+    let fields: IFormField[] = Object.keys(JSON.parse(dataDetail)).map(
+      (item) => {
+        return {
+          id: item,
+          label: item,
+          type: "text",
+          readonly: true,
+        };
+      }
+    );
+    setFormFields(fields);
+    setOpen(true);
+  }, []);
+  const handleClose = useCallback(() => {
+    setFormFields([]);
+    setDataDetail({});
+    setOpen(false);
+  }, []);
+
+  const renderModelDetail = useMemo(() => {
+    return (
+      <>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+            width: "100%",
+          }}>
+          <div
+            style={{
+              height: "400px",
+              width: "600px",
+              backgroundColor: "#fff",
+              padding: "24px",
+              borderRadius: "4px",
+              boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
+            }}>
+            <Grid container spacing={2}>
+              <FormField
+                fields={formFields}
+                formData={dataDetail}
+                handleOnChangeField={() => {}}
+              />
+            </Grid>
+          </div>
+        </Modal>
+      </>
+    );
+  }, [dataDetail, formFields, handleClose, open]);
 
   const Columns: GridColDef[] = [
     {
@@ -72,7 +136,7 @@ export const ActiveTemplates = () => {
     {
       field: "action",
       headerName: "",
-      minWidth: 200,
+      minWidth: 300,
       renderCell: (params) => {
         return (
           <Box
@@ -81,6 +145,12 @@ export const ActiveTemplates = () => {
               justifyContent: "space-between",
               width: "100%",
             }}>
+            <Button
+              onClick={() => handleOpen(params.row)}
+              variant="outlined"
+              size="small">
+              Xem chi tiết
+            </Button>
             <Button
               onClick={() => handleActive(params.row, STATUS.APPROVED)}
               variant="outlined"
@@ -98,6 +168,7 @@ export const ActiveTemplates = () => {
       },
     },
   ];
+
   return (
     <div
       style={{
@@ -110,6 +181,7 @@ export const ActiveTemplates = () => {
           columns={Columns}
         />
       </>
+      {renderModelDetail}
     </div>
   );
 };
