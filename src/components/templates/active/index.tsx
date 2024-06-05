@@ -43,7 +43,7 @@ export const ActiveTemplates = () => {
       if (!id) return;
       let response = await StaffService.ConfirmStaff(id, status);
       if (response.msg_code === MessageCode.Success) {
-        let newData = dataRows.filter((item) => item.id !== id);
+        let newData = dataRows.filter((item) => item.staffId !== id);
         setDataRows(newData);
         toastMessage("Thành công", "success");
       } else {
