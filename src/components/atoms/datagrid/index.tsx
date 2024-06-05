@@ -29,7 +29,7 @@ interface BaseGridProps extends DataGridProps {
   title: string;
   onSave?: (data: any, preData?: any) => void;
   onDel?: (id: any) => void;
-  onRowSelectionChange: (selection: any) => void;
+  onRowSelectionChange?: (selection: any) => void;
   selectedRows: GridRowId[];
   rows: any[];
   disable?: boolean;
@@ -83,7 +83,7 @@ export const BaseGrid: FC<BaseGridProps> = ({
       cancellationText: "Hủy",
     })
       .then(() => {
-        setData(data.filter((row) => row.id !== id));
+        // setData(data.filter((row) => row.id !== id));
         onDel && onDel(id);
       })
       .catch(() => console.log("Deletion cancelled."));
