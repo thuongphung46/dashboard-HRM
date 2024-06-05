@@ -33,8 +33,15 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
   const [value, setValue] = useState(0);
   const [formData, setFormData] = useState<any>({});
   const [dataDetailMe, setDataDetailMe] = useState<any>(initStaffInfo);
+  const [dataDetail, setDataDetail] = useState<any>(initStaffInfo);
   const { data, loading } = useGetStaff(id);
   const level = HRMStorage.get(KeyValue.Level);
+
+  useEffect(() => {
+    if (data) {
+      setDataDetail(data);
+    }
+  }, [data]);
 
   useEffect(() => {
     const fetch = async () => {
@@ -162,7 +169,14 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
         {loading ? (
           <div>Loading...</div>
         ) : (
-          <WorkingHistory action={action} data={data} id={id} />
+          <WorkingHistory
+            id={id}
+            action={action}
+            dataStaffDetail={dataDetail}
+            setDataWorkingHistory={(e) => {
+              setDataDetail({ ...data, staffWorkingHistoriesInAcademy: e });
+            }}
+          />
         )}
       </TabPanel>
       <TabPanel value={value} index={2}>

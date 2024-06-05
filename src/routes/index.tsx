@@ -16,7 +16,7 @@ import { FC } from "react";
 import { Navigate } from "react-router-dom";
 import HRMStorage from "common/function";
 import { KeyValue } from "constants/GlobalConstant";
-import FormContainer from "components/pages/page_test_any";
+import { UploadCv } from "components/pages/upload_cv";
 
 enum FORM_STATE {
   EDIT = "edit",
@@ -117,15 +117,15 @@ const router = createBrowserRouter([
       {
         path: "/active_page",
         element: (
-          <PrivateRouteAdmin
-            action={FORM_STATE.ADD}
-            component={ActivePage}
-          />
+          <PrivateRouteAdmin action={FORM_STATE.ADD} component={ActivePage} />
         ),
-      }, {
-        path: "/test",
-        element: <FormContainer />,
-      }
+      },
+      {
+        path: "/upload_cv",
+        element: (
+          <PrivateRouteAdmin action={FORM_STATE.ADD} component={UploadCv} />
+        ),
+      },
     ],
   },
   {
@@ -136,7 +136,7 @@ const router = createBrowserRouter([
   {
     path: "/error",
     element: <ErrorPage />,
-  }
+  },
 ]);
 
 export { router };
