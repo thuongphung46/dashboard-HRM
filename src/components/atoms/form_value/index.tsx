@@ -9,6 +9,7 @@ export interface IFormField {
   label: string;
   type: string;
   isRequire?: boolean;
+  readonly?: boolean;
   ref?: any;
   options?: {
     value: string | number;
@@ -32,6 +33,7 @@ const FormField: FC<Props> = ({ fields, handleOnChangeField, formData }) => {
               {field.options && field.options.length > 0 && (
                 <Autocomplete
                   disablePortal
+                  readOnly={field.readonly}
                   size="small"
                   ref={field.ref}
                   id={field.id}
@@ -75,6 +77,9 @@ const FormField: FC<Props> = ({ fields, handleOnChangeField, formData }) => {
               inputRef={field.ref}
               id={field.id}
               name={field.id}
+              InputProps={{
+                readOnly: field.readonly,
+              }}
               type={field.type}
               defaultValue={formData[field.id] || ""}
               onChange={(e) => handleOnChangeField(e)}
