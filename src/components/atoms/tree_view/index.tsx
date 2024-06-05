@@ -21,6 +21,7 @@ import { useGetListDepartment } from "services/hooks/useGetListDepartment";
 import { DepartmentService } from "services/model_management_service";
 import { MessageCode } from "types/enum/message_code";
 import { toastMessage } from "components/molecules/toast_message";
+import "./index.scss";
 
 export interface TreeItemData {
   itemId: string;
@@ -261,16 +262,17 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData, disable }) => {
         >
           {item.jobTitle}
         </Typography>
-        <Link
-          style={{
-            textDecoration: "none",
-            color: "#5ae1ff",
-            fontWeight: "bold",
-          }}
-          to={`/detail_employee/${item.id}`}
-        >
-          <Typography>{item.fullName}</Typography>
-        </Link>
+        <div className="link-tree-view">
+          <Link
+            style={{
+              textDecoration: "none",
+              color: "#1976d2",
+            }}
+            to={`/detail_employee/${item.id}`}
+          >
+            <Typography>{item.fullName}</Typography>
+          </Link>
+        </div>
       </Grid>
     );
   }, []);

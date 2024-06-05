@@ -53,7 +53,7 @@ export const DetailDepartMent: FC<Props> = ({ dataDetail, disable }) => {
           <Link
             style={{
               textDecoration: "none",
-              color: "#5ae1ff",
+              color: "#1976d2",
               fontWeight: "bold",
             }}
             to={`/detail_employee/${params.id}`}
@@ -86,12 +86,12 @@ export const DetailDepartMent: FC<Props> = ({ dataDetail, disable }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gridMember, jobTitleData]);
 
-  const transformedGridGroup = gridGroup.map(group => ({
+  const transformedGridGroup = gridGroup.map((group) => ({
     ...group,
-    children: group?.children?.map(child => ({
+    children: group?.children?.map((child) => ({
       ...child,
-      jobTitle: jobTitleMap[child.jobTitle] || child.jobTitle
-    }))
+      jobTitle: jobTitleMap[child.jobTitle] || child.jobTitle,
+    })),
   }));
 
   return (
