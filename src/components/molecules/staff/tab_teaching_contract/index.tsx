@@ -4,16 +4,16 @@ import { useGetListContractStaff } from "services/hooks/useGetListStaff";
 import HRMStorage from "common/function";
 import { KeyValue } from "constants/GlobalConstant";
 import { GridColDef } from "@mui/x-data-grid/models/colDef";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 import { toastMessage } from "components/molecules/toast_message";
 
 export const TeachingContract: React.FC = () => {
   const navigate = useNavigate();
-  const idUser = HRMStorage.get(KeyValue.id);
+  const { id } = useParams();
   const level = HRMStorage.get(KeyValue.Level);
   const [disable, setDisable] = useState<boolean>(true);
-  const { data: TeachingContractPageData } = useGetListContractStaff(idUser);
+  const { data: TeachingContractPageData } = useGetListContractStaff(id);
   useEffect(() => {
     if (level === "LEVEL_4") {
       setDisable(false);
@@ -29,8 +29,7 @@ export const TeachingContract: React.FC = () => {
       renderCell: (params: any) => (
         <Link
           style={{ whiteSpace: "pre-wrap" }}
-          to={`/teaching_contract/edit/${params.row.id}`}
-        >
+          to={`/teaching_contract/edit/${params.row.id}`}>
           {params.value}
         </Link>
       ),
