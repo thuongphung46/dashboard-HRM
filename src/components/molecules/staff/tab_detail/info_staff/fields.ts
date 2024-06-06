@@ -90,7 +90,17 @@ export const fieldsData: IFormField[] = [
     ],
     isRequire: true,
   },
-  { id: "rankName", label: "Hàm (Sĩ quan)", type: "select", options: [] },
+  {
+    id: "rankName",
+    label: "Hàm (Sĩ quan)",
+    type: "select",
+    options: [
+      {
+        value: "",
+        label: "",
+      },
+    ],
+  },
   {
     id: "academicRank",
     label: "Học hàm",

@@ -23,6 +23,7 @@ import HRMStorage from "common/function";
 import { KeyValue } from "constants/GlobalConstant";
 import { TeachingContract } from "../tab_teaching_contract";
 import { useConfirm } from "material-ui-confirm";
+import { PopupImportCV } from "components/atoms/popup";
 
 interface Props extends Action {}
 
@@ -30,12 +31,16 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
   const { id } = useParams();
   const confirm = useConfirm();
   const navigate = useNavigate();
+  //#region  state
   const [value, setValue] = useState(0);
+  const [open, setOpen] = useState<boolean>(false);
+  const [file, setFile] = useState<File>();
   const [formData, setFormData] = useState<any>({});
   const [dataDetailMe, setDataDetailMe] = useState<any>(initStaffInfo);
   const [dataDetail, setDataDetail] = useState<any>(initStaffInfo);
   const { data, loading } = useGetStaff(id);
   const level = HRMStorage.get(KeyValue.Level);
+  //#endregion
 
   useEffect(() => {
     if (data) {
@@ -128,18 +133,25 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
     <div
       style={{
         padding: "8px",
-      }}>
+      }}
+    >
       <Button size="small" variant="outlined" onClick={handleExit}>
         Thoát
       </Button>
-      <Button size="small" variant="outlined" sx={{ marginLeft: "4px" }}>
+      <Button
+        size="small"
+        variant="outlined"
+        sx={{ marginLeft: "4px" }}
+        onClick={() => setOpen(true)}
+      >
         Scan
       </Button>
       <Tabs
         value={value}
         onChange={handleChange}
         aria-label="nav tabs example"
-        role="navigation">
+        role="navigation"
+      >
         <Tab value={0} label="Thông tin chung" />
         {(action === "edit" || action === "me") && (
           <Tab value={1} label="Quá trình làm việc tại đơn vị" />
@@ -193,6 +205,18 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
           </>
         ) : null}
       </TabPanel>
+      <PopupImportCV
+        onClose={() => {
+          setOpen(false);
+        }}
+        onImport={(file: File) => {
+          setFile(file);
+        }}
+        open={open}
+        onSubmit={() => {
+          console.log("submit");
+        }}
+      />
     </div>
   );
 };
@@ -212,7 +236,8 @@ function TabPanel(props: TabPanelProps) {
       hidden={value !== index}
       id={`tabpanel-${index}`}
       aria-labelledby={`tab-${index}`}
-      {...other}>
+      {...other}
+    >
       {value === index && (
         <Box sx={{ p: 1, height: "calc(100vh - 180px)", overflow: "auto" }}>
           {children}
