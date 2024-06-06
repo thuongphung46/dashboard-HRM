@@ -138,7 +138,7 @@ export const BaseGrid: FC<BaseGridProps> = ({
           return [
             <GridActionsCellItem
               icon={<SaveIcon />}
-              label="Save"
+              label="Lưu"
               sx={{
                 color: "primary.main",
               }}
@@ -146,7 +146,7 @@ export const BaseGrid: FC<BaseGridProps> = ({
             />,
             <GridActionsCellItem
               icon={<CancelIcon />}
-              label="Cancel"
+              label="Xóa"
               className="textPrimary"
               onClick={handleCancelClick(id)}
               color="inherit"
@@ -157,7 +157,7 @@ export const BaseGrid: FC<BaseGridProps> = ({
         return [
           <GridActionsCellItem
             icon={<EditIcon />}
-            label="Edit"
+            label="Sửa"
             className="textPrimary"
             disabled={disable}
             onClick={handleEditClick(id)}
@@ -165,7 +165,7 @@ export const BaseGrid: FC<BaseGridProps> = ({
           />,
           <GridActionsCellItem
             icon={<DeleteIcon />}
-            label="Delete"
+            label="Xóa"
             disabled={disable}
             onClick={handleDeleteClick(id)}
             color="inherit"
@@ -264,7 +264,7 @@ function EditToolbar(props: EditToolbarProps) {
         size="small"
         startIcon={<AddIcon />}
         onClick={handleClick}>
-        Add record
+        Tạo mới
       </Button>
     </GridToolbarContainer>
   );
