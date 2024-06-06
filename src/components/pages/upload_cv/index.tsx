@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid";
 import FormField, { IFormField } from "components/atoms/form_value";
 import Button from "@mui/material/Button";
 import Input from "@mui/material/Input";
-import OpenAI from "openai";
+// import OpenAI from "openai";
 import Box from "@mui/material/Box";
 
 const formFields: IFormField[] = [
@@ -20,9 +20,9 @@ export const UploadCv: FC = () => {
     api_key: "",
     message: "export ra thông tin user trong CV dạng JSON ",
   });
-  const [chatHistory, setChatHistory] = useState<
-    { role: string; content: string | null }[]
-  >([]);
+  // const [chatHistory, setChatHistory] = useState<
+  //   { role: string; content: string | null }[]
+  // >([]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
