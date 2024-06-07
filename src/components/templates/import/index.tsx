@@ -110,7 +110,7 @@ export const ImportTemplate = () => {
         />
         <label htmlFor="raised-button-file">
           <Button size="small" variant="outlined" component="span">
-            Choose file
+            Chọn tệp
           </Button>
         </label>
       </div>
@@ -161,7 +161,7 @@ export const ImportTemplate = () => {
           onClick={handleImport}
           disabled={isDisableBtn()}
         >
-          Import
+          Nhập dữ liệu
         </Button>
       </div>
     </div>
