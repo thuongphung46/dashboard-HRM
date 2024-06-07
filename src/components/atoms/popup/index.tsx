@@ -61,12 +61,15 @@ export const PopupImportCV: FC<Props> = ({
             marginTop: "10px",
           }}
         >
-          <Input
-            type="file"
-            onChange={handleFileChange}
-            //chấp nhận file png, ảnh
-            // accept=".png, .jpg, .jpeg"
-          ></Input>
+          <Button variant="contained" component="label">
+            Upload File
+            <input
+              onChange={handleFileChange}
+              accept=".png, .jpg, .jpeg"
+              type="file"
+              hidden
+            />
+          </Button>
           <Button size="small" variant="outlined" type="submit">
             Lưu
           </Button>
