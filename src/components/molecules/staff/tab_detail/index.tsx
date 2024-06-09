@@ -24,8 +24,10 @@ import { KeyValue } from "constants/GlobalConstant";
 import { TeachingContract } from "../tab_teaching_contract";
 import { useConfirm } from "material-ui-confirm";
 import { PopupImportCV } from "components/atoms/popup";
+import { AIService } from "services/ai_service";
+import { ICV } from "types/ai_scan";
 
-interface Props extends Action {}
+interface Props extends Action { }
 
 export const TabDetailStaff: FC<Props> = ({ action }) => {
   const { id } = useParams();
@@ -37,6 +39,7 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
   const [file, setFile] = useState<File>();
   const [formData, setFormData] = useState<any>({});
   const [dataDetailMe, setDataDetailMe] = useState<any>(initStaffInfo);
+  const [dataScan, setDataScan] = useState<ICV>({});
   const [dataDetail, setDataDetail] = useState<any>(initStaffInfo);
   const { data, loading } = useGetStaff(id);
   const level = HRMStorage.get(KeyValue.Level);
@@ -61,6 +64,20 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
       fetch();
     }
   }, [data, action]);
+
+  const handleSubmit = useCallback(async () => {
+    if (!file) {
+      toastMessage("Chưa chọn file", "error");
+      return;
+    }
+    const res = await AIService.Scan(file);
+    if (res.msg_code === MessageCode.Success) {
+      setDataScan(res);
+      toastMessage("Quét thành công", "success");
+    } else {
+      toastMessage("Quét thất bại", "error");
+    }
+  }, [file]);
 
   const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
@@ -213,9 +230,11 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
           setFile(file);
         }}
         open={open}
-        onSubmit={() => {
-          console.log("submit");
-        }}
+        nameFile={
+          file ? file.name : "Chọn file để import thông tin nhân viên"
+
+        }
+        onSubmit={handleSubmit}
       />
     </div>
   );
