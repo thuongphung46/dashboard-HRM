@@ -1,9 +1,10 @@
 import React, {
   FC,
   useState,
-  ChangeEvent,
-  useCallback,
   useEffect,
+  useCallback,
+  useMemo,
+  ChangeEvent,
 } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -27,13 +28,13 @@ import { PopupImportCV } from "components/atoms/popup";
 import { AIService } from "services/ai_service";
 import { ICV } from "types/ai_scan";
 
-interface Props extends Action { }
+interface Props extends Action {}
 
 export const TabDetailStaff: FC<Props> = ({ action }) => {
   const { id } = useParams();
   const confirm = useConfirm();
   const navigate = useNavigate();
-  //#region  state
+  //#region state
   const [value, setValue] = useState(0);
   const [open, setOpen] = useState<boolean>(false);
   const [file, setFile] = useState<File>();
@@ -41,6 +42,7 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
   const [dataDetailMe, setDataDetailMe] = useState<any>(initStaffInfo);
   const [dataScan, setDataScan] = useState<ICV>({});
   const [dataDetail, setDataDetail] = useState<any>(initStaffInfo);
+
   const { data, loading } = useGetStaff(id);
   const level = HRMStorage.get(KeyValue.Level);
   //#endregion
@@ -65,6 +67,27 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
     }
   }, [data, action]);
 
+  useEffect(() => {
+    if (dataScan && action === "add") {
+      // console.log("dataScan: ", dataScan);
+      setDataDetail((prevDataDetail: any) => ({
+        ...prevDataDetail,
+        fullName: dataScan.name,
+        dateOfBirth: dataScan.dateOfBirth,
+        address: dataScan.address,
+        phoneNumber: dataScan.phoneNumber,
+        email: dataScan.email,
+        introduction: dataScan.introduction,
+        education: dataScan.education,
+        experience: dataScan.experience,
+        skills: dataScan.skills,
+        languages: dataScan.languages,
+        certifications: dataScan.certifications,
+      }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataScan]);
+
   const handleSubmit = useCallback(async () => {
     if (!file) {
       toastMessage("Chưa chọn file", "error");
@@ -72,7 +95,7 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
     }
     const res = await AIService.Scan(file);
     if (res.msg_code === MessageCode.Success) {
-      setDataScan(res);
+      setDataScan(res.content);
       toastMessage("Quét thành công", "success");
     } else {
       toastMessage("Quét thất bại", "error");
@@ -82,6 +105,7 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
   const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
+
   const handleOnClickSave = useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -146,6 +170,68 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
     }
   }, [confirm, formData, navigate]);
 
+  console.log("datadeatil: ", dataDetail);
+
+  const renderTabPannel = useMemo(() => {
+    return (
+      <>
+        <TabPanel value={value} index={0}>
+          <InfoStaff
+            formData={formData}
+            setFormData={setFormData}
+            action={action}
+            data={action === "me" ? dataDetailMe : dataDetail}
+            handleSave={handleOnClickSave}
+          />
+          {/* {loading ? (
+            <div>Loading...</div>
+          ) : (
+            
+          )} */}
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          {loading ? (
+            <div>Loading...</div>
+          ) : (
+            <WorkingHistory
+              id={id}
+              action={action}
+              dataStaffDetail={dataDetail}
+              setDataWorkingHistory={(e) => {
+                setDataDetail({ ...data, staffWorkingHistoriesInAcademy: e });
+              }}
+            />
+          )}
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          {level !== "LEVEL_1" ? (
+            <>
+              <Analytic action={action} data={data} />
+            </>
+          ) : null}
+        </TabPanel>
+        <TabPanel value={value} index={3}>
+          {level === "LEVEL_1" || level === "LEVEL_4" ? (
+            <>
+              <TeachingContract />
+            </>
+          ) : null}
+        </TabPanel>
+      </>
+    );
+  }, [
+    action,
+    data,
+    dataDetail,
+    dataDetailMe,
+    formData,
+    handleOnClickSave,
+    id,
+    level,
+    loading,
+    value,
+  ]);
+
   return (
     <div
       style={{
@@ -181,47 +267,8 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
             <Tab value={3} label={"Hợp đồng giảng dạy"} />
           )}
       </Tabs>
-      <TabPanel value={value} index={0}>
-        {loading ? (
-          <div>Loading...</div>
-        ) : (
-          <InfoStaff
-            formData={formData}
-            setFormData={setFormData}
-            action={action}
-            data={action === "me" ? dataDetailMe : data}
-            handleSave={handleOnClickSave}
-          />
-        )}
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        {loading ? (
-          <div>Loading...</div>
-        ) : (
-          <WorkingHistory
-            id={id}
-            action={action}
-            dataStaffDetail={dataDetail}
-            setDataWorkingHistory={(e) => {
-              setDataDetail({ ...data, staffWorkingHistoriesInAcademy: e });
-            }}
-          />
-        )}
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        {level !== "LEVEL_1" ? (
-          <>
-            <Analytic action={action} data={data} />
-          </>
-        ) : null}
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        {level === "LEVEL_1" || level === "LEVEL_4" ? (
-          <>
-            <TeachingContract />
-          </>
-        ) : null}
-      </TabPanel>
+      {renderTabPannel}
+
       <PopupImportCV
         onClose={() => {
           setOpen(false);
@@ -230,10 +277,7 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
           setFile(file);
         }}
         open={open}
-        nameFile={
-          file ? file.name : "Chọn file để import thông tin nhân viên"
-
-        }
+        nameFile={file ? file.name : "Chọn file để import thông tin nhân viên"}
         onSubmit={handleSubmit}
       />
     </div>
