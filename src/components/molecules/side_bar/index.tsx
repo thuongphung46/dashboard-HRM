@@ -1,4 +1,3 @@
-import { Diamond } from "@mui/icons-material";
 import { Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
@@ -6,7 +5,6 @@ import {
   MenuItem,
   MenuItemStyles,
   Sidebar,
-  SubMenu,
   menuClasses,
 } from "react-pro-sidebar";
 
