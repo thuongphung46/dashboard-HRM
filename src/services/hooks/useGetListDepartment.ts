@@ -31,7 +31,7 @@ export const useGetListDepartment = (departmentType?: string) => {
 };
 
 //get chi tiết phòng ban
-export const useGetDepartment = (id: number) => {
+export const useGetDepartment = (id: any) => {
   const dispatch = useAppDispatch();
   const [data, setData] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(true);

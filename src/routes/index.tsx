@@ -3,6 +3,7 @@ import { ErrorPage } from "components/pages/error";
 import { HomePage } from "components/pages/home";
 import { GeneralPage } from "components/pages/general";
 import { ManagementLevelModelPage } from "components/pages/management_level_model";
+import { DetailDepartMent } from "components/molecules/management_department/detail_department";
 import RootLayout from "components/templates/root_layout/RootLayout";
 import { ListEmployeePage } from "components/pages/staff";
 import { ImportPage } from "components/pages/import";
@@ -56,6 +57,12 @@ const router = createBrowserRouter([
       {
         path: "/model",
         element: <ManagementLevelModelPage form_state={FORM_STATE.EDIT} />,
+        children: [
+          {
+            path: "/model/:id",
+            element: <DetailDepartMent />,
+          },
+        ],
       },
       {
         path: "/general",
