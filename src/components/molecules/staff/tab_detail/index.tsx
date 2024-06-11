@@ -28,7 +28,7 @@ import { PopupImportCV } from "components/atoms/popup";
 import { AIService } from "services/ai_service";
 import { ICV } from "types/ai_scan";
 
-interface Props extends Action {}
+interface Props extends Action { }
 
 export const TabDetailStaff: FC<Props> = ({ action }) => {
   const { id } = useParams();
@@ -42,6 +42,7 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
   const [dataDetailMe, setDataDetailMe] = useState<any>(initStaffInfo);
   const [dataScan, setDataScan] = useState<ICV>({});
   const [dataDetail, setDataDetail] = useState<any>(initStaffInfo);
+  const [isScanning, setIsScanning] = useState(false); // New state for controlling visibility
 
   const { data, loading } = useGetStaff(id);
   const level = HRMStorage.get(KeyValue.Level);
@@ -69,7 +70,6 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
 
   useEffect(() => {
     if (dataScan && action === "add") {
-      // console.log("dataScan: ", dataScan);
       setDataDetail((prevDataDetail: any) => ({
         ...prevDataDetail,
         fullName: dataScan.name,
@@ -93,7 +93,9 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
       toastMessage("Chưa chọn file", "error");
       return;
     }
+    setIsScanning(true); // Set scanning state to true
     const res = await AIService.Scan(file);
+    setIsScanning(false); // Set scanning state to false after scanning
     if (res.msg_code === MessageCode.Success) {
       setDataScan(res.content);
       toastMessage("Quét thành công", "success");
@@ -170,24 +172,31 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
     }
   }, [confirm, formData, navigate]);
 
-  console.log("datadeatil: ", dataDetail);
 
   const renderTabPannel = useMemo(() => {
     return (
       <>
         <TabPanel value={value} index={0}>
-          <InfoStaff
-            formData={formData}
-            setFormData={setFormData}
-            action={action}
-            data={action === "me" ? dataDetailMe : dataDetail}
-            handleSave={handleOnClickSave}
-          />
-          {/* {loading ? (
-            <div>Loading...</div>
-          ) : (
-            
-          )} */}
+          {!isScanning && action === "add" && (
+            <InfoStaff
+              formData={formData}
+              setFormData={setFormData}
+              action={action}
+              data={dataDetail}
+              handleSave={handleOnClickSave}
+            />
+          )}
+          {
+            (action === "edit" || action === "me") && (
+              <InfoStaff
+                formData={formData}
+                setFormData={setFormData}
+                action={action}
+                data={action === "me" ? dataDetailMe : dataDetail}
+                handleSave={handleOnClickSave}
+              />
+            )}
+
         </TabPanel>
         <TabPanel value={value} index={1}>
           {loading ? (
@@ -230,6 +239,7 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
     level,
     loading,
     value,
+    isScanning, // Include isScanning in dependencies
   ]);
 
   return (
