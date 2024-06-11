@@ -274,57 +274,53 @@ export const ListDepartment: FC<Props> = ({
   const renderList = useCallback(
     (i: any) => {
       return (
-        <>
-          <ListItem
+        <ListItem
+          sx={{
+            "&:hover": {
+              backgroundColor: "#f5f5f5",
+              cursor: "pointer",
+            },
+            backgroundColor:
+              id && id === i.id.toString() ? "rgba(0,0,0,0.1)" : "transparent",
+            padding: "0px 4px",
+            height: 54,
+          }}
+          key={i.id}>
+          <ListItemText
             sx={{
-              "&:hover": {
-                backgroundColor: "#f5f5f5",
-                cursor: "pointer",
-              },
-              backgroundColor:
-                id && id === i.id.toString()
-                  ? "rgba(0,0,0,0.1)"
-                  : "transparent",
-              padding: "0px 4px",
-              height: 54,
+              height: "100%",
+              width: "76%",
+              display: "flex",
+              alignItems: "center",
             }}
-            key={i.id}>
-            <ListItemText
+            onClick={() => handleClickItem(i)}>
+            {i.name}
+          </ListItemText>
+          <ListItemButton
+            disabled={disable}
+            onClick={() => handleOpenEdit(i)}
+            sx={{ height: "100%", width: "14%", color: "#1976d2" }}>
+            <EditIcon
               sx={{
-                height: "100%",
-                width: "76%",
-                display: "flex",
-                alignItems: "center",
+                fontSize: "22px",
               }}
-              onClick={() => handleClickItem(i)}>
-              {i.name}
-            </ListItemText>
-            <ListItemButton
-              disabled={disable}
-              onClick={() => handleOpenEdit(i)}
-              sx={{ height: "100%", width: "14%", color: "#1976d2" }}>
-              <EditIcon
-                sx={{
-                  fontSize: "22px",
-                }}
-              />
-            </ListItemButton>
-            <ListItemButton
-              disabled={disable}
-              onClick={() => handleDel(i)}
+            />
+          </ListItemButton>
+          <ListItemButton
+            disabled={disable}
+            onClick={() => handleDel(i)}
+            sx={{
+              height: "100%",
+              width: "14%",
+              color: "#1976d2",
+            }}>
+            <DeleteIcon
               sx={{
-                height: "100%",
-                width: "14%",
-                color: "#1976d2",
-              }}>
-              <DeleteIcon
-                sx={{
-                  fontSize: "22px",
-                }}
-              />
-            </ListItemButton>
-          </ListItem>
-        </>
+                fontSize: "22px",
+              }}
+            />
+          </ListItemButton>
+        </ListItem>
       );
     },
     [disable, handleClickItem, handleDel, handleOpenEdit, id]

@@ -175,7 +175,7 @@ export const InfoStaff = ({
                 Lưu
               </Button>
             </Grid>
-            {(data?.id || action === "add") && (
+            {fields && data && (
               <FormField
                 action={action}
                 fields={fields}
