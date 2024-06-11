@@ -4,8 +4,8 @@ export interface AppConfig {
 }
 
 export const APP_CONFIG: AppConfig = {
-  // API_URL: "https://hrmactvn.id.vn/api",
-  API_URL: "http://localhost:9669/api",
+  API_URL: "https://hrmactvn.id.vn/api",
+  // API_URL: "http://localhost:9669/api",
   DEFAULT_API_INTERVAL: 60000,
 };
 
