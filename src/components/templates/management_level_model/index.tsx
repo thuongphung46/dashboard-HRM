@@ -1,21 +1,19 @@
 import HRMStorage from "common/function";
-import { DetailDepartMent } from "components/molecules/management_department/detail_department";
 import { ListDepartment } from "components/molecules/management_department/list_management";
 import { KeyValue } from "constants/GlobalConstant";
 import { useCallback, useEffect, useState } from "react";
-import {
-  useGetListDepartment,
-  useGetDepartment,
-} from "services/hooks/useGetListDepartment";
+import { Outlet, useNavigate } from "react-router-dom";
+import { useGetListDepartment } from "services/hooks/useGetListDepartment";
 
 export const ManagementLevelModelTemplate = () => {
+  const navigate = useNavigate();
   const level = HRMStorage.get(KeyValue.Level);
   const [selectedId, setSelectedId] = useState<any>(null);
   const [disable, setDisable] = useState(true);
 
   const [departmentList, setDepartmentList] = useState<any[]>([]);
   const { data: departmentData } = useGetListDepartment();
-  const { data: department } = useGetDepartment(selectedId);
+
   useEffect(() => {
     if (level === "LEVEL_4") {
       setDisable(false);
@@ -30,6 +28,7 @@ export const ManagementLevelModelTemplate = () => {
 
   const handleClickItem = (e: any) => {
     setSelectedId(e.id);
+    navigate(`/model/${e.id}`);
   };
 
   const handleSetDepartmentList = useCallback((data: any) => {
@@ -42,8 +41,7 @@ export const ManagementLevelModelTemplate = () => {
         display: "flex",
         width: "100%",
         height: "calc(100vh - 100px)",
-      }}
-    >
+      }}>
       <ListDepartment
         handleClickItem={handleClickItem}
         departmentList={departmentList}
@@ -51,7 +49,7 @@ export const ManagementLevelModelTemplate = () => {
         active={selectedId}
         disable={disable}
       />
-      <DetailDepartMent dataDetail={department} disable={disable} />
+      <Outlet />
     </div>
   );
 };

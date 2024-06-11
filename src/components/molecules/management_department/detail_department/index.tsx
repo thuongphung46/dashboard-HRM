@@ -2,15 +2,18 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { FC, useState, useEffect, useMemo } from "react";
 import { GridColDef } from "@mui/x-data-grid/models/colDef";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { IDataDetail } from "types/model";
 import { DataGrid } from "@mui/x-data-grid";
 import { TreeView, TreeItemData } from "components/atoms/tree_view";
 import { useGetListJobTitle } from "services/hooks/useGetListJobTitle";
+import { useGetDepartment } from "services/hooks/useGetListDepartment";
+import HRMStorage from "common/function";
+import { KeyValue } from "constants/GlobalConstant";
 
 interface Props {
-  dataDetail: IDataDetail;
-  disable?: boolean;
+  // dataDetail: IDataDetail;
+  // disable?: boolean;
 }
 interface IMember {
   fullName?: string;
@@ -18,14 +21,31 @@ interface IMember {
   jobTitle?: string;
 }
 
-export const DetailDepartMent: FC<Props> = ({ dataDetail, disable }) => {
+export const DetailDepartMent: FC<Props> = () => {
+  const { id } = useParams();
   const [gridGroup, setGridGroup] = useState<TreeItemData[]>([]);
+  const [dataDetail, setDataDetail] = useState<IDataDetail>();
   const [gridMember, setGridMember] = useState<IMember[]>([]);
+  const [disable, setDisable] = useState(true);
+
   const { data: jobTitleData } = useGetListJobTitle();
+  const { data: department } = useGetDepartment(id);
+  const level = HRMStorage.get(KeyValue.Level);
+  useEffect(() => {
+    if (level === "LEVEL_4") {
+      setDisable(false);
+    }
+  }, [level]);
+
+  useEffect(() => {
+    if (department) {
+      setDataDetail(department);
+    }
+  }, [department]);
 
   useEffect(() => {
     let data: TreeItemData[] = [];
-    if (dataDetail.groups && dataDetail.members) {
+    if (dataDetail && dataDetail.groups && dataDetail.members) {
       setGridMember(dataDetail.members);
       dataDetail.groups.forEach((group) => {
         let item: TreeItemData = {
@@ -56,8 +76,7 @@ export const DetailDepartMent: FC<Props> = ({ dataDetail, disable }) => {
               color: "#1976d2",
               fontWeight: "bold",
             }}
-            to={`/detail_employee/${params.id}`}
-          >
+            to={`/detail_employee/${params.id}`}>
             <span>{params.value}</span>
           </Link>
         );
@@ -96,10 +115,7 @@ export const DetailDepartMent: FC<Props> = ({ dataDetail, disable }) => {
 
   return (
     <Box sx={{ width: "70%" }}>
-      <Grid
-        sx={{ overflow: "auto", padding: 2 }}
-        container
-      >
+      <Grid sx={{ overflow: "auto", padding: 2 }} container>
         <Grid sx={{ width: "100%" }} item>
           <DataGrid
             sx={{
@@ -110,14 +126,13 @@ export const DetailDepartMent: FC<Props> = ({ dataDetail, disable }) => {
           />
         </Grid>
 
-        <Grid sx={{  width: "100%", paddingTop: 2 }} item>
+        <Grid sx={{ width: "100%", paddingTop: 2 }} item>
           <TreeView
             data={transformedGridGroup}
             setData={(data: TreeItemData[]) => {
               setGridGroup(data);
             }}
-            disable={disable}
-          ></TreeView>
+            disable={disable}></TreeView>
         </Grid>
       </Grid>
     </Box>
