@@ -115,7 +115,9 @@ export const DetailDepartMent: FC<Props> = () => {
 
   return (
     <Box sx={{ width: "70%" }}>
-      <Grid sx={{ overflow: "auto", padding: 2 }} container>
+      <Grid
+        sx={{ overflow: "auto", padding: 2, height: "calc(100vh - 90px)" }}
+        container>
         <Grid sx={{ width: "100%" }} item>
           <DataGrid
             sx={{
