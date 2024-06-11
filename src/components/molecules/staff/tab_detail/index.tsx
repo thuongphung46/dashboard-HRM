@@ -192,16 +192,24 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
               handleSave={handleOnClickSave}
             />
           )}
-          {(action === "edit" || action === "me") &&
-            (dataDetail || dataDetailMe) && (
-              <InfoStaff
-                formData={formData}
-                setFormData={setFormData}
-                action={action}
-                data={action === "me" ? dataDetailMe : dataDetail}
-                handleSave={handleOnClickSave}
-              />
-            )}
+          {action === "edit" && dataDetail && dataDetail.departmentId && (
+            <InfoStaff
+              formData={formData}
+              setFormData={setFormData}
+              action={action}
+              data={dataDetail}
+              handleSave={handleOnClickSave}
+            />
+          )}
+          {action === "me" && dataDetailMe && (
+            <InfoStaff
+              formData={formData}
+              setFormData={setFormData}
+              action={action}
+              data={dataDetailMe}
+              handleSave={handleOnClickSave}
+            />
+          )}
         </TabPanel>
         <TabPanel value={value} index={1}>
           {loading ? (
