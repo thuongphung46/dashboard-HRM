@@ -13,12 +13,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { DepartmentService } from "services/model_management_service";
 import { MessageCode } from "types/enum/message_code";
 import { toastMessage } from "components/molecules/toast_message";
+import { useParams } from "react-router-dom";
 
 interface Props {
   departmentList: any[];
   setDepartmentList: (data: any) => void;
   handleClickItem: (item: any) => void;
-  active: any;
   disable?: boolean;
 }
 
@@ -26,9 +26,9 @@ export const ListDepartment: FC<Props> = ({
   departmentList,
   handleClickItem,
   setDepartmentList,
-  active,
   disable,
 }) => {
+  const { id } = useParams();
   const [open, setOpen] = useState<boolean>(false);
   const [openPEdit, setOpenPEdit] = useState<boolean>(false);
   const [formData, setFormData] = useState<any>({});
@@ -121,8 +121,7 @@ export const ListDepartment: FC<Props> = ({
           alignItems: "center",
           height: "100%",
           width: "100%",
-        }}
-      >
+        }}>
         <div
           style={{
             height: "400px",
@@ -131,8 +130,7 @@ export const ListDepartment: FC<Props> = ({
             padding: "24px",
             borderRadius: "4px",
             boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
-          }}
-        >
+          }}>
           <h4>Thêm cấp quản lý</h4>
           <Button size="small" variant="outlined" onClick={handleSave}>
             Lưu
@@ -142,8 +140,7 @@ export const ListDepartment: FC<Props> = ({
               field={field}
               formData={formData}
               hanldeOnChangefield={hanldeOnChangefield}
-              key={field.id}
-            ></ReusableField>
+              key={field.id}></ReusableField>
           ))}
         </div>
       </Modal>
@@ -248,8 +245,7 @@ export const ListDepartment: FC<Props> = ({
             alignItems: "center",
             height: "100%",
             width: "100%",
-          }}
-        >
+          }}>
           <div
             style={{
               height: "400px",
@@ -258,8 +254,7 @@ export const ListDepartment: FC<Props> = ({
               padding: "24px",
               borderRadius: "4px",
               boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
-            }}
-          >
+            }}>
             <Button size="small" onClick={handleEdit} variant="outlined">
               Lưu
             </Button>
@@ -268,8 +263,7 @@ export const ListDepartment: FC<Props> = ({
                 field={field}
                 formData={dataEdit}
                 hanldeOnChangefield={handleOnChange}
-                key={field.id}
-              ></ReusableField>
+                key={field.id}></ReusableField>
             ))}
           </div>
         </Modal>
@@ -277,18 +271,74 @@ export const ListDepartment: FC<Props> = ({
     );
   }, [openPEdit, dataEdit, handleCloseEdit, handleEdit, handleOnChange]);
 
+  const renderList = useCallback(
+    (i: any) => {
+      return (
+        <>
+          <ListItem
+            sx={{
+              "&:hover": {
+                backgroundColor: "#f5f5f5",
+                cursor: "pointer",
+              },
+              backgroundColor:
+                id && id === i.id.toString()
+                  ? "rgba(0,0,0,0.1)"
+                  : "transparent",
+              padding: "0px 4px",
+              height: 54,
+            }}
+            key={i.id}>
+            <ListItemText
+              sx={{
+                height: "100%",
+                width: "76%",
+                display: "flex",
+                alignItems: "center",
+              }}
+              onClick={() => handleClickItem(i)}>
+              {i.name}
+            </ListItemText>
+            <ListItemButton
+              disabled={disable}
+              onClick={() => handleOpenEdit(i)}
+              sx={{ height: "100%", width: "14%", color: "#1976d2" }}>
+              <EditIcon
+                sx={{
+                  fontSize: "22px",
+                }}
+              />
+            </ListItemButton>
+            <ListItemButton
+              disabled={disable}
+              onClick={() => handleDel(i)}
+              sx={{
+                height: "100%",
+                width: "14%",
+                color: "#1976d2",
+              }}>
+              <DeleteIcon
+                sx={{
+                  fontSize: "22px",
+                }}
+              />
+            </ListItemButton>
+          </ListItem>
+        </>
+      );
+    },
+    [disable, handleClickItem, handleDel, handleOpenEdit, id]
+  );
   return (
     <div
       style={{
         width: "30%",
-      }}
-    >
+      }}>
       <Button
         disabled={disable}
         size="small"
         variant="outlined"
-        onClick={handleShowPopupAdd}
-      >
+        onClick={handleShowPopupAdd}>
         Thêm cấp quản lý
       </Button>
       <List
@@ -301,62 +351,9 @@ export const ListDepartment: FC<Props> = ({
           maxHeight: `calc(100vh - 120px)`,
         }}
         component="nav"
-        aria-labelledby="nested-list-subheader"
-      >
-        {departmentList.map((item) => {
-          return (
-            <ListItem
-              sx={{
-                "&:hover": {
-                  backgroundColor: "#f5f5f5",
-                  cursor: "pointer",
-                },
-                backgroundColor:
-                  active === item.id ? "rgba(0,0,0,0.1)" : "transparent",
-                padding: "0px 4px",
-                height: 54,
-              }}
-              key={item.id}
-            >
-              <ListItemText
-                sx={{
-                  height: "100%",
-                  width: "76%",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-                onClick={() => handleClickItem(item)}
-              >
-                {item.name}
-              </ListItemText>
-              <ListItemButton
-                disabled={disable}
-                onClick={() => handleOpenEdit(item)}
-                sx={{ height: "100%", width: "14%", color: "#1976d2" }}
-              >
-                <EditIcon
-                  sx={{
-                    fontSize: "22px",
-                  }}
-                />
-              </ListItemButton>
-              <ListItemButton
-                disabled={disable}
-                onClick={() => handleDel(item)}
-                sx={{
-                  height: "100%",
-                  width: "14%",
-                  color: "#1976d2",
-                }}
-              >
-                <DeleteIcon
-                  sx={{
-                    fontSize: "22px",
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-          );
+        aria-labelledby="nested-list-subheader">
+        {departmentList.map((i) => {
+          return renderList(i);
         })}
       </List>
       {renderPopup}

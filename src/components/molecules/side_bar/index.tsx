@@ -1,6 +1,6 @@
-import { Diamond, DarkMode } from "@mui/icons-material";
+import { Diamond } from "@mui/icons-material";
 import { Typography } from "@mui/material";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Menu,
   MenuItem,
@@ -62,11 +62,6 @@ export const Playground: React.FC<SidebarProps> = ({
       setDissable(false);
     }
   }, [level, dissable]);
-
-  const handleLogout = useCallback(() => {
-    HRMStorage.clear();
-    window.location.href = "/login";
-  }, []);
 
   const menuItemStyles: MenuItemStyles = {
     root: {
@@ -150,52 +145,52 @@ export const Playground: React.FC<SidebarProps> = ({
                 }}></Typography>
             </div>
             <Menu menuItemStyles={menuItemStyles}>
-              <SubMenu label="Mô-đun" icon={<Diamond />}>
-                <MenuItem
-                  active={location.pathname.startsWith("/model")}
-                  component={<Link to={"/model"}></Link>}>
-                  Mô hình cấp quản lý
-                </MenuItem>
+              {/* <SubMenu label="Mô-đun" icon={<Diamond />}> */}
+              <MenuItem
+                active={location.pathname.startsWith("/model")}
+                component={<Link to={"/model"}></Link>}>
+                Mô hình cấp quản lý
+              </MenuItem>
 
-                <MenuItem
-                  active={location.pathname.startsWith("/detail_employee")}
-                  component={<Link to={"/detail_employee"}></Link>}>
-                  Danh sách nhân viên
-                </MenuItem>
-                <MenuItem
-                  active={location.pathname.startsWith("/import")}
-                  component={<Link to={"/import"}></Link>}>
-                  Nhập dữ liệu
-                </MenuItem>
-                <MenuItem
-                  active={location.pathname.startsWith("/general")}
-                  component={<Link to={"/general"}></Link>}>
-                  Thông tin chung
-                </MenuItem>
-                <MenuItem
-                  active={location.pathname.startsWith("/statistic")}
-                  component={<Link to={"/statistic"}></Link>}>
-                  Thống kê
-                </MenuItem>
-                {!dissable && (
-                  <>
-                    <MenuItem
-                      active={location.pathname.startsWith("/active_page")}
-                      component={<Link to={"/active_page"}></Link>}>
-                      Duyệt nhân viên
-                    </MenuItem>
-                    {/* <MenuItem
+              <MenuItem
+                active={location.pathname.startsWith("/detail_employee")}
+                component={<Link to={"/detail_employee"}></Link>}>
+                Danh sách nhân viên
+              </MenuItem>
+              <MenuItem
+                active={location.pathname.startsWith("/import")}
+                component={<Link to={"/import"}></Link>}>
+                Nhập dữ liệu
+              </MenuItem>
+              <MenuItem
+                active={location.pathname.startsWith("/general")}
+                component={<Link to={"/general"}></Link>}>
+                Thông tin chung
+              </MenuItem>
+              <MenuItem
+                active={location.pathname.startsWith("/statistic")}
+                component={<Link to={"/statistic"}></Link>}>
+                Thống kê
+              </MenuItem>
+              {!dissable && (
+                <>
+                  <MenuItem
+                    active={location.pathname.startsWith("/active_page")}
+                    component={<Link to={"/active_page"}></Link>}>
+                    Duyệt nhân viên
+                  </MenuItem>
+                  {/* <MenuItem
                       active={location.pathname.startsWith("/upload_cv")}
                       component={<Link to={"/upload_cv"}></Link>}
                     >
                       Tải lên CV
                     </MenuItem> */}
-                  </>
-                )}
-              </SubMenu>
+                </>
+              )}
+              {/* </SubMenu> */}
             </Menu>
 
-            <div
+            {/* <div
               style={{
                 padding: "0 24px",
                 marginBottom: "8px",
@@ -210,15 +205,15 @@ export const Playground: React.FC<SidebarProps> = ({
                 }}>
                 Extra
               </Typography>
-            </div>
+            </div> */}
 
-            <Menu menuItemStyles={menuItemStyles}>
+            {/* <Menu menuItemStyles={menuItemStyles}>
               <SubMenu label="Theme" icon={<DarkMode />}>
                 <MenuItem onClick={() => setTheme("dark")}>Dark</MenuItem>
                 <MenuItem onClick={() => setTheme("light")}> Light</MenuItem>
               </SubMenu>
               <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
-            </Menu>
+            </Menu> */}
           </div>
 
           {/* <SidebarFooter collapsed={collapsed} /> */}
