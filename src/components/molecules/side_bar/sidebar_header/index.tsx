@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { Typography } from "@mui/material";
+import packageJson from "../../../../../package.json";
 import React from "react";
 
 interface SidebarHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -55,9 +56,28 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
     <StyledSidebarHeader {...rest}>
       <div style={{ display: "flex", alignItems: "center" }}>
         <StyledLogo rtl={rtl}>K</StyledLogo>
-        <Typography variant="subtitle1" fontWeight={700} color="#0098e5">
-          HRM
-        </Typography>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            minWidth: "100px",
+          }}
+        >
+          <Typography variant="subtitle1" fontWeight={700} color="#0098e5">
+            HRM
+          </Typography>
+          <p
+            style={{
+              letterSpacing: 1,
+              opacity: 0.7,
+              fontSize: "4px",
+              margin: 0,
+              lineHeight: "2px",
+            }}
+          >
+            V {packageJson.version}
+          </p>
+        </div>
       </div>
     </StyledSidebarHeader>
   );
