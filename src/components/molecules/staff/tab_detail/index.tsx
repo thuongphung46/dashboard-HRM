@@ -28,7 +28,7 @@ import { PopupImportCV } from "components/atoms/popup";
 import { AIService } from "services/ai_service";
 import { ICV } from "types/ai_scan";
 
-interface Props extends Action { }
+interface Props extends Action {}
 
 export const TabDetailStaff: FC<Props> = ({ action }) => {
   const { id } = useParams();
@@ -74,9 +74,9 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
         ...prevDataDetail,
         fullName: dataScan.name,
         dateOfBirth: dataScan.dateOfBirth,
-        address: dataScan.address,
+        currentPlace: dataScan.address,
         phoneNumber: dataScan.phoneNumber,
-        email: dataScan.email,
+        personalEmail: dataScan.email,
         introduction: dataScan.introduction,
         education: dataScan.education,
         experience: dataScan.experience,
@@ -84,9 +84,16 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
         languages: dataScan.languages,
         certifications: dataScan.certifications,
       }));
+      setFormData({
+        fullName: dataScan.name,
+        dateOfBirth: dataScan.dateOfBirth,
+        currentPlace: dataScan.address,
+        phoneNumber: dataScan.phoneNumber,
+        personalEmail: dataScan.email,
+      });
+      setOpen(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dataScan]);
+  }, [action, dataScan]);
 
   const handleSubmit = useCallback(async () => {
     if (!file) {
@@ -172,7 +179,6 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
     }
   }, [confirm, formData, navigate]);
 
-
   const renderTabPannel = useMemo(() => {
     return (
       <>
@@ -186,17 +192,15 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
               handleSave={handleOnClickSave}
             />
           )}
-          {
-            (action === "edit" || action === "me") && (
-              <InfoStaff
-                formData={formData}
-                setFormData={setFormData}
-                action={action}
-                data={action === "me" ? dataDetailMe : dataDetail}
-                handleSave={handleOnClickSave}
-              />
-            )}
-
+          {(action === "edit" || action === "me") && (
+            <InfoStaff
+              formData={formData}
+              setFormData={setFormData}
+              action={action}
+              data={action === "me" ? dataDetailMe : dataDetail}
+              handleSave={handleOnClickSave}
+            />
+          )}
         </TabPanel>
         <TabPanel value={value} index={1}>
           {loading ? (
@@ -246,8 +250,7 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
     <div
       style={{
         padding: "8px",
-      }}
-    >
+      }}>
       <Button size="small" variant="outlined" onClick={handleExit}>
         Thoát
       </Button>
@@ -255,16 +258,14 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
         size="small"
         variant="outlined"
         sx={{ marginLeft: "4px" }}
-        onClick={() => setOpen(true)}
-      >
+        onClick={() => setOpen(true)}>
         Scan
       </Button>
       <Tabs
         value={value}
         onChange={handleChange}
         aria-label="nav tabs example"
-        role="navigation"
-      >
+        role="navigation">
         <Tab value={0} label="Thông tin chung" />
         {(action === "edit" || action === "me") && (
           <Tab value={1} label="Quá trình làm việc tại đơn vị" />
@@ -287,7 +288,6 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
           setFile(file);
         }}
         open={open}
-        nameFile={file ? file.name : "Chọn file để import thông tin nhân viên"}
         onSubmit={handleSubmit}
       />
     </div>
@@ -309,8 +309,7 @@ function TabPanel(props: TabPanelProps) {
       hidden={value !== index}
       id={`tabpanel-${index}`}
       aria-labelledby={`tab-${index}`}
-      {...other}
-    >
+      {...other}>
       {value === index && (
         <Box sx={{ p: 1, height: "calc(100vh - 180px)", overflow: "auto" }}>
           {children}

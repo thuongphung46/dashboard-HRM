@@ -1,13 +1,12 @@
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 
 interface Props {
   open: boolean;
   onClose: () => void;
   onImport: (file: File) => void;
   onSubmit: () => void;
-  nameFile?: string;
 }
 
 export const PopupImportCV: FC<Props> = ({
@@ -15,7 +14,6 @@ export const PopupImportCV: FC<Props> = ({
   onImport,
   open,
   onSubmit,
-  nameFile
 }) => {
   const [fileName, setFileName] = useState<string | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
@@ -27,6 +25,11 @@ export const PopupImportCV: FC<Props> = ({
     },
     [onSubmit]
   );
+  useEffect(() => {
+    if (!open) {
+      setFileName(null);
+    }
+  }, [open]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -54,11 +57,9 @@ export const PopupImportCV: FC<Props> = ({
   };
   const handleClose = () => {
     onClose();
-    onImport(
-      new File([], "")
-    )
+    onImport(new File([], ""));
     setFileName(null);
-  }
+  };
 
   return (
     <Modal
@@ -72,8 +73,7 @@ export const PopupImportCV: FC<Props> = ({
         alignItems: "center",
         height: "100%",
         width: "100%",
-      }}
-    >
+      }}>
       <div
         style={{
           height: "300px",
@@ -85,8 +85,7 @@ export const PopupImportCV: FC<Props> = ({
         }}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-      >
+        onDrop={handleDrop}>
         <form
           onSubmit={handleSubmit}
           style={{
@@ -94,9 +93,8 @@ export const PopupImportCV: FC<Props> = ({
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "space-between",
-            height: "100%"
-          }}
-        >
+            height: "100%",
+          }}>
           <label
             htmlFor="file-upload"
             style={{
@@ -111,9 +109,8 @@ export const PopupImportCV: FC<Props> = ({
               textAlign: "center",
               color: isDragOver ? "#3f51b5" : "#ccc",
               transition: "border-color 0.3s, color 0.3s",
-              cursor: "pointer"
-            }}
-          >
+              cursor: "pointer",
+            }}>
             <input
               id="file-upload"
               onChange={handleFileChange}
@@ -121,12 +118,15 @@ export const PopupImportCV: FC<Props> = ({
               type="file"
               hidden
             />
-            <p style={{
-              whiteSpace: "nowrap",
-              textOverflow: "ellipsis",
-              overflow: "hidden",
-              width: "100%",
-            }}>{fileName || "Kéo và thả tệp vào đây hoặc nhấp để chọn tệp"}</p>
+            <p
+              style={{
+                whiteSpace: "nowrap",
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+                width: "100%",
+              }}>
+              {fileName || "Kéo và thả tệp vào đây hoặc nhấp để chọn tệp"}
+            </p>
           </label>
           <Button size="small" variant="outlined" type="submit">
             Quét
