@@ -61,8 +61,7 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
             display: "flex",
             flexDirection: "column",
             minWidth: "100px",
-          }}
-        >
+          }}>
           <Typography variant="subtitle1" fontWeight={700} color="#0098e5">
             HRM
           </Typography>
@@ -70,11 +69,10 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
             style={{
               letterSpacing: 1,
               opacity: 0.7,
-              fontSize: "4px",
+              fontSize: "10px",
               margin: 0,
               lineHeight: "2px",
-            }}
-          >
+            }}>
             V {packageJson.version}
           </p>
         </div>

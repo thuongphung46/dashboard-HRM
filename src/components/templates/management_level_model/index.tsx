@@ -8,7 +8,6 @@ import { useGetListDepartment } from "services/hooks/useGetListDepartment";
 export const ManagementLevelModelTemplate = () => {
   const navigate = useNavigate();
   const level = HRMStorage.get(KeyValue.Level);
-  const [selectedId, setSelectedId] = useState<any>(null);
   const [disable, setDisable] = useState(true);
 
   const [departmentList, setDepartmentList] = useState<any[]>([]);
@@ -27,7 +26,6 @@ export const ManagementLevelModelTemplate = () => {
   }, [departmentData]);
 
   const handleClickItem = (e: any) => {
-    setSelectedId(e.id);
     navigate(`/model/${e.id}`);
   };
 
@@ -46,7 +44,6 @@ export const ManagementLevelModelTemplate = () => {
         handleClickItem={handleClickItem}
         departmentList={departmentList}
         setDepartmentList={handleSetDepartmentList}
-        active={selectedId}
         disable={disable}
       />
       <Outlet />
