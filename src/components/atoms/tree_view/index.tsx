@@ -136,8 +136,7 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData, disable }) => {
           alignItems: "center",
           height: "100%",
           width: "100%",
-        }}
-      >
+        }}>
         <div
           style={{
             height: "300px",
@@ -146,8 +145,7 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData, disable }) => {
             padding: "24px",
             borderRadius: "4px",
             boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
-          }}
-        >
+          }}>
           <Box>
             {departmentData &&
               fieldData.map((field, index) => (
@@ -160,8 +158,7 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData, disable }) => {
                         size="small"
                         id={field.id}
                         defaultValue={dataEdit[field.id] || ""}
-                        onChange={hanldeOnChangefield}
-                      >
+                        onChange={hanldeOnChangefield}>
                         {field.options.map((option, index) => (
                           <MenuItem key={index} value={option.value}>
                             {option.label}
@@ -189,8 +186,7 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData, disable }) => {
               alignItems: "center",
               justifyContent: "flex-end",
               marginTop: "10px",
-            }}
-          >
+            }}>
             <Button size="small" variant="outlined" onClick={handleSave}>
               Lưu
             </Button>
@@ -217,8 +213,7 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData, disable }) => {
             justifyContent: "space-between",
           }}
           container
-          alignItems="center"
-        >
+          alignItems="center">
           <Grid item>
             <Typography> {item.label}</Typography>
           </Grid>
@@ -226,15 +221,13 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData, disable }) => {
             <Button
               disabled={disable}
               size="small"
-              onClick={() => handleShowPopupEdit(item)}
-            >
+              onClick={() => handleShowPopupEdit(item)}>
               <EditIcon />
             </Button>
             <Button
               disabled={disable}
               size="small"
-              onClick={() => handleDel(item)}
-            >
+              onClick={() => handleDel(item)}>
               <DeleteIcon />
             </Button>
           </Grid>
@@ -253,13 +246,11 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData, disable }) => {
           alignItems: "center",
         }}
         container
-        alignItems="center"
-      >
+        alignItems="center">
         <Typography
           sx={{
             width: "250px",
-          }}
-        >
+          }}>
           {item.jobTitle}
         </Typography>
         <div className="link-tree-view">
@@ -268,8 +259,7 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData, disable }) => {
               textDecoration: "none",
               color: "#1976d2",
             }}
-            to={`/detail_employee/${item.id}`}
-          >
+            to={`/detail_employee/${item.id}`}>
             <Typography>{item.fullName}</Typography>
           </Link>
         </div>
@@ -281,18 +271,16 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData, disable }) => {
       <SimpleTreeView
         aria-label="file system navigator"
         sx={{
-          height: "calc(100vh - 550px)",
+          // height: "calc(100vh - 450px)",
           flexGrow: 1,
           width: "100%",
           overflowY: "auto",
-        }}
-      >
+        }}>
         {data.map((item) => (
           <TreeItem
             key={item.itemId}
             itemId={item.itemId}
-            label={renderLabelParent(item)}
-          >
+            label={renderLabelParent(item)}>
             {item.children?.map((child) => (
               <TreeItem
                 key={child.id}
