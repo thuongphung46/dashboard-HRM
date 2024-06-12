@@ -54,8 +54,8 @@ export const InfoStaff = ({
   const [jobTitleList, setJobTitleList] = useState<any[]>([]);
   const { loading: loadingJobTitle, data: jobTitleData } = useGetListJobTitle();
 
-  const handleSaveTrainingSummary = useCallback((data: any) => {}, []);
-  const handleSaveTraining = useCallback((data: any) => {}, []);
+  const handleSaveTrainingSummary = useCallback((data: any) => { }, []);
+  const handleSaveTraining = useCallback((data: any) => { }, []);
   const handleRowSelectionChange = (selection: GridRowId[]) => {
     setSelectedRows(selection);
   };
@@ -168,7 +168,7 @@ export const InfoStaff = ({
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container>
-        <form onSubmit={handleSave}>
+        <form onSubmit={handleSave} >
           <Grid container spacing={2}>
             <Grid sx={{ width: "100%" }} item>
               <Button variant="outlined" size="small" type="submit">
@@ -204,7 +204,7 @@ export const InfoStaff = ({
               <GridTraining
                 dataSource={
                   (action === "edit" || action === "me") &&
-                  data.staffWorkingHistoriesOutAcademy
+                    data.staffWorkingHistoriesOutAcademy
                     ? data.staffWorkingHistoriesOutAcademy
                     : []
                 }
