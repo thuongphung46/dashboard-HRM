@@ -4,9 +4,10 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Typography from "@mui/material/Typography";
 import { useGetListRank } from "services/hooks/useGetListRank";
 
-interface Props {}
+interface Props { }
 
 export const GeneralRank: FC<Props> = () => {
+  const { data } = useGetListRank();
   const columns: GridColDef[] = [
     {
       field: "code",
@@ -30,7 +31,8 @@ export const GeneralRank: FC<Props> = () => {
     },
   ];
 
-  const { data } = useGetListRank();
+
+
 
   return (
     <div>
