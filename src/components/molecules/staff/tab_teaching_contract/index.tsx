@@ -7,13 +7,20 @@ import { GridColDef } from "@mui/x-data-grid/models/colDef";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 import { toastMessage } from "components/molecules/toast_message";
+import { Action } from "types/action";
 
-export const TeachingContract: React.FC = () => {
+interface Props extends Action {
+
+}
+export const TeachingContract: React.FC<Props> = ({ action }) => {
   const navigate = useNavigate();
   const { id } = useParams();
   const level = HRMStorage.get(KeyValue.Level);
+  const idUser = HRMStorage.get(KeyValue.id);
   const [disable, setDisable] = useState<boolean>(true);
-  const { data: TeachingContractPageData } = useGetListContractStaff(id);
+  const { data: TeachingContractPageData } = useGetListContractStaff(
+    action === "me" ? idUser : id
+  );
   useEffect(() => {
     if (level === "LEVEL_4") {
       setDisable(false);
