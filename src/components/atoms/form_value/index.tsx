@@ -38,48 +38,70 @@ const FormField: FC<Props> = ({
             <>
               {((field.options && field.options.length > 0) ||
                 action === "add") && (
-                <Autocomplete
-                  disablePortal
-                  readOnly={field.readonly}
-                  size="small"
-                  ref={field.ref}
-                  id={field.id}
-                  defaultValue={
-                    field.options &&
-                    field.options.length > 0 &&
-                    formData[field.id] !== undefined
-                      ? field.options.find(
+                  <Autocomplete
+                    disablePortal
+                    readOnly={field.readonly}
+                    size="small"
+                    ref={field.ref}
+                    id={field.id}
+                    defaultValue={
+                      field.options &&
+                        field.options.length > 0 &&
+                        formData[field.id] !== undefined
+                        ? field.options.find(
                           (option) => option.value === formData[field.id] || ""
                         )
-                      : ""
-                  }
-                  onChange={(e, newValue: any) => {
-                    handleOnChangeField({
-                      target: {
-                        name: field.id,
-                        value: newValue ? newValue.value : "",
-                      },
-                    });
-                  }}
-                  options={
-                    field.options && field.options.length > 0
-                      ? [...field.options, { value: "", label: "" }]
-                      : [{ value: "", label: "" }]
-                  }
-                  getOptionKey={(option) => option.value.toString()}
-                  getOptionLabel={(option) => option.label}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      size="small"
-                      required={field.isRequire}
-                      label={field.label}
-                      variant="outlined"
-                    />
-                  )}
-                />
-              )}
+                        : ""
+                    }
+                    onChange={(e, newValue: any) => {
+                      handleOnChangeField({
+                        target: {
+                          name: field.id,
+                          value: newValue ? newValue.value : "",
+                        },
+                      });
+                    }}
+                    options={
+                      field.options && field.options.length > 0
+                        ? [...field.options, { value: "", label: "" }]
+                        : [{ value: "", label: "" }]
+                    }
+                    getOptionKey={(option) => option.value.toString()}
+                    getOptionLabel={(option) => option.label}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        size="small"
+                        required={field.isRequire}
+                        label={field.label}
+                        variant="outlined"
+                      />
+                    )}
+                  />
+                )}
             </>
+          );
+        case "decimal":
+          return (
+            <TextField
+              size="small"
+              fullWidth
+              required={field.isRequire}
+              inputRef={field.ref}
+              id={field.id}
+              name={field.id}
+              autoComplete="new-password"
+              InputProps={{
+                readOnly: field.readonly,
+                inputMode: "decimal"
+              }}
+              type="decimal"
+              defaultValue={formData[field.id] ?? ""}
+              onChange={(e) => {
+
+                handleOnChangeField(e);
+              }}
+            />
           );
         default:
           return (
@@ -93,6 +115,7 @@ const FormField: FC<Props> = ({
               autoComplete="new-password"
               InputProps={{
                 readOnly: field.readonly,
+
               }}
               type={field.type}
               defaultValue={formData[field.id] ?? ""}

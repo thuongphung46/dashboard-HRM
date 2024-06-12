@@ -147,7 +147,7 @@ export const fieldsData: IFormField[] = [
       },
     ],
   },
-  { id: "ratio", label: "Hệ số lương", type: "number" },
+  { id: "ratio", label: "Hệ số lương", type: "decimal" },
   { id: "country", label: "Quốc tịch", type: "text" },
   { id: "identityBirthPlace", label: "Nơi sinh", type: "text" },
   { id: "domicile", label: "Nguyên quán", type: "text" },
