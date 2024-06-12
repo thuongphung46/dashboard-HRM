@@ -201,7 +201,7 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
               handleSave={handleOnClickSave}
             />
           )}
-          {action === "me" && dataDetailMe && (
+          {action === "me" && dataDetailMe && dataDetailMe?.id && (
             <InfoStaff
               formData={formData}
               setFormData={setFormData}
@@ -259,7 +259,8 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
     <div
       style={{
         padding: "8px",
-      }}>
+      }}
+    >
       <Button size="small" variant="outlined" onClick={handleExit}>
         Thoát
       </Button>
@@ -267,14 +268,16 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
         size="small"
         variant="outlined"
         sx={{ marginLeft: "4px" }}
-        onClick={() => setOpen(true)}>
+        onClick={() => setOpen(true)}
+      >
         Scan
       </Button>
       <Tabs
         value={value}
         onChange={handleChange}
         aria-label="nav tabs example"
-        role="navigation">
+        role="navigation"
+      >
         <Tab value={0} label="Thông tin chung" />
         {(action === "edit" || action === "me") && (
           <Tab value={1} label="Quá trình làm việc tại đơn vị" />
@@ -318,7 +321,8 @@ function TabPanel(props: TabPanelProps) {
       hidden={value !== index}
       id={`tabpanel-${index}`}
       aria-labelledby={`tab-${index}`}
-      {...other}>
+      {...other}
+    >
       {value === index && (
         <Box sx={{ p: 1, height: "calc(100vh - 180px)", overflow: "auto" }}>
           {children}
