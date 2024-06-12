@@ -124,18 +124,30 @@ export const PrimarySearchAppBar: React.FC<PrimarySearchAppBarProps> = ({
         horizontal: "left",
       }}
       open={isMenuOpen}
-      onClose={handleMenuClose}>
+      onClose={handleMenuClose}
+    >
       <Box
         sx={{
           height: "250px",
           width: "248px",
           padding: "4px",
-        }}>
-        <MenuItem onClick={handleProfile}>
+        }}
+      >
+        <MenuItem
+          sx={{
+            height: "40px",
+          }}
+          onClick={handleProfile}
+        >
           <Person2Icon />
           <p style={{ marginLeft: "12px" }}>Hồ sơ</p>
         </MenuItem>
-        <MenuItem onClick={handleLogout}>
+        <MenuItem
+          sx={{
+            height: "40px",
+          }}
+          onClick={handleLogout}
+        >
           <LogoutIcon />
           <p style={{ marginLeft: "12px" }}>Đăng xuất</p>
         </MenuItem>
@@ -158,7 +170,8 @@ export const PrimarySearchAppBar: React.FC<PrimarySearchAppBarProps> = ({
         horizontal: "right",
       }}
       open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}>
+      onClose={handleMobileMenuClose}
+    >
       <MenuItem>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="error">
@@ -171,7 +184,8 @@ export const PrimarySearchAppBar: React.FC<PrimarySearchAppBarProps> = ({
         <IconButton
           size="large"
           aria-label="show 17 new notifications"
-          color="inherit">
+          color="inherit"
+        >
           <Badge badgeContent={17} color="error">
             <NotificationsIcon />
           </Badge>
@@ -184,7 +198,8 @@ export const PrimarySearchAppBar: React.FC<PrimarySearchAppBarProps> = ({
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"
           aria-haspopup="true"
-          color="inherit">
+          color="inherit"
+        >
           <AccountCircle />
         </IconButton>
         <p>Profile</p>
@@ -202,7 +217,8 @@ export const PrimarySearchAppBar: React.FC<PrimarySearchAppBarProps> = ({
             boxShadow: "none",
             borderBottom: "1px solid #e0e0e0",
           }}
-          position="static">
+          position="static"
+        >
           <Toolbar>
             <IconButton
               size="large"
@@ -210,14 +226,16 @@ export const PrimarySearchAppBar: React.FC<PrimarySearchAppBarProps> = ({
               color="inherit"
               aria-label="open drawer"
               sx={{ mr: 2 }}
-              onClick={broken ? setToggled : setCollapsed}>
+              onClick={broken ? setToggled : setCollapsed}
+            >
               <MenuIcon />
             </IconButton>
             <Typography
               variant="h6"
               noWrap
               component="div"
-              sx={{ display: { xs: "none", sm: "block" } }}></Typography>
+              sx={{ display: { xs: "none", sm: "block" } }}
+            ></Typography>
 
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: { xs: "none", md: "flex" } }}>
@@ -246,7 +264,8 @@ export const PrimarySearchAppBar: React.FC<PrimarySearchAppBarProps> = ({
                 aria-controls={menuId}
                 aria-haspopup="true"
                 onClick={handleProfileMenuOpen}
-                color="inherit">
+                color="inherit"
+              >
                 <AccountCircle />
               </IconButton>
             </Box>
@@ -257,7 +276,8 @@ export const PrimarySearchAppBar: React.FC<PrimarySearchAppBarProps> = ({
                 aria-controls={mobileMenuId}
                 aria-haspopup="true"
                 onClick={handleMobileMenuOpen}
-                color="inherit">
+                color="inherit"
+              >
                 <MoreIcon />
               </IconButton>
             </Box>
@@ -271,7 +291,8 @@ export const PrimarySearchAppBar: React.FC<PrimarySearchAppBarProps> = ({
           position: "relative",
           height: 4,
           width: "100%",
-        }}>
+        }}
+      >
         {loading && (
           <LinearProgress
             sx={{ position: "absolute", top: 0, left: 0, right: 0 }}
