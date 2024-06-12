@@ -43,139 +43,82 @@ export const InfoStaff = ({
 }: Props) => {
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
   const [departmentList, setDepartmentList] = useState<FlatGroup[]>([]);
-  const [departmentListChild, setDepartmentListChild] = useState<FlatGroup[]>(
-    []
-  );
-  const [fields, setFields] = useState<IFormField[]>([]);
-  const { loading: loadingDepartment, data: departmentData } =
-    useGetListDepartment();
+  const [departmentListChild, setDepartmentListChild] = useState<FlatGroup[]>([]);
   const [rankList, setRankList] = useState<any[]>([]);
-  const { loading: loadingRank, data: rankData } = useGetListRank();
   const [jobTitleList, setJobTitleList] = useState<any[]>([]);
+  const [fields, setFields] = useState<IFormField[]>([]);
+
+  // console.log("data", data);
+
+  const { loading: loadingDepartment, data: departmentData } = useGetListDepartment();
+  const { loading: loadingRank, data: rankData } = useGetListRank();
   const { loading: loadingJobTitle, data: jobTitleData } = useGetListJobTitle();
 
   const handleSaveTrainingSummary = useCallback((data: any) => { }, []);
   const handleSaveTraining = useCallback((data: any) => { }, []);
-  const handleRowSelectionChange = (selection: GridRowId[]) => {
-    setSelectedRows(selection);
-  };
+  const handleRowSelectionChange = (selection: GridRowId[]) => setSelectedRows(selection);
 
   const hanldeOnChangefield = useDebouncedCallback((e: any) => {
-    let value = e.target.value;
-    let field = e.target.name;
+    const { name: field, value } = e.target;
     if (field === "departmentId") {
-      let department = departmentList.find(
-        (department) => department.id === value
-      );
-      if (department) {
-        setDepartmentListChild(department.groups);
-      }
+      const department = departmentList.find(dept => dept.id === value);
+      if (department) setDepartmentListChild(department.groups);
     }
-    setFormData({ ...formData, [field]: value });
+    setFormData(prevFormData => ({ ...prevFormData, [field]: value }));
   }, 500);
 
   useEffect(() => {
     if (!loadingDepartment && departmentData) {
       setDepartmentList(departmentData);
-      if ((action === "edit" || action === "me") && data) {
-        if (data.departmentId) {
-          let department = departmentData.find(
-            (i) => i.id === data.departmentId
-          );
-          if (department) {
-            setDepartmentListChild(department.groups);
-          }
-        }
+      if ((action === "edit" || action === "me") && data.departmentId) {
+        const department = departmentData.find(i => i.id === data.departmentId);
+        if (department) setDepartmentListChild(department.groups);
       }
     }
-  }, [loadingDepartment, departmentData, action, data]);
+  }, [loadingDepartment, departmentData, action, data.departmentId]);
 
   useEffect(() => {
-    if (!loadingRank && rankData) {
-      setRankList(rankData);
-    }
+    if (!loadingRank && rankData) setRankList(rankData);
   }, [loadingRank, rankData]);
 
   useEffect(() => {
-    if (!loadingJobTitle && jobTitleData) {
-      setJobTitleList(jobTitleData);
-    }
+    if (!loadingJobTitle && jobTitleData) setJobTitleList(jobTitleData);
   }, [loadingJobTitle, jobTitleData]);
 
-  //#region sử lý dữ liệu option trước khi hiển thị
   useEffect(() => {
-    const fetch = async () => {
-      let convertFields: IFormField[] = [];
-      fieldsData.forEach((field) => {
-        if (field.id === "departmentId" && departmentList.length > 0) {
-          field.options = departmentList.map((department) => ({
-            value: department.id,
-            label: department.name,
-          }));
-        } else if (field.id === "rankName" && rankList.length > 0) {
-          field.options = rankList.map((rank) => ({
-            value: rank.id.toString(),
-            label: rank.rankName,
-          }));
-        } else if (field.id === "jobTitle" && jobTitleList.length > 0) {
-          field.options = jobTitleList.map((jobTitle) => ({
-            value: jobTitle.code,
-            label: jobTitle.jobTitle,
-          }));
-        }
-        if (field.id === "groupId" && departmentListChild.length > 0) {
-          field.options = departmentListChild.map((department) => ({
-            value: department.id,
-            label: department.name,
-          }));
-        }
-        if (field.id === "password" && (action === "edit" || action === "me")) {
-          return;
-        }
-        if (data.level === "LEVEL_4" && field.id === "groupId") return;
+    const convertFields: IFormField[] = fieldsData.map(field => {
+      if (field.id === "departmentId" && departmentList.length > 0) {
+        field.options = departmentList.map(dept => ({ value: dept.id, label: dept.name }));
+      } else if (field.id === "rankName" && rankList.length > 0) {
+        field.options = rankList.map(rank => ({ value: rank.id.toString(), label: rank.rankName }));
+      } else if (field.id === "jobTitle" && jobTitleList.length > 0) {
+        field.options = jobTitleList.map(jobTitle => ({ value: jobTitle.code, label: jobTitle.jobTitle }));
+      } else if (field.id === "groupId" && departmentListChild.length > 0) {
+        field.options = departmentListChild.map(dept => ({ value: dept.id, label: dept.name }));
+      }
+      if (field.id === "password" && (action === "edit" || action === "me")) return null;
+      if (data.level === "LEVEL_4" && field.id === "groupId") return null;
+      return field;
+    }).filter(field => field !== null) as IFormField[];
+    setFields(convertFields);
+  }, [action, data.level, departmentList, departmentListChild, jobTitleList, rankList]);
 
-        convertFields.push(field);
-      });
-
-      setFields(convertFields);
-    };
-    fetch();
-  }, [
-    action,
-    data.level,
-    departmentList,
-    departmentListChild,
-    jobTitleList,
-    rankList,
-  ]);
-  //#endregion
-
-  //#region xử lý dữ liệu trước khi hiển thị
   useEffect(() => {
-    const doanTncs = data?.staffAdmissions?.find(
-      (ele) => ele.type === "doan_tncs_hcm"
-    );
-    const dangCsvn = data?.staffAdmissions?.find(
-      (ele) => ele.type === "dang_csvn"
-    );
-
+    const doanTncs = data.staffAdmissions?.find(ele => ele.type === "doan_tncs_hcm");
+    const dangCsvn = data.staffAdmissions?.find(ele => ele.type === "dang_csvn");
     if (doanTncs) data.doan_tncs_hcm = doanTncs.place;
     if (dangCsvn) data.dang_csvn = dangCsvn.place;
   }, [data]);
 
-  //#endregion
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container>
-        <form onSubmit={handleSave} >
+        <form onSubmit={handleSave}>
           <Grid container spacing={2}>
             <Grid sx={{ width: "100%" }} item>
-              <Button variant="outlined" size="small" type="submit">
-                Lưu
-              </Button>
+              <Button variant="outlined" size="small" type="submit">Lưu</Button>
             </Grid>
-            {fields && data && (
+            {fields.length > 0 && (
               <FormField
                 action={action}
                 fields={fields}
@@ -185,16 +128,11 @@ export const InfoStaff = ({
             )}
           </Grid>
         </form>
-
         {(action === "edit" || action === "me") && (
           <>
             <Grid sx={{ marginTop: "24px" }} width={"100%"} minWidth={500}>
               <GridTrainingSummary
-                dataSource={
-                  (action === "edit" || action === "me") && data.trainingSummary
-                    ? data?.trainingSummary
-                    : []
-                }
+                dataSource={data.trainingSummary || []}
                 dataSelectRow={selectedRows}
                 handleSave={handleSaveTrainingSummary}
                 handleRowSelect={handleRowSelectionChange}
@@ -202,12 +140,7 @@ export const InfoStaff = ({
             </Grid>
             <Grid sx={{ marginTop: "24px" }} width={"100%"}>
               <GridTraining
-                dataSource={
-                  (action === "edit" || action === "me") &&
-                    data.staffWorkingHistoriesOutAcademy
-                    ? data.staffWorkingHistoriesOutAcademy
-                    : []
-                }
+                dataSource={data.staffWorkingHistoriesOutAcademy || []}
                 dataSelectRow={[]}
                 handleSave={handleSaveTraining}
                 handleRowSelect={handleRowSelectionChange}

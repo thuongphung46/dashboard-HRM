@@ -32,53 +32,52 @@ const FormField: FC<Props> = ({
 }) => {
   const renderField = useCallback(
     (field: IFormField) => {
+
       switch (field.type) {
+
         case "select":
+          console.log("formData", formData)
           return (
             <>
-              {((field.options && field.options.length > 0) ||
-                action === "add") && (
-                  <Autocomplete
-                    disablePortal
-                    readOnly={field.readonly}
-                    size="small"
-                    ref={field.ref}
-                    id={field.id}
-                    defaultValue={
-                      field.options &&
-                        field.options.length > 0 &&
-                        formData[field.id] !== undefined
-                        ? field.options.find(
-                          (option) => option.value === formData[field.id] || ""
-                        )
-                        : ""
-                    }
-                    onChange={(e, newValue: any) => {
-                      handleOnChangeField({
-                        target: {
-                          name: field.id,
-                          value: newValue ? newValue.value : "",
-                        },
-                      });
-                    }}
-                    options={
-                      field.options && field.options.length > 0
-                        ? [...field.options, { value: "", label: "" }]
-                        : [{ value: "", label: "" }]
-                    }
-                    getOptionKey={(option) => option.value.toString()}
-                    getOptionLabel={(option) => option.label}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        size="small"
-                        required={field.isRequire}
-                        label={field.label}
-                        variant="outlined"
-                      />
-                    )}
-                  />
-                )}
+              {((field.options && field.options.length > 1 && formData) || action === "add") && (
+                <Autocomplete
+                  disablePortal
+                  readOnly={field.readonly}
+                  size="small"
+                  ref={field.ref}
+                  id={field.id}
+                  defaultValue={
+                    field.options &&
+                    field.options.length > 0
+                    && field.options.find(
+                      (option) => option.value === formData[field.id] || ""
+                    )
+                  }
+                  onChange={(e, newValue: any) => {
+                    handleOnChangeField({
+                      target: {
+                        name: field.id,
+                        value: newValue ? newValue.value : "",
+                      },
+                    });
+                  }}
+                  options={
+                    field.options && field.options.length > 0
+                      ? [...field.options, { value: "", label: "" }]
+                      : [{ value: "", label: "" }]
+                  }
+                  getOptionKey={(option) => option.value.toString()}
+                  getOptionLabel={(option) => option.label}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      size="small"
+                      required={field.isRequire}
+                      variant="outlined"
+                    />
+                  )}
+                />
+              )}
             </>
           );
         case "decimal":

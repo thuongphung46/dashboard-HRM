@@ -137,7 +137,12 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
               if (level !== "LEVEL_4") {
                 toastMessage("Đã gửi yêu cầu cập nhật thành công", "success");
               } else {
+                setDataDetail({
+                  ...dataDetail,
+                  ...formData,
+                });
                 toastMessage("Thành công", "success");
+
               }
             } else {
               toastMessage(res.message, "error");
@@ -161,7 +166,7 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
           });
       }
     },
-    [action, formData, id, level]
+    [action, dataDetail, formData, id, level]
   );
 
   const handleExit = useCallback(() => {
@@ -192,7 +197,7 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
               handleSave={handleOnClickSave}
             />
           )}
-          {action === "edit" && dataDetail && dataDetail.departmentId && (
+          {action === "edit" && dataDetail && dataDetail?.departmentId && (
             <InfoStaff
               formData={formData}
               setFormData={setFormData}
