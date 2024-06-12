@@ -28,8 +28,14 @@ export const TeachingContract: React.FC = () => {
       editable: false,
       renderCell: (params: any) => (
         <Link
-          style={{ whiteSpace: "pre-wrap" }}
-          to={`/teaching_contract/edit/${params.row.id}`}>
+          style={{
+            whiteSpace: "pre-wrap",
+            textDecoration: "none",
+            color: "#1976d2",
+            fontWeight: "bold",
+          }}
+          to={`/teaching_contract/edit/${params.row.id}`}
+        >
           {params.value}
         </Link>
       ),
@@ -60,11 +66,13 @@ export const TeachingContract: React.FC = () => {
       width: 200,
       editable: false,
       type: "singleSelect",
+      getOptionValue: (value: any) => value.code,
+      getOptionLabel: (value: any) => value.label,
       valueOptions: [
-        "Chưa thực hiện",
-        "Đang thực hiện",
-        "Đã thực hiện",
-        "Đã thanh lý",
+        { code: 0, label: "chưa thực hiện" },
+        { code: 1, label: "đang thực hiện" },
+        { code: 2, label: "đã thực hiện" },
+        { code: 3, label: "đã thanh lý" },
       ],
     },
   ];
