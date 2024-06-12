@@ -36,7 +36,6 @@ const FormField: FC<Props> = ({
       switch (field.type) {
 
         case "select":
-          console.log("formData", formData)
           return (
             <>
               {((field.options && field.options.length > 1 && formData) || action === "add") && (

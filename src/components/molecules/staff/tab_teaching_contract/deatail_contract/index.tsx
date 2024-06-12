@@ -25,6 +25,8 @@ import { toastMessage } from "components/molecules/toast_message";
 import moment from "moment";
 import { useGetListJobTitle } from "services/hooks/useGetListJobTitle";
 import { useConfirm } from "material-ui-confirm";
+import { useGetListRank } from "services/hooks/useGetListRank";
+import { MenuProps } from "../../tab_detail/info_staff";
 
 interface Props {
   data: StaffDetail;
@@ -63,6 +65,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
   const { data: contractDetail } = useGetDetailContract(
     action === "edit" ? id : ""
   );
+  const { data: listRank } = useGetListRank();
   const [params] = useState<GetListStaffParams>({
     query: "",
     active: undefined,
@@ -121,8 +124,12 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
       id: "jobTitle",
       ref: refJobTitleA,
       label: "Chức vụ:",
-      type: "text",
+      type: "select",
       defaultValue: renterData?.jobTitle || "",
+      options: jobTitleData.map((job) => ({
+        value: job.code,
+        label: job.jobTitle,
+      })),
     },
     {
       id: "address",
@@ -191,21 +198,25 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
     {
       id: "rankName",
       label: "Cấp bậc, học hàm, học vị:",
-      type: "text",
+      type: "select",
       defaultValue: staffData?.rankName || "",
+      options: listRank.map((rank) => ({
+        value: rank.id,
+        label: rank.rankName,
+      })),
     },
     {
       id: "ratio",
       ref: refRatioB,
       label: "Hệ số lương:",
       type: "text",
-      defaultValue: "",
+      defaultValue: staffData?.ratio || "",
     },
     {
-      id: "unit",
+      id: "currentWorking",
       label: "Đơn vị:",
       type: "text",
-      defaultValue: "",
+      defaultValue: staffData?.currentWorking || "",
     },
     {
       id: "phoneNumber",
@@ -563,6 +574,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                                 ref={field?.ref}
                                 size="small"
                                 id={field.id}
+                                MenuProps={MenuProps}
                                 onChange={hanldeOnChangefield}
                                 defaultValue={field.defaultValue}>
                                 {(() => {
@@ -636,6 +648,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                                 size="small"
                                 id={field.id}
                                 onChange={hanldeOnChangefield}
+                                MenuProps={MenuProps}
                                 defaultValue={field.defaultValue}>
                                 {(() => {
                                   if (field.id === "per_b") {
@@ -644,6 +657,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                                         staff.jobTitle === "gvm" &&
                                         staff.active === 1
                                     );
+
                                     return data.map((staff, index) => (
                                       <MenuItem
                                         key={staff.id + index}
@@ -711,6 +725,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
                                 defaultValue={
                                   field.defaultValue || field.options[0].value
                                 }
+                                MenuProps={MenuProps}
                                 onChange={hanldeOnChangefield}>
                                 {field.options.map((option, index) => (
                                   <MenuItem key={index} value={option.value}>
