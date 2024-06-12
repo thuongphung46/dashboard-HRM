@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
 import { FC, useState, useEffect, useMemo } from "react";
 import { GridColDef } from "@mui/x-data-grid/models/colDef";
 import { Link, useParams } from "react-router-dom";
@@ -76,7 +75,8 @@ export const DetailDepartMent: FC<Props> = () => {
               color: "#1976d2",
               fontWeight: "bold",
             }}
-            to={`/detail_employee/${params.id}`}>
+            to={`/detail_employee/${params.id}`}
+          >
             <span>{params.value}</span>
           </Link>
         );
@@ -102,8 +102,7 @@ export const DetailDepartMent: FC<Props> = () => {
           ? jobTitleMap[member.jobTitle]
           : member.jobTitle,
     }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gridMember, jobTitleData]);
+  }, [gridMember, jobTitleMap]);
 
   const transformedGridGroup = gridGroup.map((group) => ({
     ...group,
@@ -115,10 +114,8 @@ export const DetailDepartMent: FC<Props> = () => {
 
   return (
     <Box sx={{ width: "70%" }}>
-      <Grid
-        sx={{ overflow: "auto", padding: 2, height: "calc(100vh - 90px)" }}
-        container>
-        <Grid sx={{ width: "100%" }} item>
+      <Box sx={{ overflow: "auto", padding: 2, height: "calc(100vh - 90px)" }}>
+        <Box sx={{ width: "100%" }}>
           <DataGrid
             sx={{
               height: "280px",
@@ -126,17 +123,17 @@ export const DetailDepartMent: FC<Props> = () => {
             rows={transformedGridMember}
             columns={columnsGridMember}
           />
-        </Grid>
-
-        <Grid sx={{ width: "100%", paddingTop: 2 }} item>
+        </Box>
+        <Box sx={{ width: "100%", paddingTop: 2 }}>
           <TreeView
             data={transformedGridGroup}
             setData={(data: TreeItemData[]) => {
               setGridGroup(data);
             }}
-            disable={disable}></TreeView>
-        </Grid>
-      </Grid>
+            disable={disable}
+          ></TreeView>
+        </Box>
+      </Box>
     </Box>
   );
 };

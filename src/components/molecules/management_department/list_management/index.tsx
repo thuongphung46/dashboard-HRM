@@ -14,6 +14,7 @@ import { DepartmentService } from "services/model_management_service";
 import { MessageCode } from "types/enum/message_code";
 import { toastMessage } from "components/molecules/toast_message";
 import { useParams } from "react-router-dom";
+import { useConfirm } from "material-ui-confirm";
 
 interface Props {
   departmentList: any[];
@@ -29,6 +30,7 @@ export const ListDepartment: FC<Props> = ({
   disable,
 }) => {
   const { id } = useParams();
+  const confirm = useConfirm();
   const [open, setOpen] = useState<boolean>(false);
   const [openPEdit, setOpenPEdit] = useState<boolean>(false);
   const [formData, setFormData] = useState<any>({});
@@ -121,7 +123,8 @@ export const ListDepartment: FC<Props> = ({
           alignItems: "center",
           height: "100%",
           width: "100%",
-        }}>
+        }}
+      >
         <div
           style={{
             height: "400px",
@@ -130,7 +133,8 @@ export const ListDepartment: FC<Props> = ({
             padding: "24px",
             borderRadius: "4px",
             boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
-          }}>
+          }}
+        >
           <h4>Thêm cấp quản lý</h4>
           <Button size="small" variant="outlined" onClick={handleSave}>
             Lưu
@@ -140,7 +144,8 @@ export const ListDepartment: FC<Props> = ({
               field={field}
               formData={formData}
               hanldeOnChangefield={hanldeOnChangefield}
-              key={field.id}></ReusableField>
+              key={field.id}
+            ></ReusableField>
           ))}
         </div>
       </Modal>
@@ -172,21 +177,30 @@ export const ListDepartment: FC<Props> = ({
 
   const handleDel = useCallback(
     (e: any) => {
-      DepartmentService.Delete({
-        id: e.id,
-      }).then((res) => {
-        if (res && res?.msg_code === MessageCode.Failed) {
-          toastMessage(
-            "Xóa thất bại! Phòng ban đang tồn tại nhân viên.",
-            "error"
-          );
-        } else {
-          setDepartmentList(departmentList.filter((item) => item.id !== e.id));
-          toastMessage("Xóa thành công", "success");
-        }
+      confirm({
+        title: "Xác nhận xóa",
+        description: "Bạn có chắc chắn muốn xóa phòng ban này không?",
+        confirmationText: "Đồng ý",
+        cancellationText: "Hủy",
+      }).then(() => {
+        DepartmentService.Delete({
+          id: e.id,
+        }).then((res) => {
+          if (res && res?.msg_code === MessageCode.Failed) {
+            toastMessage(
+              "Xóa thất bại! Phòng ban đang tồn tại nhân viên.",
+              "error"
+            );
+          } else {
+            setDepartmentList(
+              departmentList.filter((item) => item.id !== e.id)
+            );
+            toastMessage("Xóa thành công", "success");
+          }
+        });
       });
     },
-    [setDepartmentList, departmentList]
+    [confirm, setDepartmentList, departmentList]
   );
   const handleEdit = useCallback(() => {
     DepartmentService.Update({
@@ -245,7 +259,8 @@ export const ListDepartment: FC<Props> = ({
             alignItems: "center",
             height: "100%",
             width: "100%",
-          }}>
+          }}
+        >
           <div
             style={{
               height: "400px",
@@ -254,7 +269,8 @@ export const ListDepartment: FC<Props> = ({
               padding: "24px",
               borderRadius: "4px",
               boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
-            }}>
+            }}
+          >
             <Button size="small" onClick={handleEdit} variant="outlined">
               Lưu
             </Button>
@@ -263,7 +279,8 @@ export const ListDepartment: FC<Props> = ({
                 field={field}
                 formData={dataEdit}
                 hanldeOnChangefield={handleOnChange}
-                key={field.id}></ReusableField>
+                key={field.id}
+              ></ReusableField>
             ))}
           </div>
         </Modal>
@@ -285,7 +302,8 @@ export const ListDepartment: FC<Props> = ({
             padding: "0px 4px",
             height: 54,
           }}
-          key={i.id}>
+          key={i.id}
+        >
           <ListItemText
             sx={{
               height: "100%",
@@ -293,13 +311,15 @@ export const ListDepartment: FC<Props> = ({
               display: "flex",
               alignItems: "center",
             }}
-            onClick={() => handleClickItem(i)}>
+            onClick={() => handleClickItem(i)}
+          >
             {i.name}
           </ListItemText>
           <ListItemButton
             disabled={disable}
             onClick={() => handleOpenEdit(i)}
-            sx={{ height: "100%", width: "14%", color: "#1976d2" }}>
+            sx={{ height: "100%", width: "14%", color: "#1976d2" }}
+          >
             <EditIcon
               sx={{
                 fontSize: "22px",
@@ -313,7 +333,8 @@ export const ListDepartment: FC<Props> = ({
               height: "100%",
               width: "14%",
               color: "#1976d2",
-            }}>
+            }}
+          >
             <DeleteIcon
               sx={{
                 fontSize: "22px",
@@ -329,12 +350,14 @@ export const ListDepartment: FC<Props> = ({
     <div
       style={{
         width: "30%",
-      }}>
+      }}
+    >
       <Button
         disabled={disable}
         size="small"
         variant="outlined"
-        onClick={handleShowPopupAdd}>
+        onClick={handleShowPopupAdd}
+      >
         Thêm cấp quản lý
       </Button>
       <List
@@ -347,7 +370,8 @@ export const ListDepartment: FC<Props> = ({
           maxHeight: `calc(100vh - 120px)`,
         }}
         component="nav"
-        aria-labelledby="nested-list-subheader">
+        aria-labelledby="nested-list-subheader"
+      >
         {departmentList.map((i) => {
           return renderList(i);
         })}

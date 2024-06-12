@@ -88,16 +88,18 @@ export const ActiveTemplates = () => {
             alignItems: "center",
             height: "100%",
             width: "100%",
-          }}>
+          }}
+        >
           <div
             style={{
-              height: "400px",
-              width: "600px",
+              height: "60%",
+              width: "60%",
               backgroundColor: "#fff",
               padding: "24px",
               borderRadius: "4px",
               boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
-            }}>
+            }}
+          >
             <Grid container spacing={2}>
               <FormField
                 fields={formFields}
@@ -115,6 +117,11 @@ export const ActiveTemplates = () => {
     {
       field: "staffId",
       headerName: "ID nhân viên",
+    },
+    {
+      field: "fullName",
+      headerName: "Tên nhân viên",
+      minWidth: 250,
     },
     {
       field: "status",
@@ -144,23 +151,27 @@ export const ActiveTemplates = () => {
               display: "flex",
               justifyContent: "space-between",
               width: "100%",
-            }}>
+            }}
+          >
             <Button
               onClick={() => handleOpen(params.row)}
               variant="outlined"
-              size="small">
+              size="small"
+            >
               Xem chi tiết
             </Button>
             <Button
               onClick={() => handleActive(params.row, STATUS.APPROVED)}
               variant="outlined"
-              size="small">
+              size="small"
+            >
               Đồng ý
             </Button>
             <Button
               onClick={() => handleActive(params.row, STATUS.REJECTED)}
               variant="outlined"
-              size="small">
+              size="small"
+            >
               Từ chối
             </Button>
           </Box>
@@ -173,7 +184,8 @@ export const ActiveTemplates = () => {
     <div
       style={{
         padding: "8px",
-      }}>
+      }}
+    >
       <>
         <DataGrid
           sx={{ height: "calc(100vh - 90px)", width: "calc(100vw - 270px)" }}
