@@ -70,7 +70,7 @@ export const AddNewContract: FC<Props> = ({ data, action }) => {
     query: "",
     active: undefined,
     page: 0,
-    size: 25,
+    size: 1000,
   });
   const [listStaff, setListStaff] = useState<IListStaff[]>([]);
   const { loading: loadingListStaff, data: listStaffData } =
