@@ -28,7 +28,7 @@ import { PopupImportCV } from "components/atoms/popup";
 import { AIService } from "services/ai_service";
 import { ICV } from "types/ai_scan";
 
-interface Props extends Action {}
+interface Props extends Action { }
 
 export const TabDetailStaff: FC<Props> = ({ action }) => {
   const { id } = useParams();
@@ -235,7 +235,7 @@ export const TabDetailStaff: FC<Props> = ({ action }) => {
         <TabPanel value={value} index={3}>
           {level === "LEVEL_1" || level === "LEVEL_4" ? (
             <>
-              <TeachingContract />
+              <TeachingContract action={action} />
             </>
           ) : null}
         </TabPanel>
