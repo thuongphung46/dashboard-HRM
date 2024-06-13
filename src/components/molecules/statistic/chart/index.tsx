@@ -25,8 +25,6 @@ export const ChartsOverview: React.FC<Props> = ({ data, departmentData }) => {
     return obj;
   });
 
-  // const dataKey;
-
   return (
     <BarChart
       dataset={datasetShow}
