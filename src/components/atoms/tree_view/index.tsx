@@ -253,38 +253,61 @@ export const TreeView: FC<ITreeViewProps> = ({ data, setData, disable }) => {
     [disable, handleDel, handleShowPopupEdit]
   );
 
-  const renderLabelChild = useCallback((item: any) => {
-    return (
-      <Grid
-        key={item.id}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-        }}
-        container
-        alignItems="center"
-      >
-        <Typography
+  const renderLabelChild = useCallback(
+    (item: any) => {
+      return (
+        <Grid
+          key={item.id}
           sx={{
-            width: "250px",
+            display: "flex",
+            alignItems: "center",
           }}
+          container
+          alignItems="center"
         >
-          {item.jobTitle}
-        </Typography>
-        <div className="link-tree-view">
-          <Link
-            style={{
-              textDecoration: "none",
-              color: "#1976d2",
+          <Typography
+            sx={{
+              width: "250px",
             }}
-            to={`/detail_employee/${item.id}`}
           >
-            <Typography>{item.fullName}</Typography>
-          </Link>
-        </div>
-      </Grid>
-    );
-  }, []);
+            {item.jobTitle}
+          </Typography>
+          <div className="link-tree-view">
+            {disable ? (
+              <>
+                <span
+                  style={{
+                    textDecoration: "none",
+                    color: "#1976d2",
+                    fontWeight: "bold",
+                    cursor: "not-allowed",
+                  }}
+                  onClick={() =>
+                    toastMessage("không có quyền truy cập", "error")
+                  }
+                >
+                  {item.fullName}
+                </span>
+              </>
+            ) : (
+              <>
+                <Link
+                  style={{
+                    textDecoration: "none",
+                    color: "#1976d2",
+                  }}
+                  to={`/detail_employee/${item.id}`}
+                >
+                  <Typography>{item.fullName}</Typography>
+                </Link>
+              </>
+            )}
+          </div>
+        </Grid>
+      );
+    },
+    [disable]
+  );
   return (
     <div>
       <SimpleTreeView
