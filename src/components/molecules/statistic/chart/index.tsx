@@ -1,15 +1,7 @@
 import * as React from "react";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { StatisticData } from "services/hooks/useGetStatistic";
-import { makeStyles } from "@mui/styles";
 
-const useStyles = makeStyles({
-  bar: {
-    boxShadow:
-      "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
-    borderRadius: "4px",
-  },
-});
 
 interface Props {
   data: StatisticData;
@@ -18,7 +10,6 @@ interface Props {
 
 const KEYS = ["teaching", "instructProject", "research"];
 export const ChartsOverview: React.FC<Props> = ({ data, departmentData }) => {
-  const classes = useStyles();
   const listCode = Object.keys(data);
   const series = listCode.map((code) => {
     const obj: any = {};
@@ -68,7 +59,7 @@ export const ChartsOverview: React.FC<Props> = ({ data, departmentData }) => {
       ]}
       margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
       slotProps={{
-        bar: { className: classes.bar, rx: 4 },
+        bar: { rx: 4 },
       }}
     />
   );
