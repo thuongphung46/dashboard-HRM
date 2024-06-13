@@ -9,6 +9,7 @@ import { useGetListJobTitle } from "services/hooks/useGetListJobTitle";
 import { useGetDepartment } from "services/hooks/useGetListDepartment";
 import HRMStorage from "common/function";
 import { KeyValue } from "constants/GlobalConstant";
+import { toastMessage } from "components/molecules/toast_message";
 
 interface Props {
   // dataDetail: IDataDetail;
@@ -30,6 +31,7 @@ export const DetailDepartMent: FC<Props> = () => {
   const { data: jobTitleData } = useGetListJobTitle();
   const { data: department } = useGetDepartment(id);
   const level = HRMStorage.get(KeyValue.Level);
+
   useEffect(() => {
     if (level === "LEVEL_4") {
       setDisable(false);
@@ -57,6 +59,7 @@ export const DetailDepartMent: FC<Props> = () => {
       setGridGroup(data);
     }
   }, [dataDetail]);
+
   const columnsGridMember: GridColDef[] = [
     {
       field: "jobTitle",
@@ -68,6 +71,21 @@ export const DetailDepartMent: FC<Props> = () => {
       headerName: "Họ tên",
       minWidth: 200,
       renderCell: (params) => {
+        if (disable) {
+          return (
+            <span
+              style={{
+                textDecoration: "none",
+                color: "#1976d2",
+                fontWeight: "bold",
+                cursor: "not-allowed",
+              }}
+              onClick={() => toastMessage("không có quyền truy cập", "error")}
+            >
+              {params.value}
+            </span>
+          );
+        }
         return (
           <Link
             style={{
